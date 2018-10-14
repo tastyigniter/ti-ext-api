@@ -1,0 +1,28 @@
+<?php namespace {{studly_author}}\{{studly_extension}}\Rest;
+
+use Igniter\Api\Classes\ApiController;
+
+/**
+ * {{title_name}} API Controller
+ */
+class {{studly_name}} extends ApiController
+{
+    public $implement = [
+        'Igniter.Api.Actions.RestController'
+    ];
+
+    public $restConfig = [
+        'actions' => [
+             'index' => [
+                 'pageSize' => 20,
+             ],
+             'store' => [],
+             'show' => [],
+             'update' => [],
+             'destroy' => [],
+        ],
+        'relations' => [{{relations}}],
+        'model' => '{{model}}',
+        'transformer' => '{{studly_author}}\{{studly_extension}}\Rest\Transformers\{{studly_singular_name}}Transformer',
+    ];
+}

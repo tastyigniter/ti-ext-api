@@ -1,0 +1,62 @@
+<?php
+
+namespace Igniter\Api\Classes;
+
+use Igniter\Api\Traits\ResponseMaker;
+use Main\Classes\MainController;
+
+class ApiController extends MainController
+{
+    use ResponseMaker;
+
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
+    public $restConfig = [];
+
+    public $allowedActions = [];
+
+    public $transformer;
+
+    public static function getAfterFilters()
+    {
+        return [];
+    }
+
+    public static function getBeforeFilters()
+    {
+        return [];
+    }
+
+    public static function getMiddleware()
+    {
+        return [];
+    }
+
+    public function callAction($action, $parameters = [])
+    {
+        $this->action = $action;
+
+        if (!$this->checkAction($action))
+            return response()->json(['response' => 'Not Found'], 404);
+
+        // Execute the action
+        return call_user_func_array([$this, $action], $parameters);
+    }
+
+    public function checkAction($action)
+    {
+        if (!array_key_exists($action, $this->allowedActions))
+            return FALSE;
+
+        if (!$methodExists = $this->methodExists($action))
+            return FALSE;
+
+        if ($ownMethod = method_exists($this, $action)) {
+            $methodInfo = new \ReflectionMethod($this, $action);
+
+            return $methodInfo->isPublic();
+        }
+
+        return $methodExists;
+    }
+}

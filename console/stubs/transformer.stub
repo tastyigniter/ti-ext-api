@@ -1,0 +1,15 @@
+<?php namespace {{studly_author}}\{{studly_extension}}\Rest\Transformers;
+
+use {{model}};
+
+class {{studly_singular_name}}Transformer extends \League\Fractal\TransformerAbstract
+{
+    protected $availableIncludes = [
+        {{relations}}
+    ];
+
+	public function transform(\{{model}} $model)
+	{
+	    return $model->toArray();
+	}
+}
