@@ -56,13 +56,13 @@ return [
                 'label' => 'API Name',
                 'type' => 'text',
                 'span' => 'left',
-                'comment' => 'Name of your API',
+                'comment' => 'Name of your API resource',
             ],
             'description' => [
                 'label' => 'Short Description',
                 'type' => 'text',
                 'span' => 'right',
-                'comment' => 'Describe your API',
+                'comment' => 'Describe your API resource',
             ],
             'endpoint' => [
                 'label' => 'Base Endpoint',
@@ -75,7 +75,7 @@ return [
                 'label' => 'Model',
                 'type' => 'select',
                 'span' => 'right',
-                'comment' => 'Select the model to link with this API',
+                'comment' => 'Select the model to link with this API resource',
             ],
             'meta[actions]' => [
                 'label' => 'Actions',
@@ -89,13 +89,13 @@ return [
                     'update' => 'Update',
                     'destroy' => 'Destroy',
                 ],
-                'comment' => 'Choose the actions handled by this API',
+                'comment' => 'Choose the actions handled by this API resource',
             ],
             'meta[relations]' => [
                 'label' => 'Relations',
                 'type' => 'text',
                 'span' => 'right',
-                'comment' => 'Comma separated list of relations',
+                'comment' => 'Comma separated list of relations of the selected model',
             ],
             'transformer_content' => [
                 'label' => 'Fractal Transformer',

@@ -13,27 +13,19 @@ Default behavior logic for several common verbs are supported — create, store,
 - Generating User Tokens
 
 ### Usage
-Go to **Tools > APIs** and use the Create button to create new api resources
+Go to **Tools > APIs** and use the Create button to generate a new api resource
 
-#### Form
-- **API Name:** Name of your API resource
-- **Base Endpoint:** Base endpoint of your API, ex : api/resourcename
-- **Short Description:** Describe your API
-- **Model:** Select the model to link with the created API
-- **Actions:** Choose the actions handled by this API
-- **Relations:** Comma separated list of relations
-- **Fractal Transformer:** Model custom JSON response using Fractal Transformers
+### Manually Create an API resource
 
-### Manually Create API resource
+The below command will generate both `Controller` and `Transformer` for the specified resource
 
 ```
-php artisan create:apicontroller Acme.Extension ControllerName
+php artisan create:apiresource Acme.Extension ResourceName
 ```
 
-After generating the controller and transformer, you can make them manageable from the admin panel by registering a new api resource
+After the resource has been generated, add it to routes by registering a new api resource.
 
 **Register API Resource**
-
 ```
 public function registerApiResources()
 {
@@ -49,9 +41,13 @@ public function registerApiResources()
 }
 ```
 
+> The array keys represents the resource endpoints
+
 ### Response
-Response are transformed using spatie's [laravel fractal](https://github.com/spatie/laravel-fractal) 
-when a transformer is specified.
+
+Response are transformed using spatie's [laravel fractal](https://github.com/spatie/laravel-fractal).
+
+The API controller provides helpers for transforming response.
 
 **Example of Fractal Transformer**
 
