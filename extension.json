@@ -5,8 +5,5 @@
   "version": "0.1.0-beta.2",
   "author": "SamPoyigi",
   "icon": "fa-cloud",
-  "homepage": "https://github.com/tastyigniter/ti-ext-api",
-  "require": {
-    "igniter.user": "*"
-  }
+  "homepage": "https://github.com/tastyigniter/ti-ext-api"
 }

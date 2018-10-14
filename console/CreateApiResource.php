@@ -31,8 +31,8 @@ class CreateApiResource extends GeneratorCommand
      * @var array
      */
     protected $stubs = [
-        'controller.stub' => 'rest/{{studly_name}}.php',
-        'transformer.stub' => 'rest/transformers/{{studly_singular_name}}Transformer.php',
+        'controller.stub' => 'resources/{{studly_name}}.php',
+        'transformer.stub' => 'resources/transformers/{{studly_singular_name}}Transformer.php',
     ];
 
     protected $defaultActions = [

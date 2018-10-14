@@ -33,10 +33,10 @@ public function registerApiResources()
         'menus' => [
             'name' => 'Menus',
             'description' => 'Description of this API resource',
-            'controller' => \Acme\Extension\Rest\Menus::class,
-            'transformer' => \Acme\Extension\Rest\Transformers\MenuTransformer::class,
+            'controller' => \Acme\Extension\Resources\Menus::class,
+            'transformer' => \Acme\Extension\Resources\Transformers\MenuTransformer::class,
         ],
-        'categories' => \Acme\Extension\Rest\Categories::class,
+        'categories' => \Acme\Extension\Resources\Categories::class,
     ];
 }
 ```
@@ -52,7 +52,7 @@ The API controller provides helpers for transforming response.
 **Example of Fractal Transformer**
 
 ```
-<?php namespace Igniter\Api\Rest\Transformers;
+<?php namespace Igniter\Api\Resources\Transformers;
 
 use Acme\Extension\Models\Menu;
 

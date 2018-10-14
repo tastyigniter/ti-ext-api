@@ -1,4 +1,4 @@
-<?php namespace Igniter\Api\Rest;
+<?php namespace Igniter\Api\Resources;
 
 use Igniter\Api\Classes\ApiController;
 
@@ -23,6 +23,6 @@ class Dummy extends ApiController
         ],
         'relations' => [],
         'model' => 'igniter\api\Models\Resource',
-//        'transformer' => 'Igniter\Api\Rest\Transformers\DummyTransformer',
+        'transformer' => 'Igniter\Api\Resources\Transformers\DummyTransformer',
     ];
 }

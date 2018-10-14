@@ -1,15 +1,8 @@
 {
   "name": "igniter/api",
   "type": "igniter-extension",
-  "description": "Generates RESTful APIs using available models.",
   "keywords": ["tastyigniter", "api"],
   "license": "MIT",
-  "authors": [
-    {
-      "name": "Samuel Adepoyigi",
-      "email": "sam@sampoyigi.com"
-    }
-  ],
   "require": {
     "php": ">=7.0",
     "spatie/laravel-fractal": "~5.4",

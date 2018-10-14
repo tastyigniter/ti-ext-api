@@ -27,14 +27,13 @@ class CreateResourcesTable extends Migration
             'name' => 'Dummy',
             'description' => 'Description of this API resource',
             'model' => 'Igniter\Api\Models\Resource',
-            'controller' => 'Igniter\Api\Rest\Dummy',
-            'transformer' => 'Igniter\Api\Rest\Transformers\DummyTransformer',
+            'controller' => 'Igniter\Api\Resources\Dummy',
+            'transformer' => 'Igniter\Api\Resources\Transformers\DummyTransformer',
             'meta' => [
                 'actions' => ['index', 'show']
             ],
             'is_custom' => TRUE,
         ]);
-
     }
 
     public function down()

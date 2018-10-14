@@ -11,7 +11,7 @@ class ApiManager
 
     protected $resourcesPath;
 
-    protected $namespace = '\\Igniter\\Api\\Rest';
+    protected $namespace = '\\Igniter\\Api\\Resources';
 
     public function initialize()
     {
