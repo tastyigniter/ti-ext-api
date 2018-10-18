@@ -31,7 +31,7 @@ class ExceptionHandler
      */
     public function getDetailedResponse($exception)
     {
-        $response = $this->newResponseArray();
+        $format = $this->newResponseArray();
 
         $statusCode = $this->getStatusCode($exception);
 
@@ -39,6 +39,7 @@ class ExceptionHandler
             $message = sprintf('%d %s', $statusCode, Response::$statusTexts[$statusCode]);
         }
 
+        $response = [];
         $response['status_code'] = $statusCode;
         $response['message'] = $message;
 
@@ -64,7 +65,7 @@ class ExceptionHandler
             ];
         }
 
-        return array_filter($response);
+        return array_intersect_key(array_filter($response), array_flip($format));
     }
 
     /**

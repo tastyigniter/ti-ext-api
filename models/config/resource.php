@@ -101,7 +101,7 @@ return [
                 'label' => 'Fractal Transformer',
                 'type' => 'codeeditor',
                 'mode' => 'php',
-                'commentAbove' => 'Learn more about <a href="https://fractal.thephpleague.com/transformers/">fractal transformers</a>',
+                'commentAbove' => 'Learn more about <a target="_blank" href="https://fractal.thephpleague.com/transformers/">fractal transformers</a>',
                 'commentHtml' => TRUE,
             ],
             'controller' => [

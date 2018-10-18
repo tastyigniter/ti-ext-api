@@ -48,7 +48,7 @@ class Resources extends \Admin\Classes\AdminController
         'configFile' => 'resource',
     ];
 
-    protected $requiredPermissions = ['Igniter.Api'];
+    protected $requiredPermissions = 'Igniter.Api';
 
     public function __construct()
     {

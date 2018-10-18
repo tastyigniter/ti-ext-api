@@ -214,16 +214,8 @@ class Resource extends Model
             $callback($this);
         }
 
-        $extensions = ExtensionManager::instance()->getExtensions();
-        foreach ($extensions as $extension) {
-            if (!method_exists($extension, 'registerApiResources'))
-                continue;
-
-            $resources = $extension->registerApiResources();
-            if (!is_array($resources)) {
-                continue;
-            }
-
+        $registeredResources = ExtensionManager::instance()->getRegistrationMethodValues('registerApiResources');
+        foreach ($registeredResources as $extensionCode => $resources) {
             $this->registerResources($resources);
         }
     }

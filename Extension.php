@@ -11,6 +11,8 @@ class Extension extends BaseExtension
 {
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/config/api.php', 'api');
+
         $this->app->register(\Spatie\Fractal\FractalServiceProvider::class);
         $this->registerConsoleCommand('create.apiresource', \Igniter\Api\Console\CreateApiResource::class);
 
@@ -27,7 +29,7 @@ class Extension extends BaseExtension
             'tools' => [
                 'child' => [
                     'resources' => [
-                        'priority' => 9,
+                        'priority' => 2,
                         'class' => 'api-resources',
                         'href' => admin_url('igniter/api/resources'),
                         'title' => 'APIs',
@@ -51,6 +53,9 @@ class Extension extends BaseExtension
     protected function registerExceptionHandler()
     {
         Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
+            if (!$request->is('api/*'))
+                return;
+
             $format = $this->app['config']->get('api.errorFormat');
             $handler = new ExceptionHandler($format);
 
