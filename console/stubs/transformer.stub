@@ -1,4 +1,4 @@
-<?php namespace {{studly_author}}\{{studly_extension}}\Rest\Transformers;
+<?php namespace {{studly_author}}\{{studly_extension}}\Resources\Transformers;
 
 use {{model}};
 

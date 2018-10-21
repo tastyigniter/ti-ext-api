@@ -97,13 +97,13 @@ return [
                 'span' => 'right',
                 'comment' => 'Comma separated list of relations of the selected model',
             ],
-            'transformer_content' => [
-                'label' => 'Fractal Transformer',
-                'type' => 'codeeditor',
-                'mode' => 'php',
-                'commentAbove' => 'Learn more about <a target="_blank" href="https://fractal.thephpleague.com/transformers/">fractal transformers</a>',
-                'commentHtml' => TRUE,
-            ],
+//            'transformer_content' => [
+//                'label' => 'Fractal Transformer',
+//                'type' => 'codeeditor',
+//                'mode' => 'php',
+//                'commentAbove' => 'Learn more about <a target="_blank" href="https://fractal.thephpleague.com/transformers/">fractal transformers</a>',
+//                'commentHtml' => TRUE,
+//            ],
             'controller' => [
                 'label' => 'Controller',
                 'type' => 'text',

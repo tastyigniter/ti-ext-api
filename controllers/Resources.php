@@ -69,6 +69,7 @@ class Resources extends \Admin\Classes\AdminController
     {
         if ($form->context != 'create') {
             $field = $form->getField('model');
+            $field->type = 'text';
             $field->disabled = TRUE;
 
             $field = $form->getField('meta[relations]');

@@ -11,6 +11,7 @@ Default behavior logic for several common verbs are supported — create, store,
 **TO DO:**
 - User Authentication (maybe with Laravel Passport)
 - Generating User Tokens
+- Use Laravel Resources instead of fractal Transformer for transforming model attributes
 
 ### Usage
 Go to **Tools > APIs** and use the Create button to generate a new api resource
