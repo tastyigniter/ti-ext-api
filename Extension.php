@@ -13,7 +13,6 @@ class Extension extends BaseExtension
     {
         $this->mergeConfigFrom(__DIR__.'/config/api.php', 'api');
 
-        $this->app->register(\Spatie\Fractal\FractalServiceProvider::class);
         $this->registerConsoleCommand('create.apiresource', \Igniter\Api\Console\CreateApiResource::class);
 
         $this->registerExceptionHandler();

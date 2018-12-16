@@ -12,6 +12,7 @@ return [
     |
     */
     'prefix' => null,
+
     /*
     |--------------------------------------------------------------------------
     | Default API Domain
@@ -34,7 +35,6 @@ return [
     | removed from the final response.
     |
     */
-
     'errorFormat' => [
         'message',
         'errors',
