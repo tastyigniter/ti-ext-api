@@ -5,8 +5,7 @@
   "license": "MIT",
   "require": {
     "php": ">=7.0",
-    "spatie/laravel-fractal": "~5.4",
-    "dingo/api": "v2.0.0-alpha2"
+    "spatie/laravel-fractal": "~5.4"
   },
   "minimum-stability": "dev"
 }
