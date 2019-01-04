@@ -44,7 +44,7 @@ class Extension extends BaseExtension
         return [
             'Igniter.Api' => [
                 'description' => 'Manges api resources',
-                'action' => ['access', 'add', 'manage', 'delete'],
+                'group' => 'module',
             ],
         ];
     }
