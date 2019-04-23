@@ -10,7 +10,6 @@ return [
         ],
         'toolbar' => [
             'buttons' => [
-                'create' => ['label' => 'lang:admin::lang.button_new', 'class' => 'btn btn-primary', 'href' => 'igniter/api/resources/create'],
                 'delete' => ['label' => 'lang:admin::lang.button_delete', 'class' => 'btn btn-danger', 'data-request-form' => '#list-form', 'data-request' => 'onDelete', 'data-request-data' => "_method:'DELETE'", 'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm'],
                 'filter' => ['label' => 'lang:admin::lang.button_icon_filter', 'class' => 'btn btn-default btn-filter', 'data-toggle' => 'list-filter', 'data-target' => '.list-filter'],
             ],
@@ -28,25 +27,27 @@ return [
                 'name' => 'API Name',
                 'searchable' => TRUE,
             ],
-            'endpoint' => [
-                'label' => 'Base Endpoint'
+            'base_endpoint' => [
+                'label' => 'Base Endpoint',
+            ],
+            'description' => [
+                'label' => 'Description',
             ],
         ],
     ],
     'form' => [
         'toolbar' => [
             'buttons' => [
-                'save' => ['label' => 'lang:admin::lang.button_save', 'class' => 'btn btn-primary', 'data-request-submit' => 'true', 'data-request' => 'onSave'],
+                'save' => ['label' => 'lang:admin::lang.button_save', 'class' => 'btn btn-primary', 'data-request' => 'onSave'],
                 'saveClose' => [
                     'label' => 'lang:admin::lang.button_save_close',
                     'class' => 'btn btn-default',
                     'data-request' => 'onSave',
-                    'data-request-submit' => 'true',
                     'data-request-data' => 'close:1',
                 ],
                 'delete' => [
                     'label' => 'lang:admin::lang.button_icon_delete', 'class' => 'btn btn-danger',
-                    'data-request-submit' => 'true', 'data-request' => 'onDelete', 'data-request-data' => "_method:'DELETE'",
+                    'data-request' => 'onDelete', 'data-request-data' => "_method:'DELETE'",
                     'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm', 'context' => ['edit'],
                 ],
             ],
@@ -73,51 +74,22 @@ return [
             ],
             'model' => [
                 'label' => 'Model',
-                'type' => 'select',
-                'span' => 'right',
-                'comment' => 'Select the model to link with this API resource',
-            ],
-            'meta[actions]' => [
-                'label' => 'Actions',
-                'type' => 'checkbox',
-                'span' => 'left',
-                'default' => ['index', 'store', 'show', 'update', 'destroy'],
-                'options' => [
-                    'index' => 'Index',
-                    'store' => 'Store',
-                    'show' => 'Show',
-                    'update' => 'Update',
-                    'destroy' => 'Destroy',
-                ],
-                'comment' => 'Choose the actions handled by this API resource',
-            ],
-            'meta[relations]' => [
-                'label' => 'Relations',
                 'type' => 'text',
                 'span' => 'right',
-                'comment' => 'Comma separated list of relations of the selected model',
+                'disabled' => TRUE,
             ],
-//            'transformer_content' => [
-//                'label' => 'Fractal Transformer',
-//                'type' => 'codeeditor',
-//                'mode' => 'php',
-//                'commentAbove' => 'Learn more about <a target="_blank" href="https://fractal.thephpleague.com/transformers/">fractal transformers</a>',
-//                'commentHtml' => TRUE,
-//            ],
             'controller' => [
                 'label' => 'Controller',
                 'type' => 'text',
                 'span' => 'left',
-                'context' => ['edit'],
                 'disabled' => TRUE,
             ],
             'transformer' => [
                 'label' => 'Transformer',
                 'type' => 'text',
                 'span' => 'right',
-                'context' => ['edit'],
                 'disabled' => TRUE,
             ],
-        ]
+        ],
     ],
 ];

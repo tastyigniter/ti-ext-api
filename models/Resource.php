@@ -42,7 +42,7 @@ class Resource extends Model
     protected $fillable = ['name', 'description', 'endpoint', 'model', 'meta'];
 
     public $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
     ];
 
     protected $permalinkable = [
@@ -64,14 +64,6 @@ class Resource extends Model
     public static function getModelOptions()
     {
         return self::make()->listGlobalModels();
-    }
-
-    public function getTransformerContentAttribute($value)
-    {
-        if (!$this->transformer)
-            return null;
-
-        return ApiManager::instance()->getTransformer($this->transformer);
     }
 
     public function listGlobalModels()
@@ -101,27 +93,9 @@ class Resource extends Model
         return $this->modelListCache = $result;
     }
 
-    public function afterCreate()
+    public function getBaseEndpointAttribute($value)
     {
-        if (!$this->is_custom)
-            return;
-
-        list($controller, $transformer) = ApiManager::instance()->buildResource(
-            $this->name, $this->model, $this->meta
-        );
-
-        $this->controller = $controller;
-        $this->transformer = $transformer;
-        $this->save();
-    }
-
-    public function afterDelete()
-    {
-        if (!$this->is_custom)
-            return;
-
-        // Delete the resource controller
-        ApiManager::instance()->deleteResource($this->name);
+        return ApiManager::instance()->getBaseEndpoint($this->endpoint);
     }
 
     //
@@ -134,23 +108,24 @@ class Resource extends Model
      */
     public static function syncAll()
     {
-        $resources = (new static())->listRegisteredResources();
-        $dbResources = self::lists('is_custom', 'endpoint')->toArray();
+        $registeredResources = (new static())->listRegisteredResources();
+        $resources = collect($registeredResources)->keyBy('controller')->toArray();
+        $dbResources = self::lists('is_custom', 'controller')->toArray();
         $newResources = array_diff_key($resources, $dbResources);
 
         // Clean up non-customized api resources
-        foreach ($dbResources as $endpoint => $isCustom) {
+        foreach ($dbResources as $controller => $isCustom) {
             if ($isCustom)
                 continue;
 
-            if (!array_key_exists($endpoint, $resources))
-                self::whereName($endpoint)->delete();
+            if (!array_key_exists($controller, $resources))
+                self::where('controller', $controller)->delete();
         }
 
         // Create new resources
-        foreach ($newResources as $endpoint => $definition) {
+        foreach ($newResources as $controller => $definition) {
             $model = self::make();
-            $model->endpoint = $endpoint;
+            $model->endpoint = array_get($definition, 'endpoint');
             $model->name = array_get($definition, 'name');
             $model->model = array_get($definition, 'model');
             $model->controller = array_get($definition, 'controller');

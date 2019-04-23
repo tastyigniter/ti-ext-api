@@ -2,20 +2,15 @@
 
 namespace Igniter\Api\Classes;
 
-use Igniter\Api\Traits\ResponseMaker;
 use Main\Classes\MainController;
 
 class ApiController extends MainController
 {
-    use ResponseMaker;
-
     public $implement = ['Igniter.Api.Actions.RestController'];
 
     public $restConfig = [];
 
     public $allowedActions = [];
-
-    public $transformer;
 
     public static function getAfterFilters()
     {
@@ -37,7 +32,7 @@ class ApiController extends MainController
         $this->action = $action;
 
         if (!$this->checkAction($action))
-            return response()->json(['response' => 'Not Found'], 404);
+            return $this->response()->errorNotFound();
 
         // Execute the action
         return call_user_func_array([$this, $action], $parameters);
@@ -58,5 +53,10 @@ class ApiController extends MainController
         }
 
         return $methodExists;
+    }
+
+    public function response()
+    {
+        return app(ResponseFactory::class);
     }
 }

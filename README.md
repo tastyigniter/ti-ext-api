@@ -5,20 +5,19 @@ Default behavior logic for several common verbs are supported — create, store,
 
 ### Features
 - Auto Generate Controller (CRUD)
-- Auto Generate Fractal Transformer (For modeling JSON response)
+- Auto Generate Resource Response Class (For modeling JSON response)
 - Support relationships
 
 **TO DO:**
-- User Authentication (maybe with Laravel Passport)
+- User Authentication (with Laravel Passport)
 - Generating User Tokens
-- Use Laravel Resources instead of fractal Transformer for transforming model attributes
 
 ### Usage
-Go to **Tools > APIs** and use the Create button to generate a new api resource
+In the admin user interface, go to **Tools > APIs** and use the Create button to generate a new api resource
 
 ### Manually Create an API resource
 
-The below command will generate both `Controller` and `Transformer` for the specified resource
+The below command will generate both `Controller` and `Resource Transformer` for the specified resource
 
 ```
 php artisan create:apiresource Acme.Extension ResourceName
@@ -37,42 +36,37 @@ public function registerApiResources()
             'controller' => \Acme\Extension\Resources\Menus::class,
             'transformer' => \Acme\Extension\Resources\Transformers\MenuTransformer::class,
         ],
-        'categories' => \Acme\Extension\Resources\Categories::class,
     ];
 }
 ```
 
 > The array keys represents the resource endpoints
 
-### Response
+### Resource Transformer
 
-Response are transformed using spatie's [laravel fractal](https://github.com/spatie/laravel-fractal).
+Response are transformed using laravel's [eloquent resources](https://laravel.com/docs/eloquent-resources).
 
-The API controller provides helpers for transforming response.
-
-**Example of Fractal Transformer**
+**Example of Resource Transformer**
 
 ```
 <?php namespace Igniter\Api\Resources\Transformers;
 
-use Acme\Extension\Models\Menu;
+use Illuminate\Http\Resources\Json\Resource;
 
-class MenuTransformer extends \League\Fractal\TransformerAbstract
+class MenuTransformer extends Resource
 {
-	public function transform(Menu $menu)
+	public function toArray($request)
 	{
 	    return [
-	        'id'      => (int) $menu->menu_id,
-	        'name'    => $menu->menu_name,
+	        'id'      => (int) $this->menu_id,
+	        'name'    => $this->menu_name,
             'links'   => [
                 [
                     'rel' => 'self',
-                    'uri' => '/api/menus/'.$menu->id,
+                    'uri' => '/api/menus/'.$this->menu_id,
                 ]
             ],
 	    ];
 	}
 }
 ```
-
-Learn more about [fractal transformers](https://fractal.thephpleague.com/transformers/)

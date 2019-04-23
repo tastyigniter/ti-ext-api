@@ -13,6 +13,8 @@ class Extension extends BaseExtension
     {
         $this->mergeConfigFrom(__DIR__.'/config/api.php', 'api');
 
+        $this->registerResponseFactory();
+
         $this->registerConsoleCommand('create.apiresource', \Igniter\Api\Console\CreateApiResource::class);
 
         $this->registerExceptionHandler();
@@ -47,6 +49,20 @@ class Extension extends BaseExtension
                 'group' => 'module',
             ],
         ];
+    }
+
+    /**
+     * Register the response factory.
+     *
+     * @return void
+     */
+    protected function registerResponseFactory()
+    {
+        $this->app->alias('api.response', \Igniter\Api\Classes\ResponseFactory::class);
+
+        $this->app->singleton('api.response', function ($app) {
+            return new \Igniter\Api\Classes\ResponseFactory();
+        });
     }
 
     protected function registerExceptionHandler()

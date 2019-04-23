@@ -1,6 +1,5 @@
 <?php namespace Igniter\Api\Database\Migrations;
 
-use Igniter\Api\Models\Resource;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
@@ -21,19 +20,6 @@ class CreateResourcesTable extends Migration
             $table->text('meta')->nullable();
             $table->boolean('is_custom')->default(0);
         });
-
-        Resource::unguard();
-        Resource::create([
-            'name' => 'Dummy',
-            'description' => 'Description of this API resource',
-            'model' => 'Igniter\Api\Models\Resource',
-            'controller' => 'Igniter\Api\Resources\Dummy',
-            'transformer' => 'Igniter\Api\Resources\Transformers\DummyTransformer',
-            'meta' => [
-                'actions' => ['index', 'show']
-            ],
-            'is_custom' => TRUE,
-        ]);
     }
 
     public function down()

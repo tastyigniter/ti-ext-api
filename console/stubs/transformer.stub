@@ -1,15 +1,9 @@
 <?php namespace {{studly_author}}\{{studly_extension}}\Resources\Transformers;
 
-use {{model}};
-
-class {{studly_singular_name}}Transformer extends \League\Fractal\TransformerAbstract
+class {{studly_singular_name}}Transformer extends \Illuminate\Http\Resources\Json\Resource
 {
-    protected $availableIncludes = [
-        {{relations}}
-    ];
-
-	public function transform(\{{model}} $model)
+	public function toArray($request)
 	{
-	    return $model->toArray();
+        return parent::toArray($request);
 	}
 }

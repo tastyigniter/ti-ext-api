@@ -3,8 +3,8 @@
 namespace Igniter\Api\Actions;
 
 use Admin\Traits\FormModelWidget;
-use Exception;
 use Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use System\Classes\ControllerAction;
 
 /**
@@ -70,6 +70,7 @@ class RestController extends ControllerAction
         $options = $this->getActionOptions();
         $page = array_get($options, 'page', Request::input('page', 1));
         $pageSize = array_get($options, 'pageSize', 5);
+        $transformer = $this->getConfig('transformer');
         $relations = $this->getConfig('relations', []);
         if (is_string($relations))
             $relations = explode(',', $relations);
@@ -79,7 +80,7 @@ class RestController extends ControllerAction
 
         $result = $model->with($relations)->paginate($pageSize, $page);
 
-        return $this->controller->makeResponse(200, $result, $relations);
+        return $this->controller->response()->paginator($result, $transformer);
     }
 
     /**
@@ -99,7 +100,7 @@ class RestController extends ControllerAction
             $modelToSave->save();
         }
 
-        return $this->controller->makeResponse(201, $model);
+        return $this->controller->response()->created($model);
     }
 
     /**
@@ -111,6 +112,7 @@ class RestController extends ControllerAction
     public function show($recordId)
     {
         $options = $this->getActionOptions();
+        $transformer = $this->getConfig('transformer');
         $relations = array_get($options, 'relations', []);
 
         $model = $this->controller->restFindModelObject($recordId);
@@ -119,7 +121,7 @@ class RestController extends ControllerAction
         foreach ($relations as $relation)
             $model->{$relation};
 
-        return $this->controller->makeResponse(200, $model, $relations);
+        return $this->controller->response()->resource($model, $transformer);
     }
 
     /**
@@ -132,6 +134,8 @@ class RestController extends ControllerAction
     {
         $data = Request::all();
 
+        $transformer = $this->getConfig('transformer');
+
         $model = $this->controller->restFindModelObject($recordId);
 
         $modelsToSave = $this->prepareModelsToSave($model, $data);
@@ -139,7 +143,7 @@ class RestController extends ControllerAction
             $modelToSave->save();
         }
 
-        return $this->controller->makeResponse(200, $model);
+        return $this->controller->response()->resource($model, $transformer);
     }
 
     /**
@@ -150,10 +154,12 @@ class RestController extends ControllerAction
      */
     public function destroy($recordId)
     {
+        $transformer = $this->getConfig('transformer');
+
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
 
-        return $this->controller->makeResponse(200, $model);
+        return $this->controller->response()->resource($model, $transformer);
     }
 
     public function getActionOptions()
@@ -170,7 +176,7 @@ class RestController extends ControllerAction
     public function restFindModelObject($recordId)
     {
         if (!strlen($recordId)) {
-            throw new Exception('Record ID has not been specified.');
+            throw new HttpException(404, 'Record ID has not been specified.');
         }
 
         $model = $this->controller->restCreateModelObject();
@@ -183,7 +189,9 @@ class RestController extends ControllerAction
         $result = $query->find($recordId);
 
         if (!$result) {
-            throw new Exception(sprintf('Record with an ID of %u could not be found.', $recordId));
+            throw new HttpException(404,
+                sprintf('Record with an ID of %u could not be found.', $recordId)
+            );
         }
 
         $result = $this->controller->restExtendModel($result) ?: $result;
@@ -228,6 +236,7 @@ class RestController extends ControllerAction
     protected function createModel()
     {
         $class = $this->config['model'];
+
         return new $class();
     }
 }

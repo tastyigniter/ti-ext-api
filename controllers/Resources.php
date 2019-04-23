@@ -4,6 +4,7 @@ namespace Igniter\Api\Controllers;
 
 use AdminMenu;
 use Igniter\Api\Classes\ApiManager;
+use Igniter\Api\Models\Resource;
 
 /**
  * API Resources Admin Controller
@@ -12,7 +13,7 @@ class Resources extends \Admin\Classes\AdminController
 {
     public $implement = [
         'Admin\Actions\FormController',
-        'Admin\Actions\ListController'
+        'Admin\Actions\ListController',
     ];
 
     public $listConfig = [
@@ -28,11 +29,6 @@ class Resources extends \Admin\Classes\AdminController
     public $formConfig = [
         'name' => 'APIs',
         'model' => 'Igniter\Api\Models\Resource',
-        'create' => [
-            'title' => 'lang:admin::lang.form.create_title',
-            'redirect' => 'igniter/api/resources/edit/{id}',
-            'redirectClose' => 'igniter/api/resources',
-        ],
         'edit' => [
             'title' => 'lang:admin::lang.form.edit_title',
             'redirect' => 'igniter/api/resources/edit/{id}',
@@ -65,35 +61,8 @@ class Resources extends \Admin\Classes\AdminController
         $this->asExtension('ListController')->index();
     }
 
-    public function formExtendFields($form, $fields)
-    {
-        if ($form->context != 'create') {
-            $field = $form->getField('model');
-            $field->type = 'text';
-            $field->disabled = TRUE;
-
-            $field = $form->getField('meta[relations]');
-            $field->disabled = TRUE;
-        }
-    }
-
-    public function formBeforeCreate($model)
-    {
-        $model->is_custom = TRUE;
-    }
-
     public function formAfterSave($model)
     {
-        $resource = post('Resource');
-        if (!empty($content = array_get($resource, 'transformer_content'))) {
-            $name = array_get($resource, 'name');
-            $model->transformer = ApiManager::instance()->writeTransformer(
-                $name, $content, $model->transformer
-            );
-
-            $model->save();
-        }
-
-        ApiManager::instance()->writeResources(\Igniter\Api\Models\Resource::getResources());
+        ApiManager::instance()->writeResources(Resource::getResources());
     }
 }

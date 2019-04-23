@@ -1,11 +1,11 @@
 <?php
-
+$apiManager = \Igniter\Api\Classes\ApiManager::instance();
 Route::group([
-    'prefix' => 'api',
+    'prefix' => $apiManager->getBaseEndpoint(),
     'as' => 'api.',
-    'middleware' => ['api']
-], function () {
-    $resources = \Igniter\Api\Classes\ApiManager::instance()->getResources();
+    'middleware' => ['api'],
+], function () use ($apiManager) {
+    $resources = $apiManager->getResources();
     foreach ($resources as $name => $options) {
         Route::resource(
             $name,
