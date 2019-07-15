@@ -217,4 +217,22 @@ class Resource extends Model
             static::$registeredResources[$endpoint] = array_merge($defaultDefinitions, $definition);
         }
     }
+
+    /**
+     * Registers a callback function that defines api resources.
+     * The callback function should register permissions by calling the manager's
+     * registerResources() function. The manager instance is passed to the
+     * callback function as an argument. Usage:
+     * <pre>
+     *   Resource::registerCallback(function($manager){
+     *       $manager->registerResources([...]);
+     *   });
+     * </pre>
+     *
+     * @param callable $callback A callable function.
+     */
+    public function registerCallback(callable $callback)
+    {
+        $this->callbacks[] = $callback;
+    }
 }
