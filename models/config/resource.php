@@ -29,6 +29,7 @@ return [
             ],
             'base_endpoint' => [
                 'label' => 'Base Endpoint',
+                'sortable' => FALSE,
             ],
             'description' => [
                 'label' => 'Description',

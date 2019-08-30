@@ -2,7 +2,7 @@
   "code": "igniter.api",
   "name": "APIs",
   "description": "Manages and generates RESTful APIs using available models",
-  "version": "v0.1.0-beta.6",
+  "version": "v0.1.0-beta.7",
   "author": "SamPoyigi",
   "icon": "fa-cloud",
   "homepage": "https://github.com/tastyigniter/ti-ext-api"

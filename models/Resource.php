@@ -86,7 +86,7 @@ class Resource extends Model
                 }
             }
             catch (Exception $ex) {
-                // Ignore invalid plugins and models
+                // Ignore invalid extensions and models
             }
         }
 
