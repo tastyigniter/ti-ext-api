@@ -12,6 +12,10 @@ Default behavior logic for several common verbs are supported — create, store,
 - User Authentication (with Laravel Passport)
 - Generating User Tokens
 
+### Installation
+
+To install this extension, click on the **Add to Site** button on the marketplace item page or search for **Igniter.Api** in **Admin System > Updates > Browse Extensions***
+
 ### Usage
 In the admin user interface, go to **Tools > APIs** and use the Create button to generate a new api resource
 
