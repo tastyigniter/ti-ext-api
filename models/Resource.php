@@ -51,7 +51,7 @@ class Resource extends Model
         ],
     ];
 
-    public $purgeable = ['transformer_content'];
+    protected $purgeable = ['transformer_content'];
 
     protected $rules = [
         'name' => 'required|min:2|max:128|unique:igniter_api_resources,endpoint|regex:/^[\pL\s\-]+$/u',
