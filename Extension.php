@@ -44,8 +44,8 @@ class Extension extends BaseExtension
     public function registerPermissions()
     {
         return [
-            'Igniter.Api' => [
-                'description' => 'Manges api resources',
+            'Igniter.Api.Manage' => [
+                'description' => 'Create, modify and delete api resources',
                 'group' => 'module',
             ],
         ];

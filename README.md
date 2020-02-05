@@ -1,4 +1,4 @@
-APIs is an extension that allows you to build RESTful APIs and manage them within a TastyIgniter application.
+ APIs is an extension that allows you to build RESTful APIs and manage them within a TastyIgniter application.
 
 However, it accomplishes more than just that, you may override the api actions (verbs) with your own logic. 
 Default behavior logic for several common verbs are supported — create, store, show, edit, update, destroy. 

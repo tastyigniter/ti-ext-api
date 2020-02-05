@@ -44,7 +44,7 @@ class Resources extends \Admin\Classes\AdminController
         'configFile' => 'resource',
     ];
 
-    protected $requiredPermissions = 'Igniter.Api';
+    protected $requiredPermissions = 'Igniter.Api.*';
 
     public function __construct()
     {
@@ -55,8 +55,7 @@ class Resources extends \Admin\Classes\AdminController
 
     public function index()
     {
-        if ($this->getUser()->hasPermission('Igniter.Api.Manage'))
-            \Igniter\Api\Models\Resource::syncAll();
+        \Igniter\Api\Models\Resource::syncAll();
 
         $this->asExtension('ListController')->index();
     }
