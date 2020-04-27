@@ -1,4 +1,4 @@
-<?php namespace {{studly_author}}\{{studly_extension}}\Resources\Transformers;
+<?php namespace {{studly_author}}\{{studly_extension}}\ApiResources\Transformers;
 
 class {{studly_singular_name}}Transformer extends \Illuminate\Http\Resources\Json\Resource
 {

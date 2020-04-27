@@ -37,8 +37,8 @@ public function registerApiResources()
         'menus' => [
             'name' => 'Menus',
             'description' => 'Description of this API resource',
-            'controller' => \Acme\Extension\Resources\Menus::class,
-            'transformer' => \Acme\Extension\Resources\Transformers\MenuTransformer::class,
+            'controller' => \Acme\Extension\ApiResources\Menus::class,
+            'transformer' => \Acme\Extension\ApiResources\Transformers\MenuTransformer::class,
         ],
     ];
 }
@@ -53,7 +53,7 @@ Response are transformed using laravel's [eloquent resources](https://laravel.co
 **Example of Resource Transformer**
 
 ```
-<?php namespace Igniter\Api\Resources\Transformers;
+<?php namespace Igniter\Local\ApiResources\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 

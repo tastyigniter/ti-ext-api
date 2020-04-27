@@ -1,4 +1,4 @@
-<?php namespace {{studly_author}}\{{studly_extension}}\Resources;
+<?php namespace {{studly_author}}\{{studly_extension}}\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
 
@@ -23,6 +23,6 @@ class {{studly_name}} extends ApiController
         ],
         'relations' => [{{relations}}],
         'model' => '{{model}}',
-        'transformer' => '{{studly_author}}\{{studly_extension}}\Resources\Transformers\{{studly_singular_name}}Transformer',
+        'transformer' => '{{studly_author}}\{{studly_extension}}\ApiResources\Transformers\{{studly_singular_name}}Transformer',
     ];
 }
