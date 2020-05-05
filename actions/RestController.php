@@ -68,8 +68,10 @@ class RestController extends ControllerAction
     public function index()
     {
         $options = $this->getActionOptions();
-        $page = array_get($options, 'page', Request::input('page', 1));
-        $pageSize = array_get($options, 'pageSize', 5);
+		
+        // get url params
+        $options = array_merge($options, Request::all());
+        
         $transformer = $this->getConfig('transformer');
         $relations = $this->getConfig('relations', []);
         if (is_string($relations))
@@ -77,8 +79,9 @@ class RestController extends ControllerAction
 
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
-
-        $result = $model->with($relations)->paginate($pageSize, $page);
+        
+        $model->with($relations);
+        $result = $model->scopeListFrontEnd($model->newQuery(), $options);
 
         return $this->controller->response()->paginator($result, $transformer);
     }
