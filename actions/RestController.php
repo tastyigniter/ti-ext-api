@@ -67,11 +67,7 @@ class RestController extends ControllerAction
      */
     public function index()
     {
-        $options = $this->getActionOptions();
-		
-        // get url params
-        $options = array_merge($options, Request::all());
-        
+        $options = array_merge($this->getActionOptions(), Request::all());
         $transformer = $this->getConfig('transformer');
         $relations = $this->getConfig('relations', []);
         if (is_string($relations))
@@ -79,9 +75,17 @@ class RestController extends ControllerAction
 
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
-        
-        $model->with($relations);
-        $result = $model->scopeListFrontEnd($model->newQuery(), $options);
+
+        $query = $model->with($relations);
+
+        if (method_exists($model, 'scopeListFrontEnd')) {
+            $result = $query->listFrontEnd($options);
+        }
+        else {
+            $page = array_get($options, 'page', Request::input('page', 1));
+            $pageSize = array_get($options, 'pageSize', 5);
+            $result = $query->paginate($pageSize, $page);
+        }
 
         return $this->controller->response()->paginator($result, $transformer);
     }
@@ -109,7 +113,7 @@ class RestController extends ControllerAction
     /**
      * Display the specified record.
      *
-     * @param  int $recordId
+     * @param int $recordId
      * @return mixed
      */
     public function show($recordId)
