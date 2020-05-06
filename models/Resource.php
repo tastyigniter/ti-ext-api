@@ -43,6 +43,7 @@ class Resource extends Model
 
     public $casts = [
         'meta' => 'array',
+        'verbs' => 'array',
     ];
 
     protected $permalinkable = [
@@ -64,6 +65,11 @@ class Resource extends Model
     public static function getModelOptions()
     {
         return self::make()->listGlobalModels();
+    }
+    
+    public static function getVerbsOptions()
+    {
+        return ['index' => 'GET (list)', 'show' => 'GET (individual)', 'store' => 'POST', 'update' => 'PUT/PATCH', 'destroy' => 'DELETE'];
     }
 
     public function listGlobalModels()
