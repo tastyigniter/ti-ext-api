@@ -51,6 +51,33 @@ class Extension extends BaseExtension
         ];
     }
 
+    public function registerApiResources()
+    {
+        return [
+            'menus' => [
+                'name' => 'Menus',
+                'description' => 'An API resource for menus',
+                'model' => \Admin\Models\Menus_model::class,
+                'controller' => \Igniter\Api\ApiResources\Menus::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
+            ],
+            'categories' => [
+                'name' => 'Categories',
+                'description' => 'An API resource for categories',
+                'model' => \Admin\Models\Categories_model::class,
+                'controller' => \Igniter\Api\ApiResources\Categories::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\CategoryTransformer::class,
+            ],
+            'locations' => [
+                'name' => 'Locations',
+                'description' => 'An API resource for locations',
+                'model' => \Admin\Models\Locations_model::class,
+                'controller' => \Igniter\Api\ApiResources\Locations::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\LocationTransformer::class,
+            ],
+        ];
+    }
+    
     /**
      * Register the response factory.
      *
