@@ -91,6 +91,12 @@ return [
                 'span' => 'right',
                 'disabled' => TRUE,
             ],
+            'verbs' => [
+                'label' => 'Allowable verbs',
+                'type' => 'selectlist',
+                'span' => 'left',
+                'disabled' => FALSE,
+            ],
         ],
     ],
 ];

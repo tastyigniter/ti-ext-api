@@ -33,7 +33,7 @@ class ApiManager
     {
         if (!File::isFile($this->resourcesPath))
             return [];
-
+            
         return File::getRequire($this->resourcesPath);
     }
 
@@ -59,9 +59,13 @@ class ApiManager
     {
         $content = [];
         foreach ($resources as $endpoint => $resource) {
+	        
+	        $allowedVerbs = json_decode($resource->attributes['verbs']);
+	        if ($allowedVerbs === NULL) $allowedVerbs = [];
+	        
             $content[$endpoint] = [
                 'controller' => array_get($resource, 'controller') ?: 'Igniter\Api\Classes\ApiController',
-                'only' => array_get($resource, 'meta.actions', ['index', 'store', 'show', 'update', 'destroy']),
+                'only' => array_get($resource, 'meta.actions', $allowedVerbs),
                 'middleware' => array_get($resource, 'meta.middleware', ['api']),
                 'prefix' => 'v2',
             ];
