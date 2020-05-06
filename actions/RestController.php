@@ -83,7 +83,7 @@ class RestController extends ControllerAction
         }
         else {
             $page = array_get($options, 'page', Request::input('page', 1));
-            $pageSize = array_get($options, 'pageSize', 5);
+            $pageSize = array_get($options, 'pageLimit', 5);
             $result = $query->paginate($pageSize, $page);
         }
 
