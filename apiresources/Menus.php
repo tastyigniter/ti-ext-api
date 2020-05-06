@@ -10,7 +10,7 @@ class Menus extends ApiController
     public $restConfig = [
         'actions' => [
             'index' => [
-                'pageSize' => 20,
+                'pageLimit' => 20,
             ],
             'store' => [],
             'show' => [],
