@@ -60,7 +60,7 @@ class ApiManager
         $content = [];
         foreach ($resources as $endpoint => $resource) {
 	        
-	        $allowedVerbs = json_decode($resource->attributes['verbs']);
+	        $allowedVerbs = json_decode($resource->attributes['verbs'], true);
 	        if ($allowedVerbs === NULL) $allowedVerbs = [];
 	        
             $content[$endpoint] = [
