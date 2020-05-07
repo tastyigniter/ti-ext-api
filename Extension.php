@@ -75,9 +75,16 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Locations::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\LocationTransformer::class,
             ],
+            'orders' => [
+                'name' => 'Orders',
+                'description' => 'An API resource for orders',
+                'model' => \Admin\Models\Orders_model::class,
+                'controller' => \Igniter\Api\ApiResources\Orders::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\OrderTransformer::class,
+            ],
         ];
     }
-    
+
     /**
      * Register the response factory.
      *
