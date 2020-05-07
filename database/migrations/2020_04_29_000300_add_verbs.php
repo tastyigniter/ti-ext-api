@@ -9,14 +9,9 @@ class AddVerbs extends Migration
 {
     public function up()
     {
-	    
-        Schema::table('igniter_api_resources', function (Blueprint $table) {
-            $table->text('verbs');
-        });
-
         DB::table('igniter_api_resources')
-            ->where('verbs', '')
-            ->update(['verbs' => json_encode(['index', 'store', 'show', 'update', 'destroy'])]);
+            ->where('meta', '[]')
+            ->update(['meta' => json_encode(['verbs' => ['index', 'store', 'show', 'update', 'destroy']])]);
     }
 
     public function down()
