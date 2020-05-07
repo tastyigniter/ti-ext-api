@@ -54,19 +54,19 @@ class Extension extends BaseExtension
     public function registerApiResources()
     {
         return [
-            'menus' => [
-                'name' => 'Menus',
-                'description' => 'An API resource for menus',
-                'model' => \Admin\Models\Menus_model::class,
-                'controller' => \Igniter\Api\ApiResources\Menus::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
-            ],
             'categories' => [
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
                 'model' => \Admin\Models\Categories_model::class,
                 'controller' => \Igniter\Api\ApiResources\Categories::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\CategoryTransformer::class,
+            ],
+            'customers' => [
+                'name' => 'Customers',
+                'description' => 'An API resource for customers',
+                'model' => \Admin\Models\Customers_model::class,
+                'controller' => \Igniter\Api\ApiResources\Customers::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\CustomerTransformer::class,
             ],
             'locations' => [
                 'name' => 'Locations',
@@ -75,6 +75,13 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Locations::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\LocationTransformer::class,
             ],
+            'menus' => [
+                'name' => 'Menus',
+                'description' => 'An API resource for menus',
+                'model' => \Admin\Models\Menus_model::class,
+                'controller' => \Igniter\Api\ApiResources\Menus::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
+            ],
             'orders' => [
                 'name' => 'Orders',
                 'description' => 'An API resource for orders',
@@ -82,6 +89,21 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Orders::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\OrderTransformer::class,
             ],
+            'reservations' => [
+                'name' => 'Reservations',
+                'description' => 'An API resource for reservations',
+                'model' => \Admin\Models\Reservations_model::class,
+                'controller' => \Igniter\Api\ApiResources\Reservations::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\ReservationTransformer::class,
+            ],
+            'reviews' => [
+                'name' => 'Reviews',
+                'description' => 'An API resource for reviews',
+                'model' => \Admin\Models\Reviews_model::class,
+                'controller' => \Igniter\Api\ApiResources\Reviews::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\ReviewTransformer::class,
+            ],
+            
         ];
     }
 
