@@ -18,10 +18,10 @@ class Reviews extends ApiController
             'destroy' => [],
         ],
         'relations' => [
-	       'location',
-	       'customer'
+            'location',
+            'customer',
         ],
-        'model' => \Admin\Models\Reservations_model::class,
-        'transformer' => \Igniter\Api\ApiResources\Transformers\ReservationTransformer::class,
+        'model' => \Admin\Models\Reviews_model::class,
+        'transformer' => \Igniter\Api\ApiResources\Transformers\ReviewTransformer::class,
     ];
 }
