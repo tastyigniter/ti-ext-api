@@ -91,11 +91,20 @@ return [
                 'span' => 'right',
                 'disabled' => TRUE,
             ],
-            'verbs' => [
-                'label' => 'Allowable verbs',
-                'type' => 'selectlist',
+            'meta[actions]' => [
+                'label' => 'Allowed Actions',
+                'type' => 'checkboxlist',
                 'span' => 'left',
                 'disabled' => FALSE,
+                'default' => ['index', 'store', 'show', 'update', 'destroy'],
+                'options' => [
+                    'index' => 'List all resources (GET)',
+                    'show' => 'Show a single resource (GET)',
+                    'store' => 'Create a resource (POST)',
+                    'update' => 'Update a resource (PUT/PATCH)',
+                    'destroy' => 'Delete a resource (DELETE)',
+                ],
+                'comment' => 'Leave blank to respond to all HTTP actions, when the endpoint is called.',
             ],
         ],
     ],

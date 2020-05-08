@@ -43,7 +43,6 @@ class Resource extends Model
 
     public $casts = [
         'meta' => 'array',
-        'verbs' => 'array'
     ];
 
     protected $permalinkable = [
@@ -60,40 +59,12 @@ class Resource extends Model
         'endpoint' => 'max:255|unique:igniter_api_resources,endpoint',
         'model' => 'required|min:2|max:255',
         'meta' => 'array',
+        'meta.actions.*' => 'string',
     ];
 
     public static function getModelOptions()
     {
         return self::make()->listGlobalModels();
-    }
-    
-    public function getVerbsOptions()
-    {
-        return ['index' => 'GET (list)', 'show' => 'GET (individual)', 'store' => 'POST', 'update' => 'PUT/PATCH', 'destroy' => 'DELETE'];
-    }
-      
-    protected function beforeSave(){
-	    
-	    // combine verbs into meta
-	    $this->attributes['meta'] = json_decode($this->attributes['meta'], true);
-	    
-	    $this->attributes['meta']['verbs'] = isset($this->attributes['verbs']) ? json_decode($this->attributes['verbs']) : [];
-	    unset($this->attributes['verbs']);
-	    
-	    $this->attributes['meta'] = json_encode($this->attributes['meta']);
-	    
-    }
-
-    protected function afterFetch()
-    {
-	    // split verbs out of meta
-	    $this->attributes['meta'] = json_decode($this->attributes['meta'], true);
-	    $this->attributes['verbs'] = isset($this->attributes['meta']['verbs']) ? $this->attributes['meta']['verbs'] : [];
-	    unset($this->attributes['meta']['verbs']);
-	    
-	    $this->attributes['meta'] = json_encode($this->attributes['meta']);
-	    $this->attributes['verbs'] = json_encode($this->attributes['verbs']);
-	    
     }
 
     public function listGlobalModels()
