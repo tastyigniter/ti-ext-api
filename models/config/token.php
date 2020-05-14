@@ -11,7 +11,7 @@ return [
         'toolbar' => [
             'buttons' => [
                 'delete' => ['label' => 'lang:admin::lang.button_delete', 'class' => 'btn btn-danger', 'data-request-form' => '#list-form', 'data-request' => 'onDelete', 'data-request-data' => "_method:'DELETE'", 'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm'],
-		        'tokens' => ['label' => 'lang:igniter.api::default.tokens', 'class' => 'btn btn-default', 'href' => 'igniter/api/tokens'],
+		        'tokens' => ['label' => 'lang:igniter.api::default.resources', 'class' => 'btn btn-default', 'href' => 'igniter/api/resources'],
                 'filter' => ['label' => 'lang:admin::lang.button_icon_filter', 'class' => 'btn btn-default btn-filter', 'data-toggle' => 'list-filter', 'data-target' => '.list-filter'],
             ],
         ],
@@ -27,10 +27,6 @@ return [
             'name' => [
                 'name' => 'lang:igniter.api::default.api_name',
                 'searchable' => TRUE,
-            ],
-            'base_endpoint' => [
-                'label' => 'lang:igniter.api::default.base_endpoint',
-                'sortable' => FALSE,
             ],
             'description' => [
                 'label' => 'lang:igniter.api::default.description',
