@@ -1,8 +1,7 @@
 <?php
 	
-use AdminAuth;
-use Laravel\Sanctum\Sanctum;
-use Admin\Models\Users_model;
+use Igniter\Api\Middleware\ApiMiddleware;
+use Igniter\Api\Models\ApiUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -24,7 +23,7 @@ Route::group([
     }
 });
 
-Route::get($apiManager->getBaseEndpoint().'/token', function (Request $request) {
+Route::post($apiManager->getBaseEndpoint().'/token', function (Request $request) {
 	
     $request->validate([
         'username' => 'required',
@@ -32,7 +31,7 @@ Route::get($apiManager->getBaseEndpoint().'/token', function (Request $request) 
         'device_name' => 'required'
     ]);
 
-    $user = Users_model::where('username', $request->username)->first();
+    $user = ApiUsers::where('username', $request->username)->first();
 
     if (! $user || ! Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([

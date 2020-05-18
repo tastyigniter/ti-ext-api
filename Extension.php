@@ -2,6 +2,7 @@
 
 use Event;
 use Igniter\Api\Exception\ExceptionHandler;
+use Igniter\Api\Provider\ApiProvider;
 use System\Classes\BaseExtension;
 
 /**
@@ -22,6 +23,7 @@ class Extension extends BaseExtension
 
     public function boot()
     {
+	    	    
     }
 
     public function registerNavigation()
@@ -114,6 +116,8 @@ class Extension extends BaseExtension
      */
     protected function registerResponseFactory()
     {
+		$this->app->register(ApiProvider::class);
+	    
         $this->app->alias('api.response', \Igniter\Api\Classes\ResponseFactory::class);
 
         $this->app->singleton('api.response', function ($app) {
