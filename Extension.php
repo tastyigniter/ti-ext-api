@@ -1,9 +1,8 @@
 <?php namespace Igniter\Api;
 
-use Admin\Models\Customers_model;
-use Admin\Models\Users_model;
 use Event;
-use Igniter\Api\Classes\HasApiTokens;
+use Igniter\Api\Models\ApiUsers;
+use Igniter\Api\Models\ApiCustomers;
 use Igniter\Api\Exception\ExceptionHandler;
 use Igniter\Api\Middleware\ApiMiddleware;
 use Igniter\Api\Models\Token;
@@ -163,18 +162,4 @@ class Extension extends BaseExtension
         $this->app['router']->pushMiddlewareToGroup('api', ApiMiddleware::class);
     }
 
-    protected function sanctumConfigureAuth()
-    {
-        Users_model::extend(function (Model $model) {
-            if (!$model->isClassExtendedWith(HasApiTokens::class)) {
-                $model->extendClassWith(HasApiTokens::class);
-            }
-        });
-
-        Customers_model::extend(function (Model $model) {
-            if (!$model->isClassExtendedWith(HasApiTokens::class)) {
-                $model->extendClassWith(HasApiTokens::class);
-            }
-        });
-    }
 }

@@ -67,6 +67,6 @@ class ApiMiddleware
      */
     protected function supportsTokens($tokenable = null)
     {
-        return $tokenable AND $tokenable->isClassExtendedWith(\Igniter\Api\Classes\HasApiTokens::class);
+        return $tokenable AND ($tokenable instanceof \Igniter\Api\Models\ApiUsers OR $tokenable instanceof \Igniter\Api\Models\ApiCustomers);
     }
 }

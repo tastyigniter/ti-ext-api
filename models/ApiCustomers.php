@@ -7,7 +7,7 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * Users Model
  */
-class ApiUsers extends \Admin\Models\Users_model
+class ApiCustomers extends \Admin\Models\Customers_model
 {
     use HasApiTokens;
 }
