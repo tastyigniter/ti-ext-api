@@ -34,7 +34,6 @@ class Extension extends BaseExtension
 
     public function boot()
     {
-        $this->sanctumConfigureAuth();
         $this->sanctumConfigureMiddleware();
     }
 
