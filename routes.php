@@ -1,10 +1,6 @@
 <?php
 
-use Igniter\Api\Models\ApiUsers;
-use Igniter\Api\Models\ApiCustomers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 $apiManager = \Igniter\Api\Classes\ApiManager::instance();
@@ -14,6 +10,7 @@ Route::group([
     'as' => 'api.',
     'middleware' => ['api'],
 ], function () use ($apiManager) {
+
     $resources = $apiManager->getResources();
     foreach ($resources as $name => $options) {
         Route::resource(
@@ -24,50 +21,27 @@ Route::group([
     }
 });
 
-// Define the Sanctum routes to initialize CSRF protection.
-Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], function () {
+// Define the routes to issue tokens & initialize CSRF protection.
+Route::group([
+    'prefix' => $apiManager->getBaseEndpoint(),
+], function () {
+
+    Route::post('/token', function (Request $request) {
+        return [
+            'status_code' => 201,
+            'token' => \Igniter\Api\Classes\ApiManager::createToken($request),
+        ];
+    });
+
+    Route::post('/admin/token', function (Request $request) {
+        return [
+            'status_code' => 201,
+            'token' => \Igniter\Api\Classes\ApiManager::createToken($request, TRUE),
+        ];
+    });
+
     Route::get(
         '/csrf-cookie',
         CsrfCookieController::class.'@show'
     )->middleware('web');
-});
-
-Route::post($apiManager->getBaseEndpoint().'/token', function (Request $request) {
-
-    $request->validate([
-        'username' => 'required',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
-
-    $user = ApiCustomers::where('email', $request->username)->first();
-
-    if (!$user || !Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
-    }
-
-    return ['status_code' => 201, 'token' => $user->createToken($request->device_name)->plainTextToken];
-
-});
-
-Route::post($apiManager->getBaseEndpoint().'/token/admin', function (Request $request) {
-
-    $request->validate([
-        'username' => 'required',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
-
-    $user = ApiUsers::where('username', $request->username)->first();
-
-    if (!$user || !Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
-    }
-
-    return ['status_code' => 201, 'token' => $user->createToken($request->device_name)->plainTextToken];
-
 });

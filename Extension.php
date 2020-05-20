@@ -1,8 +1,8 @@
 <?php namespace Igniter\Api;
 
+use Admin\Models\Customers_model;
+use Admin\Models\Users_model;
 use Event;
-use Igniter\Api\Models\ApiUsers;
-use Igniter\Api\Models\ApiCustomers;
 use Igniter\Api\Exception\ExceptionHandler;
 use Igniter\Api\Middleware\ApiMiddleware;
 use Igniter\Api\Models\Token;
@@ -34,6 +34,7 @@ class Extension extends BaseExtension
 
     public function boot()
     {
+        $this->sanctumConfigureAuthModels();
         $this->sanctumConfigureMiddleware();
     }
 
@@ -159,6 +160,17 @@ class Extension extends BaseExtension
         $kernel->prependToMiddlewarePriority(EnsureFrontendRequestsAreStateful::class);
 
         $this->app['router']->pushMiddlewareToGroup('api', ApiMiddleware::class);
+    }
+
+    protected function sanctumConfigureAuthModels()
+    {
+        Users_model::extend(function (Model $model) {
+            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+        });
+
+        Customers_model::extend(function (Model $model) {
+            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+        });
     }
 
 }

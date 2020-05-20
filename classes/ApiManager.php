@@ -3,17 +3,34 @@
 namespace Igniter\Api\Classes;
 
 use File;
+use Igniter\Api\Models\Token;
 use Igniter\Flame\Traits\Singleton;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\Sanctum;
+use Laravel\Sanctum\TransientToken;
 
 class ApiManager
 {
     use Singleton;
 
-    protected $resourcesPath;
-
     protected $baseUri = 'api';
 
     protected $namespace = '\\Igniter\\Api\\Resources';
+
+    protected $resourcesPath;
+
+    protected $resourcesCache;
+
+    /**
+     * The access token the user is using for the current request.
+     *
+     * @var \Laravel\Sanctum\Contracts\HasAbilities
+     */
+    protected $accessToken;
 
     public function initialize()
     {
@@ -31,10 +48,24 @@ class ApiManager
 
     public function getResources()
     {
-        if (!File::isFile($this->resourcesPath))
-            return [];
+        if ($this->resourcesCache)
+            return $this->resourcesCache;
 
-        return File::getRequire($this->resourcesPath);
+        $resources = [];
+        if (File::isFile($this->resourcesPath))
+            $resources = File::getRequire($this->resourcesPath);
+
+        if (!is_array($resources))
+            $resources = [];
+
+        return $this->resourcesCache = $resources;
+    }
+
+    public function getCurrentResource()
+    {
+        $currentResourceName = Str::after(Route::currentRouteName(), 'api/');
+
+        return array_get($this->getResources(), $currentResourceName, []);
     }
 
     public function buildResource($name, $model, $meta = [])
@@ -80,5 +111,130 @@ class ApiManager
         $path = trim(str_replace('\\', '/', $class), '/');
 
         return extension_path(strtolower(dirname($path)).'/'.basename($path).'.php');
+    }
+
+    //
+    // Access Tokens
+    //
+
+    public function authenticateToken($token)
+    {
+        if ($user = app('auth')->user() AND $this->supportsTokens($user)) {
+            $this->setAccessToken($accessToken = (new TransientToken));
+
+            return $accessToken;
+        }
+
+        if ($token) {
+            if (!$accessToken = $this->findToken($token))
+                return FALSE;
+
+            $expiration = config('sanctum.expiration');
+            if ($expiration AND $accessToken->created_at->lte(now()->subMinutes($expiration)))
+                return FALSE;
+
+            $user = $accessToken->tokenable;
+
+            if (!$this->supportsTokens($user))
+                return FALSE;
+
+            $this->setAccessToken(
+                tap($accessToken->forceFill(['last_used_at' => now()]))->save()
+            );
+
+            return $accessToken;
+        }
+    }
+
+    /**
+     * Get the access token currently associated with the user.
+     *
+     * @return \Laravel\Sanctum\Contracts\HasAbilities
+     */
+    public function currentAccessToken()
+    {
+        return $this->accessToken;
+    }
+
+    /**
+     * Determine if the current API token has a given scope.
+     *
+     * @param string $ability
+     * @return bool
+     */
+    public function currentAccessTokenCan(string $ability)
+    {
+        return $this->accessToken ? $this->accessToken->can($ability) : FALSE;
+    }
+
+    /**
+     * Set the current access token for the user.
+     *
+     * @param \Laravel\Sanctum\Contracts\HasAbilities $accessToken
+     * @return $this
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    /**
+     * Find the token instance matching the given token.
+     *
+     * @param string $token
+     * @return \Laravel\Sanctum\PersonalAccessToken
+     */
+    public function findToken($token)
+    {
+        $model = Sanctum::$personalAccessTokenModel;
+
+        return $model::findToken($token);
+    }
+
+    public static function createToken(Request $request, bool $forAdmin = FALSE)
+    {
+        $loginFieldName = $forAdmin ? 'username' : 'email';
+
+        $request->validate([
+            $loginFieldName => 'required',
+            'password' => 'required',
+            'device_name' => 'required',
+        ]);
+
+        $credentials = [
+            $loginFieldName => $request->$loginFieldName,
+            'password' => $request->password,
+        ];
+
+        $auth = app($forAdmin ? 'admin.auth' : 'auth');
+        $user = $auth->getByCredentials($credentials);
+
+        if (!$user OR !$auth->validateCredentials($user, $credentials))
+            throw ValidationException::withMessages([
+                $loginFieldName => ['The provided credentials are incorrect.'],
+            ]);
+
+        $accessToken = Token::createToken($user, $request->device_name);
+
+        return $accessToken->plainTextToken;
+    }
+
+    /**
+     * Determine if the tokenable model supports API tokens.
+     *
+     * @param mixed $tokenable
+     * @return bool
+     */
+    protected function supportsTokens($tokenable = null)
+    {
+        if (is_null($tokenable))
+            return FALSE;
+
+        if (in_array(HasApiTokens::class, class_uses_recursive(get_class($tokenable))))
+            return TRUE;
+
+        return $tokenable instanceof \Igniter\Flame\Auth\Models\User AND $tokenable->hasRelation('tokens');
     }
 }
