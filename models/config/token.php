@@ -21,16 +21,16 @@ return [
                 'searchable' => TRUE,
                 'formatter' => function($record, $column, $value){
 	                
-	                $me = new $value();
-	                
 	                switch ($value){
 		                
-		                case 'Igniter\Api\Models\ApiCustomers':
+		                case 'users':
+		                	$me = new \Admin\Models\Customers_model();
 		                	$newValue = $me::where(['customer_id' => $record->tokenable_id])->first();
 		                	$value = $newValue->email;
 		                break;
 		                
 		                default:
+		                	$me = new \Admin\Models\Staff_model();
 		                	$newValue = $me::where(['user_id' => $record->tokenable_id])->first();
 		                	$value = $newValue->username;
 		                break;

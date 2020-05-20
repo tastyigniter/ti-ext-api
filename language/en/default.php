@@ -18,6 +18,8 @@ return [
 	'transformer' => 'Transformer',
 	'allowed_actions' => 'Allowed Actions',
 	'allowed_actions_comment' => 'Leave blank to deactivate the endpoint.',
+	'require_authorization' => 'Require authorization',
+	'require_authorization_comment' => 'Warning: actions without authorization will be publicly accessible',
 	
 	'actions' => [
         'index' => 'List all resources (GET)',
