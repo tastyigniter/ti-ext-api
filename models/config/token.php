@@ -23,7 +23,7 @@ return [
 	                
 	                switch ($value){
 		                
-		                case 'users':
+		                case 'customers':
 		                	$me = new \Admin\Models\Customers_model();
 		                	$newValue = $me::where(['customer_id' => $record->tokenable_id])->first();
 		                	$value = $newValue->email;
