@@ -94,7 +94,7 @@ class ApiManager
                 'controller' => $resource->controller ?: 'Igniter\Api\Classes\ApiController',
                 'only' => array_get($resource->meta, 'actions') ?? ['index', 'store', 'show', 'update', 'destroy'],
                 'middleware' => array_get($resource->meta, 'middleware', ['api']),
-                'authorisation' => array_get($resource->meta, 'authorisation') ?? ['index', 'store', 'show', 'update', 'destroy'],
+                'authorization' => array_get($resource->meta, 'authorization') ?? ['index', 'store', 'show', 'update', 'destroy'],
             ];
         }
 

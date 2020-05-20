@@ -22,7 +22,7 @@ class ApiMiddleware
         $authenticationRequired = TRUE;
         if ($resource = $this->apiManager->getCurrentResource()) {
             $action = Str::afterLast(Route::currentRouteAction(), '@');
-            $authenticationRequired = in_array($action, $resource['authorisation']);
+            $authenticationRequired = in_array($action, $resource['authorization']);
         }
 
         if ($authenticationRequired AND !$this->apiManager->authenticateToken($request->bearerToken()))

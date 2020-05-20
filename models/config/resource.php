@@ -107,8 +107,8 @@ return [
                 ],
                 'comment' => 'lang:igniter.api::default.allowed_actions_comment',
             ],
-            'meta[authorisation]' => [
-                'label' => 'lang:igniter.api::default.require_authorisation',
+            'meta[authorization]' => [
+                'label' => 'lang:igniter.api::default.require_authorization',
                 'type' => 'checkboxlist',
                 'span' => 'left',
                 'disabled' => FALSE,
@@ -120,8 +120,8 @@ return [
                     'update' => 'lang:igniter.api::default.actions.update',
                     'destroy' => 'lang:igniter.api::default.actions.destroy',
                 ],
-                'comment' => 'lang:igniter.api::default.require_authorisation_comment',
-            ],            
+                'comment' => 'lang:igniter.api::default.require_authorization_comment',
+            ],
         ],
     ],
 ];
