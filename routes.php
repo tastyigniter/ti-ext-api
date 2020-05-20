@@ -1,6 +1,7 @@
 <?php
 
 use Igniter\Api\Models\ApiUsers;
+use Igniter\Api\Models\ApiCustomers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -39,7 +40,7 @@ Route::post($apiManager->getBaseEndpoint().'/token', function (Request $request)
         'device_name' => 'required',
     ]);
 
-    $user = ApiCustomers::where('username', $request->username)->first();
+    $user = ApiCustomers::where('email', $request->username)->first();
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
@@ -47,7 +48,7 @@ Route::post($apiManager->getBaseEndpoint().'/token', function (Request $request)
         ]);
     }
 
-    return $user->createToken($request->device_name)->plainTextToken;
+    return ['status_code' => 201, 'token' => $user->createToken($request->device_name)->plainTextToken];
 
 });
 
@@ -67,6 +68,6 @@ Route::post($apiManager->getBaseEndpoint().'/token/admin', function (Request $re
         ]);
     }
 
-    return $user->createToken($request->device_name)->plainTextToken;
+    return ['status_code' => 201, 'token' => $user->createToken($request->device_name)->plainTextToken];
 
 });
