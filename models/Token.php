@@ -5,7 +5,7 @@ namespace Igniter\Api\Models;
 use Laravel\Sanctum\PersonalAccessToken;
 
 /**
- * Resource Model
+ * Token Model
  */
 class Token extends PersonalAccessToken
 {

@@ -2,6 +2,11 @@
 
 return [
     'search_prompt' => 'Search api name',
+    'search_tokens_prompt' => 'Search tokens',
+    
+    'resources' => 'Resources list',
+    'tokens' => 'Issued tokens',
+    
     'api_name' => 'API Name',
     'base_endpoint' => 'Base Endpoint',
     'description' => 'Description',
@@ -20,6 +25,11 @@ return [
         'store' => 'Create a resource (POST)',
         'update' => 'Update a resource (PUT/PATCH)',
         'destroy' => 'Delete a resource (DELETE)',
-	]
+	],
+	
+	'issued_to' => 'Issued to',
+	'device_name' => 'Device name',
+	'created' => 'Created on',
+	'lastused' => 'Last used',
     
 ];

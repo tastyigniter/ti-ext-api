@@ -4,10 +4,10 @@ namespace Igniter\Api\Controllers;
 
 use AdminMenu;
 use Igniter\Api\Classes\ApiManager;
-use Igniter\Api\Models\Resource;
+use Igniter\Api\Models\Token;
 
 /**
- * API Resources Admin Controller
+ * API Tokens Admin Controller
  */
 class Tokens extends \Admin\Classes\AdminController
 {
@@ -23,24 +23,6 @@ class Tokens extends \Admin\Classes\AdminController
             'defaultSort' => ['order_id', 'DESC'],
             'configFile' => 'token',
         ],
-    ];
-
-    public $formConfig = [
-        'name' => 'APIs',
-        'model' => 'Igniter\Api\Models\Resource',
-        'edit' => [
-            'title' => 'lang:admin::lang.form.edit_title',
-            'redirect' => 'igniter/api/resources/edit/{id}',
-            'redirectClose' => 'igniter/api/resources',
-        ],
-        'preview' => [
-            'title' => 'lang:admin::lang.form.preview_title',
-            'redirect' => 'igniter/api/resources',
-        ],
-        'delete' => [
-            'redirect' => 'igniter/api/resources',
-        ],
-        'configFile' => 'resource',
     ];
 
     protected $requiredPermissions = 'Igniter.Api.*';
