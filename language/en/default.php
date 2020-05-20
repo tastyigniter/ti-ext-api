@@ -30,6 +30,9 @@ return [
 	],
 	
 	'issued_to' => 'Issued to',
+	'token_type' => 'Type',
+	'token_type_staff' => 'Staff',
+	'token_type_customer' => 'Customer',
 	'device_name' => 'Device name',
 	'created' => 'Created on',
 	'lastused' => 'Last used',

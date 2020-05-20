@@ -16,12 +16,12 @@ return [
             ],
         ],
         'columns' => [
-            'tokenable_type' => [
+            'tokenable_id' => [
                 'label' => 'lang:igniter.api::default.issued_to',
                 'searchable' => TRUE,
                 'formatter' => function($record, $column, $value){
 	                
-	                switch ($value){
+	                switch ($record->tokenable_type){
 		                
 		                case 'customers':
 		                	$me = new \Admin\Models\Customers_model();
@@ -39,6 +39,13 @@ return [
 	                return $value;
                 }
             ],
+            'tokenable_type' => [
+                'label' => 'lang:igniter.api::default.token_type',
+                'searchable' => TRUE,
+                'formatter' => function($record, $column, $value){
+	             	return $value == 'users' ? lang('igniter.api::default.token_type_staff') : lang('igniter.api::default.token_type_customer');   
+	            }
+            ],            
             'name' => [
                 'label' => 'lang:igniter.api::default.device_name',
                 'searchable' => TRUE,
