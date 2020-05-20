@@ -30,7 +30,7 @@ return [
 		                break;
 		                
 		                default:
-		                	$me = new \Admin\Models\Staff_model();
+		                	$me = new \Admin\Models\Users_model();
 		                	$newValue = $me::where(['user_id' => $record->tokenable_id])->first();
 		                	$value = $newValue->username;
 		                break;
