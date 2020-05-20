@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\TransientToken;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Illuminate\Support\Str;
+use Route;
 
 class ApiMiddleware
 {
@@ -25,8 +27,18 @@ class ApiMiddleware
     {
         $this->auth = app(app()->runningInAdmin() ? 'admin.auth' : 'auth');
         $this->expiration = config('sanctum.expiration');
-
-        if (!$this->authenticateToken($request->bearerToken()))
+        
+        $authenticationRequired = true;
+        $apiManager = \Igniter\Api\Classes\ApiManager::instance();
+        $resources = $apiManager->getResources();
+        foreach ($resources as $name => $options) {
+            if (Route::currentRouteNamed('api.'.$name.'.*')){	        
+	    	    $action = Str::afterLast(Route::currentRouteAction(), '@');  
+	    	    $authenticationRequired = in_array($action, $options['authorisation']);
+            }
+	    }
+		
+        if ($authenticationRequired AND !$this->authenticateToken($request->bearerToken()))
             throw new BadRequestHttpException;
 
         return $next($request);
