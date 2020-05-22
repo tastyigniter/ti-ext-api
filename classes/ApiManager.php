@@ -63,9 +63,8 @@ class ApiManager
 
     public function getCurrentResource()
     {
-        $currentResourceName = Str::after(Route::currentRouteName(), 'api/');
-
-        return array_get($this->getResources(), $currentResourceName, []);
+        $this->currentResourceName = Str::before(Str::after(Route::currentRouteName(), 'api.'), '.');
+        return array_get($this->getResources(), $this->currentResourceName, []);
     }
 
     public function buildResource($name, $model, $meta = [])
@@ -117,10 +116,14 @@ class ApiManager
     // Access Tokens
     //
 
-    public function authenticateToken($token)
+    public function authenticateToken($token, $acceptableAbilities)
     {
+	    	    
         if ($user = app('auth')->user() AND $this->supportsTokens($user)) {
             $this->setAccessToken($accessToken = (new TransientToken));
+            
+            if (!array_reduce($acceptableAbilities, function($carry, $value){ return $carry || $this->currentAccessTokenCan($value); }))
+		        return FALSE;
 
             return $accessToken;
         }
@@ -141,6 +144,9 @@ class ApiManager
             $this->setAccessToken(
                 tap($accessToken->forceFill(['last_used_at' => now()]))->save()
             );
+            
+            if (!array_reduce($acceptableAbilities, function($carry, $value){ return $carry || $this->currentAccessTokenCan($value); }))
+		        return FALSE;
 
             return $accessToken;
         }
