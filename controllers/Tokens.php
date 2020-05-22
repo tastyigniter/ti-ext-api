@@ -3,8 +3,6 @@
 namespace Igniter\Api\Controllers;
 
 use AdminMenu;
-use Igniter\Api\Classes\ApiManager;
-use Igniter\Api\Models\Token;
 
 /**
  * API Tokens Admin Controller
@@ -18,9 +16,9 @@ class Tokens extends \Admin\Classes\AdminController
     public $listConfig = [
         'list' => [
             'model' => 'Igniter\Api\Models\Token',
-            'title' => 'APIs',
+            'title' => 'igniter.api::default.tokens',
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
-            'defaultSort' => ['order_id', 'DESC'],
+            'defaultSort' => ['id', 'DESC'],
             'configFile' => 'token',
         ],
     ];

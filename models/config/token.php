@@ -10,46 +10,32 @@ return [
         ],
         'toolbar' => [
             'buttons' => [
+                'back' => ['label' => 'lang:admin::lang.button_icon_back', 'class' => 'btn btn-default', 'href' => 'igniter/api/resources'],
                 'delete' => ['label' => 'lang:admin::lang.button_delete', 'class' => 'btn btn-danger', 'data-request-form' => '#list-form', 'data-request' => 'onDelete', 'data-request-data' => "_method:'DELETE'", 'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm'],
-		        'tokens' => ['label' => 'lang:igniter.api::default.resources', 'class' => 'btn btn-default', 'href' => 'igniter/api/resources'],
-                'filter' => ['label' => 'lang:admin::lang.button_icon_filter', 'class' => 'btn btn-default btn-filter', 'data-toggle' => 'list-filter', 'data-target' => '.list-filter'],
             ],
         ],
         'columns' => [
             'tokenable_id' => [
                 'label' => 'lang:igniter.api::default.issued_to',
                 'searchable' => TRUE,
-                'formatter' => function($record, $column, $value){
-	                
-	                switch ($record->tokenable_type){
-		                
-		                case 'customers':
-		                	$me = new \Admin\Models\Customers_model();
-		                	$newValue = $me::where(['customer_id' => $record->tokenable_id])->first();
-		                	$value = $newValue->email;
-		                break;
-		                
-		                default:
-		                	$me = new \Admin\Models\Users_model();
-		                	$newValue = $me::where(['user_id' => $record->tokenable_id])->first();
-		                	$value = $newValue->username;
-		                break;
-	                }
-	                
-	                return $value;
-                }
+                'formatter' => function ($record, $column, $value) {
+                    $value = $record->tokenable_type == 'users'
+                        ? $record->tokenable->username : $record->tokenable->email;
+
+                    return $value;
+                },
             ],
             'tokenable_type' => [
                 'label' => 'lang:igniter.api::default.token_type',
                 'searchable' => TRUE,
-                'formatter' => function($record, $column, $value){
-	             	return $value == 'users' ? lang('igniter.api::default.token_type_staff') : lang('igniter.api::default.token_type_customer');   
-	            }
-            ],            
+                'formatter' => function ($record, $column, $value) {
+                    return $value == 'users' ? lang('igniter.api::default.token_type_staff') : lang('igniter.api::default.token_type_customer');
+                },
+            ],
             'name' => [
                 'label' => 'lang:igniter.api::default.device_name',
                 'searchable' => TRUE,
-            ],            
+            ],
             'created_at' => [
                 'label' => 'lang:igniter.api::default.created',
                 'type' => 'datetime',
