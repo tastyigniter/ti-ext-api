@@ -128,7 +128,7 @@ class RestController extends ControllerAction
         foreach ($relations as $relation)
             $model->{$relation};
 
-        return $this->controller->response()->resource($model, $transformer);
+        return $this->controller->response()->resource($model->first(), $transformer);
     }
 
     /**
@@ -150,7 +150,7 @@ class RestController extends ControllerAction
             $modelToSave->save();
         }
 
-        return $this->controller->response()->resource($model, $transformer);
+        return $this->controller->response()->resource($model->first(), $transformer);
     }
 
     /**
@@ -166,7 +166,7 @@ class RestController extends ControllerAction
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
 
-        return $this->controller->response()->resource($model, $transformer);
+        return $this->controller->response()->accepted(null, $transformer);
     }
 
     public function getActionOptions()
