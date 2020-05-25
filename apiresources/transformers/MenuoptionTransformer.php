@@ -1,6 +1,6 @@
 <?php namespace Igniter\Api\ApiResources\Transformers;
 
-class MenuoptionTransformer extends \Illuminate\Http\Resources\Json\Resource
+class MenuOptionsTransformer extends \Illuminate\Http\Resources\Json\Resource
 {
     public function toArray($request)
     {

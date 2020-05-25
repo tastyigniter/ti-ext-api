@@ -100,8 +100,8 @@ class Extension extends BaseExtension
                 'name' => 'Menu options',
                 'description' => 'An API resource for menu options',
                 'model' => \Admin\Models\Menu_options_model::class,
-                'controller' => \Igniter\Api\ApiResources\Menuoptions::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuoptionsTransformer::class,
+                'controller' => \Igniter\Api\ApiResources\MenuOptions::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuOptionsTransformer::class,
             ],            
             'orders' => [
                 'name' => 'Orders',

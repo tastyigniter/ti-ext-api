@@ -5,7 +5,7 @@ use Igniter\Api\Classes\ApiController;
 /**
  * Menuoptions API Controller
  */
-class Menuoptions extends ApiController
+class MenuOptions extends ApiController
 {
     public $restConfig = [
         'actions' => [
@@ -22,6 +22,6 @@ class Menuoptions extends ApiController
 	       'option_values'
         ],
         'model' => \Admin\Models\Menu_options_model::class,
-        'transformer' => \Igniter\Api\ApiResources\Transformers\MenuoptionTransformer::class,
+        'transformer' => \Igniter\Api\ApiResources\Transformers\MenuOptionsTransformer::class,
     ];
 }
