@@ -222,7 +222,7 @@ class ApiManager
                 $loginFieldName => ['The provided credentials are incorrect.'],
             ]);
 
-        $accessToken = Token::createToken($user, $request->device_name, $request->abilities ? json_decode($request->abilities) : null);
+        $accessToken = Token::createToken($user, $request->device_name, isset($request->abilities) ? json_decode($request->abilities) : ['*']);
 
         return $accessToken->plainTextToken;
     }
