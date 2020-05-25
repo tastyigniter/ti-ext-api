@@ -96,6 +96,13 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Menus::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
             ],
+            'menuoptions' => [
+                'name' => 'Menu options',
+                'description' => 'An API resource for menu options',
+                'model' => \Admin\Models\Menu_options_model::class,
+                'controller' => \Igniter\Api\ApiResources\Menuoptions::class,
+                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuoptionsTransformer::class,
+            ],            
             'orders' => [
                 'name' => 'Orders',
                 'description' => 'An API resource for orders',
