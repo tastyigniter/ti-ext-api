@@ -2,6 +2,7 @@
 
 use Igniter\Api\Classes\ApiController;
 use Igniter\Api\Classes\ApiManager;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Customers API Controller
@@ -52,6 +53,26 @@ class Customers extends ApiController
 			return $query->where('customer_id', $token->tokenable_id);
 		}
 	    
-    }    
+    } 
+    
+    public function store()
+    {
+	    
+        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
+	       throw new BadRequestHttpException;
+		
+        parent::store();  
+	    
+    }
+    
+    public function destroy()
+    {
+	    
+        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
+	       throw new BadRequestHttpException;
+		
+        parent::destroy();  
+	    
+    }   
     
 }

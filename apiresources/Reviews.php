@@ -1,6 +1,8 @@
 <?php namespace Igniter\Api\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
+use Igniter\Api\Classes\ApiManager;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Reviews API Controller
@@ -24,4 +26,16 @@ class Reviews extends ApiController
         'model' => \Admin\Models\Reviews_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\ReviewTransformer::class,
     ];
+    
+    public function destroy()
+    {
+	    
+        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
+	       throw new BadRequestHttpException;
+		
+        parent::destroy();  
+	    
+    }  
+
+    
 }

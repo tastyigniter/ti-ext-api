@@ -118,7 +118,6 @@ class ApiManager
 
     public function authenticateToken($token, $acceptableAbilities)
     {
-	    	    
         if ($user = app('auth')->user() AND $this->supportsTokens($user)) {
             $this->setAccessToken($accessToken = (new TransientToken));
             
@@ -144,7 +143,7 @@ class ApiManager
             $this->setAccessToken(
                 tap($accessToken->forceFill(['last_used_at' => now()]))->save()
             );
-            
+                        
             if (!array_reduce($acceptableAbilities, function($carry, $value){ return $carry || $this->currentAccessTokenCan($value); }))
 		        return FALSE;
 
@@ -172,7 +171,22 @@ class ApiManager
     {
         return $this->accessToken ? $this->accessToken->can($ability) : FALSE;
     }
-
+    
+    /**
+     * Determine if the current API token has admin access
+     *
+     * @return bool
+     */
+    public function currentAccessTokenIsAdmin()
+    {
+        $token = $this->currentAccessToken();
+        if ($token !== NULL && $token->tokenable_type == 'customers')
+        {
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * Set the current access token for the user.
      *

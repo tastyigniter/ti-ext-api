@@ -2,6 +2,7 @@
 
 use Igniter\Api\Classes\ApiController;
 use Igniter\Api\Classes\ApiManager;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Orders API Controller
@@ -54,5 +55,25 @@ class Orders extends ApiController
 		}
 	    
     } 
+    
+    public function update()
+    {
+	    
+        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
+	       throw new BadRequestHttpException;
+		
+        parent::update();  
+	    
+    }
+    
+    public function destroy()
+    {
+	    
+        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
+	       throw new BadRequestHttpException;
+		
+        parent::destroy();  
+	    
+    }
        
 }
