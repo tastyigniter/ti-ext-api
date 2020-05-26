@@ -22,6 +22,9 @@ class ApiMiddleware
         $authenticationRequired = TRUE;
         if ($resource = $this->apiManager->getCurrentResource()) {
             $action = Str::afterLast(Route::currentRouteAction(), '@');
+            
+            if ($resource['authorization'] == '0') $resource['authorization'] = [];
+            
             $authenticationRequired = in_array($action, $resource['authorization']);
                         
             $actionMap = [
