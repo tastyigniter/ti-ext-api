@@ -30,9 +30,9 @@ class Addresses extends ApiController
 	    if (!$this->alreadyRestExtended)
 	    {
 		    
-			$token = ApiManager::instance()->currentAccessToken();
-			if ($token !== NULL && $token->tokenable_type == 'customers')
+        	if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 			{
+				$token = ApiManager::instance()->currentAccessToken();
 				return $query->where('customer_id', $token->tokenable_id);
 			}
 		
@@ -44,12 +44,12 @@ class Addresses extends ApiController
 	    
 	    $this->alreadyRestExtended = true;
 	    
-		$token = ApiManager::instance()->currentAccessToken();
-		if ($token !== NULL && $token->tokenable_type == 'customers')
+		if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 		{
+			$token = ApiManager::instance()->currentAccessToken();
 			return $query->where('customer_id', $token->tokenable_id);
 		}
 	    
-    }    
+    }  
 
 }
