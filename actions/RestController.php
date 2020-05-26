@@ -168,7 +168,7 @@ class RestController extends ControllerAction
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
 
-        return $this->controller->response()->resource($model, $transformer);
+        return $this->controller->response()->accepted(null, $transformer);
     }
 
     public function getActionOptions()
