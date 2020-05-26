@@ -120,15 +120,17 @@ class RestController extends ControllerAction
     {
         $options = $this->getActionOptions();
         $transformer = $this->getConfig('transformer');
-        $relations = array_get($options, 'relations', []);
+        $relations = $this->getConfig('relations', []);
+        if (is_string($relations))
+            $relations = explode(',', $relations);
 
         $model = $this->controller->restFindModelObject($recordId);
-
+        
         // Get relations too
         foreach ($relations as $relation)
             $model->{$relation};
 
-        return $this->controller->response()->resource($model->first(), $transformer);
+        return $this->controller->response()->resource($model, $transformer);
     }
 
     /**
@@ -150,7 +152,7 @@ class RestController extends ControllerAction
             $modelToSave->save();
         }
 
-        return $this->controller->response()->resource($model->first(), $transformer);
+        return $this->controller->response()->resource($model, $transformer);
     }
 
     /**
@@ -166,7 +168,7 @@ class RestController extends ControllerAction
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
 
-        return $this->controller->response()->accepted(null, $transformer);
+        return $this->controller->response()->resource($model, $transformer);
     }
 
     public function getActionOptions()
