@@ -23,13 +23,33 @@ class Addresses extends ApiController
         'transformer' => \Igniter\Api\ApiResources\Transformers\AddressTransformer::class,
     ];
     
+    public $alreadyRestExtended = false;
+    
     public function restExtendModel($query){
 	    
-		$token = ApiManager::instance()->currentAccessToken();
-		if ($token !== NULL && $token->tokenable_type == 'customers'){
-			return $query->where('customer_id', $token->tokenable_id);
+	    if (!$this->alreadyRestExtended)
+	    {
+		    
+			$token = ApiManager::instance()->currentAccessToken();
+			if ($token !== NULL && $token->tokenable_type == 'customers')
+			{
+				return $query->where('customer_id', $token->tokenable_id);
+			}
+		
 		}
 	    
     }
+    
+    public function restExtendQuery($query){
+	    
+	    $this->alreadyRestExtended = true;
+	    
+		$token = ApiManager::instance()->currentAccessToken();
+		if ($token !== NULL && $token->tokenable_type == 'customers')
+		{
+			return $query->where('customer_id', $token->tokenable_id);
+		}
+	    
+    }    
 
 }
