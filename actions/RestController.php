@@ -77,6 +77,7 @@ class RestController extends ControllerAction
         $model = $this->controller->restExtendModel($model) ?: $model;
 
         $query = $model->with($relations);
+        $this->controller->restExtendQuery($query);
 
         if (method_exists($model, 'scopeListFrontEnd')) {
             $result = $query->listFrontEnd($options);

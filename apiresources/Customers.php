@@ -26,11 +26,9 @@ class Customers extends ApiController
         'transformer' => \Igniter\Api\ApiResources\Transformers\CustomerTransformer::class,
     ];
     
-    public $alreadyRestExtended = false;
-    
     public function restExtendModel($query){
 	    
-	    if (!$this->alreadyRestExtended)
+	    if ($this->action == 'store')
 	    {
 		    
         	if (!ApiManager::instance()->currentAccessTokenIsAdmin())
@@ -44,16 +42,14 @@ class Customers extends ApiController
     }
     
     public function restExtendQuery($query){
-	    
-	    $this->alreadyRestExtended = true;
-	    
+	    	    
 		if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 		{
 			$token = ApiManager::instance()->currentAccessToken();
 			return $query->where('customer_id', $token->tokenable_id);
 		}
 	    
-    } 
+    }
     
     public function store()
     {

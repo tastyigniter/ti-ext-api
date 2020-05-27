@@ -22,12 +22,10 @@ class Addresses extends ApiController
         'model' => \Admin\Models\Addresses_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\AddressTransformer::class,
     ];
-    
-    public $alreadyRestExtended = false;
-    
+        
     public function restExtendModel($query){
 	    
-	    if (!$this->alreadyRestExtended)
+	    if ($this->action == 'store')
 	    {
 		    
         	if (!ApiManager::instance()->currentAccessTokenIsAdmin())
@@ -41,9 +39,7 @@ class Addresses extends ApiController
     }
     
     public function restExtendQuery($query){
-	    
-	    $this->alreadyRestExtended = true;
-	    
+	    	    
 		if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 		{
 			$token = ApiManager::instance()->currentAccessToken();
