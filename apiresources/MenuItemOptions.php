@@ -5,9 +5,9 @@ use Igniter\Api\Classes\ApiManager;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * Menuoptions API Controller
+ * Menu Item Options API Controller
  */
-class MenuOptions extends ApiController
+class MenuItemOptions extends ApiController
 {
     public $restConfig = [
         'actions' => [
@@ -20,11 +20,11 @@ class MenuOptions extends ApiController
             'destroy' => [],
         ],
         'relations' => [
-	       'menu_options',
+	       'menu_option_values',
 	       'option_values'
         ],
-        'model' => \Admin\Models\Menu_options_model::class,
-        'transformer' => \Igniter\Api\ApiResources\Transformers\MenuOptionTransformer::class,
+        'model' => \Admin\Models\Menu_item_options_model::class,
+        'transformer' => \Igniter\Api\ApiResources\Transformers\MenuItemOptionTransformer::class,
     ];
     
     public function store()
