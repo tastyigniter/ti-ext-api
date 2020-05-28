@@ -35,7 +35,7 @@ class Orders extends ApiController
         	if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 			{
 				$token = ApiManager::instance()->currentAccessToken();
-				return $query->where('customer_id', $token->tokenable_id);
+				Request::('customer_id') = $token->tokenable_id;
 			}
 		
 		}
@@ -58,7 +58,7 @@ class Orders extends ApiController
         if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 	       throw new BadRequestHttpException;
 		
-        parent::update();  
+		$this->asExtension('RestController')->update();
 	    
     }
     
@@ -68,7 +68,7 @@ class Orders extends ApiController
         if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 	       throw new BadRequestHttpException;
 		
-        parent::destroy();  
+		$this->asExtension('RestController')->destroy();
 	    
     }
        

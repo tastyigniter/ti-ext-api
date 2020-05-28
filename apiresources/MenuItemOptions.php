@@ -33,7 +33,7 @@ class MenuItemOptions extends ApiController
         if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 	       throw new BadRequestHttpException;
 		
-        parent::store();  
+		$this->asExtension('RestController')->store();
 	    
     }
     
@@ -43,7 +43,7 @@ class MenuItemOptions extends ApiController
         if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 	       throw new BadRequestHttpException;
 		
-        parent::update();  
+		$this->asExtension('RestController')->update();
 	    
     }
     
@@ -53,7 +53,7 @@ class MenuItemOptions extends ApiController
         if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 	       throw new BadRequestHttpException;
 		
-        parent::destroy();  
+		$this->asExtension('RestController')->destroy();
 	    
     }
     

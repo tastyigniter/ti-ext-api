@@ -25,22 +25,7 @@ class Customers extends ApiController
         'model' => \Admin\Models\Customers_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\CustomerTransformer::class,
     ];
-    
-    public function restExtendModel($query){
-	    
-	    if ($this->action == 'store')
-	    {
-		    
-        	if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-			{
-				$token = ApiManager::instance()->currentAccessToken();
-				return $query->where('customer_id', $token->tokenable_id);
-			}
-		
-		}
-	    
-    }
-    
+        
     public function restExtendQuery($query){
 	    	    
 		if (!ApiManager::instance()->currentAccessTokenIsAdmin())
@@ -57,7 +42,7 @@ class Customers extends ApiController
         if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 	       throw new BadRequestHttpException;
 		
-        parent::store();  
+		$this->asExtension('RestController')->store();
 	    
     }
     
@@ -67,7 +52,7 @@ class Customers extends ApiController
         if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 	       throw new BadRequestHttpException;
 		
-        parent::destroy();  
+		$this->asExtension('RestController')->destroy();
 	    
     }   
     

@@ -31,7 +31,7 @@ class Addresses extends ApiController
         	if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 			{
 				$token = ApiManager::instance()->currentAccessToken();
-				return $query->where('customer_id', $token->tokenable_id);
+				Request::('customer_id') = $token->tokenable_id;
 			}
 		
 		}

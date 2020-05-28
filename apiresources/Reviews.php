@@ -33,7 +33,7 @@ class Reviews extends ApiController
         if (!ApiManager::instance()->currentAccessTokenIsAdmin())
 	       throw new BadRequestHttpException;
 		
-        parent::destroy();  
+		$this->asExtension('RestController')->destroy();
 	    
     }  
 
