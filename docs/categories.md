@@ -36,6 +36,10 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 Creates a new category.
 
+```
+POST /api/categories
+```
+
 #### Parameters
 
 | Key                  | Type      | Description                                                  |
@@ -81,6 +85,10 @@ Status: 201 Created
 
 Retrieves a category.
 
+```
+GET /api/categories/:category_id
+```
+
 #### Parameters
 
 No parameters.
@@ -107,6 +115,10 @@ Status: 200 OK
 ### Update a category
 
 Updates a category.
+
+```
+PATCH /api/categories/:category_id
+```
 
 #### Parameters
 
@@ -152,6 +164,10 @@ Status: 200 OK
 ### Delete a category
 
 Permanently deletes a category. It cannot be undone. 
+
+```
+DELETE /api/categories/:category_id
+```
 
 #### Parameters
 
