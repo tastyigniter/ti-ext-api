@@ -6,6 +6,7 @@ use File;
 use Igniter\Api\Models\Token;
 use Igniter\Flame\Traits\Singleton;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as RequestFacade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -58,7 +59,7 @@ class ApiManager
         if (!is_array($resources))
             $resources = [];
 
-        return $this->resourcesCache = $resources;
+        return $this->resourcesCache = $this->makeResources($resources);
     }
 
     public function getCurrentResource()
@@ -66,6 +67,11 @@ class ApiManager
         $this->currentResourceName = Str::before(Str::after(Route::currentRouteName(), 'api.'), '.');
 
         return array_get($this->getResources(), $this->currentResourceName, []);
+    }
+
+    public function getCurrentAction()
+    {
+        return Str::afterLast(Route::currentRouteAction(), '@');
     }
 
     public function buildResource($name, $model, $meta = [])
@@ -91,14 +97,31 @@ class ApiManager
         $content = [];
         foreach ($resources as $endpoint => $resource) {
             $content[$endpoint] = [
-                'controller' => $resource->controller ?: 'Igniter\Api\Classes\ApiController',
-                'only' => array_get($resource->meta, 'actions') ?? ['index', 'store', 'show', 'update', 'destroy'],
+                'controller' => $resource->controller,
+                'only' => array_get($resource->meta, 'actions', []),
                 'middleware' => array_get($resource->meta, 'middleware', ['api']),
-                'authorization' => array_get($resource->meta, 'authorization') ?? ['index', 'store', 'show', 'update', 'destroy'],
+                'authorization' => array_get($resource->meta, 'authorization', []),
             ];
         }
 
         File::put($this->resourcesPath, '<?php return '.var_export($content, TRUE).';');
+    }
+
+    protected function makeResources(array $resources)
+    {
+        $defaults = [
+            'controller' => 'Igniter\Api\Classes\ApiController',
+            'only' => ['index', 'store', 'show', 'update', 'destroy'],
+            'middleware' => ['api'],
+            'authorization' => ['index:admin', 'store:admin', 'show:admin', 'update:admin', 'destroy:admin'],
+        ];
+
+        $result = [];
+        foreach ($resources as $endpoint => $resource) {
+            $result[$endpoint] = array_merge($defaults, $resource);
+        }
+
+        return $result;
     }
 
     protected function parseName($name)
@@ -117,39 +140,38 @@ class ApiManager
     // Access Tokens
     //
 
-    public function authenticateToken($token, $acceptableAbilities)
+    public function checkToken()
+    {
+        if (!is_null($this->accessToken))
+            return $this->accessToken;
+
+        return $this->authenticateToken(RequestFacade::bearerToken());
+    }
+
+    public function authenticateToken($token)
     {
         if ($user = app('auth')->user() AND $this->supportsTokens($user)) {
             $this->setAccessToken($accessToken = (new TransientToken));
-
-            if (!array_reduce($acceptableAbilities, function ($carry, $value) {
-                return $carry || $this->currentAccessTokenCan($value);
-            })) return FALSE;
 
             return $accessToken;
         }
 
         if ($token) {
             if (!$accessToken = $this->findToken($token))
-                return FALSE;
+                return null;
 
             $expiration = config('sanctum.expiration');
             if ($expiration AND $accessToken->created_at->lte(now()->subMinutes($expiration)))
-                return FALSE;
+                return null;
 
             $user = $accessToken->tokenable;
 
             if (!$this->supportsTokens($user))
-                return FALSE;
+                return null;
 
             $this->setAccessToken(
                 tap($accessToken->forceFill(['last_used_at' => now()]))->save()
             );
-
-            if (!array_reduce($acceptableAbilities, function ($carry, $value) {
-                return $carry || $this->currentAccessTokenCan($value);
-            }))
-                return FALSE;
 
             return $accessToken;
         }
@@ -171,7 +193,7 @@ class ApiManager
      * @param string $ability
      * @return bool
      */
-    public function currentAccessTokenCan(string $ability)
+    public function currentAccessTokenCan($ability)
     {
         return $this->accessToken ? $this->accessToken->can($ability) : FALSE;
     }

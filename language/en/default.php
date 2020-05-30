@@ -5,12 +5,26 @@ return [
     'search_tokens_prompt' => 'Search tokens',
 
     'text_tokens_title' => 'Access Tokens',
+    'text_token_type_staff' => 'Staff',
+    'text_token_type_customer' => 'Customer',
+    'text_guest' => 'Guests',
+    'text_admin' => 'Staff',
+    'text_customer' => 'Customers',
+    'text_admin_customer' => 'Staff and Customers',
+    'text_all' => 'All',
+    'text_allow_only' => 'Allow Only',
 
     'button_tokens' => '<i class="fa fa-key"></i>&nbsp;&nbsp;Access tokens',
 
     'column_api_name' => 'API Name',
     'column_base_endpoint' => 'Base Endpoint',
     'column_description' => 'Description',
+
+    'column_issued_to' => 'Issued to',
+    'column_token_type' => 'Type',
+    'column_device_name' => 'Device name',
+    'column_created' => 'Created on',
+    'column_lastused' => 'Last used',
 
     'label_api_name' => 'API Name',
     'label_base_endpoint' => 'Base Endpoint',
@@ -22,10 +36,9 @@ return [
     'label_model' => 'Model',
     'label_controller' => 'Controller',
     'label_transformer' => 'Transformer',
-    'label_allowed_actions' => 'Allowed Actions',
-    'help_allowed_actions_comment' => 'Leave blank to deactivate the endpoint.',
+    'label_actions' => 'Actions',
+    'help_actions' => 'Leave blank to deactivate the endpoint.',
     'label_require_authorization' => 'Require authorization',
-    'help_require_authorization_comment' => 'Warning: actions without authorization will be publicly accessible',
 
     'actions' => [
         'text_index' => 'List all resources (GET)',
@@ -35,12 +48,7 @@ return [
         'text_destroy' => 'Delete a resource (DELETE)',
     ],
 
-    'column_issued_to' => 'Issued to',
-    'column_token_type' => 'Type',
-    'column_token_type_staff' => 'Staff',
-    'column_token_type_customer' => 'Customer',
-    'column_device_name' => 'Device name',
-    'column_created' => 'Created on',
-    'column_lastused' => 'Last used',
-
+    'alert_auth_failed' => 'You must authenticate your token to access that endpoint.',
+    'alert_auth_restricted' => 'The authenticated token can not access this endpoint.',
+    'alert_token_restricted' => 'You do not have the right abilities to perform this action',
 ];

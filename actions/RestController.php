@@ -3,6 +3,7 @@
 namespace Igniter\Api\Actions;
 
 use Admin\Traits\FormModelWidget;
+use Igniter\Api\Classes\ApiManager;
 use Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use System\Classes\ControllerAction;
@@ -50,14 +51,16 @@ class RestController extends ControllerAction
         parent::__construct($controller);
         $this->controller = $controller;
 
-        $this->formConfig = $controller->restConfig;
-        $this->setConfig($controller->restConfig, $this->requiredConfig);
+        $this->setConfig(array_merge(
+            $controller->restConfig, $this->makeRouteConfig()
+        ), $this->requiredConfig);
 
-        $this->controller->allowedActions = array_merge(
-            $this->controller->allowedActions, array_get($this->config, 'actions')
+        $this->allowedActions(
+            array_get($this->config, 'only', []), array_get($this->config, 'authorization', [])
         );
 
         $this->controller->transformer = array_get($this->config, 'transformer');
+        $this->controller->requiredAbilities = array_get($this->config, 'abilities', []);
     }
 
     /**
@@ -77,6 +80,10 @@ class RestController extends ControllerAction
         $model = $this->controller->restExtendModel($model) ?: $model;
 
         $query = $model->with($relations);
+
+        if (($token = $this->controller->getToken())->isForCustomer())
+            $query->where('customer_id', $token->tokenable_id);
+
         $this->controller->restExtendQuery($query);
 
         if (method_exists($model, 'scopeListFrontEnd')) {
@@ -99,6 +106,9 @@ class RestController extends ControllerAction
     public function store()
     {
         $data = Request::all();
+
+        if (($token = $this->controller->getToken())->isForCustomer())
+            Request::merge(['customer_id' => $token->tokenable_id]);
 
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
@@ -194,6 +204,10 @@ class RestController extends ControllerAction
          * Prepare query and find model record
          */
         $query = $model->newQuery();
+
+        if (($token = $this->controller->getToken())->isForCustomer())
+            $query->where('customer_id', $token->tokenable_id);
+
         $this->controller->restExtendQuery($query);
         $result = $query->find($recordId);
 
@@ -247,5 +261,22 @@ class RestController extends ControllerAction
         $class = $this->config['model'];
 
         return new $class();
+    }
+
+    protected function makeRouteConfig()
+    {
+        return ApiManager::instance()->getCurrentResource();
+    }
+
+    protected function allowedActions($allowedActions, $authActions)
+    {
+        $result = [];
+        foreach ($allowedActions as $action) {
+            $result[$action] = array_get($authActions, $action, 'admin');
+        }
+
+        $this->controller->allowedActions = array_merge(
+            $this->controller->allowedActions, $result
+        );
     }
 }

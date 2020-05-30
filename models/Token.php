@@ -2,6 +2,8 @@
 
 namespace Igniter\Api\Models;
 
+use Admin\Models\Customers_model;
+use Admin\Models\Users_model;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -33,5 +35,44 @@ class Token extends PersonalAccessToken
         ]);
 
         return new NewAccessToken($token, $token->id.'|'.$plainTextToken);
+    }
+
+    /**
+     * Determine if the token belongs to a admin
+     *
+     * @return bool
+     */
+    public function isForAdmin()
+    {
+        return $this->tokenable_type == Users_model::make()->getMorphClass();
+    }
+
+    /**
+     * Determine if the token belongs to a customer
+     *
+     * @return bool
+     */
+    public function isForCustomer()
+    {
+        return $this->tokenable_type == Customers_model::make()->getMorphClass();
+    }
+
+    /**
+     * Determine if the token has a given ability.
+     *
+     * @param mixed $ability
+     * @return bool
+     */
+    public function can($ability)
+    {
+        if (!is_array($ability))
+            $ability = [$ability];
+
+        if (in_array('*', $this->abilities))
+            return TRUE;
+
+        $diff = array_diff_key(array_flip($ability), array_flip($this->abilities));
+
+        return count($diff) != count($ability);
     }
 }

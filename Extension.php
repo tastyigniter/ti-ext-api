@@ -179,8 +179,6 @@ class Extension extends BaseExtension
         $kernel = $this->app->make(Kernel::class);
 
         $kernel->prependToMiddlewarePriority(EnsureFrontendRequestsAreStateful::class);
-
-        $this->app['router']->pushMiddlewareToGroup('api', ApiMiddleware::class);
     }
 
     protected function sanctumConfigureAuthModels()
