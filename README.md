@@ -8,10 +8,6 @@ Default behavior logic for several common verbs are supported — create, store,
 - Auto Generate Resource Response Class (For modeling JSON response)
 - Support relationships
 
-**TO DO:**
-- User Authentication (with Laravel Passport)
-- Generating User Tokens
-
 ### Installation
 
 To install this extension, click on the **Add to Site** button on the marketplace item page or search for **Igniter.Api** in **Admin System > Updates > Browse Extensions***
@@ -74,3 +70,20 @@ class MenuTransformer extends Resource
 	}
 }
 ```
+
+### API Reference
+
+- [Categories](docs/categories.md)
+    `categories` - List, create, retrieve, update and delete categories
+- [Customers](docs/customers.md)
+    `customers` - List, create, retrieve, update and delete customers
+- [Locations](docs/locations.md)
+    `locations` - List, create, retrieve, update and delete locations
+- [Menus](docs/menus.md)
+    `menus` - List, create, retrieve, update and delete menus
+- [Orders](docs/orders.md)
+    `orders` - List, create, retrieve, update and delete orders
+- [Reservations](docs/reservations.md)
+    `reservations` - List, create, retrieve, update and delete reservations
+- [Reviews](docs/reviews.md)
+    `reviews` - List, create, retrieve, update and delete reviews
