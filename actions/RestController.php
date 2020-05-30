@@ -119,14 +119,13 @@ class RestController extends ControllerAction
      */
     public function show($recordId)
     {
-        $options = $this->getActionOptions();
         $transformer = $this->getConfig('transformer');
         $relations = $this->getConfig('relations', []);
         if (is_string($relations))
             $relations = explode(',', $relations);
 
         $model = $this->controller->restFindModelObject($recordId);
-        
+
         // Get relations too
         foreach ($relations as $relation)
             $model->{$relation};

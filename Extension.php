@@ -109,14 +109,14 @@ class Extension extends BaseExtension
                 'model' => \Admin\Models\Menu_options_model::class,
                 'controller' => \Igniter\Api\ApiResources\MenuOptions::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\MenuOptionTransformer::class,
-            ],            
+            ],
             'menuitemoptions' => [
                 'name' => 'Menu Item Options',
                 'description' => 'An API resource for menu item options',
                 'model' => \Admin\Models\Menus_item_options_model::class,
                 'controller' => \Igniter\Api\ApiResources\MenuItemOptions::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\MenuItemOptionTransformer::class,
-            ],            
+            ],
             'orders' => [
                 'name' => 'Orders',
                 'description' => 'An API resource for orders',

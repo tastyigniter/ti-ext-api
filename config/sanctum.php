@@ -40,7 +40,6 @@ return [
     */
 
     'middleware' => [
-        'verify_csrf_token' => App\Http\Middleware\VerifyCsrfToken::class,
+        'verify_csrf_token' => Igniter\Flame\Foundation\Http\Middleware\VerifyCsrfToken::class,
     ],
-
 ];

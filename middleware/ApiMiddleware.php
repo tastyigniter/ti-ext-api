@@ -19,27 +19,26 @@ class ApiMiddleware
 
     public function handle(Request $request, \Closure $next)
     {
-        $authenticationRequired = TRUE;
         if ($resource = $this->apiManager->getCurrentResource()) {
             $action = Str::afterLast(Route::currentRouteAction(), '@');
-            
+
             if ($resource['authorization'] == '0') $resource['authorization'] = [];
-            
+
             $authenticationRequired = in_array($action, $resource['authorization']);
-                        
+
             $actionMap = [
-	            'index' => 'List',
-	            'show' => 'View',
-	            'store' => 'Create',
-	            'update' => 'Update',
-	            'destroy' => 'Delete'
+                'index' => 'List',
+                'show' => 'View',
+                'store' => 'Create',
+                'update' => 'Update',
+                'destroy' => 'Delete',
             ];
-            
+
             $acceptableAbilities = ['*', studly_case($this->apiManager->currentResourceName).'.*', studly_case($this->apiManager->currentResourceName).'.'.$actionMap[$action]];
-                    
+
             if ($authenticationRequired AND !$this->apiManager->authenticateToken($request->bearerToken(), $acceptableAbilities))
                 throw new BadRequestHttpException;
-            
+
         }
 
         return $next($request);

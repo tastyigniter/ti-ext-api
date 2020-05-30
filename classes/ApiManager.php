@@ -64,6 +64,7 @@ class ApiManager
     public function getCurrentResource()
     {
         $this->currentResourceName = Str::before(Str::after(Route::currentRouteName(), 'api.'), '.');
+
         return array_get($this->getResources(), $this->currentResourceName, []);
     }
 
@@ -120,9 +121,10 @@ class ApiManager
     {
         if ($user = app('auth')->user() AND $this->supportsTokens($user)) {
             $this->setAccessToken($accessToken = (new TransientToken));
-            
-            if (!array_reduce($acceptableAbilities, function($carry, $value){ return $carry || $this->currentAccessTokenCan($value); }))
-		        return FALSE;
+
+            if (!array_reduce($acceptableAbilities, function ($carry, $value) {
+                return $carry || $this->currentAccessTokenCan($value);
+            })) return FALSE;
 
             return $accessToken;
         }
@@ -143,9 +145,11 @@ class ApiManager
             $this->setAccessToken(
                 tap($accessToken->forceFill(['last_used_at' => now()]))->save()
             );
-                        
-            if (!array_reduce($acceptableAbilities, function($carry, $value){ return $carry || $this->currentAccessTokenCan($value); }))
-		        return FALSE;
+
+            if (!array_reduce($acceptableAbilities, function ($carry, $value) {
+                return $carry || $this->currentAccessTokenCan($value);
+            }))
+                return FALSE;
 
             return $accessToken;
         }
@@ -171,7 +175,7 @@ class ApiManager
     {
         return $this->accessToken ? $this->accessToken->can($ability) : FALSE;
     }
-    
+
     /**
      * Determine if the current API token has admin access
      *
@@ -180,13 +184,10 @@ class ApiManager
     public function currentAccessTokenIsAdmin()
     {
         $token = $this->currentAccessToken();
-        if ($token !== NULL && $token->tokenable_type == 'customers')
-        {
-            return false;
-        }
-        return true;
+
+        return ($token AND $token->tokenable_type == 'admin');
     }
-    
+
     /**
      * Set the current access token for the user.
      *
@@ -221,6 +222,7 @@ class ApiManager
             $loginFieldName => 'required',
             'password' => 'required',
             'device_name' => 'required',
+            'abilities' => 'array',
         ]);
 
         $credentials = [
@@ -236,7 +238,7 @@ class ApiManager
                 $loginFieldName => ['The provided credentials are incorrect.'],
             ]);
 
-        $accessToken = Token::createToken($user, $request->device_name, isset($request->abilities) ? json_decode($request->abilities) : ['*']);
+        $accessToken = Token::createToken($user, $request->device_name, $request->abilities ?? ['*']);
 
         return $accessToken->plainTextToken;
     }

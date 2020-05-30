@@ -16,7 +16,7 @@ class Tokens extends \Admin\Classes\AdminController
     public $listConfig = [
         'list' => [
             'model' => 'Igniter\Api\Models\Token',
-            'title' => 'igniter.api::default.tokens',
+            'title' => 'igniter.api::default.text_tokens_title',
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
             'defaultSort' => ['id', 'DESC'],
             'configFile' => 'token',
@@ -31,10 +31,4 @@ class Tokens extends \Admin\Classes\AdminController
 
         AdminMenu::setContext('resources', 'tools');
     }
-
-    public function index()
-    {
-        $this->asExtension('ListController')->index();
-    }
-
 }
