@@ -29,7 +29,7 @@ return [
                 'label' => 'lang:igniter.api::default.column_token_type',
                 'searchable' => TRUE,
                 'formatter' => function ($record, $column, $value) {
-                    return $value == 'users' ? lang('igniter.api::default.token_type_staff') : lang('igniter.api::default.token_type_customer');
+                    return $value == 'users' ? lang('igniter.api::default.text_token_type_staff') : lang('igniter.api::default.text_token_type_customer');
                 },
             ],
             'name' => [

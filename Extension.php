@@ -4,7 +4,6 @@ use Admin\Models\Customers_model;
 use Admin\Models\Users_model;
 use Event;
 use Igniter\Api\Exception\ExceptionHandler;
-use Igniter\Api\Middleware\ApiMiddleware;
 use Igniter\Api\Models\Token;
 use Igniter\Flame\Database\Model;
 use Illuminate\Contracts\Http\Kernel;
@@ -28,6 +27,7 @@ class Extension extends BaseExtension
         $this->registerResponseFactory();
 
         $this->registerConsoleCommand('create.apiresource', \Igniter\Api\Console\CreateApiResource::class);
+        $this->registerConsoleCommand('issue.apitoken', \Igniter\Api\Console\IssueApiToken::class);
 
         $this->registerExceptionHandler();
     }
@@ -113,7 +113,7 @@ class Extension extends BaseExtension
             'menuitemoptions' => [
                 'name' => 'Menu Item Options',
                 'description' => 'An API resource for menu item options',
-                'model' => \Admin\Models\Menus_item_options_model::class,
+                'model' => \Admin\Models\Menu_item_options_model::class,
                 'controller' => \Igniter\Api\ApiResources\MenuItemOptions::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\MenuItemOptionTransformer::class,
             ],
