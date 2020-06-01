@@ -155,7 +155,9 @@ GET /api/customer
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `include`           | `string`  | What relations to include in the response. Options are addresses, orders, reservations. To include multiple seperate by comma (e.g. ?include=addresses,orders)   |
 
 #### Response
 
