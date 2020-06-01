@@ -114,16 +114,17 @@ class ApiController extends MainController
         $allowedGroup = array_get($this->allowedActions, $action, 'all');
         $currentToken = $this->manager->checkToken();
         $isAuthenticated = !is_null($currentToken);
-
         if ($isAuthenticated) {
+	        
             if ($allowedGroup == 'guest')
                 return FALSE;
 
-            if (in_array($allowedGroup, ['admin', 'users']) AND !$currentToken->isForAdmin())
+            if ($allowedGroup == 'admin' AND !$currentToken->isForAdmin())
                 return FALSE;
 
-            if (in_array($allowedGroup, ['customer', 'users']) AND $currentToken->isForAdmin())
+            if ($allowedGroup == 'customer' AND $currentToken->isForAdmin())
                 return FALSE;
+                
         }
         else {
             if (in_array($allowedGroup, ['admin', 'customer', 'users']))
