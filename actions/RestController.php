@@ -5,6 +5,7 @@ namespace Igniter\Api\Actions;
 use Admin\Traits\FormModelWidget;
 use Igniter\Api\Classes\ApiManager;
 use Request;
+use Schema;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use System\Classes\ControllerAction;
 
@@ -80,8 +81,8 @@ class RestController extends ControllerAction
         $model = $this->controller->restExtendModel($model) ?: $model;
 
         $query = $model->with(array_intersect($this->requestedIncludes(), $relations));
-
-        if (($token = $this->controller->getToken()) && $token->isForCustomer())
+        
+        if (Schema::hasColumn($model->getTable(), 'customer_id') && ($token = $this->controller->getToken()) && $token->isForCustomer())
             $query->where('customer_id', $token->tokenable_id);
 
         $this->controller->restExtendQuery($query);
@@ -130,22 +131,7 @@ class RestController extends ControllerAction
     public function show($recordId)
     {
         $transformer = $this->getConfig('transformer');
-        $relations = $this->getConfig('relations', []);
-        if (is_string($relations))
-            $relations = explode(',', $relations);
-
         $model = $this->controller->restFindModelObject($recordId);
-        
-        // Get relations too
-        $requestedIncludes = $this->requestedIncludes();
-        foreach ($relations as $relation){
-            if (in_array($requestedIncludes, $relation))
-                $model->{$relation};
-        }
-
-        if (($token = $this->controller->getToken()) && $token->isForCustomer())
-            $model->where('customer_id', $token->tokenable_id);
-
         return $this->controller->response()->resource($model, $transformer);
     }
 
@@ -205,13 +191,18 @@ class RestController extends ControllerAction
         }
 
         $model = $this->controller->restCreateModelObject();
-
+        
+        $relations = $this->getConfig('relations', []);
+        if (is_string($relations))
+            $relations = explode(',', $relations);
+        $model = $model->with(array_intersect($this->requestedIncludes(), $relations));
+        
         /*
          * Prepare query and find model record
          */
         $query = $model->newQuery();
-
-        if (($token = $this->controller->getToken())->isForCustomer())
+        
+        if (Schema::hasColumn($model->getTable(), 'customer_id') && ($token = $this->controller->getToken()) && $token->isForCustomer())
             $query->where('customer_id', $token->tokenable_id);
 
         $this->controller->restExtendQuery($query);
