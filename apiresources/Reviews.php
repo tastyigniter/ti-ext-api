@@ -27,15 +27,6 @@ class Reviews extends ApiController
         'transformer' => \Igniter\Api\ApiResources\Transformers\ReviewTransformer::class,
     ];
     
-    public function destroy()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-		$this->asExtension('RestController')->destroy();
-	    
-    }  
-
+    protected $requiredAbilities = ['reviews:*'];
     
 }

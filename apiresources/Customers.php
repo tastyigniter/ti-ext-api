@@ -28,34 +28,6 @@ class Customers extends ApiController
         'transformer' => \Igniter\Api\ApiResources\Transformers\CustomerTransformer::class,
     ];
         
-    public function restExtendQuery($query){
-	    	    
-		if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-		{
-			$token = ApiManager::instance()->currentAccessToken();
-			return $query->where('customer_id', $token->tokenable_id);
-		}
-	    
-    }
-    
-    public function store()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-		$this->asExtension('RestController')->store();
-	    
-    }
-    
-    public function destroy()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-		$this->asExtension('RestController')->destroy();
-	    
-    }   
+    protected $requiredAbilities = ['customers:*']; 
     
 }

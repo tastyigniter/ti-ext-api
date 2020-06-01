@@ -19,39 +19,15 @@ class Locations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => ['working_hours', 'delivery_areas'],
+        'relations' => [
+        	'working_hours', 
+        	'delivery_areas',
+        	'reviews'
+        ],
         'model' => \Admin\Models\Locations_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\LocationTransformer::class,
     ];
     
-    public function store()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-		$this->asExtension('RestController')->store();
-	    
-    }
-    
-    public function update()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-		$this->asExtension('RestController')->update();
-	    
-    }
-    
-    public function destroy()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-		$this->asExtension('RestController')->destroy();
-	    
-    }
+    protected $requiredAbilities = ['locations:*'];
     
 }

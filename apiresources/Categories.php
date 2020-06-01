@@ -24,34 +24,6 @@ class Categories extends ApiController
         'transformer' => \Igniter\Api\ApiResources\Transformers\CategoryTransformer::class,
     ];
     
-    public function store()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-		$this->asExtension('RestController')->store();
-	    
-    }
-    
-    public function update()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-        $this->asExtension('RestController')->update();  
-	    
-    }
-    
-    public function destroy()
-    {
-	    
-        if (!ApiManager::instance()->currentAccessTokenIsAdmin())
-	       throw new BadRequestHttpException;
-		
-        $this->asExtension('RestController')->destroy();  
-	    
-    }
+    protected $requiredAbilities = ['categories:*'];
     
 }
