@@ -79,9 +79,9 @@ class RestController extends ControllerAction
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
 
-        $query = $model->with($relations);
+        $query = $model->with(array_intersect($this->requestedIncludes(), $relations));
 
-        if (($token = $this->controller->getToken())->isForCustomer())
+        if (($token = $this->controller->getToken()) && $token->isForCustomer())
             $query->where('customer_id', $token->tokenable_id);
 
         $this->controller->restExtendQuery($query);
@@ -135,10 +135,16 @@ class RestController extends ControllerAction
             $relations = explode(',', $relations);
 
         $model = $this->controller->restFindModelObject($recordId);
-
+        
         // Get relations too
-        foreach ($relations as $relation)
-            $model->{$relation};
+        $requestedIncludes = $this->requestedIncludes();
+        foreach ($relations as $relation){
+            if (in_array($requestedIncludes, $relation))
+                $model->{$relation};
+        }
+
+        if (($token = $this->controller->getToken()) && $token->isForCustomer())
+            $model->where('customer_id', $token->tokenable_id);
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -279,4 +285,16 @@ class RestController extends ControllerAction
             $this->controller->allowedActions, $result
         );
     }
+    
+    /**
+     * Internal method, check $_GET['include'] for a list of relations
+     * @return array
+     */    
+    protected function requestedIncludes()
+    {
+	    $requested = $_GET['include'] ?? '';
+	    
+	    return explode(',', $requested);
+	}
+    
 }
