@@ -1,6 +1,6 @@
 ## Customers
 
-This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` customers on your Tasty Igniter site.
+This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` customers on your TastyIgniter site.
 
 ### The customer object
 
@@ -8,8 +8,8 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `first_name`           | `string`  | **Required**. The customer's first name (between 2 and 32 characters in length)      |
-| `last_name`           | `string`  | **Required**. The customer's last name (between 2 and 32 characters in length)       |
+| `first_name`           | `string`  | **Required**. The customer's first name (between 2 and 48 characters in length)      |
+| `last_name`           | `string`  | **Required**. The customer's last name (between 2 and 48 characters in length)       |
 | `full_name`           | `string`  | A concatenation of first_name and last_name       |
 | `email`           | `string`  | **Required**. The customer's email address       |
 | `telephone`           | `string`  | The customer's telephone number         |
@@ -18,6 +18,9 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `customer_group_id`           | `integer`  | The group the customer belongs to, if any.         |
 | `status`           | `boolean`  | Has the value `true` if the customer is enabled or the value `false` if the customer is disabled.         |
 | `addresses`           | `array`  | The customer's addresses, if any        |
+| `orders`           | `array`  | The customer's orders, if any (see [Orders](orders.md) for structure)       |
+| `reservations`           | `array`  | The customer's addresses, if any (see [Reservations](reservations.md) for structure)        |
+
 
 #### Customer object example
 
@@ -44,7 +47,9 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
       "postcode": "W1A 3NN",
       "country_id": 222
     }
-  ]
+  ],
+  "orders": [],
+  "reservations": []
 }
 ```
 
@@ -89,7 +94,7 @@ POST /api/customers
 ```json
 {
   "first_name": "Joe",
-  "last_name": Blogs,
+  "last_name": "Bloggs",
   "email": "joe@bloggs.com",
   "telephone": "1234512345",
   "newsletter": false,
@@ -142,7 +147,7 @@ Status: 201 Created
 
 ### List customers
 
-Retrieves a list of customer.
+Retrieves a list of customers.
 
 ```
 GET /api/customer
@@ -273,6 +278,7 @@ PATCH /api/customers/:customer_id
 ```json
 {
   "first_name": "Joseph",
+  "email": "joseph@bloggs.com"
 }
 ```
 
@@ -287,7 +293,7 @@ Status: 200 OK
   "customer_id": 1,
   "first_name": "Joeseph",
   "last_name": "Bloggs",
-  "email": "joe@bloggs.com",
+  "email": "joeseph@bloggs.com",
   "telephone": "1234512345",
   "newsletter": false,
   "customer_group_id": 1,
