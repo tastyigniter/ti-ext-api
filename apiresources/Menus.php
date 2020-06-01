@@ -21,7 +21,8 @@ class Menus extends ApiController
         ],
         'relations' => [
 	       'categories',
-	       'menu_options'
+	       'menu_options.menu_option_values',
+	       'menu_options.option_values'
         ],
         'model' => \Admin\Models\Menus_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
