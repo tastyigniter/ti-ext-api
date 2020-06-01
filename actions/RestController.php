@@ -191,6 +191,7 @@ class RestController extends ControllerAction
         }
 
         $model = $this->controller->restCreateModelObject();
+        $modelTable = $model->getTable();
         
         $relations = $this->getConfig('relations', []);
         if (is_string($relations))
@@ -202,7 +203,7 @@ class RestController extends ControllerAction
          */
         $query = $model->newQuery();
         
-        if (Schema::hasColumn($model->getTable(), 'customer_id') && ($token = $this->controller->getToken()) && $token->isForCustomer())
+        if (Schema::hasColumn($modelTable, 'customer_id') && ($token = $this->controller->getToken()) && $token->isForCustomer())
             $query->where('customer_id', $token->tokenable_id);
 
         $this->controller->restExtendQuery($query);
