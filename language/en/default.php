@@ -49,6 +49,5 @@ return [
     ],
 
     'alert_auth_failed' => 'You must authenticate your token to access that endpoint.',
-    'alert_auth_restricted' => 'The authenticated token can not access this endpoint.',
     'alert_token_restricted' => 'You do not have the right abilities to perform this action',
 ];

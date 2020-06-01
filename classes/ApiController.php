@@ -58,13 +58,10 @@ class ApiController extends MainController
 
         // Determine if authentication is required
         if ($this->requireAuthentication) {
-            if (!$this->manager->checkToken())
+            if (!$this->checkActionSecurity($action))
                 throw new BadRequestHttpException(lang('igniter.api::default.alert_auth_failed'));
 
             $this->setToken($this->manager->currentAccessToken());
-
-            if (!$this->checkActionSecurity($action))
-                throw new BadRequestHttpException(lang('igniter.api::default.alert_auth_restricted'));
 
             // Check that the token has ability to perform this action
             if ($this->requiredAbilities AND !$this->manager->currentAccessTokenCan($this->requiredAbilities)) {
