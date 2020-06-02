@@ -150,7 +150,7 @@ Status: 201 Created
 Retrieves a list of customers.
 
 ```
-GET /api/customer
+GET /api/customers
 ```
 
 #### Parameters
@@ -214,7 +214,7 @@ Status: 200 OK
 Retrieves a customer.
 
 ```
-GET /api/customer/:customer_id
+GET /api/customers/:customer_id
 ```
 
 #### Parameters
