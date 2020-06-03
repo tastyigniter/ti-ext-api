@@ -68,13 +68,6 @@ class Extension extends BaseExtension
     public function registerApiResources()
     {
         return [
-            'addresses' => [
-                'name' => 'Addresses',
-                'description' => 'An API resource for addresses',
-                'model' => \Admin\Models\Addresses_model::class,
-                'controller' => \Igniter\Api\ApiResources\Addresses::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\AddressTransformer::class,
-            ],
             'categories' => [
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
@@ -102,20 +95,6 @@ class Extension extends BaseExtension
                 'model' => \Admin\Models\Menus_model::class,
                 'controller' => \Igniter\Api\ApiResources\Menus::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
-            ],
-            'menuoptions' => [
-                'name' => 'Menu Options',
-                'description' => 'An API resource for menu options',
-                'model' => \Admin\Models\Menu_options_model::class,
-                'controller' => \Igniter\Api\ApiResources\MenuOptions::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuOptionTransformer::class,
-            ],
-            'menuitemoptions' => [
-                'name' => 'Menu Item Options',
-                'description' => 'An API resource for menu item options',
-                'model' => \Admin\Models\Menu_item_options_model::class,
-                'controller' => \Igniter\Api\ApiResources\MenuItemOptions::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuItemOptionTransformer::class,
             ],
             'orders' => [
                 'name' => 'Orders',
