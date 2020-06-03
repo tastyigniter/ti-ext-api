@@ -23,8 +23,8 @@ class ApiController extends MainController
     protected $requireAuthentication = TRUE;
 
     /**
-     * @var string Ability required to view this page.
-     * ex. orders.*
+     * @var array Token abilities required to access methods on this controller.
+     * ex. ['orders.*']
      */
     protected $requiredAbilities;
 
@@ -66,7 +66,7 @@ class ApiController extends MainController
             if (!$this->checkActionSecurity($allowedGroup))
                 throw new AccessDeniedHttpException(lang('igniter.api::default.alert_auth_restricted'));
 
-            if (($token = $this->manager->currentAccessToken())) {
+            if ($token = $this->getToken()) {
                 $this->setToken($token);
 
                 // Check that the token has ability to perform this action
