@@ -10,13 +10,12 @@ Route::group([
     'as' => 'api.',
     'middleware' => ['api'],
 ], function () use ($apiManager) {
-
     $resources = $apiManager->getResources();
     foreach ($resources as $name => $options) {
         Route::resource(
             $name,
             array_get($options, 'controller'),
-            array_except($options, ['controller'])
+            array_except($options, ['controller', 'authorization'])
         );
     }
 });
@@ -25,7 +24,6 @@ Route::group([
 Route::group([
     'prefix' => $apiManager->getBaseEndpoint(),
 ], function () {
-
     Route::post('/token', function (Request $request) {
         return [
             'status_code' => 201,

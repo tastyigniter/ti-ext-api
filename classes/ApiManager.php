@@ -3,6 +3,7 @@
 namespace Igniter\Api\Classes;
 
 use File;
+use Igniter\Api\Models\Resource;
 use Igniter\Api\Models\Token;
 use Igniter\Flame\Traits\Singleton;
 use Illuminate\Http\Request;
@@ -113,8 +114,9 @@ class ApiManager
             'controller' => 'Igniter\Api\Classes\ApiController',
             'only' => ['index', 'store', 'show', 'update', 'destroy'],
             'middleware' => ['api'],
-            'authorization' => ['index:admin', 'store:admin', 'show:admin', 'update:admin', 'destroy:admin'],
         ];
+
+        $defaults = array_merge($defaults, array_only(Resource::$defaultMetaDefinition, ['authorization']));
 
         $result = [];
         foreach ($resources as $endpoint => $resource) {
