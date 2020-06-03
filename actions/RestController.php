@@ -81,10 +81,6 @@ class RestController extends ControllerAction
         $model = $this->controller->restExtendModel($model) ?: $model;
 
         $query = $model->with(array_intersect($this->requestedIncludes(), $relations));
-        
-        if (Schema::hasColumn($model->getTable(), 'customer_id') && ($token = $this->controller->getToken()) && $token->isForCustomer())
-            $query->where('customer_id', $token->tokenable_id);
-
         $this->controller->restExtendQuery($query);
 
         if (method_exists($model, 'scopeListFrontEnd')) {
@@ -107,9 +103,6 @@ class RestController extends ControllerAction
     public function store()
     {
         $data = Request::all();
-
-        if (($token = $this->controller->getToken())->isForCustomer())
-            Request::merge(['customer_id' => $token->tokenable_id]);
 
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
@@ -202,10 +195,6 @@ class RestController extends ControllerAction
          * Prepare query and find model record
          */
         $query = $model->newQuery();
-        
-        if (Schema::hasColumn($modelTable, 'customer_id') && ($token = $this->controller->getToken()) && $token->isForCustomer())
-            $query->where('customer_id', $token->tokenable_id);
-
         $this->controller->restExtendQuery($query);
         $result = $query->find($recordId);
 
