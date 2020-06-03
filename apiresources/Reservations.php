@@ -19,7 +19,6 @@ class Reservations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [],
         'model' => \Admin\Models\Reservations_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\ReservationTransformer::class,
     ];

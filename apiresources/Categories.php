@@ -19,7 +19,6 @@ class Categories extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [],
         'model' => \Admin\Models\Categories_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\CategoryTransformer::class,
     ];

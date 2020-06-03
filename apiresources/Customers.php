@@ -19,11 +19,6 @@ class Customers extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [
-	       'addresses',
-	       'orders',
-	       'reservations'
-        ],
         'model' => \Admin\Models\Customers_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\CustomerTransformer::class,
     ];

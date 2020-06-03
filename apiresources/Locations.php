@@ -19,11 +19,6 @@ class Locations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [
-        	'working_hours', 
-        	'delivery_areas',
-        	'reviews'
-        ],
         'model' => \Admin\Models\Locations_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\LocationTransformer::class,
     ];

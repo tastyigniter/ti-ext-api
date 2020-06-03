@@ -19,11 +19,6 @@ class Menus extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [
-	       'categories',
-	       'menu_options.menu_option_values',
-	       'menu_options.option_values'
-        ],
         'model' => \Admin\Models\Menus_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
     ];

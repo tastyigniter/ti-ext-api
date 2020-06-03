@@ -21,7 +21,6 @@ class {{studly_name}} extends ApiController
              'update' => [],
              'destroy' => [],
         ],
-        'relations' => [{{relations}}],
         'model' => '{{model}}',
         'transformer' => '{{studly_author}}\{{studly_extension}}\ApiResources\Transformers\{{studly_singular_name}}Transformer',
     ];

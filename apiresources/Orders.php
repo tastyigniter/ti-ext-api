@@ -17,7 +17,6 @@ class Orders extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [],
         'model' => \Admin\Models\Orders_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\OrderTransformer::class,
         'authorization' => ['index:users', 'store:users', 'show:users', 'update:admin', 'destroy:admin'],

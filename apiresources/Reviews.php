@@ -19,10 +19,6 @@ class Reviews extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [
-            'location',
-            'customer',
-        ],
         'model' => \Admin\Models\Reviews_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\ReviewTransformer::class,
     ];

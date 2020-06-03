@@ -73,14 +73,15 @@ class RestController extends ControllerAction
     {
         $options = array_merge($this->getActionOptions(), Request::all());
         $transformer = $this->getConfig('transformer');
-        $relations = $this->getConfig('relations', []);
-        if (is_string($relations))
-            $relations = explode(',', $relations);
 
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
 
-        $query = $model->with(array_intersect($this->requestedIncludes(), $relations));
+        $query = $model->newQuery();
+        $this->controller->restExtendQueryBefore($query);
+
+        $this->applyRelationsScope($query);
+
         $this->controller->restExtendQuery($query);
 
         if (method_exists($model, 'scopeListFrontEnd')) {
@@ -184,17 +185,14 @@ class RestController extends ControllerAction
         }
 
         $model = $this->controller->restCreateModelObject();
-        $modelTable = $model->getTable();
-        
-        $relations = $this->getConfig('relations', []);
-        if (is_string($relations))
-            $relations = explode(',', $relations);
-        $model = $model->with(array_intersect($this->requestedIncludes(), $relations));
-        
+
         /*
          * Prepare query and find model record
          */
         $query = $model->newQuery();
+
+        $this->applyRelationsScope($query);
+
         $this->controller->restExtendQuery($query);
         $result = $query->find($recordId);
 
@@ -235,6 +233,16 @@ class RestController extends ControllerAction
      * @param \Igniter\Flame\Database\Builder $query
      * @return void
      */
+    public function restExtendQueryBefore($query)
+    {
+    }
+
+    /**
+     * Extend supplied model query, the model query can
+     * be altered by overriding it in the controller.
+     * @param \Igniter\Flame\Database\Builder $query
+     * @return void
+     */
     public function restExtendQuery($query)
     {
     }
@@ -266,16 +274,20 @@ class RestController extends ControllerAction
             $this->controller->allowedActions, $result
         );
     }
-    
+
     /**
-     * Internal method, check $_GET['include'] for a list of relations
-     * @return array
-     */    
-    protected function requestedIncludes()
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     */
+    protected function applyRelationsScope($query)
     {
-	    $requested = $_GET['include'] ?? '';
-	    
-	    return explode(',', $requested);
-	}
-    
+        if (!$transformer = $this->getConfig('transformer'))
+            return;
+
+        $transformerObj = new $transformer();
+
+        $includes = method_exists($transformerObj, 'getIncludes')
+            ? $transformerObj->getIncludes() : [];
+
+        $query->with($includes);
+    }
 }
