@@ -21,6 +21,7 @@ class Reservations extends ApiController
         ],
         'model' => \Admin\Models\Reservations_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\ReservationTransformer::class,
+        'authorization' => ['index:users', 'store:users', 'show:users', 'update:admin', 'destroy:admin'],
     ];
     
     protected $requiredAbilities = ['reservations:*'];

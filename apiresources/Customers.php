@@ -21,6 +21,7 @@ class Customers extends ApiController
         ],
         'model' => \Admin\Models\Customers_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\CustomerTransformer::class,
+        'authorization' => ['index:admin', 'store:users', 'show:admin', 'update:users', 'destroy:admin'],
     ];
     
     protected $requiredAbilities = ['customers:*'];

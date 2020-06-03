@@ -5,7 +5,6 @@ namespace Igniter\Api\Actions;
 use Admin\Traits\FormModelWidget;
 use Igniter\Api\Classes\ApiManager;
 use Request;
-use Schema;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use System\Classes\ControllerAction;
 
@@ -52,16 +51,15 @@ class RestController extends ControllerAction
         parent::__construct($controller);
         $this->controller = $controller;
 
-        $this->setConfig(array_merge(
-            $controller->restConfig, $this->makeRouteConfig()
-        ), $this->requiredConfig);
+        $this->mergeResourceConfigWith(
+            $controller->restConfig, $this->requiredConfig
+        );
 
         $this->allowedActions(
             array_get($this->config, 'only', []), array_get($this->config, 'authorization', [])
         );
 
         $this->controller->transformer = array_get($this->config, 'transformer');
-        $this->controller->requiredAbilities = array_get($this->config, 'abilities', []);
     }
 
     /**
@@ -105,6 +103,8 @@ class RestController extends ControllerAction
     {
         $data = Request::all();
 
+        $transformer = $this->getConfig('transformer');
+
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
 
@@ -113,7 +113,7 @@ class RestController extends ControllerAction
             $modelToSave->save();
         }
 
-        return $this->controller->response()->created($model);
+        return $this->controller->response()->created($model, $transformer);
     }
 
     /**
@@ -126,6 +126,7 @@ class RestController extends ControllerAction
     {
         $transformer = $this->getConfig('transformer');
         $model = $this->controller->restFindModelObject($recordId);
+
         return $this->controller->response()->resource($model, $transformer);
     }
 
@@ -159,12 +160,10 @@ class RestController extends ControllerAction
      */
     public function destroy($recordId)
     {
-        $transformer = $this->getConfig('transformer');
-
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
 
-        return $this->controller->response()->accepted(null, $transformer);
+        return $this->controller->response()->noContent();
     }
 
     public function getActionOptions()
@@ -258,9 +257,11 @@ class RestController extends ControllerAction
         return new $class();
     }
 
-    protected function makeRouteConfig()
+    protected function mergeResourceConfigWith(array $restConfig, array $requiredConfig)
     {
-        return ApiManager::instance()->getCurrentResource();
+        $this->setConfig(array_merge(
+            $restConfig, ApiManager::instance()->getCurrentResource()
+        ), $requiredConfig);
     }
 
     protected function allowedActions($allowedActions, $authActions)
