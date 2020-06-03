@@ -10,7 +10,7 @@ return [
     'text_guest' => 'Guests',
     'text_admin' => 'Staff',
     'text_customer' => 'Customers',
-    'text_admin_customer' => 'Staff and Customers',
+    'text_admin_customer' => 'Staff or Customers',
     'text_all' => 'All',
     'text_allow_only' => 'Allow Only',
 
@@ -48,6 +48,7 @@ return [
         'text_destroy' => 'Delete a resource (DELETE)',
     ],
 
-    'alert_auth_failed' => 'You must authenticate your token to access that endpoint.',
-    'alert_token_restricted' => 'You do not have the right abilities to perform this action',
+    'alert_auth_failed' => 'No valid API token provided.',
+    'alert_auth_restricted' => 'The API token doesn\'t have permissions to perform the request.',
+    'alert_token_restricted' => 'The API token doesn\'t have the right abilities to perform this action',
 ];

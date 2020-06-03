@@ -3,7 +3,8 @@
 namespace Igniter\Api\Classes;
 
 use Main\Classes\MainController;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class ApiController extends MainController
 {
@@ -58,18 +59,20 @@ class ApiController extends MainController
 
         // Determine if authentication is required
         if ($this->requireAuthentication) {
-            if (!$this->checkActionSecurity($action))
-                throw new BadRequestHttpException(lang('igniter.api::default.alert_auth_failed'));
-                
-            if (($token = $this->manager->currentAccessToken())) {
+            $allowedGroup = array_get($this->allowedActions, $action, 'all');
+            if (!$this->checkToken($allowedGroup))
+                throw new UnauthorizedHttpException('Bearer', lang('igniter.api::default.alert_auth_failed'));
 
-	            $this->setToken($token);
-	
-	            // Check that the token has ability to perform this action
-	            if ($this->requiredAbilities AND !$this->manager->currentAccessTokenCan($this->requiredAbilities)) {
-	                throw new BadRequestHttpException(lang('igniter.api::default.alert_token_restricted'));
-	            }
-            
+            if (!$this->checkActionSecurity($allowedGroup))
+                throw new AccessDeniedHttpException(lang('igniter.api::default.alert_auth_restricted'));
+
+            if (($token = $this->manager->currentAccessToken())) {
+                $this->setToken($token);
+
+                // Check that the token has ability to perform this action
+                if ($this->requiredAbilities AND !$this->manager->currentAccessTokenCan($this->requiredAbilities)) {
+                    throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
+                }
             }
         }
 
@@ -113,13 +116,21 @@ class ApiController extends MainController
         return $this->manager->currentAccessToken();
     }
 
-    public function checkActionSecurity($action)
+    public function checkToken($allowedGroup)
     {
-        $allowedGroup = array_get($this->allowedActions, $action, 'all');
+        $requiresValidToken = in_array($allowedGroup, ['admin', 'customer', 'users']);
+        if ($requiresValidToken AND !$this->manager->checkToken())
+            return FALSE;
+
+        return TRUE;
+    }
+
+    public function checkActionSecurity($allowedGroup)
+    {
         $currentToken = $this->manager->checkToken();
         $isAuthenticated = !is_null($currentToken);
+
         if ($isAuthenticated) {
-	        
             if ($allowedGroup == 'guest')
                 return FALSE;
 
@@ -128,7 +139,6 @@ class ApiController extends MainController
 
             if ($allowedGroup == 'customer' AND $currentToken->isForAdmin())
                 return FALSE;
-                
         }
         else {
             if (in_array($allowedGroup, ['admin', 'customer', 'users']))
