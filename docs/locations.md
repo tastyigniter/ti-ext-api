@@ -16,17 +16,19 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `location_city`           | `string`  | The city in which the location is situated  (maximum 128 characters)     |
 | `location_state`           | `string`  | The state or county in which the location is situated  (maximum 128 characters)     |
 | `location_postcode`           | `string`  | The postal or ZIP code of the location (maximum 10 characters)         |
-| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.
-| `location_lat`           | `decimal`  | The latitude of the location
-| `location_lng`           | `decimal`  | The longitude of the location
-| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)
-| `offer_delivery`           | `boolean`  | Has the value `true` if the location offers delivery or the value `false` if the location does not.         |
-| `offer_collection`           | `boolean`  | Has the value `true` if the location offers collection or the value `false` if the location does not.         |
-| `delivery_time`           | `integer`  | The average time in minutes it takes an order to be delivered after being placed        |
-| `collection_time`           | `integer`  | The average time in minutes it takes an order to be available for collection after being placed        |
-| `last_order_time`           | `integer`  | The number of minutes to take the last order before the closing time. Set to 0 to accept orders until the closing time.      |
-| `reservation_time_interval`           | `integer`  | The number of minutes between each reservation time
-| `reservation_stay_time`           | `integer`  | The average time in minutes a guest will stay at a table
+| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
+| `location_lat`           | `decimal`  | The latitude of the location  |
+| `location_lng`           | `decimal`  | The longitude of the location |
+| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)  |
+| `options`           | `object`  | An object containing additional meta information about the location   |
+| `options.offer_delivery`           | `boolean`  | Has the value `true` if the location offers delivery or the value `false` if the location does not.         |
+| `options.offer_collection`           | `boolean`  | Has the value `true` if the location offers collection or the value `false` if the location does not.         |
+| `options.delivery_time_interval`           | `integer`  | The minutes between each delivery order time available to your customer        |
+| `options.collection_time_interval`           | `integer`  | The minutes between each pick-up order time available to your customer        |
+| `options.delivery_lead_time`           | `integer`  | The average time in minutes it takes an order to be delivered after being placed        |
+| `options.collection_lead_time`           | `integer`  | The average time in minutes it takes an order to be available for collection after being placed        |
+| `options.reservation_time_interval`           | `integer`  | The number of minutes between each reservation time  |
+| `options.reservation_lead_time`           | `integer`  | The average time in minutes a guest will stay at a table |
 | `location_status`           | `boolean`  | Has the value `true` if the location is enabled or the value `false` if the location is disabled.         |
 | `permalink_slug`           | `string`  | The URL slug for this location. Use only alpha-numeric lowercase characters, _ or - and make sure it is unique.    |
 | `location_thumb`           | `string` or `null`  | The thumbnail image of the location (if available)         |
@@ -50,17 +52,20 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
   "location_telephone": "1234512345",
   "location_lat": 50.6008818,
   "location_lng": -6.8794655,
-  "offer_delivery": false,
-  "offer_collection": true,
-  "delivery_time": 15,
-  "last_order_time": 0,
-  "reservation_time_interval": 15,
-  "reservation_stay_time": 45,
   "location_status": true,
-  "collection_time": 15,
-  "location_image": null,
   "permalink_slug": "my-restaurant",
-  "location_thumb": null,
+  "options": {
+    "offer_delivery": false,
+    "offer_collection": true,
+    "delivery_time_interval": 15,
+    "collection_time_interval": 15,
+    "delivery_lead_time": 15,
+    "collection_lead_time": 15,
+    "reservation_time_interval": 15,
+    "reservation_lead_time": 45,
+    "payments": [],
+    "gallery": {}
+  },
   "media": []
 }
 ```
@@ -85,17 +90,10 @@ POST /api/location
 | `location_city`           | `string`  | The city in which the location is situated  (maximum 128 characters)     |
 | `location_state`           | `string`  | The state or county in which the location is situated  (maximum 128 characters)     |
 | `location_postcode`           | `string`  | The postal or ZIP code of the location (maximum 10 characters)         |
-| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.
-| `location_lat`           | `decimal`  | The latitude of the location
-| `location_lng`           | `decimal`  | The longitude of the location
-| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)
-| `offer_delivery`           | `boolean`  | Has the value `true` if the location offers delivery or the value `false` if the location does not.         |
-| `offer_collection`           | `boolean`  | Has the value `true` if the location offers collection or the value `false` if the location does not.         |
-| `delivery_time`           | `integer`  | The average time in minutes it takes an order to be delivered after being placed        |
-| `collection_time`           | `integer`  | The average time in minutes it takes an order to be available for collection after being placed        |
-| `last_order_time`           | `integer`  | The number of minutes to take the last order before the closing time. Set to 0 to accept orders until the closing time.      |
-| `reservation_time_interval`           | `integer`  | The number of minutes between each reservation time
-| `reservation_stay_time`           | `integer`  | The average time in minutes a guest will stay at a table
+| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
+| `location_lat`           | `decimal`  | The latitude of the location  |
+| `location_lng`           | `decimal`  | The longitude of the location |
+| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)  |
 | `location_status`           | `boolean`  | Has the value `true` if the location is enabled or the value `false` if the location is disabled.         |
 | `permalink_slug`           | `string`  | The URL slug for this location. Use only alpha-numeric lowercase characters, _ or - and make sure it is unique.    |
 
@@ -138,19 +136,11 @@ Status: 201 Created
   "location_telephone": "1234512345",
   "location_lat": 50.6008818,
   "location_lng": -6.8794655,
-  "offer_delivery": true,
-  "offer_collection": true,
-  "delivery_time": 15,
-  "last_order_time": 0,
-  "reservation_time_interval": 15,
-  "reservation_stay_time": 45,
   "location_status": true,
-  "collection_time": 15,
-  "location_image": null,
   "permalink_slug": "my-restaurant",
-  "location_thumb": null,
   "media": []
-}```
+}
+```
 
 ### List locations
 
@@ -171,63 +161,46 @@ Status: 200 OK
 ```
 
 ```json
-[
-  "data: [{
-    "location_id": 1,
-    "location_name": "My restaurant",
-    "location_email": "restaurant@bloggs.com",
-    "description": "My TastyIgniter restaurant",
-    "location_address_1": "1 Some Street",
-    "location_address_2": "",
-    "location_city": "London",
-    "location_state": "London",
-    "location_postcode": "WA4 3NN",
-    "location_country_id": 222,
-    "location_telephone": "1234512345",
-    "location_lat": 50.6008818,
-    "location_lng": -6.8794655,
-    "offer_delivery": true,
-    "offer_collection": true,
-    "delivery_time": 15,
-    "last_order_time": 0,
-    "reservation_time_interval": 15,
-    "reservation_stay_time": 45,
-    "location_status": true,
-    "collection_time": 15,
-    "location_image": null,
-    "permalink_slug": "my-restaurant",
-    "location_thumb": null,
-    "media": []
-  },
-  {
-    "location_id": 2,
-    "location_name": "My other restaurant",
-    "location_email": "other.restaurant@bloggs.com",
-    "description": "My second TastyIgniter restaurant",
-    "location_address_1": "1 Another Street",
-    "location_address_2": "",
-    "location_city": "London",
-    "location_state": "London",
-    "location_postcode": "WA3 1NA",
-    "location_country_id": 222,
-    "location_telephone": "1234512345",
-    "location_lat": 50.6108818,
-    "location_lng": -6.8994655,
-    "offer_delivery": true,
-    "offer_collection": true,
-    "delivery_time": 15,
-    "last_order_time": 0,
-    "reservation_time_interval": 15,
-    "reservation_stay_time": 45,
-    "location_status": true,
-    "collection_time": 15,
-    "location_image": null,
-    "permalink_slug": "my-other-restaurant",
-    "location_thumb": null,
-    "media": []
-  }
-]
-]
+{
+  "data": [
+    {
+      "location_id": 1,
+      "location_name": "My restaurant",
+      "location_email": "restaurant@bloggs.com",
+      "description": "My TastyIgniter restaurant",
+      "location_address_1": "1 Some Street",
+      "location_address_2": "",
+      "location_city": "London",
+      "location_state": "London",
+      "location_postcode": "WA4 3NN",
+      "location_country_id": 222,
+      "location_telephone": "1234512345",
+      "location_lat": 50.6008818,
+      "location_lng": -6.8794655,
+      "location_status": true,
+      "permalink_slug": "my-restaurant",
+      "media": []
+    },
+    {
+      "location_id": 2,
+      "location_name": "My other restaurant",
+      "location_email": "other.restaurant@bloggs.com",
+      "description": "My second TastyIgniter restaurant",
+      "location_address_1": "1 Another Street",
+      "location_address_2": "",
+      "location_city": "London",
+      "location_state": "London",
+      "location_postcode": "WA3 1NA",
+      "location_country_id": 222,
+      "location_telephone": "1234512345",
+      "location_lat": 50.6108818,
+      "location_lng": -6.8994655,
+      "location_status": true,
+      "permalink_slug": "my-other-restaurant",
+      "media": []
+    }
+  ]
+}
 ```
 
 
@@ -264,17 +237,8 @@ Status: 200 OK
   "location_telephone": "1234512345",
   "location_lat": 50.6008818,
   "location_lng": -6.8794655,
-  "offer_delivery": true,
-  "offer_collection": true,
-  "delivery_time": 15,
-  "last_order_time": 0,
-  "reservation_time_interval": 15,
-  "reservation_stay_time": 45,
   "location_status": true,
-  "collection_time": 15,
-  "location_image": null,
   "permalink_slug": "my-restaurant",
-  "location_thumb": null,
   "media": []
 }
 ```
@@ -299,17 +263,10 @@ PATCH /api/locations/:location_id
 | `location_city`           | `string`  | The city in which the location is situated  (maximum 128 characters)     |
 | `location_state`           | `string`  | The state or county in which the location is situated  (maximum 128 characters)     |
 | `location_postcode`           | `string`  | The postal or ZIP code of the location (maximum 10 characters)         |
-| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.
-| `location_lat`           | `decimal`  | The latitude of the location
-| `location_lng`           | `decimal`  | The longitude of the location
-| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)
-| `offer_delivery`           | `boolean`  | Has the value `true` if the location offers delivery or the value `false` if the location does not.         |
-| `offer_collection`           | `boolean`  | Has the value `true` if the location offers collection or the value `false` if the location does not.         |
-| `delivery_time`           | `integer`  | The average time in minutes it takes an order to be delivered after being placed        |
-| `collection_time`           | `integer`  | The average time in minutes it takes an order to be available for collection after being placed        |
-| `last_order_time`           | `integer`  | The number of minutes to take the last order before the closing time. Set to 0 to accept orders until the closing time.      |
-| `reservation_time_interval`           | `integer`  | The number of minutes between each reservation time
-| `reservation_stay_time`           | `integer`  | The average time in minutes a guest will stay at a table
+| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
+| `location_lat`           | `decimal`  | The latitude of the location  |
+| `location_lng`           | `decimal`  | The longitude of the location |
+| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)  |
 | `location_status`           | `boolean`  | Has the value `true` if the location is enabled or the value `false` if the location is disabled.         |
 | `permalink_slug`           | `string`  | The URL slug for this location. Use only alpha-numeric lowercase characters, _ or - and make sure it is unique.    |
 
@@ -343,17 +300,8 @@ Status: 200 OK
   "location_telephone": "1234512345",
   "location_lat": 50.6008818,
   "location_lng": -6.8794655,
-  "offer_delivery": true,
-  "offer_collection": true,
-  "delivery_time": 15,
-  "last_order_time": 0,
-  "reservation_time_interval": 15,
-  "reservation_stay_time": 45,
   "location_status": true,
-  "collection_time": 15,
-  "location_image": null,
   "permalink_slug": "my-restaurant",
-  "location_thumb": null,
   "media": []
 }
 ```

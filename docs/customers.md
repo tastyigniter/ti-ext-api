@@ -59,13 +59,12 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `address_1`           | `string`  | **Required**. The first line of the customer's address (between 3 and 128 characters)
-| `address_2`           | `string`  | The second line of the customer's address (between 3 and 128 characters)
-| `city`           | `string`  | **Required**. The city or town of the customer's address (between state and 128 characters)
-| `state`           | `string`  | The state or county of the customer's address (maximum of 128 characters)
-| `postcode`           | `string`  | The postcode or ZIP code of the customer's address (maximum of 128 characters)
-| `country_id`           | `integer`  | **Required**. The country code of the customers address. Should reference an id in the "countries" database table.
-
+| `address_1`           | `string`  | **Required**. The first line of the customer's address (between 3 and 128 characters)     |
+| `address_2`           | `string`  | The second line of the customer's address (between 3 and 128 characters)  |
+| `city`           | `string`  | **Required**. The city or town of the customer's address (between state and 128 characters)    |
+| `state`           | `string`  | The state or county of the customer's address (maximum of 128 characters)     |
+| `postcode`           | `string`  | The postcode or ZIP code of the customer's address (maximum of 128 characters)     |
+| `country_id`           | `integer`  | **Required**. The country code of the customers address. Should reference an id in the "countries" database table.  |
 
 ### Create a customer
 
@@ -157,7 +156,7 @@ GET /api/customers
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `include`           | `string`  | What relations to include in the response. Options are addresses, orders, reservations. To include multiple seperate by comma (e.g. ?include=addresses,orders)   |
+| `include`           | `string`  | What relations to include in the response. Options are `addresses`, `orders`, `reservations`. To include multiple seperate by comma (e.g. ?include=addresses,orders) |
 
 #### Response
 
@@ -166,46 +165,47 @@ Status: 200 OK
 ```
 
 ```json
-[
-  "data: [{
-    "customer_id": 1,
-    "first_name": "Joe",
-    "last_name": "Bloggs",
-    "email": "joe@bloggs.com",
-    "telephone": "1234512345",
-    "newsletter": false,
-    "customer_group_id": 1,
-    "date_added": "2020-05-20 08:34:37",
-    "status": true,
-    "full_name": "Joe Bloggs",
-    "addresses": [
-      {
-        "address_id": 1,
-        "customer_id": 1,
-        "address_1": "1 Some Road",
-        "address_2": null,
-        "city": "London",
-        "state": "",
-        "postcode": "W1A 3NN",
-        "country_id": 222
-      }
-    ]
-  },
-  {
-    "customer_id": 2,
-    "first_name": "Sherlock",
-    "last_name": "Holmes",
-    "email": "sherlock@holmes.com",
-    "telephone": "01234012345",
-    "newsletter": true,
-    "customer_group_id": 1,
-    "date_added": "2020-05-21 09:12:17",
-    "status": false,
-    "full_name": "Sherlock Holmes",
-    "addresses": []
-  }
-]
-]
+{
+  "data": [
+    {
+      "customer_id": 1,
+      "first_name": "Joe",
+      "last_name": "Bloggs",
+      "email": "joe@bloggs.com",
+      "telephone": "1234512345",
+      "newsletter": false,
+      "customer_group_id": 1,
+      "date_added": "2020-05-20 08:34:37",
+      "status": true,
+      "full_name": "Joe Bloggs",
+      "addresses": [
+        {
+          "address_id": 1,
+          "customer_id": 1,
+          "address_1": "1 Some Road",
+          "address_2": null,
+          "city": "London",
+          "state": "",
+          "postcode": "W1A 3NN",
+          "country_id": 222
+        }
+      ]
+    },
+    {
+      "customer_id": 2,
+      "first_name": "Sherlock",
+      "last_name": "Holmes",
+      "email": "sherlock@holmes.com",
+      "telephone": "01234012345",
+      "newsletter": true,
+      "customer_group_id": 1,
+      "date_added": "2020-05-21 09:12:17",
+      "status": false,
+      "full_name": "Sherlock Holmes",
+      "addresses": []
+    }
+  ]
+}
 ```
 
 

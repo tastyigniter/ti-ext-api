@@ -35,12 +35,8 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
   "review_text": "This restaurant is amazing!",
   "date_added": "2020-06-03 09:17:12",
   "review_status": true,
-  "location": {
-    ...
-  },
-  "customer": {
-    ...
-  }
+  "location": {},
+  "customer": {}
 }
 ```
 
@@ -79,7 +75,7 @@ POST /api/reviews
   "review_text": "This restaurant is amazing!",
   "review_status": true,
   "customer_id": 1,
-  "location_id": 1,
+  "location_id": 1
 }
 ```
 
@@ -103,12 +99,8 @@ Status: 201 Created
   "review_text": "This restaurant is amazing!",
   "date_added": "2020-06-03 09:17:12",
   "review_status": true,
-  "location": {
-    ...
-  },
-  "customer": {
-    ...
-  }
+  "location": {},
+  "customer": {}
 }
 ```
 
@@ -144,12 +136,8 @@ Status: 200 OK
   "review_text": "This restaurant is amazing!",
   "date_added": "2020-06-03 09:17:12",
   "review_status": true,
-  "location": {
-    ...
-  },
-  "customer": {
-    ...
-  }
+  "location": {},
+  "customer": {}
 }
 ```
 
@@ -205,12 +193,8 @@ Status: 200 OK
   "review_text": "This restaurant is *really* amazing!",
   "date_added": "2020-06-03 09:17:12",
   "review_status": true,
-  "location": {
-    ...
-  },
-  "customer": {
-    ...
-  }
+  "location": {},
+  "customer": {}
 }
 ```
 
