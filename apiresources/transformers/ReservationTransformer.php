@@ -1,6 +1,8 @@
 <?php namespace Igniter\Api\ApiResources\Transformers;
 
-class ReservationTransformer extends \Illuminate\Http\Resources\Json\Resource
+use Igniter\Api\Classes\TransformerAbstract;
+
+class ReservationTransformer extends TransformerAbstract
 {
     public function toArray($request)
     {

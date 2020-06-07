@@ -1,9 +1,21 @@
 <?php namespace Igniter\Api\ApiResources\Transformers;
 
-class MenuTransformer extends \Illuminate\Http\Resources\Json\Resource
+use Igniter\Api\Classes\TransformerAbstract;
+
+class MenuTransformer extends TransformerAbstract
 {
+    protected $availableIncludes = [
+        'categories',
+        'menu_options.menu_option_values',
+        'menu_options.option_values',
+    ];
+
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return array_merge(parent::toArray($request), [
+            'categories' => $this->whenLoaded('categories'),
+            'menu_options.menu_option_values' => $this->whenLoaded('menu_options.menu_option_values'),
+            'menu_options.option_values' => $this->whenLoaded('menu_options.option_values'),
+        ]);
     }
 }

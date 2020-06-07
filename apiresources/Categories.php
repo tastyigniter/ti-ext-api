@@ -17,8 +17,10 @@ class Categories extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [],
         'model' => \Admin\Models\Categories_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\CategoryTransformer::class,
+        'authorization' => ['index:all', 'store:admin', 'show:all', 'update:admin', 'destroy:admin'],
     ];
+
+    protected $requiredAbilities = ['categories:*'];
 }

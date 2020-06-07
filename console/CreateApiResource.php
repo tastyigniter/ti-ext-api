@@ -79,8 +79,6 @@ class CreateApiResource extends GeneratorCommand
         $this->vars = [
             'model' => $model,
 
-            'relations' => $this->buildRelationsStub(array_get($data, 'relations', [])),
-
             'extension' => $extension,
             'lower_extension' => strtolower($extension),
             'title_extension' => title_case($extension),
@@ -103,21 +101,6 @@ class CreateApiResource extends GeneratorCommand
             'studly_plural_name' => studly_case(str_plural($controller)),
             'snake_plural_name' => snake_case(str_plural($controller)),
         ];
-    }
-
-    protected function buildRelationsStub($relations)
-    {
-        if ($relations AND !is_array($relations))
-            $relations = explode(',', $relations);
-
-        $relations = is_array($relations) ? $relations : [];
-
-        $stub = '';
-        foreach ($relations as $relation) {
-            $stub .= "'".$relation."',";
-        }
-
-        return $stub;
     }
 
     /**

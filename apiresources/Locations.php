@@ -17,8 +17,10 @@ class Locations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => ['working_hours', 'delivery_areas'],
         'model' => \Admin\Models\Locations_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\LocationTransformer::class,
+        'authorization' => ['index:all', 'store:admin', 'show:admin', 'update:admin', 'destroy:admin'],
     ];
+
+    protected $requiredAbilities = ['locations:*'];
 }

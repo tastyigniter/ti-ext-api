@@ -3,6 +3,7 @@
 namespace Igniter\Api\Actions;
 
 use Admin\Traits\FormModelWidget;
+use Igniter\Api\Classes\ApiManager;
 use Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use System\Classes\ControllerAction;
@@ -50,11 +51,12 @@ class RestController extends ControllerAction
         parent::__construct($controller);
         $this->controller = $controller;
 
-        $this->formConfig = $controller->restConfig;
-        $this->setConfig($controller->restConfig, $this->requiredConfig);
+        $this->mergeResourceConfigWith(
+            $controller->restConfig, $this->requiredConfig
+        );
 
-        $this->controller->allowedActions = array_merge(
-            $this->controller->allowedActions, array_get($this->config, 'actions')
+        $this->allowedActions(
+            array_get($this->config, 'only', []), array_get($this->config, 'authorization', [])
         );
 
         $this->controller->transformer = array_get($this->config, 'transformer');
@@ -69,14 +71,16 @@ class RestController extends ControllerAction
     {
         $options = array_merge($this->getActionOptions(), Request::all());
         $transformer = $this->getConfig('transformer');
-        $relations = $this->getConfig('relations', []);
-        if (is_string($relations))
-            $relations = explode(',', $relations);
 
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
 
-        $query = $model->with($relations);
+        $query = $model->newQuery();
+        $this->controller->restExtendQueryBefore($query);
+
+        $this->applyRelationsScope($query);
+
+        $this->controller->restExtendQuery($query);
 
         if (method_exists($model, 'scopeListFrontEnd')) {
             $result = $query->listFrontEnd($options);
@@ -99,6 +103,8 @@ class RestController extends ControllerAction
     {
         $data = Request::all();
 
+        $transformer = $this->getConfig('transformer');
+
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
 
@@ -107,7 +113,7 @@ class RestController extends ControllerAction
             $modelToSave->save();
         }
 
-        return $this->controller->response()->created($model);
+        return $this->controller->response()->created($model, $transformer);
     }
 
     /**
@@ -118,15 +124,8 @@ class RestController extends ControllerAction
      */
     public function show($recordId)
     {
-        $options = $this->getActionOptions();
         $transformer = $this->getConfig('transformer');
-        $relations = array_get($options, 'relations', []);
-
         $model = $this->controller->restFindModelObject($recordId);
-
-        // Get relations too
-        foreach ($relations as $relation)
-            $model->{$relation};
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -161,12 +160,10 @@ class RestController extends ControllerAction
      */
     public function destroy($recordId)
     {
-        $transformer = $this->getConfig('transformer');
-
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
 
-        return $this->controller->response()->resource($model, $transformer);
+        return $this->controller->response()->noContent();
     }
 
     public function getActionOptions()
@@ -192,6 +189,9 @@ class RestController extends ControllerAction
          * Prepare query and find model record
          */
         $query = $model->newQuery();
+
+        $this->applyRelationsScope($query);
+
         $this->controller->restExtendQuery($query);
         $result = $query->find($recordId);
 
@@ -232,6 +232,16 @@ class RestController extends ControllerAction
      * @param \Igniter\Flame\Database\Builder $query
      * @return void
      */
+    public function restExtendQueryBefore($query)
+    {
+    }
+
+    /**
+     * Extend supplied model query, the model query can
+     * be altered by overriding it in the controller.
+     * @param \Igniter\Flame\Database\Builder $query
+     * @return void
+     */
     public function restExtendQuery($query)
     {
     }
@@ -245,5 +255,40 @@ class RestController extends ControllerAction
         $class = $this->config['model'];
 
         return new $class();
+    }
+
+    protected function mergeResourceConfigWith(array $restConfig, array $requiredConfig)
+    {
+        $this->setConfig(array_merge(
+            $restConfig, ApiManager::instance()->getCurrentResource()
+        ), $requiredConfig);
+    }
+
+    protected function allowedActions($allowedActions, $authActions)
+    {
+        $result = [];
+        foreach ($allowedActions as $action) {
+            $result[$action] = array_get($authActions, $action, 'admin');
+        }
+
+        $this->controller->allowedActions = array_merge(
+            $this->controller->allowedActions, $result
+        );
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     */
+    protected function applyRelationsScope($query)
+    {
+        if (!$transformer = $this->getConfig('transformer'))
+            return;
+
+        $transformerObj = new $transformer();
+
+        $includes = method_exists($transformerObj, 'getIncludes')
+            ? $transformerObj->getIncludes() : [];
+
+        $query->with($includes);
     }
 }

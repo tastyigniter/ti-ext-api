@@ -1,0 +1,10 @@
+{
+  "name": "igniter/api",
+  "type": "igniter-extension",
+  "keywords": ["tastyigniter", "rest", "api"],
+  "require": {
+    "php": ">=7.1",
+    "laravel/sanctum": "~2.2"
+  },
+  "minimum-stability": "dev"
+}

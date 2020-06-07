@@ -17,11 +17,10 @@ class Menus extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'relations' => [
-	       'categories',
-	       'menu_options'
-        ],
         'model' => \Admin\Models\Menus_model::class,
         'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
+        'authorization' => ['index:all', 'store:admin', 'show:all', 'update:admin', 'destroy:admin'],
     ];
+
+    protected $requiredAbilities = ['menus:*'];
 }

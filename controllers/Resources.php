@@ -21,7 +21,7 @@ class Resources extends \Admin\Classes\AdminController
             'model' => 'Igniter\Api\Models\Resource',
             'title' => 'APIs',
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
-            'defaultSort' => ['order_id', 'DESC'],
+            'defaultSort' => ['id', 'DESC'],
             'configFile' => 'resource',
         ],
     ];

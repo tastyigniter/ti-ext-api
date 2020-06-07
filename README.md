@@ -6,7 +6,7 @@ Default behavior logic for several common verbs are supported — create, store,
 ### Features
 - Auto Generate Controller (CRUD)
 - Auto Generate Resource Response Class (For modeling JSON response)
-- Support relationships
+- Support eager loading relationships
 
 **TO DO:**
 - User Authentication (with Laravel Passport)
@@ -48,16 +48,16 @@ public function registerApiResources()
 
 ### Resource Transformer
 
-Response are transformed using laravel's [eloquent resources](https://laravel.com/docs/eloquent-resources).
+Response are transformed using laravel's [Eloquent API Resources](https://laravel.com/docs/eloquent-resources).
 
-**Example of Resource Transformer**
+**Example of a Resource Transformer**
 
 ```
 <?php namespace Igniter\Local\ApiResources\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Igniter\Api\Classes\TransformerAbstract;
 
-class MenuTransformer extends Resource
+class MenuTransformer extends TransformerAbstract
 {
 	public function toArray($request)
 	{

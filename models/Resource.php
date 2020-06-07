@@ -31,6 +31,12 @@ class Resource extends Model
 
     protected static $registeredResources;
 
+    public static $defaultMetaDefinition = [
+        'actions' => ['index', 'store', 'show', 'update', 'destroy'],
+        'middleware' => ['api'],
+        'authorization' => ['index:admin', 'store:admin', 'show:admin', 'update:admin', 'destroy:admin'],
+    ];
+
     /**
      * @var string The database table used by the model.
      */
@@ -132,7 +138,7 @@ class Resource extends Model
             $model->controller = array_get($definition, 'controller');
             $model->transformer = array_get($definition, 'transformer');
             $model->description = array_get($definition, 'description');
-            $model->meta = array_get($definition, 'meta', []);
+            $model->meta = array_get($definition, 'meta', self::$defaultMetaDefinition);
             $model->is_custom = FALSE;
             $model->save();
         }

@@ -1,7 +1,14 @@
 <?php namespace Igniter\Api;
 
+use Admin\Models\Customers_model;
+use Admin\Models\Users_model;
 use Event;
 use Igniter\Api\Exception\ExceptionHandler;
+use Igniter\Api\Models\Token;
+use Igniter\Flame\Database\Model;
+use Illuminate\Contracts\Http\Kernel;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Laravel\Sanctum\Sanctum;
 use System\Classes\BaseExtension;
 
 /**
@@ -13,15 +20,22 @@ class Extension extends BaseExtension
     {
         $this->mergeConfigFrom(__DIR__.'/config/api.php', 'api');
 
+        $this->mergeConfigFrom(__DIR__.'/config/sanctum.php', 'sanctum');
+
+        Sanctum::usePersonalAccessTokenModel(Token::class);
+
         $this->registerResponseFactory();
 
         $this->registerConsoleCommand('create.apiresource', \Igniter\Api\Console\CreateApiResource::class);
+        $this->registerConsoleCommand('issue.apitoken', \Igniter\Api\Console\IssueApiToken::class);
 
         $this->registerExceptionHandler();
     }
 
     public function boot()
     {
+        $this->sanctumConfigureAuthModels();
+        $this->sanctumConfigureMiddleware();
     }
 
     public function registerNavigation()
@@ -103,7 +117,7 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Reviews::class,
                 'transformer' => \Igniter\Api\ApiResources\Transformers\ReviewTransformer::class,
             ],
-            
+
         ];
     }
 
@@ -133,4 +147,28 @@ class Extension extends BaseExtension
             return $handler->handleException($exception);
         });
     }
+
+    /**
+     * Configure the Sanctum middleware and priority.
+     *
+     * @return void
+     */
+    protected function sanctumConfigureMiddleware()
+    {
+        $kernel = $this->app->make(Kernel::class);
+
+        $kernel->prependToMiddlewarePriority(EnsureFrontendRequestsAreStateful::class);
+    }
+
+    protected function sanctumConfigureAuthModels()
+    {
+        Users_model::extend(function (Model $model) {
+            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+        });
+
+        Customers_model::extend(function (Model $model) {
+            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+        });
+    }
+
 }
