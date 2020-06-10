@@ -19,7 +19,7 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
 | `location_lat`           | `decimal`  | The latitude of the location  |
 | `location_lng`           | `decimal`  | The longitude of the location |
-| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)  |
+| `description`           | `string`  | A description of the location to display to users (maximum of 3028 characters)  |
 | `options`           | `object`  | An object containing additional meta information about the location   |
 | `options.offer_delivery`           | `boolean`  | Has the value `true` if the location offers delivery or the value `false` if the location does not.         |
 | `options.offer_collection`           | `boolean`  | Has the value `true` if the location offers collection or the value `false` if the location does not.         |
@@ -70,81 +70,11 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 }
 ```
 
-### Create a location
-
-Creates a new location.
-
-```
-POST /api/location
-```
-
-#### Parameters
-
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `location_name`           | `string`  | **Required**. The location's name (between 2 and 48 characters in length)      |
-| `location_email`           | `string`  | **Required**. The location's email address       |
-| `location_telephone`           | `string`  | The location's telephone number (between 2 and 15 characters in length)       |
-| `location_address_1`           | `string`  | **Required**. The first line of the location's physical address (between 2 and 128 characters) |
-| `location_address_2`           | `string`  | The second line of the location's physical address (maximum 128 characters)        |
-| `location_city`           | `string`  | The city in which the location is situated  (maximum 128 characters)     |
-| `location_state`           | `string`  | The state or county in which the location is situated  (maximum 128 characters)     |
-| `location_postcode`           | `string`  | The postal or ZIP code of the location (maximum 10 characters)         |
-| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
-| `location_lat`           | `decimal`  | The latitude of the location  |
-| `location_lng`           | `decimal`  | The longitude of the location |
-| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)  |
-| `location_status`           | `boolean`  | Has the value `true` if the location is enabled or the value `false` if the location is disabled.         |
-| `permalink_slug`           | `string`  | The URL slug for this location. Use only alpha-numeric lowercase characters, _ or - and make sure it is unique.    |
-
-#### Payload example
-
-```json
-{
-  "location_name": "My restaurant",
-  "location_email": "restaurant@bloggs.com",
-  "description": "My TastyIgniter restaurant",
-  "location_address_1": "1 Some Street",
-  "location_address_2": "",
-  "location_city": "London",
-  "location_state": "London",
-  "location_postcode": "WA4 3NN",
-  "location_country_id": 222,
-  "location_telephone": "1234512345",
-  "location_status":true
-}
-```
-
-#### Response
-
-```html
-Status: 201 Created
-```
-
-```json
-{
-  "location_id": 1,
-  "location_name": "My restaurant",
-  "location_email": "restaurant@bloggs.com",
-  "description": "My TastyIgniter restaurant",
-  "location_address_1": "1 Some Street",
-  "location_address_2": "",
-  "location_city": "London",
-  "location_state": "London",
-  "location_postcode": "WA4 3NN",
-  "location_country_id": 222,
-  "location_telephone": "1234512345",
-  "location_lat": 50.6008818,
-  "location_lng": -6.8794655,
-  "location_status": true,
-  "permalink_slug": "my-restaurant",
-  "media": []
-}
-```
-
 ### List locations
 
 Retrieves a list of locations.
+
+Required abilities: `locations:read`
 
 ```
 GET /api/locations
@@ -203,10 +133,85 @@ Status: 200 OK
 }
 ```
 
+### Create a location
+
+Creates a new location.
+
+Required abilities: `locations:write`
+
+```
+POST /api/location
+```
+
+#### Parameters
+
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `location_name`           | `string`  | **Required**. The location's name (between 2 and 48 characters in length)      |
+| `location_email`           | `string`  | **Required**. The location's email address       |
+| `location_telephone`           | `string`  | The location's telephone number (between 2 and 15 characters in length)       |
+| `location_address_1`           | `string`  | **Required**. The first line of the location's physical address (between 2 and 128 characters) |
+| `location_address_2`           | `string`  | The second line of the location's physical address (maximum 128 characters)        |
+| `location_city`           | `string`  | The city in which the location is situated  (maximum 128 characters)     |
+| `location_state`           | `string`  | The state or county in which the location is situated  (maximum 128 characters)     |
+| `location_postcode`           | `string`  | The postal or ZIP code of the location (maximum 10 characters)         |
+| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
+| `location_lat`           | `decimal`  | The latitude of the location  |
+| `location_lng`           | `decimal`  | The longitude of the location |
+| `description`           | `string`  | A description of the location to display to users (maximum of 3028 characters)  |
+| `location_status`           | `boolean`  | Has the value `true` if the location is enabled or the value `false` if the location is disabled.         |
+| `permalink_slug`           | `string`  | The URL slug for this location. Use only alpha-numeric lowercase characters, _ or - and make sure it is unique.    |
+
+#### Payload example
+
+```json
+{
+  "location_name": "My restaurant",
+  "location_email": "restaurant@bloggs.com",
+  "description": "My TastyIgniter restaurant",
+  "location_address_1": "1 Some Street",
+  "location_address_2": "",
+  "location_city": "London",
+  "location_state": "London",
+  "location_postcode": "WA4 3NN",
+  "location_country_id": 222,
+  "location_telephone": "1234512345",
+  "location_status":true
+}
+```
+
+#### Response
+
+```html
+Status: 201 Created
+```
+
+```json
+{
+  "location_id": 1,
+  "location_name": "My restaurant",
+  "location_email": "restaurant@bloggs.com",
+  "description": "My TastyIgniter restaurant",
+  "location_address_1": "1 Some Street",
+  "location_address_2": "",
+  "location_city": "London",
+  "location_state": "London",
+  "location_postcode": "WA4 3NN",
+  "location_country_id": 222,
+  "location_telephone": "1234512345",
+  "location_lat": 50.6008818,
+  "location_lng": -6.8794655,
+  "location_status": true,
+  "permalink_slug": "my-restaurant",
+  "media": []
+}
+```
 
 ### Retrieve a location
 
 Retrieves a location.
+
+Required abilities: `locations:read`
 
 ```
 GET /api/locations/:location_id
@@ -247,6 +252,8 @@ Status: 200 OK
 
 Updates a location.
 
+Required abilities: `locations:write`
+
 ```
 PATCH /api/locations/:location_id
 ```
@@ -266,7 +273,7 @@ PATCH /api/locations/:location_id
 | `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
 | `location_lat`           | `decimal`  | The latitude of the location  |
 | `location_lng`           | `decimal`  | The longitude of the location |
-| `description`           | `string`  | A description of the location to display to customers (maximum of 3028 characters)  |
+| `description`           | `string`  | A description of the location to display to users (maximum of 3028 characters)  |
 | `location_status`           | `boolean`  | Has the value `true` if the location is enabled or the value `false` if the location is disabled.         |
 | `permalink_slug`           | `string`  | The URL slug for this location. Use only alpha-numeric lowercase characters, _ or - and make sure it is unique.    |
 
@@ -309,6 +316,8 @@ Status: 200 OK
 ### Delete a location
 
 Permanently deletes a location. It cannot be undone. 
+
+Required abilities: `locations:write`
 
 ```
 DELETE /api/locations/:location_id
