@@ -1,4 +1,4 @@
- APIs is an extension that allows you to build RESTful APIs and manage them within a TastyIgniter application.
+APIs is an extension that allows you to build RESTful APIs and manage them within a TastyIgniter application.
 
 However, it accomplishes more than just that, you may override the api actions (verbs) with your own logic. 
 Default behavior logic for several common verbs are supported — create, store, show, edit, update, destroy. 
@@ -14,14 +14,14 @@ Default behavior logic for several common verbs are supported — create, store,
 
 ### Installation
 
-To install this extension, click on the **Add to Site** button on the marketplace item page or search for **Igniter.Api** in **Admin System > Updates > Browse Extensions***
+To install this extension, click on the **Add to Site** button on the marketplace item page or search for **Igniter.Api** in **Admin System > Updates > Browse Extensions**
 
 ### Usage
 In the admin user interface, go to **Tools > APIs** and use the Create button to generate a new api resource
 
 ### Manually Create an API resource
 
-The below command will generate both `Controller` and `Resource Transformer` for the specified resource
+The below command will generate both `Controller` and `Transformer` for the specified resource
 
 ```
 php artisan create:apiresource Acme.Extension ResourceName
