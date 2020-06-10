@@ -4,6 +4,7 @@ return [
     'search_prompt' => 'Search api name',
     'search_tokens_prompt' => 'Search tokens',
 
+    'text_tab_general' => 'General',
     'text_tokens_title' => 'Access Tokens',
     'text_token_type_staff' => 'Staff',
     'text_token_type_customer' => 'Customer',
@@ -39,6 +40,7 @@ return [
     'label_actions' => 'Actions',
     'help_actions' => 'Leave blank to deactivate the endpoint.',
     'label_require_authorization' => 'Require authorization',
+    'label_setup' => 'Reference Docs',
 
     'actions' => [
         'text_index' => 'List all resources (GET)',

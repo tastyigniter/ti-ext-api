@@ -111,7 +111,7 @@ class Resource extends Model
     {
         $content = 'No documentation provided';
 
-        $docsPath = __DIR__.'/../docs/'.sprintf('%s.md', $this->endpoint);
+        $docsPath = extension_path('igniter/api/docs/'.sprintf('%s.md', $this->endpoint));
         if ($docsPath = File::existsInsensitive($docsPath))
             $content = (new Markdown)->parse(File::get($docsPath));
 
