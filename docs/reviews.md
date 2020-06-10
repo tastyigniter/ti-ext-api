@@ -44,6 +44,8 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 Creates a new review.
 
+Required abilities: `reviews:write`
+
 ```
 POST /api/reviews
 ```
@@ -108,6 +110,8 @@ Status: 201 Created
 
 Retrieves a review.
 
+Required abilities: `reviews:read`
+
 ```
 GET /api/reviews/:review_id
 ```
@@ -144,6 +148,8 @@ Status: 200 OK
 ### Update a review
 
 Updates a review.
+
+Required abilities: `reviews:write`
 
 ```
 PATCH /api/reviews/:review_id
@@ -201,6 +207,8 @@ Status: 200 OK
 ### Delete a review
 
 Permanently deletes a review. It cannot be undone. 
+
+Required abilities: `reviews:write`
 
 ```
 DELETE /api/reviews/:review_id

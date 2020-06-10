@@ -66,87 +66,11 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `postcode`           | `string`  | The postcode or ZIP code of the customer's address (maximum of 128 characters)     |
 | `country_id`           | `integer`  | **Required**. The country code of the customers address. Should reference an id in the "countries" database table.  |
 
-### Create a customer
-
-Creates a new customer.
-
-```
-POST /api/customers
-```
-
-#### Parameters
-
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `first_name`           | `string`  | **Required**. The customer's first name (between 2 and 32 characters in length)      |
-| `last_name`           | `string`  | **Required**. The customer's last name (between 2 and 32 characters in length)       |
-| `email`           | `string`  | **Required**. The customer's email address       |
-| `telephone`           | `string`  | The customer's telephone number         |
-| `newsletter`           | `boolean`  | Whether the customer opts into newsletter marketing         |
-| `customer_group_id`           | `integer`  | The group the customer belongs to, if any.         |
-| `status`           | `boolean`  | Has the value `true` if the customer is enabled or the value `false` if the customer is disabled.         |
-| `addresses`           | `array`  | The customer's addresses, if any        |
-
-
-#### Payload example
-
-```json
-{
-  "first_name": "Joe",
-  "last_name": "Bloggs",
-  "email": "joe@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "status": true,
-  "addresses": [
-    {
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
-    }
-  ]
-}
-```
-
-#### Response
-
-```html
-Status: 201 Created
-```
-
-```json
-{
-  "customer_id": 1,
-  "first_name": "Joe",
-  "last_name": "Bloggs",
-  "email": "joe@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "customer_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
-    {
-      "address_id": 1,
-      "customer_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
-    }
-  ]
-}
-```
-
 ### List customers
 
 Retrieves a list of customers.
+
+Required abilities: `customers:read`
 
 ```
 GET /api/customers
@@ -208,10 +132,90 @@ Status: 200 OK
 }
 ```
 
+### Create a customer
+
+Creates a new customer.
+
+Required abilities: `customers:write`
+
+```
+POST /api/customers
+```
+
+#### Parameters
+
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `first_name`           | `string`  | **Required**. The customer's first name (between 2 and 32 characters in length)      |
+| `last_name`           | `string`  | **Required**. The customer's last name (between 2 and 32 characters in length)       |
+| `email`           | `string`  | **Required**. The customer's email address       |
+| `telephone`           | `string`  | The customer's telephone number         |
+| `newsletter`           | `boolean`  | Whether the customer opts into newsletter marketing         |
+| `customer_group_id`           | `integer`  | The group the customer belongs to, if any.         |
+| `status`           | `boolean`  | Has the value `true` if the customer is enabled or the value `false` if the customer is disabled.         |
+| `addresses`           | `array`  | The customer's addresses, if any        |
+
+#### Payload example
+
+```json
+{
+  "first_name": "Joe",
+  "last_name": "Bloggs",
+  "email": "joe@bloggs.com",
+  "telephone": "1234512345",
+  "newsletter": false,
+  "status": true,
+  "addresses": [
+    {
+      "address_1": "1 Some Road",
+      "address_2": null,
+      "city": "London",
+      "state": "",
+      "postcode": "W1A 3NN",
+      "country_id": 222
+    }
+  ]
+}
+```
+
+#### Response
+
+```html
+Status: 201 Created
+```
+
+```json
+{
+  "customer_id": 1,
+  "first_name": "Joe",
+  "last_name": "Bloggs",
+  "email": "joe@bloggs.com",
+  "telephone": "1234512345",
+  "newsletter": false,
+  "customer_group_id": 1,
+  "date_added": "2020-05-20 08:34:37",
+  "status": true,
+  "full_name": "Joe Bloggs",
+  "addresses": [
+    {
+      "address_id": 1,
+      "customer_id": 1,
+      "address_1": "1 Some Road",
+      "address_2": null,
+      "city": "London",
+      "state": "",
+      "postcode": "W1A 3NN",
+      "country_id": 222
+    }
+  ]
+}
+```
 
 ### Retrieve a customer
 
 Retrieves a customer.
+
+Required abilities: `customers:read`
 
 ```
 GET /api/customers/:customer_id
@@ -257,6 +261,8 @@ Status: 200 OK
 ### Update a customer
 
 Updates a customer.
+
+Required abilities: `customers:write`
 
 ```
 PATCH /api/customers/:customer_id
@@ -317,9 +323,11 @@ Status: 200 OK
 }
 ```
 
-### Delete a category
+### Delete a customer
 
-Permanently deletes a category. It cannot be undone. 
+Permanently deletes a customer. It cannot be undone. 
+
+Required abilities: `customers:write`
 
 ```
 DELETE /api/customers/:customer_id
