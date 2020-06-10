@@ -7,6 +7,8 @@ use Igniter\Api\Classes\ApiManager;
 use Igniter\Flame\Database\Traits\HasPermalink;
 use Igniter\Flame\Database\Traits\Purgeable;
 use Igniter\Flame\Database\Traits\Validation;
+use Igniter\Flame\Mail\Markdown;
+use Igniter\Flame\Support\Facades\File;
 use Model;
 use System\Classes\ExtensionManager;
 
@@ -103,6 +105,17 @@ class Resource extends Model
     public function getBaseEndpointAttribute($value)
     {
         return ApiManager::instance()->getBaseEndpoint($this->endpoint);
+    }
+
+    public function renderSetupPartial()
+    {
+        $content = 'No documentation provided';
+
+        $docsPath = __DIR__.'/../docs/'.sprintf('%s.md', $this->endpoint);
+        if ($docsPath = File::existsInsensitive($docsPath))
+            $content = (new Markdown)->parse(File::get($docsPath));
+
+        return $content;
     }
 
     //
