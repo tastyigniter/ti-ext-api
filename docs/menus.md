@@ -17,8 +17,8 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `subtract_stock`           | `boolean`  | Has the value `true` if the menu stock quantity should be subtracted when ordered or the value `false` if the menu stock quantity should not be subtracted.         |
 | `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
-| `menu_priority`           | `integer`  | The menu's priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders or the value `2` if the menu is only available for pick-up orders.        |
+| `menu_priority`           | `integer`  | The menu's ordering priority.        |
+| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 
@@ -87,7 +87,7 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 Retrieves a list of menus.
 
-Required abilities: `menus:write`
+Required abilities: `menus:read`
 
 ```
 GET /api/menus
@@ -116,8 +116,8 @@ POST /api/menus
 | `subtract_stock`           | `boolean`  | Has the value `true` if the menu stock quantity should be subtracted when ordered or the value `false` if the menu stock quantity should not be subtracted.         |
 | `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
-| `menu_priority`           | `integer`  | The menu's priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders or the value `2` if the menu is only available for pick-up orders.        |
+| `menu_priority`           | `integer`  | The menu's ordering priority.        |
+| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.        |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 
@@ -158,7 +158,7 @@ Status: 201 Created
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `include`           | `string`  | What relations to include in the response. Options are `categories`, `menu_options`, `menu_options.menu_option_values`. To include multiple seperate by comma (e.g. ?include=addresses,orders) |
+| `include`           | `string`  | What relations to include in the response. Options are `categories`, `menu_options`, `menu_options.menu_option_values`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
 #### Response
 
@@ -205,7 +205,7 @@ Status: 200 OK
 
 Retrieves a menu.
 
-Required abilities: `menus:write`
+Required abilities: `menus:read`
 
 ```
 GET /api/menus/:menu_id
@@ -262,7 +262,7 @@ PATCH /api/menus/:menu_id
 | `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders or the value `2` if the menu is only available for pick-up orders.        |
+| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.         |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 

@@ -77,7 +77,7 @@ This endpoint allows you to `list`, `retrieve`, `update` and `delete` your order
 
 Retrieves an order.
 
-Required abilities: `orders:reead`
+Required abilities: `orders:read`
 
 ```
 GET /api/orders/:order_id

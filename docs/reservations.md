@@ -11,7 +11,7 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `customer_id`           | `integer`  | The Unique Identifier of the customer associated with the reservation, if any.         |
 | `location_id`           | `integer`  | The Unique Identifier of the location associated with the reservation.         |
 | `table_id`           | `integer`  | The Unique Identifier of the table associated with the reservation.         |
-| `guest_num`           | `integer`  | The number of guest       |
+| `guest_num`           | `integer`  | The number of guests       |
 | `first_name`           | `string`  | The first name associated with the reservation.         |
 | `last_name`           | `string`  | The last name associated with the reservation.         |
 | `email`           | `string`  | The email address associated with the reservation.         |
@@ -73,9 +73,7 @@ GET /api/reservations
 
 #### Parameters
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `include`           | `string`  | What relations to include in the response. Options are. To include multiple seperate by comma (e.g. ?include=) |
+No parameters.
 
 #### Response
 
@@ -131,7 +129,7 @@ POST /api/reservations
 | -------------------- | --------- | ------------------------------------------------------------ |
 | `location_id`           | `integer`  | The Unique Identifier of the location to associate with the reservation.         |
 | `table_id`           | `integer`  | The Unique Identifier of the table to associate with the reservation.         |
-| `guest_num`           | `integer`  | The number of guest       |
+| `guest_num`           | `integer`  | The number of guests      |
 | `first_name`           | `string`  | **Required**. The reservation's first name (between 2 and 32 characters in length)      |
 | `last_name`           | `string`  | **Required**. The reservation's last name (between 2 and 32 characters in length)       |
 | `email`           | `string`  | **Required**. The reservation's email address       |
