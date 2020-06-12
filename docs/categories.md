@@ -32,9 +32,48 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 }
 ```
 
+### List categories
+
+Returns a list of categories you’ve previously created.
+
+Required abilities: `categories:read`
+
+```
+POST /api/categories
+```
+
+#### Parameters
+
+| Key                  | Type      | Description          |
+| -------------------- | --------- | ------------------------- |
+| `page`           | `integer`  | The page number.         |
+
+#### Response
+
+```html
+Status: 201 Created
+```
+
+```json
+[
+  {
+    "name": "Appetizer",
+    "permalink_slug": "appetizer",
+    "parent_id": null,
+    "locations": [],
+    "priority": null,
+    "status": true,
+    "description": "Sed consequat, sapien in scelerisque egestas",
+    "thumb": null
+  }
+]
+```
+
 ### Create a category
 
 Creates a new category.
+
+Required abilities: `categories:write`
 
 ```
 POST /api/categories
@@ -85,6 +124,8 @@ Status: 201 Created
 
 Retrieves a category.
 
+Required abilities: `categories:read`
+
 ```
 GET /api/categories/:category_id
 ```
@@ -115,6 +156,8 @@ Status: 200 OK
 ### Update a category
 
 Updates a category.
+
+Required abilities: `categories:write`
 
 ```
 PATCH /api/categories/:category_id
@@ -164,6 +207,8 @@ Status: 200 OK
 ### Delete a category
 
 Permanently deletes a category. It cannot be undone. 
+
+Required abilities: `categories:write`
 
 ```
 DELETE /api/categories/:category_id
