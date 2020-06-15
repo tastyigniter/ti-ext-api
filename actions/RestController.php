@@ -90,6 +90,8 @@ class RestController extends ControllerAction
             $pageSize = array_get($options, 'pageLimit', 5);
             $result = $query->paginate($pageSize, $page);
         }
+        
+        $this->afterIndex($model);
 
         return $this->controller->response()->paginator($result, $transformer);
     }
@@ -112,6 +114,8 @@ class RestController extends ControllerAction
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save();
         }
+        
+        $this->afterStore($model);
 
         return $this->controller->response()->created($model, $transformer);
     }
@@ -126,6 +130,8 @@ class RestController extends ControllerAction
     {
         $transformer = $this->getConfig('transformer');
         $model = $this->controller->restFindModelObject($recordId);
+        
+        $this->afterShow($model);
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -148,6 +154,8 @@ class RestController extends ControllerAction
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save();
         }
+        
+        $this->afterUpdate($model);
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -162,6 +170,8 @@ class RestController extends ControllerAction
     {
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
+        
+        $this->afterDestroy($model);
 
         return $this->controller->response()->noContent();
     }
@@ -204,6 +214,56 @@ class RestController extends ControllerAction
         $result = $this->controller->restExtendModel($result) ?: $result;
 
         return $result;
+    }
+    
+    /**
+     * Run logic after index operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return \Model
+     */
+    public function afterIndex($model)
+    {
+    }
+
+    /**
+     * Run logic after show operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return \Model
+     */
+    public function afterShow($model)
+    {
+    }
+    
+    /**
+     * Run logic after store operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return \Model
+     */
+    public function afterStore($model)
+    {
+    }
+    
+    /**
+     * Run logic after update operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return \Model
+     */
+    public function afterUpdate($model)
+    {
+    }
+    
+    /**
+     * Run logic after destroy operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return \Model
+     */
+    public function afterDestroy($model)
+    {
     }
 
     /**

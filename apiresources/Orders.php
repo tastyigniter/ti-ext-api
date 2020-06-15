@@ -40,4 +40,25 @@ class Orders extends ApiController
 
         $this->asExtension('RestController')->store();
     }
+    
+    public function afterStore($model)
+    {
+        if (($menu_items = Request::input('menu_items', []) && count($menu_items))
+        	$model->addOrderMenus($menu_items);
+    }
+
+    public function update()
+    {
+        if (($token = $this->getToken()) && $token->isForCustomer())
+            Request::merge(['customer_id' => $token->tokenable_id]);
+
+        $this->asExtension('RestController')->update();
+        
+    }
+    
+    public function afterUpdate($model)
+    {
+        if (($menu_items = Request::input('menu_items', []) && count($menu_items))
+        	$model->addOrderMenus($menu_items);
+    }
 }
