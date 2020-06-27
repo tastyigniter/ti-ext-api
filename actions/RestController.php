@@ -91,7 +91,7 @@ class RestController extends ControllerAction
             $result = $query->paginate($pageSize, $page);
         }
         
-        $this->afterIndex($model);
+        $this->restAfterIndex($model);
 
         return $this->controller->response()->paginator($result, $transformer);
     }
@@ -115,7 +115,7 @@ class RestController extends ControllerAction
             $modelToSave->save();
         }
         
-        $this->afterStore($model);
+        $this->restAfterStore($model);
 
         return $this->controller->response()->created($model, $transformer);
     }
@@ -131,7 +131,7 @@ class RestController extends ControllerAction
         $transformer = $this->getConfig('transformer');
         $model = $this->controller->restFindModelObject($recordId);
         
-        $this->afterShow($model);
+        $this->restAfterShow($model);
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -155,7 +155,7 @@ class RestController extends ControllerAction
             $modelToSave->save();
         }
         
-        $this->afterUpdate($model);
+        $this->restAfterUpdate($model);
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -171,7 +171,7 @@ class RestController extends ControllerAction
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
         
-        $this->afterDestroy($model);
+        $this->restAfterDestroy($model);
 
         return $this->controller->response()->noContent();
     }
@@ -222,7 +222,7 @@ class RestController extends ControllerAction
      * @param \Model $model
      * @return \Model
      */
-    public function afterIndex($model)
+    public function restAfterIndex($model)
     {
     }
 
@@ -232,7 +232,7 @@ class RestController extends ControllerAction
      * @param \Model $model
      * @return \Model
      */
-    public function afterShow($model)
+    public function restAfterShow($model)
     {
     }
     
@@ -242,7 +242,7 @@ class RestController extends ControllerAction
      * @param \Model $model
      * @return \Model
      */
-    public function afterStore($model)
+    public function restAfterStore($model)
     {
     }
     
@@ -252,7 +252,7 @@ class RestController extends ControllerAction
      * @param \Model $model
      * @return \Model
      */
-    public function afterUpdate($model)
+    public function restAfterUpdate($model)
     {
     }
     
@@ -262,7 +262,7 @@ class RestController extends ControllerAction
      * @param \Model $model
      * @return \Model
      */
-    public function afterDestroy($model)
+    public function restAfterDestroy($model)
     {
     }
 
