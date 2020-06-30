@@ -108,10 +108,16 @@ class RestController extends ControllerAction
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
 
+        $this->restBeforeSave($model);
+        $this->restBeforeCreate($model);
+
         $modelsToSave = $this->prepareModelsToSave($model, $data);
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save();
         }
+
+        $this->restAfterSave($model);
+        $this->restAfterCreate($model);
 
         return $this->controller->response()->created($model, $transformer);
     }
@@ -144,10 +150,16 @@ class RestController extends ControllerAction
 
         $model = $this->controller->restFindModelObject($recordId);
 
+        $this->restBeforeSave($model);
+        $this->restBeforeUpdate($model);
+
         $modelsToSave = $this->prepareModelsToSave($model, $data);
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save();
         }
+
+        $this->restAfterSave($model);
+        $this->restAfterUpdate($model);
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -162,6 +174,8 @@ class RestController extends ControllerAction
     {
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
+
+        $this->restAfterDelete($model);
 
         return $this->controller->response()->noContent();
     }
@@ -204,6 +218,76 @@ class RestController extends ControllerAction
         $result = $this->controller->restExtendModel($result) ?: $result;
 
         return $result;
+    }
+
+    /**
+     * Run logic before the store or update resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
+     */
+    public function restBeforeSave($model)
+    {
+    }
+
+    /**
+     * Run logic before the store resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
+     */
+    public function restBeforeCreate($model)
+    {
+    }
+
+    /**
+     * Run logic before the update resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
+     */
+    public function restBeforeUpdate($model)
+    {
+    }
+
+    /**
+     * Run logic after the store or update resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
+     */
+    public function restAfterSave($model)
+    {
+    }
+
+    /**
+     * Run logic after the store resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
+     */
+    public function restAfterCreate($model)
+    {
+    }
+
+    /**
+     * Run logic after the update resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
+     */
+    public function restAfterUpdate($model)
+    {
+    }
+
+    /**
+     * Run logic after the delete resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
+     */
+    public function restAfterDelete($model)
+    {
     }
 
     /**
