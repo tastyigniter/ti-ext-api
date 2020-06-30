@@ -40,11 +40,11 @@ class Orders extends ApiController
 
         $this->asExtension('RestController')->store();
     }
-    
+
     public function restAfterStore($model)
     {
-        if (($menuItems = Request::input('menu_items', [])) && count($menuItems)
-        	$model->addOrderMenus($menuItems);
+        if (($menuItems = Request::input('menu_items', [])) && count($menuItems))
+            $model->addOrderMenus($menuItems);
     }
 
     public function update()
@@ -53,12 +53,11 @@ class Orders extends ApiController
             Request::merge(['customer_id' => $token->tokenable_id]);
 
         $this->asExtension('RestController')->update();
-        
     }
-    
+
     public function restAfterUpdate($model)
     {
-        if (($menuItems = Request::input('menu_items', [])) && count($menuItems)
-        	$model->addOrderMenus($menuItems);
+        if (($menuItems = Request::input('menu_items', [])) && count($menuItems))
+            $model->addOrderMenus($menuItems);
     }
 }
