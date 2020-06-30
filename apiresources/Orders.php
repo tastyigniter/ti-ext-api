@@ -41,12 +41,6 @@ class Orders extends ApiController
         $this->asExtension('RestController')->store();
     }
 
-    public function restAfterStore($model)
-    {
-        if (($menuItems = Request::input('menu_items', [])) && count($menuItems))
-            $model->addOrderMenus($menuItems);
-    }
-
     public function update()
     {
         if (($token = $this->getToken()) && $token->isForCustomer())
@@ -55,9 +49,9 @@ class Orders extends ApiController
         $this->asExtension('RestController')->update();
     }
 
-    public function restAfterUpdate($model)
+    public function restAfterSave($model)
     {
-        if (($menuItems = Request::input('menu_items', [])) && count($menuItems))
+        if ($menuItems = (array)Request::get('menu_items', []))
             $model->addOrderMenus($menuItems);
     }
 }

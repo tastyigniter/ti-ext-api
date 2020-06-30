@@ -90,8 +90,6 @@ class RestController extends ControllerAction
             $pageSize = array_get($options, 'pageLimit', 5);
             $result = $query->paginate($pageSize, $page);
         }
-        
-        $this->restAfterIndex($model);
 
         return $this->controller->response()->paginator($result, $transformer);
     }
@@ -110,12 +108,16 @@ class RestController extends ControllerAction
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
 
+        $this->restBeforeSave($model);
+        $this->restBeforeCreate($model);
+
         $modelsToSave = $this->prepareModelsToSave($model, $data);
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save();
         }
-        
-        $this->restAfterStore($model);
+
+        $this->restAfterSave($model);
+        $this->restAfterCreate($model);
 
         return $this->controller->response()->created($model, $transformer);
     }
@@ -130,8 +132,6 @@ class RestController extends ControllerAction
     {
         $transformer = $this->getConfig('transformer');
         $model = $this->controller->restFindModelObject($recordId);
-        
-        $this->restAfterShow($model);
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -150,11 +150,15 @@ class RestController extends ControllerAction
 
         $model = $this->controller->restFindModelObject($recordId);
 
+        $this->restBeforeSave($model);
+        $this->restBeforeUpdate($model);
+
         $modelsToSave = $this->prepareModelsToSave($model, $data);
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save();
         }
-        
+
+        $this->restAfterSave($model);
         $this->restAfterUpdate($model);
 
         return $this->controller->response()->resource($model, $transformer);
@@ -170,8 +174,8 @@ class RestController extends ControllerAction
     {
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
-        
-        $this->restAfterDestroy($model);
+
+        $this->restAfterDelete($model);
 
         return $this->controller->response()->noContent();
     }
@@ -215,54 +219,74 @@ class RestController extends ControllerAction
 
         return $result;
     }
-    
+
     /**
-     * Run logic after index operation
+     * Run logic before the store or update resource operation
      * by overriding it in the controller.
      * @param \Model $model
-     * @return \Model
+     * @return void
      */
-    public function restAfterIndex($model)
+    public function restBeforeSave($model)
     {
     }
 
     /**
-     * Run logic after show operation
+     * Run logic before the store resource operation
      * by overriding it in the controller.
      * @param \Model $model
-     * @return \Model
+     * @return void
      */
-    public function restAfterShow($model)
+    public function restBeforeCreate($model)
     {
     }
-    
+
     /**
-     * Run logic after store operation
+     * Run logic before the update resource operation
      * by overriding it in the controller.
      * @param \Model $model
-     * @return \Model
+     * @return void
      */
-    public function restAfterStore($model)
+    public function restBeforeUpdate($model)
     {
     }
-    
+
     /**
-     * Run logic after update operation
+     * Run logic after the store or update resource operation
      * by overriding it in the controller.
      * @param \Model $model
-     * @return \Model
+     * @return void
+     */
+    public function restAfterSave($model)
+    {
+    }
+
+    /**
+     * Run logic after the store resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
+     */
+    public function restAfterCreate($model)
+    {
+    }
+
+    /**
+     * Run logic after the update resource operation
+     * by overriding it in the controller.
+     * @param \Model $model
+     * @return void
      */
     public function restAfterUpdate($model)
     {
     }
-    
+
     /**
-     * Run logic after destroy operation
+     * Run logic after the delete resource operation
      * by overriding it in the controller.
      * @param \Model $model
-     * @return \Model
+     * @return void
      */
-    public function restAfterDestroy($model)
+    public function restAfterDelete($model)
     {
     }
 
