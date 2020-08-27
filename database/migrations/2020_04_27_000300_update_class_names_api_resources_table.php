@@ -1,4 +1,6 @@
-<?php namespace Igniter\Api\Database\Migrations;
+<?php
+
+namespace Igniter\Api\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;

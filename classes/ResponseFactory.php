@@ -112,7 +112,6 @@ class ResponseFactory
      *
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     *
      */
     public function error($message, int $statusCode)
     {
@@ -126,7 +125,6 @@ class ResponseFactory
      *
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     *
      */
     public function errorNotFound($message = 'Not Found')
     {
@@ -140,7 +138,6 @@ class ResponseFactory
      *
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     *
      */
     public function errorBadRequest($message = 'Bad Request')
     {
@@ -154,7 +151,6 @@ class ResponseFactory
      *
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     *
      */
     public function errorForbidden($message = 'Forbidden')
     {
@@ -168,7 +164,6 @@ class ResponseFactory
      *
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     *
      */
     public function errorInternal($message = 'Internal Error')
     {
@@ -182,7 +177,6 @@ class ResponseFactory
      *
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     *
      */
     public function errorUnauthorized($message = 'Unauthorized')
     {
@@ -196,7 +190,6 @@ class ResponseFactory
      *
      * @return void
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     *
      */
     public function errorMethodNotAllowed($message = 'Method Not Allowed')
     {
