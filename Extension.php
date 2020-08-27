@@ -1,4 +1,6 @@
-<?php namespace Igniter\Api;
+<?php
+
+namespace Igniter\Api;
 
 use Admin\Models\Customers_model;
 use Admin\Models\Users_model;
@@ -170,5 +172,4 @@ class Extension extends BaseExtension
             $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
         });
     }
-
 }

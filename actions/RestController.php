@@ -10,7 +10,6 @@ use System\Classes\ControllerAction;
 
 /**
  * Rest Controller Action
- * @package Iginter\Api
  */
 class RestController extends ControllerAction
 {
@@ -27,12 +26,12 @@ class RestController extends ControllerAction
     protected $model;
 
     /**
-     * @var String The prefix for verb methods.
+     * @var string The prefix for verb methods.
      */
     protected $prefix = '';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $requiredProperties = ['restConfig'];
 

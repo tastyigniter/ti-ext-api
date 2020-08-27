@@ -1,4 +1,6 @@
-<?php namespace Igniter\Api\ApiResources\Transformers;
+<?php
+
+namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Classes\TransformerAbstract;
 

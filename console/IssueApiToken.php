@@ -58,5 +58,4 @@ class IssueApiToken extends Command
             ['email', null, InputOption::VALUE_OPTIONAL, 'The email of the customer you want to issue a token.'],
         ];
     }
-
 }

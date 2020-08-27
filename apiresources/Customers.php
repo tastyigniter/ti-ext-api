@@ -1,4 +1,6 @@
-<?php namespace Igniter\Api\ApiResources;
+<?php
+
+namespace Igniter\Api\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
 use Illuminate\Support\Facades\Request;

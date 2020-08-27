@@ -209,7 +209,7 @@ class ApiManager
     {
         $token = $this->currentAccessToken();
 
-        return ($token AND $token->tokenable_type == 'admin');
+        return $token AND $token->tokenable_type == 'admin';
     }
 
     /**
