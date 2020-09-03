@@ -77,7 +77,7 @@ class MenuTransformer extends TransformerAbstract
 If you choose to restrict access to the API to customers, staff or both, you will need to generate a token for each user or customer you want to be able to access the API.
 
 #### Admin user tokens
-Tokens can be generated for admin users by POST-ing to: 
+Tokens can be generated for admin users by sending a POST request to: 
 `https://your.url/api/admin/token`
 
 The post data should contain the following fields:
@@ -90,7 +90,7 @@ The post data should contain the following fields:
 | abilities   | An optional array of abilities to restrict the token to (e.g. Orders.*)   |
 
 #### Customer tokens
-Tokens can be generated for customers by POST-ing to: 
+Tokens can be generated for customers by sending a POST request to: 
 `https://your.url/api/token`
 
 The post data should contain the following fields:
