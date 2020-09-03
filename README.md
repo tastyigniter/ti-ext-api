@@ -71,6 +71,51 @@ class MenuTransformer extends TransformerAbstract
 }
 ```
 
+
+### Tokens
+
+If you choose to restrict access to the API to customers, staff or both, you will need to generate a token for each user or customer you want to be able to access the API.
+
+#### Admin user tokens
+Tokens can be generated for admin users by POST-ing to: 
+`https://your.url/api/admin/token`
+
+The post data should contain the following fields:
+
+| field  | value  |
+|:----------|:----------|
+| username    | The username of the admin user   |
+| password   | The admin user's password   |
+| device_name   | A unique identifier for the device making the request    |
+| abilities   | An optional array of abilities to restrict the token to (e.g. Orders.*)   |
+
+#### Customer tokens
+Tokens can be generated for customers by POST-ing to: 
+`https://your.url/api/token`
+
+The post data should contain the following fields:
+
+| field  | value  |
+|:----------|:----------|
+| email    | The email of the customer   |
+| password   | The customer's password   |
+| device_name   | A unique identifier for the device making the request    |
+| abilities   | An optional array of abilities to restrict the token to (e.g. Orders.*)   |
+
+
+#### cURL Example
+`curl -X POST --data "username=my_user&password=my_password&device_name=my_device" https://your.url/api/admin/token`
+
+#### Successful response
+If token generation is successful, you will receive a JSON payload in the format:
+`{"status_code":201,"token":"your-api-token"}`
+
+#### Using tokens
+Tokens should be passed in the `Authorization` header with every request to a restricted endpoint. For example:
+
+`curl -i -X GET -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer your-api-token" https://your.url/api/orders`
+
+
 ### API Reference
 
 - [Categories](docs/categories.md)
