@@ -31,8 +31,8 @@ return [
     'label_base_endpoint' => 'Base Endpoint',
     'label_description' => 'Description',
     'label_api_name_comment' => 'Name of your API resource',
-    'label_base_endpoint_comment' => 'Describe your API resource',
-    'label_description_comment' => 'https://example.com/api/<b>endpoint</b>',
+    'label_description_comment' => 'Describe your API resource',
+    'label_base_endpoint_comment' => 'https://example.com/api/<b>endpoint</b>',
 
     'label_model' => 'Model',
     'label_controller' => 'Controller',
