@@ -98,9 +98,9 @@ class RestController extends ControllerAction
      *
      * @return mixed
      */
-    public function store()
+    public function store($data = null)
     {
-        $data = Request::all();
+        if (!$data) $data = Request::all();
 
         $transformer = $this->getConfig('transformer');
 
@@ -141,9 +141,9 @@ class RestController extends ControllerAction
      * @param int $recordId
      * @return mixed
      */
-    public function update($recordId)
+    public function update($recordId, $data = null)
     {
-        $data = Request::all();
+        if (!$data) $data = Request::all();
 
         $transformer = $this->getConfig('transformer');
 
