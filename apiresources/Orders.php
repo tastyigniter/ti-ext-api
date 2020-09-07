@@ -54,6 +54,6 @@ class Orders extends ApiController
     public function restAfterSave($model)
     {
         if ($menuItems = (array)Request::get('menu_items', []))
-            $model->addOrderMenus($menuItems);
+            $model->addOrderMenus(json_decode(json_encode($menuItems)));
     }
 }
