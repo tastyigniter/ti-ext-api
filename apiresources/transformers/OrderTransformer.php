@@ -27,6 +27,8 @@ class OrderTransformer extends TransformerAbstract
             'status' => $this->whenLoaded('status'),
             'assignee' => $this->whenLoaded('assignee'),
             'assignee_group' => $this->whenLoaded('assignee_group'),
+            'order_totals' => $this->resource->getOrderTotals(),
+            'menu_items' => $this->resource->getOrderMenus(),
             'status_history' => $this->whenLoaded('status_history'),
         ]);
     }
