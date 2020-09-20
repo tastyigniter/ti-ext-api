@@ -40,7 +40,7 @@ class Orders extends ApiController
         if (($token = $this->getToken()) && $token->isForCustomer())
             Request::merge(['customer_id' => $token->tokenable_id]);
 
-        $this->asExtension('RestController')->store(Request::except(['menu_items']));
+        $this->asExtension('RestController')->store();
     }
 
     public function update($recordId)
@@ -48,7 +48,7 @@ class Orders extends ApiController
         if (($token = $this->getToken()) && $token->isForCustomer())
             Request::merge(['customer_id' => $token->tokenable_id]);
 
-        $this->asExtension('RestController')->update($recordId, Request::except(['menu_items']));
+        $this->asExtension('RestController')->update($recordId);
     }
 
     public function restAfterSave($model)
