@@ -107,16 +107,16 @@ class RestController extends ControllerAction
         $model = $this->controller->restCreateModelObject();
         $model = $this->controller->restExtendModel($model) ?: $model;
 
-        $this->restBeforeSave($model);
-        $this->restBeforeCreate($model);
+        $this->controller->restBeforeSave($model);
+        $this->controller->restBeforeCreate($model);
 
         $modelsToSave = $this->prepareModelsToSave($model, $data);
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save();
         }
 
-        $this->restAfterSave($model);
-        $this->restAfterCreate($model);
+        $this->controller->restAfterSave($model);
+        $this->controller->restAfterCreate($model);
 
         return $this->controller->response()->created($model, $transformer);
     }
@@ -149,16 +149,16 @@ class RestController extends ControllerAction
 
         $model = $this->controller->restFindModelObject($recordId);
 
-        $this->restBeforeSave($model);
-        $this->restBeforeUpdate($model);
+        $this->controller->restBeforeSave($model);
+        $this->controller->restBeforeUpdate($model);
 
         $modelsToSave = $this->prepareModelsToSave($model, $data);
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save();
         }
 
-        $this->restAfterSave($model);
-        $this->restAfterUpdate($model);
+        $this->controller->restAfterSave($model);
+        $this->controller->restAfterUpdate($model);
 
         return $this->controller->response()->resource($model, $transformer);
     }
@@ -174,7 +174,7 @@ class RestController extends ControllerAction
         $model = $this->controller->restFindModelObject($recordId);
         $model->delete();
 
-        $this->restAfterDelete($model);
+        $this->controller->restAfterDelete($model);
 
         return $this->controller->response()->noContent();
     }
