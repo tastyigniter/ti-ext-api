@@ -15,6 +15,7 @@ class LocationTransformer extends TransformerAbstract
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
+            'options' => $this->options,
             'working_hours' => $this->whenLoaded('working_hours'),
             'delivery_areas' => $this->whenLoaded('delivery_areas'),
             'reviews' => $this->whenLoaded('reviews'),
