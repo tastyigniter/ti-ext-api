@@ -19,9 +19,9 @@ class Reviews extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'model' => \Admin\Models\Reviews_model::class,
-        'transformer' => \Igniter\Api\ApiResources\Transformers\ReviewTransformer::class,
-        'authorization' => ['index:users', 'store:users', 'show:users', 'update:admin', 'destroy:admin'],
+        'request' => Requests\ReviewRequest::class,
+        'repository' => Repositories\ReviewRepository::class,
+        'transformer' => Transformers\ReviewTransformer::class,
     ];
 
     protected $requiredAbilities = ['reviews:*'];
