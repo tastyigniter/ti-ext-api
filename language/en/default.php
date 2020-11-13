@@ -34,9 +34,7 @@ return [
     'label_description_comment' => 'Describe your API resource',
     'label_base_endpoint_comment' => 'https://example.com/api/<b>endpoint</b>',
 
-    'label_model' => 'Model',
     'label_controller' => 'Controller',
-    'label_transformer' => 'Transformer',
     'label_actions' => 'Actions',
     'help_actions' => 'Leave blank to deactivate the endpoint.',
     'label_require_authorization' => 'Require authorization',

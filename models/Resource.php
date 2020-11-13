@@ -3,13 +3,12 @@
 namespace Igniter\Api\Models;
 
 use Exception;
-use Igniter\Api\Classes\ApiManager;
+use Igniter\Flame\Database\Model;
 use Igniter\Flame\Database\Traits\HasPermalink;
 use Igniter\Flame\Database\Traits\Purgeable;
 use Igniter\Flame\Database\Traits\Validation;
 use Igniter\Flame\Mail\Markdown;
 use Igniter\Flame\Support\Facades\File;
-use Model;
 use System\Classes\ExtensionManager;
 
 /**
@@ -33,10 +32,12 @@ class Resource extends Model
 
     protected static $registeredResources;
 
-    public static $defaultMetaDefinition = [
-        'actions' => ['index', 'store', 'show', 'update', 'destroy'],
-        'middleware' => ['api'],
-        'authorization' => ['index:admin', 'store:admin', 'show:admin', 'update:admin', 'destroy:admin'],
+    protected static $defaultAuthDefinition = [
+        'index' => 'all',
+        'show' => 'all',
+        'store' => 'admin',
+        'update' => 'admin',
+        'destroy' => 'admin',
     ];
 
     /**
@@ -62,12 +63,13 @@ class Resource extends Model
     protected $purgeable = ['transformer_content'];
 
     protected $rules = [
-        'name' => 'required|min:2|max:128|unique:igniter_api_resources,endpoint|regex:/^[\pL\s\-]+$/u',
+        'name' => 'required|min:2|max:128|alpha_dash',
         'description' => 'required|min:2|max:255',
-        'endpoint' => 'max:255|unique:igniter_api_resources,endpoint',
-        'model' => 'required|min:2|max:255',
+        'endpoint' => 'max:255|regex:/^[a-z0-9\-_\/]+$/i|unique:igniter_api_resources,endpoint',
+        'controller' => 'required|min:2|max:255',
         'meta' => 'array',
-        'meta.actions.*' => 'string',
+        'meta.actions.*' => 'alpha',
+        'meta.authorization.*' => 'alpha',
     ];
 
     public static function getModelOptions()
@@ -104,7 +106,7 @@ class Resource extends Model
 
     public function getBaseEndpointAttribute($value)
     {
-        return ApiManager::instance()->getBaseEndpoint($this->endpoint);
+        return sprintf('/%s/%s', config('api.prefix'), $this->endpoint);
     }
 
     public function renderSetupPartial()
@@ -129,34 +131,31 @@ class Resource extends Model
     public static function syncAll()
     {
         $registeredResources = (new static())->listRegisteredResources();
-        $resources = collect($registeredResources)->keyBy('controller')->toArray();
-        $dbResources = self::lists('is_custom', 'controller')->toArray();
+        $resources = collect($registeredResources)->keyBy('endpoint')->toArray();
+        $dbResources = self::lists('is_custom', 'endpoint')->toArray();
         $newResources = array_diff_key($resources, $dbResources);
 
         // Clean up non-customized api resources
-        foreach ($dbResources as $controller => $isCustom) {
+        foreach ($dbResources as $endpoint => $isCustom) {
             if ($isCustom)
                 continue;
 
-            if (!array_key_exists($controller, $resources))
-                self::where('controller', $controller)->delete();
+            if (!array_key_exists($endpoint, $resources))
+                self::where('endpoint', $endpoint)->delete();
         }
 
         // Create new resources
-        foreach ($newResources as $controller => $definition) {
+        foreach ($newResources as $endpoint => $definition) {
             $model = self::make();
             $model->endpoint = array_get($definition, 'endpoint');
             $model->name = array_get($definition, 'name');
-            $model->model = array_get($definition, 'model');
-            $model->controller = array_get($definition, 'controller');
-            $model->transformer = array_get($definition, 'transformer');
             $model->description = array_get($definition, 'description');
-            $model->meta = array_get($definition, 'meta', self::$defaultMetaDefinition);
+            $model->controller = array_get($definition, 'controller');
+            /** @var TYPE_NAME $model */
+            $model->meta = self::getMetaFromPreset($definition);
             $model->is_custom = FALSE;
             $model->save();
         }
-
-        ApiManager::instance()->writeResources(self::getResources());
     }
 
     public static function getResources()
@@ -176,6 +175,29 @@ class Resource extends Model
         ksort($resources);
 
         return $resources;
+    }
+
+    /**
+     * @param $definition
+     * @return mixed
+     */
+    protected static function getMetaFromPreset($definition)
+    {
+        $authorization = array_get($definition, 'authorization', []);
+
+        $result = [];
+        foreach ($authorization as $item) {
+            $item = explode(':', $item);
+
+            $result[$item[0]] = $item[1];
+        }
+
+        $authorization = array_merge(self::$defaultAuthDefinition, $result);
+
+        return [
+            'actions' => array_keys($authorization),
+            'authorization' => $authorization,
+        ];
     }
 
     //
@@ -225,7 +247,7 @@ class Resource extends Model
             'name' => null,
             'description' => null,
             'controller' => null,
-            'transformer' => null,
+            'endpoint' => null,
         ];
 
         foreach ($definitions as $endpoint => $definition) {

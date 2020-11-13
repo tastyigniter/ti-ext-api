@@ -14,13 +14,13 @@ class IssueApiToken extends Command
      * The console command name.
      * @var string
      */
-    protected $name = 'issue:token';
+    protected $name = 'api:token';
 
     /**
      * The console command description.
      * @var string
      */
-    protected $description = 'TastyIgniter Issue API Access Tokens command.';
+    protected $description = 'Issue API Access Tokens command.';
 
     /**
      * Execute the console command.
@@ -28,22 +28,26 @@ class IssueApiToken extends Command
      */
     public function handle()
     {
-        $user = null;
-        if ($username = $this->option('username')) {
-            $user = Users_model::where('username', $username)->first();
+        if (!strlen($name = $this->option('name')))
+            return $this->error('Missing --name option');
+
+        if (!strlen($username = $this->option('username'))
+            OR !strlen($email = $this->option('email'))
+        ) {
+            return $this->error('Missing --username OR --email option');
         }
 
-        if ($email = $this->option('email')) {
-            $user = Customers_model::where('email', $email)->first();
-        }
+        $user = $username
+            ? Users_model::where('username', $username)->first()
+            : Customers_model::where('email', $email)->first();
 
-        if (!$user) {
-            $this->error('User does not exist!');
+        if (!$user)
+            return $this->error('User does not exist!');
 
-            return;
-        }
+        if (!strlen($name = $this->option('name')))
+            return $this->error('Missing --name option');
 
-        $accessToken = Token::createToken($user, $this->option('name'), ['*']);
+        $accessToken = Token::createToken($user, $name, ['*']);
         $this->info(sprintf('Access Token: %s', $accessToken->plainTextToken));
     }
 

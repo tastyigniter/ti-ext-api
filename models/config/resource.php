@@ -75,20 +75,8 @@ return [
                     'span' => 'left',
                     'comment' => 'lang:igniter.api::default.label_base_endpoint_comment',
                 ],
-                'model' => [
-                    'label' => 'lang:igniter.api::default.label_model',
-                    'type' => 'text',
-                    'span' => 'right',
-                    'disabled' => TRUE,
-                ],
                 'controller' => [
                     'label' => 'lang:igniter.api::default.label_controller',
-                    'type' => 'text',
-                    'span' => 'left',
-                    'disabled' => TRUE,
-                ],
-                'transformer' => [
-                    'label' => 'lang:igniter.api::default.label_transformer',
                     'type' => 'text',
                     'span' => 'right',
                     'disabled' => TRUE,
