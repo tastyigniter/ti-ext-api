@@ -2,7 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Api\Classes\TransformerAbstract;
+use Admin\Models\Orders_model;
+use League\Fractal\TransformerAbstract;
 
 class OrderTransformer extends TransformerAbstract
 {
@@ -12,25 +13,56 @@ class OrderTransformer extends TransformerAbstract
         'address',
         'payment_method',
         'status',
+        'status_history',
         'assignee',
         'assignee_group',
-        'status_history',
     ];
 
-    public function toArray($request)
+    public function transform(Orders_model $order)
     {
-        return array_merge(parent::toArray($request), [
-            'customer' => $this->whenLoaded('customer'),
-            'location' => $this->whenLoaded('location'),
-            'address' => $this->whenLoaded('address'),
-            'payment_method' => $this->whenLoaded('payment_method'),
-            'status' => $this->whenLoaded('status'),
-            'assignee' => $this->whenLoaded('assignee'),
-            'assignee_group' => $this->whenLoaded('assignee_group'),
-            'status_history' => $this->whenLoaded('status_history'),
-        ], [
-            'order_totals' => $this->resource->getOrderTotals(),
-            'order_menus' => $this->resource->getOrderMenus(),
+        return array_merge($order->toArray(), [
+            'order_totals' => $order->getOrderTotals(),
+            'order_menus' => $order->getOrderMenus(),
         ]);
+    }
+
+    public function includeCustomer(Orders_model $order)
+    {
+        return $this->item($order->customer, new CustomerTransformer, 'customers');
+    }
+
+    public function includeLocation(Orders_model $order)
+    {
+        return $this->item($order->location, new LocationTransformer, 'locations');
+    }
+
+    public function includeAddress(Orders_model $order)
+    {
+        return $this->item($order->address, new AddressTransformer, 'addresses');
+    }
+
+    public function includePaymentMethod(Orders_model $order)
+    {
+        return $this->item($order->payment_method, new PaymentMethodTransformer, 'payment_methods');
+    }
+
+    public function includeStatus(Orders_model $order)
+    {
+        return $this->item($order->status, new StatusTransformer, 'statuses');
+    }
+
+    public function includeStatusHistory(Orders_model $order)
+    {
+        return $this->collection($order->status_history, new StatusHistoryTransformer, 'status_history');
+    }
+
+    public function includeAssignee(Orders_model $order)
+    {
+        return $this->item($order->assignee, new StaffTransformer, 'staff');
+    }
+
+    public function includeAssigneeGroup(Orders_model $order)
+    {
+        return $this->item($order->assignee_group, new StaffGroupTransformer, 'staff_group');
     }
 }

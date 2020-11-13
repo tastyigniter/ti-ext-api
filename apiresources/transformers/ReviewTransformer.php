@@ -2,7 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Api\Classes\TransformerAbstract;
+use Admin\Models\Reviews_model;
+use League\Fractal\TransformerAbstract;
 
 class ReviewTransformer extends TransformerAbstract
 {
@@ -11,11 +12,18 @@ class ReviewTransformer extends TransformerAbstract
         'customer',
     ];
 
-    public function toArray($request)
+    public function transform(Reviews_model $review)
     {
-        return array_merge(parent::toArray($request), [
-            'location' => $this->whenLoaded('location'),
-            'customer' => $this->whenLoaded('customer'),
-        ]);
+        return $review->toArray();
+    }
+
+    public function includeCustomer(Reviews_model $review)
+    {
+        return $this->item($review->customer, new CustomerTransformer, 'customers');
+    }
+
+    public function includeLocation(Reviews_model $review)
+    {
+        return $this->item($review->location, new LocationTransformer, 'locations');
     }
 }

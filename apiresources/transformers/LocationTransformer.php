@@ -2,7 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Api\Classes\TransformerAbstract;
+use Admin\Models\Locations_model;
+use League\Fractal\TransformerAbstract;
 
 class LocationTransformer extends TransformerAbstract
 {
@@ -12,13 +13,35 @@ class LocationTransformer extends TransformerAbstract
         'reviews',
     ];
 
-    public function toArray($request)
+    public function transform(Locations_model $location)
     {
-        return array_merge(parent::toArray($request), [
-            'options' => $this->options,
-            'working_hours' => $this->whenLoaded('working_hours'),
-            'delivery_areas' => $this->whenLoaded('delivery_areas'),
-            'reviews' => $this->whenLoaded('reviews'),
-        ]);
+        return $location->toArray();
+    }
+
+    public function includeWorkingHours(Locations_model $location)
+    {
+        return $this->collection(
+            $location->working_hours,
+            new WorkingHourTransformer,
+            'working_hours'
+        );
+    }
+
+    public function includeDeliveryAreas(Locations_model $location)
+    {
+        return $this->collection(
+            $location->delivery_areas,
+            new DeliveryAreaTransformer,
+            'delivery_areas'
+        );
+    }
+
+    public function includeReviews(Locations_model $location)
+    {
+        return $this->collection(
+            $location->reviews,
+            new ReviewTransformer,
+            'reviews'
+        );
     }
 }
