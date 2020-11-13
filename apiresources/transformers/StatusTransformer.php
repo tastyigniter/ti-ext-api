@@ -2,7 +2,6 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Admin\Models\Addresses_model;
 use Admin\Models\Statuses_model;
 use League\Fractal\TransformerAbstract;
 
