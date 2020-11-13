@@ -25,9 +25,4 @@ class Locations extends ApiController
     ];
 
     protected $requiredAbilities = ['locations:*'];
-    
-    public function restExtendQuery($query)
-    {
-        return $query->select('*');
-    }
 }
