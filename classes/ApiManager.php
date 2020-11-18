@@ -94,6 +94,9 @@ class ApiManager
 
     protected function registerRoutes()
     {
+        if (!app()->hasDatabase())
+            return;
+
         if (!$resources = $this->getResources())
             return;
 
