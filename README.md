@@ -125,17 +125,17 @@ Tokens should be passed in the `Authorization` header with every request to a re
 
 ### API Reference
 
-- [Categories](docs/categories.md)
+- [Categories](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/customers.md)
     `categories` - List, create, retrieve, update and delete categories
-- [Customers](docs/customers.md)
+- [Customers](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/customers.md)
     `customers` - List, create, retrieve, update and delete customers
-- [Locations](docs/locations.md)
+- [Locations](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/locations.md)
     `locations` - List, create, retrieve, update and delete locations
-- [Menus](docs/menus.md)
+- [Menus](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/menus.md)
     `menus` - List, create, retrieve, update and delete menus
-- [Orders](docs/orders.md)
+- [Orders](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/orders.md)
     `orders` - List, create, retrieve, update and delete orders
-- [Reservations](docs/reservations.md)
+- [Reservations](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/reservations.md)
     `reservations` - List, create, retrieve, update and delete reservations
-- [Reviews](docs/reviews.md)
+- [Reviews](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/reviews.md)
     `reviews` - List, create, retrieve, update and delete reviews
