@@ -12,6 +12,13 @@ Default behavior logic for several common verbs are supported — create, store,
 
 To install this extension, click on the **Add to Site** button on the marketplace item page or search for **Igniter.Api** in **Admin System > Updates > Browse Extensions**
 
+If you are using an Apache installation you will need to add these lines to your .htaccess file for tokens to be passed correctly.
+
+```
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+```
+
 ### Usage
 In the admin user interface, go to **Tools > APIs** and use the Create button to generate a new api resource
 
