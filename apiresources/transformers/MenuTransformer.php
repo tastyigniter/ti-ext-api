@@ -10,8 +10,6 @@ class MenuTransformer extends TransformerAbstract
     protected $availableIncludes = [
         'categories',
         'menu_options',
-        //        'menu_options.menu_option_values',
-        //        'menu_option_values',
     ];
 
     public function transform(Menus_model $menuItem)
@@ -36,9 +34,4 @@ class MenuTransformer extends TransformerAbstract
             'menu_options'
         );
     }
-
-//    public function includeMenuOptionValues(Menus_model $menuItem)
-//    {
-//        return $this->collection($menuItem->menu_options->menu_option_values, new MenuOptionValueTransformer);
-//    }
 }
