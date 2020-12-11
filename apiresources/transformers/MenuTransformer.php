@@ -14,7 +14,12 @@ class MenuTransformer extends TransformerAbstract
 
     public function transform(Menus_model $menuItem)
     {
-        return $menuItem->toArray();
+        return array_merge(
+            $menuItem->toArray(), 
+            [
+                'media' => $menuItem->getMedia()
+            ]
+        );
     }
 
     public function includeCategories(Menus_model $menuItem)
