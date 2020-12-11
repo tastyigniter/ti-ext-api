@@ -5,7 +5,6 @@ namespace Igniter\Api\Models;
 use Exception;
 use Igniter\Flame\Database\Model;
 use Igniter\Flame\Database\Traits\HasPermalink;
-use Igniter\Flame\Database\Traits\Purgeable;
 use Igniter\Flame\Database\Traits\Validation;
 use Igniter\Flame\Mail\Markdown;
 use Igniter\Flame\Support\Facades\File;
@@ -18,7 +17,6 @@ class Resource extends Model
 {
     use HasPermalink;
     use Validation;
-    use Purgeable;
 
     /**
      * @var array A cache of api resources.
@@ -59,8 +57,6 @@ class Resource extends Model
             'source' => 'name',
         ],
     ];
-
-    protected $purgeable = ['transformer_content'];
 
     protected $rules = [
         'name' => 'required|min:2|max:128|alpha_dash',
