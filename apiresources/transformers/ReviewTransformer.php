@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Admin\Models\Reviews_model;
+use Igniter\Local\Models\Reviews_model;
 use League\Fractal\TransformerAbstract;
 
 class ReviewTransformer extends TransformerAbstract

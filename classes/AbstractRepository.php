@@ -4,10 +4,10 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Traits\GuardsAttributes;
 use Igniter\Api\Traits\HasGlobalScopes;
+use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Database\Eloquent\Model;
 
 class AbstractRepository
 {
@@ -115,6 +115,14 @@ class AbstractRepository
         return $model;
     }
 
+    public function getModelClass()
+    {
+        if (!strlen($modelClass = $this->modelClass))
+            throw new SystemException('Missing model on '.get_class($this));
+
+        return $modelClass;
+    }
+
     /**
      * @return \Illuminate\Contracts\Container\Container
      */
@@ -151,30 +159,31 @@ class AbstractRepository
      */
     protected function createModel()
     {
-        if (!strlen($modelClass = $this->modelClass))
-            throw new SystemException('Missing model on '.get_class($this));
+        $modelClass = $this->getModelClass();
 
         if (!class_exists('\\'.ltrim($modelClass, '\\'))) {
             throw new SystemException("Class {$modelClass} does NOT exist!");
         }
 
-        $model = new $modelClass;
-        if (!$model instanceof Model)
-            throw new SystemException("Class {$model} must be an instance of \\Illuminate\\Database\\Eloquent\\Model");
-
-        $modelClass::extend(function ($model) {
-            if (is_array($fillable = $this->getFillable()))
+        $modelClass::extend(function (Model $model) {
+            if ($fillable = $this->getFillable())
                 $model->fillable($fillable);
 
-            if (is_array($guarded = $this->getGuarded()))
+            if ($guarded = $this->getGuarded())
                 $model->guard($guarded);
 
-            if (is_array($hidden = $this->getHidden()))
+            if ($hidden = $this->getHidden())
                 $model->setHidden($hidden);
 
-            if (is_array($visible = $this->getVisible()))
+            if ($visible = $this->getVisible())
                 $model->setVisible($visible);
+
+            $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
         });
+
+        $model = new $modelClass;
+        if (!$model instanceof Model)
+            throw new SystemException("Class {$model} must be an instance of \\Igniter\\Flame\\Database\\Model");
 
         return $model;
     }

@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Repositories;
 
-use Admin\Models\Reviews_model;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Local\Models\Reviews_model;
 
 class ReviewRepository extends AbstractRepository
 {
