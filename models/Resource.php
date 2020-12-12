@@ -49,7 +49,7 @@ class Resource extends Model
      */
     protected $fillable = ['name', 'description', 'endpoint', 'model', 'meta'];
 
-    public $casts = [
+    protected $casts = [
         'meta' => 'array',
     ];
 
