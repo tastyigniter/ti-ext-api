@@ -8,6 +8,7 @@ use League\Fractal\TransformerAbstract;
 class LocationTransformer extends TransformerAbstract
 {
     protected $availableIncludes = [
+        'media',
         'working_hours',
         'delivery_areas',
         'reviews',
@@ -16,6 +17,14 @@ class LocationTransformer extends TransformerAbstract
     public function transform(Locations_model $location)
     {
         return $location->toArray();
+    }
+
+    public function includeMedia(Locations_model $location)
+    {
+        if (!$thumb = $location->getFirstMedia())
+            return null;
+
+        return $this->item($thumb, new MediaTransformer, 'media');
     }
 
     public function includeWorkingHours(Locations_model $location)

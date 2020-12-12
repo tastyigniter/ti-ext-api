@@ -8,6 +8,7 @@ use League\Fractal\TransformerAbstract;
 class CategoryTransformer extends TransformerAbstract
 {
     protected $availableIncludes = [
+        'media',
         'menus',
         'locations',
     ];
@@ -15,6 +16,14 @@ class CategoryTransformer extends TransformerAbstract
     public function transform(Categories_model $category)
     {
         return $category->toArray();
+    }
+
+    public function includeMedia(Categories_model $category)
+    {
+        if (!$thumb = $category->getFirstMedia())
+            return null;
+
+        return $this->item($thumb, new MediaTransformer, 'media');
     }
 
     public function includeMenus(Categories_model $category)
