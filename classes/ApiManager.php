@@ -4,6 +4,7 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Traits\Singleton;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class ApiManager
@@ -94,7 +95,7 @@ class ApiManager
 
     protected function registerRoutes()
     {
-        if (!app()->hasDatabase())
+        if (!Schema::hasTable('igniter_api_resources'))
             return;
 
         if (!$resources = $this->getResources())
