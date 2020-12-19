@@ -12,6 +12,13 @@ Default behavior logic for several common verbs are supported — create, store,
 
 To install this extension, click on the **Add to Site** button on the marketplace item page or search for **Igniter.Api** in **Admin System > Updates > Browse Extensions**
 
+If you are using an Apache installation you will need to add these lines to your .htaccess file for tokens to be passed correctly.
+
+```
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+```
+
 ### Usage
 In the admin user interface, go to **Tools > APIs** and use the Create button to generate a new api resource
 
@@ -104,17 +111,17 @@ Tokens should be passed in the `Authorization` header with every request to a re
 
 ### API Reference
 
-- [Categories](docs/categories.md)
+- [Categories](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/customers.md)
     `categories` - List, create, retrieve, update and delete categories
-- [Customers](docs/customers.md)
+- [Customers](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/customers.md)
     `customers` - List, create, retrieve, update and delete customers
-- [Locations](docs/locations.md)
+- [Locations](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/locations.md)
     `locations` - List, create, retrieve, update and delete locations
-- [Menus](docs/menus.md)
+- [Menus](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/menus.md)
     `menus` - List, create, retrieve, update and delete menus
-- [Orders](docs/orders.md)
+- [Orders](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/orders.md)
     `orders` - List, create, retrieve, update and delete orders
-- [Reservations](docs/reservations.md)
+- [Reservations](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/reservations.md)
     `reservations` - List, create, retrieve, update and delete reservations
-- [Reviews](docs/reviews.md)
+- [Reviews](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/reviews.md)
     `reviews` - List, create, retrieve, update and delete reviews
