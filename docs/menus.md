@@ -22,7 +22,6 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 
-
 #### Menu object example
 
 ```json
@@ -300,7 +299,7 @@ Status: 200 OK
 
 ### Delete a menu
 
-Permanently deletes a menu. It cannot be undone. 
+Permanently deletes a menu. It cannot be undone.
 
 Required abilities: `menus:write`
 

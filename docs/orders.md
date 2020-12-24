@@ -189,7 +189,7 @@ Status: 200 OK
 
 ### Delete an order
 
-Permanently deletes an order. It cannot be undone. 
+Permanently deletes an order. It cannot be undone.
 
 Required abilities: `orders:write`
 
