@@ -9,6 +9,8 @@ use Igniter\Api\Classes\ApiController;
  */
 class Categories extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [

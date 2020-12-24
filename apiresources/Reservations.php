@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Request;
  */
 class Reservations extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [

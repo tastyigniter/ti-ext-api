@@ -14,10 +14,6 @@ class ApiController extends BaseController
     use AuthorizesRequest;
     use CreatesResponse;
 
-    public $implement = ['Igniter.Api.Actions.RestController'];
-
-    public $restConfig = [];
-
     public $allowedActions = [];
 
     /**
@@ -25,11 +21,6 @@ class ApiController extends BaseController
      * ex. ['orders.*']
      */
     protected $requiredAbilities;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function getAbilities()
     {

@@ -9,6 +9,8 @@ use Igniter\Api\Classes\ApiController;
  */
 class Locations extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
