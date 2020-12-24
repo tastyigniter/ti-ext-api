@@ -19,7 +19,7 @@ class Menus extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\MenuRequest::class,
+        'request' => \Admin\Requests\Menu::class,
         'repository' => Repositories\MenuRepository::class,
         'transformer' => Transformers\MenuTransformer::class,
     ];

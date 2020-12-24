@@ -19,7 +19,7 @@ class Categories extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\CategoryRequest::class,
+        'request' => \Admin\Requests\Category::class,
         'repository' => Repositories\CategoryRepository::class,
         'transformer' => Transformers\CategoryTransformer::class,
     ];

@@ -20,7 +20,7 @@ class Customers extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\CustomerRequest::class,
+        'request' => \Admin\Requests\Customer::class,
         'repository' => Repositories\CustomerRepository::class,
         'transformer' => Transformers\CustomerTransformer::class,
     ];

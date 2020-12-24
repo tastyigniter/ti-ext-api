@@ -182,7 +182,16 @@ class RestController extends ControllerAction
      */
     protected function resolveFormRequest()
     {
-        return app()->make($this->getConfig('request', ApiRequest::class));
+        $requestClass = $this->getConfig('request', ApiRequest::class);
+
+        app()->resolving($requestClass, function ($request, $app) {
+            if (method_exists($request, 'setController'))
+                $request->setController($this->controller);
+        });
+
+        $request = app()->make($requestClass);
+
+        return $request;
     }
 
     /**

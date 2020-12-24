@@ -19,7 +19,7 @@ class Locations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\LocationRequest::class,
+        'request' => \Admin\Requests\Location::class,
         'repository' => Repositories\LocationRepository::class,
         'transformer' => Transformers\LocationTransformer::class,
     ];
