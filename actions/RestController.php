@@ -3,9 +3,11 @@
 namespace Igniter\Api\Actions;
 
 use Admin\Traits\FormModelWidget;
+use Dingo\Api\Exception\ResourceException;
 use Igniter\Api\Classes\AbstractRepository;
-use Igniter\Api\Classes\ApiRequest;
 use Igniter\Api\Traits\RestExtendable;
+use Igniter\Flame\Exception\ValidationException;
+use Illuminate\Support\Facades\Request;
 use System\Classes\ControllerAction;
 
 /**
@@ -58,17 +60,14 @@ class RestController extends ControllerAction
      */
     public function index()
     {
-        $request = $this->resolveFormRequest();
+        $requestQuery = $this->validateRequest('query');
 
-        $repository = $this->makeRepository('query', $request);
+        $options = array_merge($this->getActionOptions(), $requestQuery);
 
-        $options = array_merge($this->getActionOptions(), $request->query());
-        $result = $repository->findAll($options);
+        $result = $this->makeRepository('query')->findAll($options);
 
         return $this->controller->response()->paginator(
-            $result, $this->createTransformer(), [
-                'key' => $this->getConfig('resourceKey', strtolower(class_basename($this->controller))),
-            ]
+            $result, $this->createTransformer(), $this->getResponseParameters()
         );
     }
 
@@ -79,16 +78,12 @@ class RestController extends ControllerAction
      */
     public function store()
     {
-        $request = $this->resolveFormRequest();
+        $request = $this->validateRequest('all');
 
-        $repository = $this->makeRepository('create', $request);
-
-        $result = $repository->create($request->validated());
+        $result = $this->makeRepository('create')->create($request);
 
         return $this->controller->response()->created(
-            $result, $this->createTransformer(), null, [
-                'key' => $this->getConfig('resourceKey', strtolower(class_basename($this->controller))),
-            ]
+            $result, $this->createTransformer(), null, $this->getResponseParameters()
         );
     }
 
@@ -100,16 +95,12 @@ class RestController extends ControllerAction
      */
     public function show($recordId)
     {
-        $request = $this->resolveFormRequest();
+        $this->validateRequest('query');
 
-        $repository = $this->makeRepository('query', $request);
-
-        $result = $repository->find($recordId);
+        $result = $this->makeRepository('query')->find($recordId);
 
         return $this->controller->response()->resource(
-            $result, $this->createTransformer(), [
-                'key' => $this->getConfig('resourceKey', strtolower(class_basename($this->controller))),
-            ]
+            $result, $this->createTransformer(), $this->getResponseParameters()
         );
     }
 
@@ -121,16 +112,12 @@ class RestController extends ControllerAction
      */
     public function update($recordId)
     {
-        $request = $this->resolveFormRequest();
+        $request = $this->validateRequest('all');
 
-        $repository = $this->makeRepository('update', $request);
-
-        $result = $repository->update($recordId, $request->validated());
+        $result = $this->makeRepository('update')->update($recordId, $request);
 
         return $this->controller->response()->resource(
-            $result, $this->createTransformer(), [
-                'key' => $this->getConfig('resourceKey', strtolower(class_basename($this->controller))),
-            ]
+            $result, $this->createTransformer(), $this->getResponseParameters()
         );
     }
 
@@ -143,11 +130,7 @@ class RestController extends ControllerAction
      */
     public function destroy($recordId)
     {
-        $request = $this->resolveFormRequest();
-
-        $repository = $this->makeRepository('delete', $request);
-
-        $repository->delete($recordId);
+        $this->makeRepository('delete')->delete($recordId);
 
         return $this->controller->response()->noContent();
     }
@@ -178,29 +161,40 @@ class RestController extends ControllerAction
     }
 
     /**
-     * @return \Igniter\Api\Classes\ApiRequest
+     * @param string $requestMethod query or all
+     * @return array
+     * @throws \Dingo\Api\Exception\ValidationHttpException
      */
-    protected function resolveFormRequest()
+    protected function validateRequest($requestMethod)
     {
-        $requestClass = $this->getConfig('request', ApiRequest::class);
+        $requestData = Request::$requestMethod();
 
-        app()->resolving($requestClass, function ($request, $app) {
-            if (method_exists($request, 'setController'))
-                $request->setController($this->controller);
-        });
+        try {
+            if ($requestMethod == 'query')
+                return $this->controller->restValidateQuery($requestData);
 
-        $request = app()->make($requestClass);
+            if ($requestClass = $this->getConfig('request')) {
+                app()->resolving($requestClass, function ($request, $app) {
+                    if (method_exists($request, 'setController'))
+                        $request->setController($this->controller);
+                });
 
-        return $request;
+                return app()->make($requestClass)->validated();
+            }
+
+            return $this->controller->restValidate($requestData);
+        }
+        catch (ValidationException $ex) {
+            throw new ResourceException(lang('igniter.api::default.alert_validation_failed'), $ex->getErrors());
+        }
     }
 
     /**
      * @param string|null $context
-     * @param mixed $request
      * @return \Igniter\Api\Classes\AbstractRepository
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function makeRepository($context, $request = null)
+    protected function makeRepository($context)
     {
         $repository = app()->make($this->getConfig('repository'));
 
@@ -251,5 +245,12 @@ class RestController extends ControllerAction
         $repository->bindEvent('repository.afterDelete', function ($model) {
             $this->controller->restAfterDelete($model);
         });
+    }
+
+    protected function getResponseParameters(): array
+    {
+        return [
+            'key' => $this->getConfig('resourceKey', strtolower(class_basename($this->controller))),
+        ];
     }
 }
