@@ -62,7 +62,7 @@ return [
     |
     */
 
-    'transformer' => \Dingo\Api\Transformer\Adapter\Fractal::class,
+    'transformer' => \Igniter\Api\Classes\FractalAdapter::class,
 
     'serializer' => \Igniter\Api\Serializer\JsonApiSerializer::class,
 ];
