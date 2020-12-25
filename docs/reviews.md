@@ -206,7 +206,7 @@ Status: 200 OK
 
 ### Delete a review
 
-Permanently deletes a review. It cannot be undone. 
+Permanently deletes a review. It cannot be undone.
 
 Required abilities: `reviews:write`
 

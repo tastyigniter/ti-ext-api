@@ -9,6 +9,8 @@ use Igniter\Api\Classes\ApiController;
  */
 class Locations extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -19,7 +21,7 @@ class Locations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\LocationRequest::class,
+        'request' => \Admin\Requests\Location::class,
         'repository' => Repositories\LocationRepository::class,
         'transformer' => Transformers\LocationTransformer::class,
     ];

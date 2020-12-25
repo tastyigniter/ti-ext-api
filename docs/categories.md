@@ -206,7 +206,7 @@ Status: 200 OK
 
 ### Delete a category
 
-Permanently deletes a category. It cannot be undone. 
+Permanently deletes a category. It cannot be undone.
 
 Required abilities: `categories:write`
 

@@ -9,5 +9,5 @@ class LocationRepository extends AbstractRepository
 {
     protected $modelClass = Locations_model::class;
 
-    protected $hidden = [];
+    protected $hidden = ['options', 'location_thumb'];
 }

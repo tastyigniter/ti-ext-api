@@ -9,5 +9,8 @@
     "color": "#fff",
     "backgroundColor": "#02586F"
   },
-  "homepage": "https://tastyigniter.com/marketplace/item/igniter-api"
+  "homepage": "https://tastyigniter.com/marketplace/item/igniter-api",
+  "require": {
+    "igniter.local": "*"
+  }
 }

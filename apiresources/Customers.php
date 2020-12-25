@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Request;
  */
 class Customers extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -20,7 +22,7 @@ class Customers extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\CustomerRequest::class,
+        'request' => \Admin\Requests\Customer::class,
         'repository' => Repositories\CustomerRepository::class,
         'transformer' => Transformers\CustomerTransformer::class,
     ];

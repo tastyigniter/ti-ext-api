@@ -9,6 +9,8 @@ use Igniter\Api\Classes\ApiController;
  */
 class Menus extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -19,7 +21,7 @@ class Menus extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\MenuRequest::class,
+        'request' => \Admin\Requests\Menu::class,
         'repository' => Repositories\MenuRepository::class,
         'transformer' => Transformers\MenuTransformer::class,
     ];

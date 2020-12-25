@@ -9,6 +9,8 @@ use Igniter\Api\Classes\ApiController;
  */
 class Reviews extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -19,7 +21,7 @@ class Reviews extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\ReviewRequest::class,
+        'request' => \Igniter\Local\Requests\Review::class,
         'repository' => Repositories\ReviewRepository::class,
         'transformer' => Transformers\ReviewTransformer::class,
     ];

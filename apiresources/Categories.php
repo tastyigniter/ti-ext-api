@@ -9,6 +9,8 @@ use Igniter\Api\Classes\ApiController;
  */
 class Categories extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -19,7 +21,7 @@ class Categories extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\CategoryRequest::class,
+        'request' => \Admin\Requests\Category::class,
         'repository' => Repositories\CategoryRepository::class,
         'transformer' => Transformers\CategoryTransformer::class,
     ];

@@ -8,8 +8,10 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `first_name`           | `string`  | **Required**. The customer's first name (between 2 and 48 characters in length)      |
-| `last_name`           | `string`  | **Required**. The customer's last name (between 2 and 48 characters in length)       |
+| `first_name`           | `string`  | **
+Required**. The customer's first name (between 2 and 48 characters in length)      |
+| `last_name`           | `string`  | **
+Required**. The customer's last name (between 2 and 48 characters in length)       |
 | `full_name`           | `string`  | A concatenation of first_name and last_name       |
 | `email`           | `string`  | **Required**. The customer's email address       |
 | `telephone`           | `string`  | The customer's telephone number         |
@@ -20,7 +22,6 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `addresses`           | `array`  | The customer's addresses, if any        |
 | `orders`           | `array`  | The customer's orders, if any (see [Orders](orders.md) for structure)       |
 | `reservations`           | `array`  | The customer's addresses, if any (see [Reservations](reservations.md) for structure)        |
-
 
 #### Customer object example
 
@@ -59,12 +60,15 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `address_1`           | `string`  | **Required**. The first line of the customer's address (between 3 and 128 characters)     |
+| `address_1`           | `string`  | **
+Required**. The first line of the customer's address (between 3 and 128 characters)     |
 | `address_2`           | `string`  | The second line of the customer's address (between 3 and 128 characters)  |
-| `city`           | `string`  | **Required**. The city or town of the customer's address (between state and 128 characters)    |
+| `city`           | `string`  | **
+Required**. The city or town of the customer's address (between state and 128 characters)    |
 | `state`           | `string`  | The state or county of the customer's address (maximum of 128 characters)     |
 | `postcode`           | `string`  | The postcode or ZIP code of the customer's address (maximum of 128 characters)     |
-| `country_id`           | `integer`  | **Required**. The country code of the customers address. Should reference an id in the "countries" database table.  |
+| `country_id`           | `integer`  | **
+Required**. The country code of the customers address. Should reference an id in the "countries" database table.  |
 
 ### List customers
 
@@ -146,8 +150,10 @@ POST /api/customers
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `first_name`           | `string`  | **Required**. The customer's first name (between 2 and 32 characters in length)      |
-| `last_name`           | `string`  | **Required**. The customer's last name (between 2 and 32 characters in length)       |
+| `first_name`           | `string`  | **
+Required**. The customer's first name (between 2 and 32 characters in length)      |
+| `last_name`           | `string`  | **
+Required**. The customer's last name (between 2 and 32 characters in length)       |
 | `email`           | `string`  | **Required**. The customer's email address       |
 | `telephone`           | `string`  | The customer's telephone number         |
 | `newsletter`           | `boolean`  | Whether the customer opts into newsletter marketing         |
@@ -325,7 +331,7 @@ Status: 200 OK
 
 ### Delete a customer
 
-Permanently deletes a customer. It cannot be undone. 
+Permanently deletes a customer. It cannot be undone.
 
 Required abilities: `customers:write`
 

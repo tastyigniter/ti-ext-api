@@ -7,7 +7,6 @@ use Igniter\Flame\Database\Model;
 use Igniter\Flame\Database\Traits\HasPermalink;
 use Igniter\Flame\Database\Traits\Validation;
 use Igniter\Flame\Mail\Markdown;
-use Igniter\Flame\Support\Facades\File;
 use System\Classes\ExtensionManager;
 
 /**
@@ -48,7 +47,7 @@ class Resource extends Model
      */
     protected $fillable = ['name', 'description', 'endpoint', 'model', 'meta'];
 
-    public $casts = [
+    protected $casts = [
         'meta' => 'array',
     ];
 
@@ -107,13 +106,11 @@ class Resource extends Model
 
     public function renderSetupPartial()
     {
-        $content = 'No documentation provided';
-
         $docsPath = extension_path('igniter/api/docs/'.sprintf('%s.md', $this->endpoint));
-        if ($docsPath = File::existsInsensitive($docsPath))
-            $content = (new Markdown)->parse(File::get($docsPath));
 
-        return $content;
+        $markdown = Markdown::parseFile($docsPath);
+
+        return $markdown ? $markdown->toHtml() : 'No documentation provided';
     }
 
     //

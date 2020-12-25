@@ -9,7 +9,7 @@ class JsonApiSerializer extends FractalJsonApiSerializer
 {
     public function item($resourceKey, array $data)
     {
-        // Hacky way od ensuring the id key is always present
+        // Hacky way of ensuring the id key is always present
         // in the data array, should probably change later
         if (!array_key_exists('id', $data) AND $resourceKey) {
             $keyName = Str::singular($resourceKey).'_id';

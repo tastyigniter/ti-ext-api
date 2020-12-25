@@ -2,6 +2,8 @@
 
 namespace Igniter\Api\Traits;
 
+use Illuminate\Support\Str;
+
 trait GuardsAttributes
 {
     /**
@@ -60,5 +62,15 @@ trait GuardsAttributes
     public function getVisible()
     {
         return $this->visible;
+    }
+
+    public function setModelAttribute($key, $value)
+    {
+        $mutatorMethod = 'set'.Str::studly($key).'Attribute';
+
+        if (method_exists($this, $mutatorMethod))
+            return $this->{$mutatorMethod}($value);
+
+        return $this;
     }
 }

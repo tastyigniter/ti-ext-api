@@ -8,15 +8,18 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `location_name`           | `string`  | **Required**. The location's name (between 2 and 48 characters in length)      |
+| `location_name`           | `string`  | **
+Required**. The location's name (between 2 and 48 characters in length)      |
 | `location_email`           | `string`  | **Required**. The location's email address       |
 | `location_telephone`           | `string`  | The location's telephone number (between 2 and 15 characters in length)       |
-| `location_address_1`           | `string`  | **Required**. The first line of the location's physical address (between 2 and 128 characters) |
+| `location_address_1`           | `string`  | **
+Required**. The first line of the location's physical address (between 2 and 128 characters) |
 | `location_address_2`           | `string`  | The second line of the location's physical address (maximum 128 characters)        |
 | `location_city`           | `string`  | The city in which the location is situated  (maximum 128 characters)     |
 | `location_state`           | `string`  | The state or county in which the location is situated  (maximum 128 characters)     |
 | `location_postcode`           | `string`  | The postal or ZIP code of the location (maximum 10 characters)         |
-| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
+| `location_country_id`           | `integer`  | **
+Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
 | `location_lat`           | `decimal`  | The latitude of the location  |
 | `location_lng`           | `decimal`  | The longitude of the location |
 | `description`           | `string`  | A description of the location to display to users (maximum of 3028 characters)  |
@@ -147,15 +150,18 @@ POST /api/location
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `location_name`           | `string`  | **Required**. The location's name (between 2 and 48 characters in length)      |
+| `location_name`           | `string`  | **
+Required**. The location's name (between 2 and 48 characters in length)      |
 | `location_email`           | `string`  | **Required**. The location's email address       |
 | `location_telephone`           | `string`  | The location's telephone number (between 2 and 15 characters in length)       |
-| `location_address_1`           | `string`  | **Required**. The first line of the location's physical address (between 2 and 128 characters) |
+| `location_address_1`           | `string`  | **
+Required**. The first line of the location's physical address (between 2 and 128 characters) |
 | `location_address_2`           | `string`  | The second line of the location's physical address (maximum 128 characters)        |
 | `location_city`           | `string`  | The city in which the location is situated  (maximum 128 characters)     |
 | `location_state`           | `string`  | The state or county in which the location is situated  (maximum 128 characters)     |
 | `location_postcode`           | `string`  | The postal or ZIP code of the location (maximum 10 characters)         |
-| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
+| `location_country_id`           | `integer`  | **
+Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
 | `location_lat`           | `decimal`  | The latitude of the location  |
 | `location_lng`           | `decimal`  | The longitude of the location |
 | `description`           | `string`  | A description of the location to display to users (maximum of 3028 characters)  |
@@ -262,15 +268,18 @@ PATCH /api/locations/:location_id
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `location_name`           | `string`  | **Required**. The location's name (between 2 and 48 characters in length)      |
+| `location_name`           | `string`  | **
+Required**. The location's name (between 2 and 48 characters in length)      |
 | `location_email`           | `string`  | **Required**. The location's email address       |
 | `location_telephone`           | `string`  | The location's telephone number (between 2 and 15 characters in length)       |
-| `location_address_1`           | `string`  | **Required**. The first line of the location's physical address (between 2 and 128 characters) |
+| `location_address_1`           | `string`  | **
+Required**. The first line of the location's physical address (between 2 and 128 characters) |
 | `location_address_2`           | `string`  | The second line of the location's physical address (maximum 128 characters)        |
 | `location_city`           | `string`  | The city in which the location is situated  (maximum 128 characters)     |
 | `location_state`           | `string`  | The state or county in which the location is situated  (maximum 128 characters)     |
 | `location_postcode`           | `string`  | The postal or ZIP code of the location (maximum 10 characters)         |
-| `location_country_id`           | `integer`  | **Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
+| `location_country_id`           | `integer`  | **
+Required**. The country code of the location's physical address. Should reference an id in the "countries" database table.   |
 | `location_lat`           | `decimal`  | The latitude of the location  |
 | `location_lng`           | `decimal`  | The longitude of the location |
 | `description`           | `string`  | A description of the location to display to users (maximum of 3028 characters)  |
@@ -315,7 +324,7 @@ Status: 200 OK
 
 ### Delete a location
 
-Permanently deletes a location. It cannot be undone. 
+Permanently deletes a location. It cannot be undone.
 
 Required abilities: `locations:write`
 

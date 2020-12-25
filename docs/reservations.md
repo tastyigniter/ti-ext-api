@@ -130,8 +130,10 @@ POST /api/reservations
 | `location_id`           | `integer`  | The Unique Identifier of the location to associate with the reservation.         |
 | `table_id`           | `integer`  | The Unique Identifier of the table to associate with the reservation.         |
 | `guest_num`           | `integer`  | The number of guests      |
-| `first_name`           | `string`  | **Required**. The reservation's first name (between 2 and 32 characters in length)      |
-| `last_name`           | `string`  | **Required**. The reservation's last name (between 2 and 32 characters in length)       |
+| `first_name`           | `string`  | **
+Required**. The reservation's first name (between 2 and 32 characters in length)      |
+| `last_name`           | `string`  | **
+Required**. The reservation's last name (between 2 and 32 characters in length)       |
 | `email`           | `string`  | **Required**. The reservation's email address       |
 | `telephone`           | `string`  | The reservation's telephone number         |
 
@@ -300,7 +302,7 @@ Status: 200 OK
 
 ### Delete a reservation
 
-Permanently deletes a reservation. It cannot be undone. 
+Permanently deletes a reservation. It cannot be undone.
 
 Required abilities: `reservations:write`
 
