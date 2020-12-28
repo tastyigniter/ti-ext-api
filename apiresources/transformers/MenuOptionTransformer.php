@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class MenuOptionTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = [
+    protected $availableIncludes = [
         'menu_option_values',
     ];
 

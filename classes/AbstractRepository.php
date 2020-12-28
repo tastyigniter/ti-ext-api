@@ -148,6 +148,8 @@ class AbstractRepository
 
         $this->applyScopes($query);
 
+        $this->extendQuery($query);
+
         $this->fireSystemEvent('api.repository.extendQuery', [$query]);
 
         return $query;
@@ -186,5 +188,9 @@ class AbstractRepository
             throw new SystemException("Class {$model} must be an instance of \\Igniter\\Flame\\Database\\Model");
 
         return $model;
+    }
+
+    protected function extendQuery($query)
+    {
     }
 }

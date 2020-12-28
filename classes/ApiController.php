@@ -2,6 +2,7 @@
 
 namespace Igniter\Api\Classes;
 
+use Admin\Traits\ValidatesForm;
 use Igniter\Api\Traits\AuthorizesRequest;
 use Igniter\Api\Traits\CreatesResponse;
 use Illuminate\Contracts\Support\Responsable;
@@ -13,6 +14,7 @@ class ApiController extends BaseController
 {
     use AuthorizesRequest;
     use CreatesResponse;
+    use ValidatesForm;
 
     public $allowedActions = [];
 
