@@ -140,6 +140,16 @@ class Extension extends BaseExtension
                     'destroy:admin',
                 ],
             ],
+            'tables' => [
+                'controller' => \Igniter\Api\ApiResources\Tables::class,
+                'name' => 'Tables',
+                'description' => 'An API resource for tables',
+                'authorization' => [
+                    'index:users', 'show:users',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
+            ],
         ];
     }
 
