@@ -7,6 +7,7 @@ use Igniter\Flame\Database\Model;
 use Igniter\Flame\Database\Traits\HasPermalink;
 use Igniter\Flame\Database\Traits\Validation;
 use Igniter\Flame\Mail\Markdown;
+use Igniter\Flame\Support\Facades\File;
 use System\Classes\ExtensionManager;
 
 /**
@@ -106,11 +107,16 @@ class Resource extends Model
 
     public function renderSetupPartial()
     {
-        $docsPath = extension_path('igniter/api/docs/'.sprintf('%s.md', $this->endpoint));
+        $registeredResources = (new static())->listRegisteredResources();
+        $resources = collect($registeredResources)->keyBy('endpoint')->toArray();
+        $extensionCode = array_get($resources, $this->endpoint.'.owner');
 
-        $markdown = Markdown::parseFile($docsPath);
+        $path = ExtensionManager::instance()->path($extensionCode);
+        $docsPath = $path.sprintf('docs/%s.md', $this->endpoint);
 
-        return $markdown ? $markdown->toHtml() : 'No documentation provided';
+        return File::existsInsensitive($docsPath)
+            ? Markdown::parseFile($docsPath)->toHtml()
+            : 'No documentation provided';
     }
 
     //
@@ -226,7 +232,7 @@ class Resource extends Model
 
         $registeredResources = ExtensionManager::instance()->getRegistrationMethodValues('registerApiResources');
         foreach ($registeredResources as $extensionCode => $resources) {
-            $this->registerResources($resources);
+            $this->registerResources($resources, $extensionCode);
         }
     }
 
@@ -234,13 +240,14 @@ class Resource extends Model
      * Registers the api resources.
      * @param array $definitions
      */
-    public function registerResources(array $definitions)
+    public function registerResources(array $definitions, string $owner = null)
     {
         $defaultDefinitions = [
             'name' => null,
             'description' => null,
             'controller' => null,
             'endpoint' => null,
+            'owner' => null,
         ];
 
         foreach ($definitions as $endpoint => $definition) {
@@ -248,6 +255,7 @@ class Resource extends Model
                 $definition = ['controller' => $definition];
 
             $definition['endpoint'] = $endpoint;
+            $definition['owner'] = $owner;
 
             static::$registeredResources[$endpoint] = array_merge($defaultDefinitions, $definition);
         }
