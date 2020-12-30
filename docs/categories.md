@@ -2,7 +2,7 @@
 
 This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` your categories.
 
-The endpoint responses are formatted according to the [JSONApi specification](https://jsonapi.org).
+The endpoint responses are formatted according to the [JSON:API specification](https://jsonapi.org).
 
 ### The category object
 
@@ -50,7 +50,7 @@ GET /api/categories
 | -------------------- | --------- | ------------------------- |
 | `page`           | `integer`  | The page number.         |
 | `pageLimit`           | `integer`  | The number of items per page.         |
-| `include`           | `string`  | Extra data you want to include as a comma seperated string, possible values are: *media, menus, locations*  |
+| `include`           | `string`  | Extra data you want to include as a comma seperated string. Available values are: *media, menus, locations*  |
 
 #### Response
 
@@ -91,8 +91,8 @@ Status: 200 OK
   ],
   "meta": {
     "pagination": {
-      "total": 8,
-      "count": 8,
+      "total": 1,
+      "count": 1,
       "per_page": 20,
       "current_page": 1,
       "total_pages": 1
