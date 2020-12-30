@@ -2,6 +2,8 @@
 
 This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` your tables.
 
+The endpoint responses are formatted according to the [JSON:API specification](https://jsonapi.org).
+
 ### The table object
 
 #### Attributes
@@ -46,6 +48,7 @@ POST /api/tables
 | Key                  | Type      | Description          |
 | -------------------- | --------- | ------------------------- |
 | `page`           | `integer`  | The page number.         |
+| `pageLimit`           | `integer`  | The number of items per page.         |
 
 #### Response
 
@@ -54,17 +57,40 @@ Status: 201 Created
 ```
 
 ```json
-[
-   {
-      "table_name": "Table 1",
-      "min_capacity": 3,
-      "max_capacity": 12,
-      "table_status": true,
-      "extra_capacity": 0,
-      "is_joinable": false,
-      "priority": 0
-   }
-]
+{
+  "data": [
+    {
+      "type": "menus",
+      "id": "1",
+      "attributes": {
+        "table_name": "Table 1",
+        "min_capacity": 3,
+        "max_capacity": 12,
+        "table_status": true,
+        "extra_capacity": 0,
+        "is_joinable": false,
+        "priority": 0
+      }
+    }
+  ],
+  "included": [
+    ...
+  ],
+  "meta": {
+    "pagination": {
+      "total": 1,
+      "count": 1,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "https://your.url/api/tables?page=1",
+    "first": "https://your.url/api/tables?page=1",
+    "last": "https://your.url/api/tables?page=1"
+  }
+}
 ```
 
 ### Create a table
@@ -107,13 +133,21 @@ Status: 201 Created
 
 ```json
 {
-   "table_name": "New table",
-   "min_capacity": 0,
-   "max_capacity": 12,
-   "table_status": true,
-   "extra_capacity": 0,
-   "is_joinable": false,
-   "priority": 0
+  "data": [
+    {
+      "type": "tables",
+      "id": "2",
+      "attributes": {
+        "table_name": "New table",
+        "min_capacity": 0,
+        "max_capacity": 12,
+        "table_status": true,
+        "extra_capacity": 0,
+        "is_joinable": false,
+        "priority": 0
+      }
+    }
+  ]
 }
 ```
 
@@ -139,13 +173,21 @@ Status: 200 OK
 
 ```json
 {
-   "table_name": "Table 1",
-   "min_capacity": 3,
-   "max_capacity": 12,
-   "table_status": true,
-   "extra_capacity": 0,
-   "is_joinable": false,
-   "priority": 0
+  "data": [
+    {
+      "type": "menus",
+      "id": "1",
+      "attributes": {
+        "table_name": "Table 1",
+        "min_capacity": 3,
+        "max_capacity": 12,
+        "table_status": true,
+        "extra_capacity": 0,
+        "is_joinable": false,
+        "priority": 0
+      }
+    }
+  ]
 }
 ```
 
@@ -176,8 +218,7 @@ PATCH /api/tables/:table_id
 
 ```json
 {
-  "description": "Vivamus interdum erat ac aliquam porttitor. ",
-  "parent_id": 2
+  "table_name": "Table 2",
 }
 ```
 
@@ -189,13 +230,21 @@ Status: 200 OK
 
 ```json
 {
-   "table_name": "Table 1",
-   "min_capacity": 3,
-   "max_capacity": 12,
-   "table_status": true,
-   "extra_capacity": 0,
-   "is_joinable": false,
-   "priority": 0
+  "data": [
+    {
+      "type": "tables",
+      "id": "2",
+      "attributes": {
+        "table_name": "Table 2",
+        "min_capacity": 3,
+        "max_capacity": 12,
+        "table_status": true,
+        "extra_capacity": 0,
+        "is_joinable": false,
+        "priority": 0
+      }
+    }
+  ]
 }
 ```
 
