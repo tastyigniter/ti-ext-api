@@ -166,9 +166,9 @@ Status: 200 OK
     }
   },
   "links": {
-    "self": "https://your.url/api/categories?page=1",
-    "first": "https://your.url/api/categories?page=1",
-    "last": "https://your.url/api/categories?page=1"
+    "self": "https://your.url/api/customers?page=1",
+    "first": "https://your.url/api/customers?page=1",
+    "last": "https://your.url/api/customers?page=1"
   }
 }
 ```
