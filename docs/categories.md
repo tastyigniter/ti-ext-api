@@ -50,7 +50,7 @@ GET /api/categories
 | -------------------- | --------- | ------------------------- |
 | `page`           | `integer`  | The page number.         |
 | `pageLimit`           | `integer`  | The number of items per page.         |
-| `include`           | `string`  | Extra data you want to include as a comma seperated string. Available values are: *media, menus, locations*  |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
 
 #### Response
 
@@ -178,7 +178,7 @@ GET /api/categories/:category_id
 
 | Key                  | Type      | Description          |
 | -------------------- | --------- | ------------------------- |
-| `include`           | `string`  | Extra data you want to include as a comma seperated string, possible values are: *media, menus, locations*  |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
 
 #### Response
 
