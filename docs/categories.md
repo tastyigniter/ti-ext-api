@@ -87,21 +87,21 @@ Status: 200 OK
     }
   ],
   "included": [
-	...
+    ...
   ],
   "meta": {
-	"pagination": {
+    "pagination": {
       "total": 8,
       "count": 8,
       "per_page": 20,
       "current_page": 1,
       "total_pages": 1
-	}
+    }
   },
   "links": {
-	"self": "https://your.url/api/categories?page=1",
-	"first": "https://your.url/api/categories?page=1",
-	"last": "https://your.url/api/categories?page=1"
+    "self": "https://your.url/api/categories?page=1",
+    "first": "https://your.url/api/categories?page=1",
+    "last": "https://your.url/api/categories?page=1"
   }
 }
 ```
@@ -146,14 +146,21 @@ Status: 201 Created
 
 ```json
 {
-  "name": "Appetizer",
-  "permalink_slug": "appetizer",
-  "parent_id": null,
-  "locations": [],
-  "priority": null,
-  "status": true,
-  "description": "Sed consequat, sapien in scelerisque egestas",
-  "thumb": null
+  "data": [
+    {
+      "type": "categories",
+      "id": "1",
+      "attributes": {
+        "name": "Appetizer",
+        "permalink_slug": "appetizer",
+        "parent_id": null,
+        "priority": null,
+        "status": true,
+        "description": "Sed consequat, sapien in scelerisque egestas",
+        "thumb": null,
+      }
+    }
+  ]
 }
 ```
 
@@ -273,7 +280,7 @@ Status: 200 OK
 
 ### Delete a category
 
-Permanently deletes a category. It cannot be undone. 
+Permanently deletes a category. It cannot be undone.
 
 Required abilities: `categories:write`
 
