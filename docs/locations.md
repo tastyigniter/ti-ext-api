@@ -2,6 +2,8 @@
 
 This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` locations on your TastyIgniter site.
 
+The endpoint responses are formatted according to the [JSON:API specification](https://jsonapi.org).
+
 ### The location object
 
 #### Attributes
@@ -82,7 +84,15 @@ GET /api/locations
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `page`           | `integer`  | The page number.         |
+| `pageLimit`           | `integer`  | The number of items per page.         |
+| `sort`           | `string`  | The order to return results in. Possible values are `distance asc`, `distance desc`, `location_id asc`, `location_id desc`, `location_name asc`, `location_name desc`         |
+| `latitude`           | `string`  | The latitude you want to search for a location around         |
+| `longitude`           | `string`  | The longitude you want to search for a location around         |
+| `search`           | `string`  | The phrase to search for in the location name, address and decsription       |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `working_hours`, `delivery_areas`, `reviews`. To include multiple seperate by comma (e.g. ?include= working_hours,media) |
 
 #### Response
 
@@ -94,42 +104,93 @@ Status: 200 OK
 {
   "data": [
     {
-      "location_id": 1,
-      "location_name": "My restaurant",
-      "location_email": "restaurant@bloggs.com",
-      "description": "My TastyIgniter restaurant",
-      "location_address_1": "1 Some Street",
-      "location_address_2": "",
-      "location_city": "London",
-      "location_state": "London",
-      "location_postcode": "WA4 3NN",
-      "location_country_id": 222,
-      "location_telephone": "1234512345",
-      "location_lat": 50.6008818,
-      "location_lng": -6.8794655,
-      "location_status": true,
-      "permalink_slug": "my-restaurant",
-      "media": []
+      "type": "locations",
+      "id": "1",
+      "attributes": {
+        "location_name": "My restaurant",
+        "location_email": "restaurant@bloggs.com",
+        "description": "My TastyIgniter restaurant",
+        "location_address_1": "1 Some Street",
+        "location_address_2": "",
+        "location_city": "London",
+        "location_state": "London",
+        "location_postcode": "WA4 3NN",
+        "location_country_id": 222,
+        "location_telephone": "1234512345",
+        "location_lat": 50.6008818,
+        "location_lng": -6.8794655,
+        "location_status": true,
+        "permalink_slug": "my-restaurant",
+        "media": [],
+        "working_hours": [...],
+        "delivery_areas": [...],
+        "reviews": [...]
+      },
+      "relationships": {
+        "working_hours": {
+          "data": [...]
+        },
+        "delivery_areas": {
+          "data": [...]
+        },
+        "reviews": {
+          "data": [...]
+        }
+      }
     },
     {
-      "location_id": 2,
-      "location_name": "My other restaurant",
-      "location_email": "other.restaurant@bloggs.com",
-      "description": "My second TastyIgniter restaurant",
-      "location_address_1": "1 Another Street",
-      "location_address_2": "",
-      "location_city": "London",
-      "location_state": "London",
-      "location_postcode": "WA3 1NA",
-      "location_country_id": 222,
-      "location_telephone": "1234512345",
-      "location_lat": 50.6108818,
-      "location_lng": -6.8994655,
-      "location_status": true,
-      "permalink_slug": "my-other-restaurant",
-      "media": []
+      "type": "locations",
+      "id": "2",
+      "attributes": {
+        "location_name": "My other restaurant",
+        "location_email": "other.restaurant@bloggs.com",
+        "description": "My second TastyIgniter restaurant",
+        "location_address_1": "1 Another Street",
+        "location_address_2": "",
+        "location_city": "London",
+        "location_state": "London",
+        "location_postcode": "WA3 1NA",
+        "location_country_id": 222,
+        "location_telephone": "1234512345",
+        "location_lat": 50.6108818,
+        "location_lng": -6.8994655,
+        "location_status": true,
+        "permalink_slug": "my-other-restaurant",
+        "media": [],
+        "working_hours": [...],
+        "delivery_areas": [...],
+        "reviews": [...]
+      },
+      "relationships": {
+        "working_hours": {
+          "data": [...]
+        },
+        "delivery_areas": {
+          "data": [...]
+        },
+        "reviews": {
+          "data": [...]
+        }
+      }
     }
-  ]
+  ],
+  "included": [
+    ...
+  ],
+  "meta": {
+    "pagination": {
+      "total": 2,
+      "count": 2,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "https://your.url/api/locations?page=1",
+    "first": "https://your.url/api/locations?page=1",
+    "last": "https://your.url/api/locations?page=1"
+  }
 }
 ```
 
@@ -188,22 +249,29 @@ Status: 201 Created
 
 ```json
 {
-  "location_id": 1,
-  "location_name": "My restaurant",
-  "location_email": "restaurant@bloggs.com",
-  "description": "My TastyIgniter restaurant",
-  "location_address_1": "1 Some Street",
-  "location_address_2": "",
-  "location_city": "London",
-  "location_state": "London",
-  "location_postcode": "WA4 3NN",
-  "location_country_id": 222,
-  "location_telephone": "1234512345",
-  "location_lat": 50.6008818,
-  "location_lng": -6.8794655,
-  "location_status": true,
-  "permalink_slug": "my-restaurant",
-  "media": []
+  "data": [
+    {
+      "type": "locations",
+      "id": "1",
+      "attributes": {
+        "location_name": "My restaurant",
+        "location_email": "restaurant@bloggs.com",
+        "description": "My TastyIgniter restaurant",
+        "location_address_1": "1 Some Street",
+        "location_address_2": "",
+        "location_city": "London",
+        "location_state": "London",
+        "location_postcode": "WA4 3NN",
+        "location_country_id": 222,
+        "location_telephone": "1234512345",
+        "location_lat": 50.6008818,
+        "location_lng": -6.8794655,
+        "location_status": true,
+        "permalink_slug": "my-restaurant",
+        "media": []
+      }
+    }
+  ]
 }
 ```
 
@@ -219,7 +287,9 @@ GET /api/locations/:location_id
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `working_hours`, `delivery_areas`, `reviews`. To include multiple seperate by comma (e.g. ?include= working_hours,media) |
 
 #### Response
 
@@ -229,22 +299,46 @@ Status: 200 OK
 
 ```json
 {
-  "location_id": 1,
-  "location_name": "My restaurant",
-  "location_email": "restaurant@bloggs.com",
-  "description": "My TastyIgniter restaurant",
-  "location_address_1": "1 Some Street",
-  "location_address_2": "",
-  "location_city": "London",
-  "location_state": "London",
-  "location_postcode": "WA4 3NN",
-  "location_country_id": 222,
-  "location_telephone": "1234512345",
-  "location_lat": 50.6008818,
-  "location_lng": -6.8794655,
-  "location_status": true,
-  "permalink_slug": "my-restaurant",
-  "media": []
+  "data": [
+    {
+      "type": "locations",
+      "id": "1",
+      "attributes": {
+        "location_name": "My restaurant",
+        "location_email": "restaurant@bloggs.com",
+        "description": "My TastyIgniter restaurant",
+        "location_address_1": "1 Some Street",
+        "location_address_2": "",
+        "location_city": "London",
+        "location_state": "London",
+        "location_postcode": "WA4 3NN",
+        "location_country_id": 222,
+        "location_telephone": "1234512345",
+        "location_lat": 50.6008818,
+        "location_lng": -6.8794655,
+        "location_status": true,
+        "permalink_slug": "my-restaurant",
+        "media": [],
+        "working_hours": [...],
+        "delivery_areas": [...],
+        "reviews": [...]
+      },
+      "relationships": {
+        "working_hours": {
+          "data": [...]
+        },
+        "delivery_areas": {
+          "data": [...]
+        },
+        "reviews": {
+          "data": [...]
+        }
+      }
+    }
+  ],
+  "included": [
+    ...
+  ]
 }
 ```
 
@@ -294,22 +388,29 @@ Status: 200 OK
 
 ```json
 {
-  "location_id": 1,
-  "location_name": "My new restaurant",
-  "location_email": "new@bloggs.com",
-  "description": "My TastyIgniter restaurant",
-  "location_address_1": "1 Some Street",
-  "location_address_2": "",
-  "location_city": "London",
-  "location_state": "London",
-  "location_postcode": "WA4 3NN",
-  "location_country_id": 222,
-  "location_telephone": "1234512345",
-  "location_lat": 50.6008818,
-  "location_lng": -6.8794655,
-  "location_status": true,
-  "permalink_slug": "my-restaurant",
-  "media": []
+  "data": [
+    {
+      "type": "locations",
+      "id": "1",
+      "attributes": {
+        "location_name": "My new restaurant",
+        "location_email": "new@bloggs.com",
+        "description": "My TastyIgniter restaurant",
+        "location_address_1": "1 Some Street",
+        "location_address_2": "",
+        "location_city": "London",
+        "location_state": "London",
+        "location_postcode": "WA4 3NN",
+        "location_country_id": 222,
+        "location_telephone": "1234512345",
+        "location_lat": 50.6008818,
+        "location_lng": -6.8794655,
+        "location_status": true,
+        "permalink_slug": "my-restaurant",
+        "media": []
+      }
+    }
+  ]
 }
 ```
 

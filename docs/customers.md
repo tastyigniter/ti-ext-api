@@ -2,6 +2,8 @@
 
 This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` customers on your TastyIgniter site.
 
+The endpoint responses are formatted according to the [JSON:API specification](https://jsonapi.org).
+
 ### The customer object
 
 #### Attributes
@@ -118,6 +120,8 @@ Status: 200 OK
             "country_id": 222
           }
         ],
+        "orders": [...],
+        "reservations": [...]
       },
       "relationships": {
         "orders": {
@@ -142,6 +146,8 @@ Status: 200 OK
         "status": false,
         "full_name": "Sherlock Holmes",
         "addresses": [],
+        "orders": [...],
+        "reservations": [...]
       },
       "relationships": {
         "orders": {
