@@ -80,6 +80,8 @@ GET /api/customers
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
+| `page`           | `integer`  | The page number.         |
+| `pageLimit`           | `integer`  | The number of items per page.         |
 | `include`           | `string`  | What relations to include in the response. Options are `addresses`, `orders`, `reservations`. To include multiple seperate by comma (e.g. ?include=addresses,orders) |
 
 #### Response
@@ -92,43 +94,82 @@ Status: 200 OK
 {
   "data": [
     {
-      "customer_id": 1,
-      "first_name": "Joe",
-      "last_name": "Bloggs",
-      "email": "joe@bloggs.com",
-      "telephone": "1234512345",
-      "newsletter": false,
-      "customer_group_id": 1,
-      "date_added": "2020-05-20 08:34:37",
-      "status": true,
-      "full_name": "Joe Bloggs",
-      "addresses": [
-        {
-          "address_id": 1,
-          "customer_id": 1,
-          "address_1": "1 Some Road",
-          "address_2": null,
-          "city": "London",
-          "state": "",
-          "postcode": "W1A 3NN",
-          "country_id": 222
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "first_name": "Joe",
+        "last_name": "Bloggs",
+        "email": "joe@bloggs.com",
+        "telephone": "1234512345",
+        "newsletter": false,
+        "customer_group_id": 1,
+        "date_added": "2020-05-20 08:34:37",
+        "status": true,
+        "full_name": "Joe Bloggs",
+        "addresses": [
+          {
+            "address_id": 1,
+            "customer_id": 1,
+            "address_1": "1 Some Road",
+            "address_2": null,
+            "city": "London",
+            "state": "",
+            "postcode": "W1A 3NN",
+            "country_id": 222
+          }
+        ],
+      },
+      "relationships": {
+        "orders": {
+          "data": [...]
+        },
+        "reservations": {
+          "data": [...]
         }
-      ]
+      }
     },
     {
-      "customer_id": 2,
-      "first_name": "Sherlock",
-      "last_name": "Holmes",
-      "email": "sherlock@holmes.com",
-      "telephone": "01234012345",
-      "newsletter": true,
-      "customer_group_id": 1,
-      "date_added": "2020-05-21 09:12:17",
-      "status": false,
-      "full_name": "Sherlock Holmes",
-      "addresses": []
+      "type": "customers",
+      "id": "2",
+      "attributes": {
+        "first_name": "Sherlock",
+        "last_name": "Holmes",
+        "email": "sherlock@holmes.com",
+        "telephone": "01234012345",
+        "newsletter": true,
+        "customer_group_id": 1,
+        "date_added": "2020-05-21 09:12:17",
+        "status": false,
+        "full_name": "Sherlock Holmes",
+        "addresses": [],
+      },
+      "relationships": {
+        "orders": {
+          "data": [...]
+        },
+        "reservations": {
+          "data": [...]
+        }
+      }
     }
-  ]
+  ],
+  "included": [
+    ...
+  ],
+  "meta": {
+    "pagination": {
+      "total": 2,
+      "count": 2,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "https://your.url/api/categories?page=1",
+    "first": "https://your.url/api/categories?page=1",
+    "last": "https://your.url/api/categories?page=1"
+  }
 }
 ```
 
@@ -186,26 +227,33 @@ Status: 201 Created
 
 ```json
 {
-  "customer_id": 1,
-  "first_name": "Joe",
-  "last_name": "Bloggs",
-  "email": "joe@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "customer_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
+  "data": [
     {
-      "address_id": 1,
-      "customer_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "first_name": "Joe",
+        "last_name": "Bloggs",
+        "email": "joe@bloggs.com",
+        "telephone": "1234512345",
+        "newsletter": false,
+        "customer_group_id": 1,
+        "date_added": "2020-05-20 08:34:37",
+        "status": true,
+        "full_name": "Joe Bloggs",
+        "addresses": [
+          {
+            "address_id": 1,
+            "customer_id": 1,
+            "address_1": "1 Some Road",
+            "address_2": null,
+            "city": "London",
+            "state": "",
+            "postcode": "W1A 3NN",
+            "country_id": 222
+          }
+        ]
+      }
     }
   ]
 }
@@ -223,7 +271,9 @@ GET /api/customers/:customer_id
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `include`           | `string`  | What relations to include in the response. Options are `addresses`, `orders`, `reservations`. To include multiple seperate by comma (e.g. ?include=addresses,orders) |
 
 #### Response
 
@@ -233,27 +283,45 @@ Status: 200 OK
 
 ```json
 {
-  "customer_id": 1,
-  "first_name": "Joe",
-  "last_name": "Bloggs",
-  "email": "joe@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "customer_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
+  "data": [
     {
-      "address_id": 1,
-      "customer_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "first_name": "Joe",
+        "last_name": "Bloggs",
+        "email": "joe@bloggs.com",
+        "telephone": "1234512345",
+        "newsletter": false,
+        "customer_group_id": 1,
+        "date_added": "2020-05-20 08:34:37",
+        "status": true,
+        "full_name": "Joe Bloggs",
+        "addresses": [
+          {
+            "address_id": 1,
+            "customer_id": 1,
+            "address_1": "1 Some Road",
+            "address_2": null,
+            "city": "London",
+            "state": "",
+            "postcode": "W1A 3NN",
+            "country_id": 222
+          }
+        ]
+      },
+      "relationships": {
+        "orders": {
+          "data": [...]
+        },
+        "reservations": {
+          "data": [...]
+        }
+      }
     }
+  ],
+  "included": [
+	...
   ]
 }
 ```
@@ -298,26 +366,33 @@ Status: 200 OK
 
 ```json
 {
-  "customer_id": 1,
-  "first_name": "Joeseph",
-  "last_name": "Bloggs",
-  "email": "joeseph@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "customer_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
+  "data": [
     {
-      "address_id": 1,
-      "customer_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "first_name": "Joseph",
+        "last_name": "Bloggs",
+        "email": "joseph@bloggs.com",
+        "telephone": "1234512345",
+        "newsletter": false,
+        "customer_group_id": 1,
+        "date_added": "2020-05-20 08:34:37",
+        "status": true,
+        "full_name": "Joe Bloggs",
+        "addresses": [
+          {
+            "address_id": 1,
+            "customer_id": 1,
+            "address_1": "1 Some Road",
+            "address_2": null,
+            "city": "London",
+            "state": "",
+            "postcode": "W1A 3NN",
+            "country_id": 222
+          }
+        ]
+      }
     }
   ]
 }
