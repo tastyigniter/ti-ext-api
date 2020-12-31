@@ -145,7 +145,7 @@ class Extension extends BaseExtension
                 'name' => 'Tables',
                 'description' => 'An API resource for tables',
                 'authorization' => [
-                    'index:users', 'show:users',
+                    'index:admin', 'show:admin',
                     'store:admin', 'update:admin',
                     'destroy:admin',
                 ],
