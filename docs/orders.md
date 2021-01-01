@@ -93,6 +93,9 @@ GET /api/orders
 | `pageLimit`           | `integer`  | The number of items per page.         |
 | `customer`           | `integer`  | The customer id to return orders for |
 | `location`           | `integer `  | The location id to return orders for |
+| `sort`           | `string`  | The order to return results in. Possible values are `order_id asc`, `order_id desc`, `date_added asc`, `date_added desc` |
+| `include`           | `string`  | What relations to include in the response. Options are `customer`, `location`, `address`, `payment_method`, `status`, `assignee`, `assignee_group`, `status_history`. To include multiple seperate by comma (e.g. ?include= customer,location) |
+
 
 #### Response
 

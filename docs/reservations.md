@@ -73,7 +73,15 @@ GET /api/reservations
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `page`           | `integer`  | The page number.         |
+| `pageLimit`           | `integer`  | The number of items per page.         |
+| `customer`           | `integer`  | The customer id to return orders for |
+| `location`           | `integer `  | The location id to return orders for |
+| `sort`           | `string`  | The order to return results in. Possible values are `reservation_id asc`, `reservation_id desc`, `reserve_date asc`, `reserve_date desc` |
+| `include`           | `string`  | What relations to include in the response. Options are `customer`, `location`, `tables`, `status`, `assignee`, `assignee_group`, `status_history`. To include multiple seperate by comma (e.g. ?include= customer,location) |
+
 
 #### Response
 
@@ -85,31 +93,82 @@ Status: 200 OK
 {
   "data": [
     {
-      "reservation_id": 1,
-      "customer_id": null,
-      "location_id": 1,
-      "table_id": 0,
-      "guest_num": 2,
-      "first_name": "Ryder",
-      "last_name": "Anthony",
-      "email": "xigakube@mailinator.net",
-      "telephone": "+1 (828) 231-8892",
-      "comment": "Cillum eum cupidatat",
-      "reserve_date_time": "2020-06-26 19:35:00",
-      "duration": null,
-      "notify": true,
-      "status_id": 8,
-      "status_updated_at": "2020-06-03T19:11:10.000000Z",
-      "assignee_id": 2,
-      "assignee_group_id": 4,
-      "assignee_updated_at": "2020-06-03T19:16:58.000000Z",
-      "hash": "fcf74e695a35c0db456d76b2f5180e95",
-      "ip_address": "192.168.10.1",
-      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-      "date_added": "2020-06-03",
-      "date_modified": "2020-06-03"
+      "type": "reservations",
+      "id": "1",
+      "attributes": {
+        "customer_id": null,
+        "location_id": 1,
+        "table_id": 0,
+        "guest_num": 2,
+        "first_name": "Ryder",
+        "last_name": "Anthony",
+        "email": "xigakube@mailinator.net",
+        "telephone": "+1 (828) 231-8892",
+        "comment": "Cillum eum cupidatat",
+        "reserve_date_time": "2020-06-26 19:35:00",
+        "duration": null,
+        "notify": true,
+        "status_id": 8,
+        "status_updated_at": "2020-06-03T19:11:10.000000Z",
+        "assignee_id": 2,
+        "assignee_group_id": 4,
+        "assignee_updated_at": "2020-06-03T19:16:58.000000Z",
+        "hash": "fcf74e695a35c0db456d76b2f5180e95",
+        "ip_address": "192.168.10.1",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
+        "date_added": "2020-06-03",
+        "date_modified": "2020-06-03",
+        "order_totals": [...],
+        "customer": [...],
+		"location": [...],
+        "tables": [...],
+        "status": [...],
+        "assignee": [...],
+        "assignee_group": [...],
+        "status_history": [...]
+      },
+      "relationships": {
+        "customer": {
+          "data": [...]
+        },
+        "location": {
+          "data": [...]
+        },
+        "tables": {
+          "data": [...]
+        },
+        "status": {
+          "data": [...]
+        },
+        "assignee": {
+          "data": [...]
+        },
+        "assignee_group": {
+          "data": [...]
+        },
+        "status_history": {
+          "data": [...]
+        }
+      }
     }
-  ]
+  ],
+  "included": [
+    ...
+  ],
+  "meta": {
+    "pagination": {
+      "total": 1,
+      "count": 1,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "https://your.url/api/reservations?page=1",
+    "first": "https://your.url/api/reservations?page=1",
+    "last": "https://your.url/api/reservations?page=1"
+  }
 }
 ```
 
@@ -160,29 +219,36 @@ Status: 201 Created
 
 ```json
 {
-  "reservation_id": 1,
-  "customer_id": null,
-  "location_id": 1,
-  "table_id": 0,
-  "guest_num": 2,
-  "first_name": "Ryder",
-  "last_name": "Anthony",
-  "email": "xigakube@mailinator.net",
-  "telephone": "+1 (828) 231-8892",
-  "comment": "Cillum eum cupidatat",
-  "reserve_date_time": "2020-06-26 19:35:00",
-  "duration": null,
-  "notify": true,
-  "status_id": 8,
-  "status_updated_at": "2020-06-03T19:11:10.000000Z",
-  "assignee_id": 2,
-  "assignee_group_id": 4,
-  "assignee_updated_at": "2020-06-03T19:16:58.000000Z",
-  "hash": "fcf74e695a35c0db456d76b2f5180e95",
-  "ip_address": "192.168.10.1",
-  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-  "date_added": "2020-06-03",
-  "date_modified": "2020-06-03"
+  "data": [
+    {
+      "type": "reservations",
+      "id": "1",
+      "attributes": {
+      "reservation_id": 1,
+      "customer_id": null,
+      "location_id": 1,
+      "table_id": 0,
+      "guest_num": 2,
+      "first_name": "Ryder",
+      "last_name": "Anthony",
+      "email": "xigakube@mailinator.net",
+      "telephone": "+1 (828) 231-8892",
+      "comment": "Cillum eum cupidatat",
+      "reserve_date_time": "2020-06-26 19:35:00",
+      "duration": null,
+      "notify": true,
+      "status_id": 8,
+      "status_updated_at": "2020-06-03T19:11:10.000000Z",
+      "assignee_id": 2,
+      "assignee_group_id": 4,
+      "assignee_updated_at": "2020-06-03T19:16:58.000000Z",
+      "hash": "fcf74e695a35c0db456d76b2f5180e95",
+      "ip_address": "192.168.10.1",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
+      "date_added": "2020-06-03",
+      "date_modified": "2020-06-03"
+    }
+  ]
 }
 ```
 
@@ -198,7 +264,9 @@ GET /api/reservations/:reservation_id
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `include`           | `string`  | What relations to include in the response. Options are `customer`, `location`, `tables`, `status`, `assignee`, `assignee_group`, `status_history`. To include multiple seperate by comma (e.g. ?include= customer,location) |
 
 #### Response
 
@@ -208,27 +276,69 @@ Status: 200 OK
 
 ```json
 {
-  "reservation_id": 1,
-  "first_name": "Joe",
-  "last_name": "Bloggs",
-  "email": "joe@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "reservation_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
+  "data": [
     {
-      "address_id": 1,
-      "reservation_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
+      "type": "reservations",
+      "id": "1",
+      "attributes": {
+        "customer_id": null,
+        "location_id": 1,
+        "table_id": 0,
+        "guest_num": 2,
+        "first_name": "Ryder",
+        "last_name": "Anthony",
+        "email": "xigakube@mailinator.net",
+        "telephone": "+1 (828) 231-8892",
+        "comment": "Cillum eum cupidatat",
+        "reserve_date_time": "2020-06-26 19:35:00",
+        "duration": null,
+        "notify": true,
+        "status_id": 8,
+        "status_updated_at": "2020-06-03T19:11:10.000000Z",
+        "assignee_id": 2,
+        "assignee_group_id": 4,
+        "assignee_updated_at": "2020-06-03T19:16:58.000000Z",
+        "hash": "fcf74e695a35c0db456d76b2f5180e95",
+        "ip_address": "192.168.10.1",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
+        "date_added": "2020-06-03",
+        "date_modified": "2020-06-03",
+        "order_totals": [...],
+        "customer": [...],
+		"location": [...],
+        "tables": [...],
+        "status": [...],
+        "assignee": [...],
+        "assignee_group": [...],
+        "status_history": [...]
+      },
+      "relationships": {
+        "customer": {
+          "data": [...]
+        },
+        "location": {
+          "data": [...]
+        },
+        "tables": {
+          "data": [...]
+        },
+        "status": {
+          "data": [...]
+        },
+        "assignee": {
+          "data": [...]
+        },
+        "assignee_group": {
+          "data": [...]
+        },
+        "status_history": {
+          "data": [...]
+        }
+      }
     }
+  ],
+  "included": [
+    ...
   ]
 }
 ```
@@ -273,26 +383,34 @@ Status: 200 OK
 
 ```json
 {
-  "reservation_id": 1,
-  "first_name": "Joeseph",
-  "last_name": "Bloggs",
-  "email": "joeseph@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "reservation_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
+  "data": [
     {
-      "address_id": 1,
-      "reservation_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
+      "type": "reservations",
+      "id": "1",
+      "attributes": {
+        "customer_id": null,
+        "location_id": 1,
+        "table_id": 0,
+        "guest_num": 2,
+        "first_name": "Joseph",
+        "last_name": "joseph@bloggs.com",
+        "email": "xigakube@mailinator.net",
+        "telephone": "+1 (828) 231-8892",
+        "comment": "Cillum eum cupidatat",
+        "reserve_date_time": "2020-06-26 19:35:00",
+        "duration": null,
+        "notify": true,
+        "status_id": 8,
+        "status_updated_at": "2020-06-03T19:11:10.000000Z",
+        "assignee_id": 2,
+        "assignee_group_id": 4,
+        "assignee_updated_at": "2020-06-03T19:16:58.000000Z",
+        "hash": "fcf74e695a35c0db456d76b2f5180e95",
+        "ip_address": "192.168.10.1",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
+        "date_added": "2020-06-03",
+        "date_modified": "2020-06-03"
+      }
     }
   ]
 }
