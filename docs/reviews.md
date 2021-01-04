@@ -2,6 +2,8 @@
 
 This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` reviews on your TastyIgniter site.
 
+The endpoint responses are formatted according to the [JSON:API specification](https://jsonapi.org).
+
 ### The review object
 
 #### Attributes
@@ -37,6 +39,87 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
   "review_status": true,
   "location": {},
   "customer": {}
+}
+```
+
+
+### List reviews
+
+Retrieves a list of reviews.
+
+Required abilities: `reviews:read`
+
+```
+GET /api/reviews
+```
+
+#### Parameters
+
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `page`           | `integer`  | The page number.         |
+| `pageLimit`           | `integer`  | The number of items per page.         |
+| `sort`           | `string`  | The order to return results in. Possible values are `date_added asc`, `date_added desc`      |
+| `enabled`           | `boolean`  | If true only menu items that are enabled will be returned        |
+| `location`           | `integer`  | The id of the location you wan to return reviews for         |
+| `customer`           | `integer`  | The id of the customer you wan to return reviews for             |
+| `include`           | `string`  | What relations to include in the response. Options are `location`, `customer`. To include multiple seperate by comma (e.g. ?include=location,customer)  |
+
+#### Response
+
+```html
+Status: 200 OK
+```
+
+```json
+{
+  "data": [
+    {
+      "type": "reviews",
+      "id": "1",
+      "attributes": {
+        "review_id": 1,
+        "customer_id": 1,
+        "sale_id": 1,
+        "sale_type": "orders",
+        "author": 1,
+        "location_id": 1,
+        "quality": 4,
+        "delivery": 5,
+        "service": 5,
+        "review_text": "This restaurant is amazing!",
+        "date_added": "2020-06-03 09:17:12",
+        "review_status": true,
+        "location": {},
+        "customer": {}
+      },
+      "relationships": {
+        "location": {
+          "data": [...]
+        },
+        "customer": {
+          "data": [...]
+        }
+      }
+    }
+  ],
+  "included": [
+    ...
+  ],
+  "meta": {
+    "pagination": {
+      "total": 1,
+      "count": 1,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "https://your.url/api/reviews?page=1",
+    "first": "https://your.url/api/reviews?page=1",
+    "last": "https://your.url/api/reviews?page=1"
+  }
 }
 ```
 
@@ -89,20 +172,27 @@ Status: 201 Created
 
 ```json
 {
-  "review_id": 1,
-  "customer_id": 1,
-  "sale_id": 1,
-  "sale_type": "orders",
-  "author": 1,
-  "location_id": 1,
-  "quality": 4,
-  "delivery": 5,
-  "service": 5,
-  "review_text": "This restaurant is amazing!",
-  "date_added": "2020-06-03 09:17:12",
-  "review_status": true,
-  "location": {},
-  "customer": {}
+  "data": [
+    {
+      "type": "reviews",
+      "id": "1",
+      "attributes": {
+        "customer_id": 1,
+        "sale_id": 1,
+        "sale_type": "orders",
+        "author": 1,
+        "location_id": 1,
+        "quality": 4,
+        "delivery": 5,
+        "service": 5,
+        "review_text": "This restaurant is amazing!",
+        "date_added": "2020-06-03 09:17:12",
+        "review_status": true,
+        "location": {},
+        "customer": {}
+      }
+    }
+  ]
 }
 ```
 
@@ -118,7 +208,9 @@ GET /api/reviews/:review_id
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `include`           | `string`  | What relations to include in the response. Options are `location`, `customer`. To include multiple seperate by comma (e.g. ?include=location,customer) |
 
 #### Response
 
@@ -128,20 +220,39 @@ Status: 200 OK
 
 ```json
 {
-  "review_id": 1,
-  "customer_id": 1,
-  "sale_id": 1,
-  "sale_type": "orders",
-  "author": 1,
-  "location_id": 1,
-  "quality": 5,
-  "delivery": 5,
-  "service": 5,
-  "review_text": "This restaurant is amazing!",
-  "date_added": "2020-06-03 09:17:12",
-  "review_status": true,
-  "location": {},
-  "customer": {}
+  "data": [
+    {
+      "type": "reviews",
+      "id": "1",
+      "attributes": {
+        "review_id": 1,
+        "customer_id": 1,
+        "sale_id": 1,
+        "sale_type": "orders",
+        "author": 1,
+        "location_id": 1,
+        "quality": 4,
+        "delivery": 5,
+        "service": 5,
+        "review_text": "This restaurant is amazing!",
+        "date_added": "2020-06-03 09:17:12",
+        "review_status": true,
+        "location": {},
+        "customer": {}
+      },
+      "relationships": {
+        "location": {
+          "data": [...]
+        },
+        "customer": {
+          "data": [...]
+        }
+      }
+    }
+  ],
+  "included": [
+    ...
+  ]
 }
 ```
 
@@ -174,7 +285,7 @@ PATCH /api/reviews/:review_id
 
 ```json
 {
-  "quality": 4,
+  "quality": 5,
   "review_text": "This restaurant is *really* amazing!"
 }
 ```
@@ -187,20 +298,27 @@ Status: 200 OK
 
 ```json
 {
-  "review_id": 1,
-  "customer_id": 1,
-  "sale_id": 1,
-  "sale_type": "orders",
-  "author": 1,
-  "location_id": 1,
-  "quality": 5,
-  "delivery": 5,
-  "service": 5,
-  "review_text": "This restaurant is *really* amazing!",
-  "date_added": "2020-06-03 09:17:12",
-  "review_status": true,
-  "location": {},
-  "customer": {}
+  "data": [
+    {
+      "type": "reviews",
+      "id": "1",
+      "attributes": {
+        "customer_id": 1,
+        "sale_id": 1,
+        "sale_type": "orders",
+        "author": 1,
+        "location_id": 1,
+        "quality": 5,
+        "delivery": 5,
+        "service": 5,
+        "review_text": "This restaurant is *really* amazing!",
+        "date_added": "2020-06-03 09:17:12",
+        "review_status": true,
+        "location": {},
+        "customer": {}
+      }
+    }
+  ]
 }
 ```
 
