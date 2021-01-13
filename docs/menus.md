@@ -2,6 +2,8 @@
 
 This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` menus on your TastyIgniter site.
 
+The endpoint responses are formatted according to the [JSON:API specification](https://jsonapi.org).
+
 ### The menu object
 
 #### Attributes
@@ -92,6 +94,104 @@ Required abilities: `menus:read`
 GET /api/menus
 ```
 
+#### Parameters
+
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `page`           | `integer`  | The page number.         |
+| `pageLimit`           | `integer`  | The number of items per page.            |
+| `enabled`           | `boolean`  | If true only menu items that are enabled will be returned        |
+| `location`           | `integer`  | The id of the location you wan to return menu items for         |
+| `category`           | `integer`  | The id of the category you wan to return menu items for         |
+| `search`           | `string`  | The phrase to search for in the menu item name and decsription       |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
+
+#### Response
+
+```html
+Status: 200 OK
+```
+
+```json
+{
+  "data": [
+    {
+      "type": "menus",
+      "id": "1",
+      "attributes": {
+        "menu_name": "Puff-Puff",
+        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+        "menu_price": 4.99,
+        "menu_photo": null,
+        "stock_qty": 0,
+        "minimum_qty": 3,
+        "subtract_stock": false,
+        "mealtime_id": null,
+        "menu_status": true,
+        "menu_priority": 0,
+        "order_restriction": 0,
+        "media": [...],
+        "categories": [...],
+        "menu_options": [...]
+      },
+      "relationships": {
+        "categories": {
+          "data": [...]
+        },
+        "menu_options": {
+          "data": [...]
+        }
+      }
+    },
+    {
+      "type": "menus",
+      "id": "2",
+      "attributes": {
+        "menu_name": "Doughnut",
+        "menu_description": "Deep fried from a flour dough with sweet fillings",
+        "menu_price": 0.99,
+        "menu_photo": null,
+        "stock_qty": 1000,
+        "minimum_qty": 1,
+        "subtract_stock": true,
+        "mealtime_id": null,
+        "menu_status": true,
+        "menu_priority": 0,
+        "order_restriction": 0,
+        "media": [...],
+        "categories": [...],
+        "menu_options": [...]
+      },
+      "relationships": {
+        "categories": {
+          "data": [...]
+        },
+        "menu_options": {
+          "data": [...]
+        }
+      }
+    }
+  ],
+  "included": [
+    ...
+  ],
+  "meta": {
+    "pagination": {
+      "total": 2,
+      "count": 2,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "https://your.url/api/menus?page=1",
+    "first": "https://your.url/api/menus?page=1",
+    "last": "https://your.url/api/menus?page=1"
+  }
+}
+```
+
 ### Create a menu
 
 Creates a new menu.
@@ -126,7 +226,7 @@ POST /api/menus
 {
   "menu_name": "Chin-Chin",
   "menu_price": 1.99,
-  "order_restriction": 1
+  "order_restriction": 0
 }
 ```
 
@@ -138,63 +238,22 @@ Status: 201 Created
 
 ```json
 {
-  "menu_id": 1,
-  "menu_name": "Chin-Chin",
-  "menu_description": "",
-  "menu_price": 1.99,
-  "menu_photo": null,
-  "stock_qty": 0,
-  "minimum_qty": 0,
-  "subtract_stock": false,
-  "mealtime_id": null,
-  "menu_status": false,
-  "menu_priority": 0,
-  "order_restriction": 1
-}
-```
-
-#### Parameters
-
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `include`           | `string`  | What relations to include in the response. Options are `categories`, `menu_options`, `menu_options.menu_option_values`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
-
-#### Response
-
-```html
-Status: 200 OK
-```
-
-```json
-{
   "data": [
     {
-      "menu_id": 1,
-      "menu_name": "Puff-Puff",
-      "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-      "menu_price": 4.99,
-      "menu_photo": null,
-      "stock_qty": 0,
-      "minimum_qty": 3,
-      "subtract_stock": false,
-      "mealtime_id": null,
-      "menu_status": true,
-      "menu_priority": 0,
-      "order_restriction": 0
-    },
-    {
-      "menu_id": 2,
-      "menu_name": "Doughnut",
-      "menu_description": "Deep fried from a flour dough with sweet fillings",
-      "menu_price": 0.99,
-      "menu_photo": null,
-      "stock_qty": 1000,
-      "minimum_qty": 1,
-      "subtract_stock": true,
-      "mealtime_id": null,
-      "menu_status": true,
-      "menu_priority": 0,
-      "order_restriction": 0
+      "type": "menus",
+      "id": "1",
+      "attributes": {
+        "menu_name": "Puff-Puff",
+        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+        "menu_price": 4.99,
+        "menu_photo": null,
+        "stock_qty": 0,
+        "minimum_qty": 3,
+        "subtract_stock": false,
+        "mealtime_id": null,
+        "menu_status": true,
+        "menu_priority": 0,
+        "order_restriction": 0
     }
   ]
 }
@@ -212,7 +271,9 @@ GET /api/menus/:menu_id
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
 #### Response
 
@@ -222,18 +283,39 @@ Status: 200 OK
 
 ```json
 {
-  "menu_id": 1,
-  "menu_name": "Puff-Puff",
-  "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-  "menu_price": 4.99,
-  "menu_photo": null,
-  "stock_qty": 0,
-  "minimum_qty": 3,
-  "subtract_stock": false,
-  "mealtime_id": null,
-  "menu_status": true,
-  "menu_priority": 0,
-  "order_restriction": 0
+  "data": [
+    {
+      "type": "menus",
+      "id": "1",
+      "attributes": {
+        "menu_name": "Puff-Puff",
+        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+        "menu_price": 4.99,
+        "menu_photo": null,
+        "stock_qty": 0,
+        "minimum_qty": 3,
+        "subtract_stock": false,
+        "mealtime_id": null,
+        "menu_status": true,
+        "menu_priority": 0,
+        "order_restriction": 0,
+        "media": [...],
+        "categories": [...],
+        "menu_options": [...]
+      },
+      "relationships": {
+        "categories": {
+          "data": [...]
+        },
+        "menu_options": {
+          "data": [...]
+        }
+      }
+    }
+  ],
+  "included": [
+    ...
+  ]
 }
 ```
 
@@ -282,18 +364,24 @@ Status: 200 OK
 
 ```json
 {
-  "menu_id": 1,
-  "name": "Chin-Chin",
-  "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-  "menu_price": 4.99,
-  "menu_photo": null,
-  "stock_qty": 0,
-  "minimum_qty": 3,
-  "subtract_stock": false,
-  "mealtime_id": null,
-  "menu_status": false,
-  "menu_priority": 0,
-  "order_restriction": 0
+  "data": [
+    {
+      "type": "menus",
+      "id": "1",
+      "attributes": {
+        "menu_name": "Chin-Chin",
+        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+        "menu_price": 4.99,
+        "menu_photo": null,
+        "stock_qty": 0,
+        "minimum_qty": 3,
+        "subtract_stock": false,
+        "mealtime_id": null,
+        "menu_status": false,
+        "menu_priority": 0,
+        "order_restriction": 0
+    }
+  ]
 }
 ```
 
