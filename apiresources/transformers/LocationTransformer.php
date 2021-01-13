@@ -16,7 +16,9 @@ class LocationTransformer extends TransformerAbstract
 
     public function transform(Locations_model $location)
     {
-        return $location->toArray();
+        return array_merge($location->toArray(), [
+            'options' => $location->options,
+        ]);
     }
 
     public function includeMedia(Locations_model $location)
