@@ -21,8 +21,15 @@ class OrderTransformer extends TransformerAbstract
     public function transform(Orders_model $order)
     {
         return array_merge($order->toArray(), [
-            'order_totals' => $order->getOrderTotals(),
-            'order_menus' => $order->getOrderMenus(),
+            'order_total_as_currency' => currency_format($order->order_total),
+            'order_totals' => $order->getOrderTotals()->map(function ($total){
+                $total->value_as_currency = currency_format($total->value);
+                return $total;
+            }),
+            'order_menus' => $order->getOrderMenus()->map(function ($menu){
+                $menu->option_values = unserialize($menu->option_values);
+                return $menu;
+            }),
         ]);
     }
 
@@ -38,6 +45,7 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeAddress(Orders_model $order)
     {
+        if (!$order->address) return;
         return $this->item($order->address, new AddressTransformer, 'addresses');
     }
 
