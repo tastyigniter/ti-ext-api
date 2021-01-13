@@ -22,11 +22,11 @@ class OrderTransformer extends TransformerAbstract
     {
         return array_merge($order->toArray(), [
             'order_total_as_currency' => currency_format($order->order_total),
-            'order_totals' => $order->getOrderTotals()->map(function ($total){
+            'order_totals' => $order->getOrderTotals()->map(function ($total) {
                 $total->value_as_currency = currency_format($total->value);
                 return $total;
             }),
-            'order_menus' => $order->getOrderMenus()->map(function ($menu){
+            'order_menus' => $order->getOrderMenus()->map(function ($menu) {
                 $menu->option_values = unserialize($menu->option_values);
                 return $menu;
             }),
@@ -35,9 +35,9 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeCustomer(Orders_model $order)
     {
-        if (!$order->customer) 
+        if (!$order->customer)
             return;
-        
+
         return $this->item($order->customer, new CustomerTransformer, 'customers');
     }
 
@@ -48,7 +48,7 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeAddress(Orders_model $order)
     {
-        if (!$order->address) 
+        if (!$order->address)
             return;
 
         return $this->item($order->address, new AddressTransformer, 'addresses');
@@ -56,7 +56,7 @@ class OrderTransformer extends TransformerAbstract
 
     public function includePaymentMethod(Orders_model $order)
     {
-        if (!$order->payment_method) 
+        if (!$order->payment_method)
             return;
 
         return $this->item($order->payment_method, new PaymentMethodTransformer, 'payment_methods');
@@ -74,7 +74,7 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeAssignee(Orders_model $order)
     {
-        if (!$order->assignee) 
+        if (!$order->assignee)
             return;
 
         return $this->item($order->assignee, new StaffTransformer, 'staff');
@@ -82,9 +82,9 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeAssigneeGroup(Orders_model $order)
     {
-        if (!$order->assignee_group) 
+        if (!$order->assignee_group)
             return;
-        
+
         return $this->item($order->assignee_group, new StaffGroupTransformer, 'staff_group');
     }
 }
