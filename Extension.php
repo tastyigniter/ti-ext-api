@@ -74,17 +74,15 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Categories::class,
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
-                'authorization' => [
-                    'index:all', 'show:all',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                'actions' => [
+                    'index', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
                 ],
             ],
             'customers' => [
                 'controller' => \Igniter\Api\ApiResources\Customers::class,
                 'name' => 'Customers',
                 'description' => 'An API resource for customers',
-                'authorization' => [
+                'actions' => [
                     'index:admin', 'show:admin',
                     'store:users', 'update:users',
                     'destroy:admin',
@@ -94,7 +92,7 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Locations::class,
                 'name' => 'Locations',
                 'description' => 'An API resource for locations',
-                'authorization' => [
+                'actions' => [
                     'index:all', 'show:admin',
                     'store:admin', 'update:admin',
                     'destroy:admin',
@@ -104,7 +102,7 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Menus::class,
                 'name' => 'Menus',
                 'description' => 'An API resource for menus',
-                'authorization' => [
+                'actions' => [
                     'index:all', 'show:all',
                     'store:admin', 'update:admin',
                     'destroy:admin',
@@ -114,7 +112,7 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Orders::class,
                 'name' => 'Orders',
                 'description' => 'An API resource for orders',
-                'authorization' => [
+                'actions' => [
                     'index:users', 'show:users',
                     'store:users', 'update:admin',
                     'destroy:admin',
@@ -124,7 +122,7 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Reservations::class,
                 'name' => 'Reservations',
                 'description' => 'An API resource for reservations',
-                'authorization' => [
+                'actions' => [
                     'index:users', 'show:users',
                     'store:users', 'update:admin',
                     'destroy:admin',
@@ -134,7 +132,7 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Reviews::class,
                 'name' => 'Reviews',
                 'description' => 'An API resource for reviews',
-                'authorization' => [
+                'actions' => [
                     'index:users', 'show:users',
                     'store:users', 'update:admin',
                     'destroy:admin',

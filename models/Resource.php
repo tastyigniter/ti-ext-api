@@ -30,12 +30,12 @@ class Resource extends Model
 
     protected static $registeredResources;
 
-    protected static $defaultAuthDefinition = [
-        'index' => 'all',
-        'show' => 'all',
-        'store' => 'admin',
-        'update' => 'admin',
-        'destroy' => 'admin',
+    protected static $defaultActionDefinition = [
+        'index' => 'lang:igniter.api::default.actions.text_index',
+        'show' => 'lang:igniter.api::default.actions.text_show',
+        'store' => 'lang:igniter.api::default.actions.text_store',
+        'update' => 'lang:igniter.api::default.actions.text_update',
+        'destroy' => 'lang:igniter.api::default.actions.text_destroy',
     ];
 
     /**
@@ -68,9 +68,11 @@ class Resource extends Model
         'meta.authorization.*' => 'alpha',
     ];
 
-    public static function getModelOptions()
+    public function getMetaOptions()
     {
-        return self::make()->listGlobalModels();
+        $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
+
+        return array_get($registeredResource, 'options.names', self::$defaultActionDefinition);
     }
 
     public function listGlobalModels()
@@ -103,6 +105,15 @@ class Resource extends Model
     public function getBaseEndpointAttribute($value)
     {
         return sprintf('/%s/%s', config('api.prefix'), $this->endpoint);
+    }
+
+    public function getAvailableActions()
+    {
+        $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
+        $registeredActions = array_get($registeredResource, 'options.actions', []);
+        $dbActions = array_get($this->meta, 'actions');
+
+        return array_intersect($dbActions, $registeredActions);
     }
 
     public function renderSetupPartial()
@@ -151,7 +162,7 @@ class Resource extends Model
             $model->description = array_get($definition, 'description');
             $model->controller = array_get($definition, 'controller');
             /** @var TYPE_NAME $model */
-            $model->meta = self::getMetaFromPreset($definition);
+            $model->meta = array_except(array_get($definition, 'options'), 'names');
             $model->is_custom = FALSE;
             $model->save();
         }
@@ -176,26 +187,25 @@ class Resource extends Model
         return $resources;
     }
 
-    /**
-     * @param $definition
-     * @return mixed
-     */
-    protected static function getMetaFromPreset($definition)
+    protected function processOptions($definition)
     {
-        $authorization = array_get($definition, 'authorization', []);
+        $actions = array_get($definition, 'actions', []);
 
-        $result = [];
-        foreach ($authorization as $item) {
-            $item = explode(':', $item);
+        $result = $names = [];
+        foreach ($actions as $action => $name) {
+            if (!is_string($action)) {
+                $action = $name;
+            }
 
-            $result[$item[0]] = $item[1];
+            $action = explode(':', $action, 2);
+            $result[$action[0]] = $action[1] ?? 'admin';
+            $names[$action[0]] = array_get(self::$defaultActionDefinition, $action[0], $name);
         }
 
-        $authorization = array_merge(self::$defaultAuthDefinition, $result);
-
         return [
-            'actions' => array_keys($authorization),
-            'authorization' => $authorization,
+            'names' => $names,
+            'actions' => array_keys($result),
+            'authorization' => $result,
         ];
     }
 
@@ -248,6 +258,7 @@ class Resource extends Model
             'controller' => null,
             'endpoint' => null,
             'owner' => null,
+            'options' => [],
         ];
 
         foreach ($definitions as $endpoint => $definition) {
@@ -256,6 +267,7 @@ class Resource extends Model
 
             $definition['endpoint'] = $endpoint;
             $definition['owner'] = $owner;
+            $definition['options'] = $this->processOptions($definition);
 
             static::$registeredResources[$endpoint] = array_merge($defaultDefinitions, $definition);
         }
