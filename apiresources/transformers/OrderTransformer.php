@@ -18,18 +18,26 @@ class OrderTransformer extends TransformerAbstract
         'assignee_group',
     ];
 
+    private $currency_code;
+
     public function transform(Orders_model $order)
     {
+        if (!$this->currency_code)
+            $this->currency_code = app('currency')->getDefault()->currency_code;
+
+        $currency_code = $this->currency_code;
+
         return array_merge($order->toArray(), [
-            'order_total_as_currency' => currency_format($order->order_total),
-            'order_totals' => $order->getOrderTotals()->map(function ($total) {
-                $total->value_as_currency = currency_format($total->value);
+            'order_total' => [
+                'currency' => $this->currency_code,
+                'value' => $order->order_total,
+            ],
+            'order_totals' => $order->getOrderTotals()->map(function ($total) use ($currency_code) {
+                $total->value = (float)$total->value;
+                $total->currency = $currency_code;
                 return $total;
             }),
-            'order_menus' => $order->getOrderMenus()->map(function ($menu) {
-                $menu->option_values = unserialize($menu->option_values);
-                return $menu;
-            }),
+            'order_menus' => $order->getOrderMenus(),
         ]);
     }
 
