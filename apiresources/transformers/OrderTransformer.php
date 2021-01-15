@@ -38,7 +38,7 @@ class OrderTransformer extends TransformerAbstract
 
                 return $total;
             }),
-            'order_menus' => $order->getOrderMenus(),
+            'order_menus' => $order->getOrderMenusWithOptions(),
         ]);
     }
 
