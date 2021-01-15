@@ -35,6 +35,7 @@ class OrderTransformer extends TransformerAbstract
             'order_totals' => $order->getOrderTotals()->map(function ($total) use ($currency_code) {
                 $total->value = (float)$total->value;
                 $total->currency = $currency_code;
+
                 return $total;
             }),
             'order_menus' => $order->getOrderMenus(),
