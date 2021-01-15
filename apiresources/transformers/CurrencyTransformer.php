@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use System\Models\Currencies_model;
 use League\Fractal\TransformerAbstract;
+use System\Models\Currencies_model;
 
 class CurrencyTransformer extends TransformerAbstract
 {

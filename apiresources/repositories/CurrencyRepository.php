@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Repositories;
 
-use System\Models\Currencies_model;
 use Igniter\Api\Classes\AbstractRepository;
+use System\Models\Currencies_model;
 
 class CurrencyRepository extends AbstractRepository
 {
