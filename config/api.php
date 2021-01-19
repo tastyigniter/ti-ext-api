@@ -2,6 +2,8 @@
 
 return [
 
+    'debug' => env('API_DEBUG', TRUE),
+
     /*
     |--------------------------------------------------------------------------
     | Default API Prefix
@@ -11,18 +13,8 @@ return [
     | specify it for each group.
     |
     */
-    'prefix' => null,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default API Domain
-    |--------------------------------------------------------------------------
-    |
-    | A default domain to use for your API routes so you don't have to
-    | specify it for each group.
-    |
-    */
-    'domain' => null,
+    'prefix' => env('API_PREFIX', 'api'),
 
     /*
     |--------------------------------------------------------------------------
@@ -35,11 +27,42 @@ return [
     | removed from the final response.
     |
     */
+
     'errorFormat' => [
-        'message',
-        'errors',
-        'code',
-        'status_code',
-        'debug',
+        'message' => ':message',
+        'errors' => ':errors',
+        'code' => ':code',
+        'status_code' => ':status_code',
+        'debug' => ':debug',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Providers
+    |--------------------------------------------------------------------------
+    |
+    | The authentication providers that should be used when attempting to
+    | authenticate an incoming API request.
+    |
+    */
+
+    'auth' => [
+        'sanctum' => \Igniter\Api\Auth\SanctumProvider::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Response Transformer
+    |--------------------------------------------------------------------------
+    |
+    | Responses can be transformed so that they are easier to format. By
+    | default a Fractal transformer will be used to transform any
+    | responses prior to formatting. You can easily replace
+    | this with your own transformer.
+    |
+    */
+
+    'transformer' => \Igniter\Api\Classes\FractalAdapter::class,
+
+    'serializer' => \Igniter\Api\Serializer\JsonApiSerializer::class,
 ];

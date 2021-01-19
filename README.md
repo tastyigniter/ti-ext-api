@@ -12,6 +12,13 @@ Default behavior logic for several common verbs are supported — create, store,
 
 To install this extension, click on the **Add to Site** button on the marketplace item page or search for **Igniter.Api** in **Admin System > Updates > Browse Extensions**
 
+If you are using an Apache installation you will need to add these lines to your .htaccess file for tokens to be passed correctly.
+
+```
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+```
+
 ### Usage
 In the admin user interface, go to **Tools > APIs** and use the Create button to generate a new api resource
 
@@ -34,7 +41,6 @@ public function registerApiResources()
             'name' => 'Menus',
             'description' => 'Description of this API resource',
             'controller' => \Acme\Extension\ApiResources\Menus::class,
-            'transformer' => \Acme\Extension\ApiResources\Transformers\MenuTransformer::class,
         ],
     ];
 }
@@ -51,19 +57,19 @@ Response are transformed using laravel's [Eloquent API Resources](https://larave
 ```
 <?php namespace Igniter\Local\ApiResources\Transformers;
 
-use Igniter\Api\Classes\TransformerAbstract;
+use League\Fractal\TransformerAbstract;
 
 class MenuTransformer extends TransformerAbstract
 {
-	public function toArray($request)
+	public function transform(Mennu $menu)
 	{
 	    return [
-	        'id'      => (int) $this->menu_id,
-	        'name'    => $this->menu_name,
+	        'id'      => (int) $menu->menu_id,
+	        'name'    => $menu->menu_name,
             'links'   => [
                 [
                     'rel' => 'self',
-                    'uri' => '/api/menus/'.$this->menu_id,
+                    'uri' => '/api/menus/'.$menu->menu_id,
                 ]
             ],
 	    ];
@@ -76,35 +82,22 @@ class MenuTransformer extends TransformerAbstract
 
 If you choose to restrict access to the API to customers, staff or both, you will need to generate a token for each user or customer you want to be able to access the API.
 
-#### Admin user tokens
-Tokens can be generated for admin users by sending a POST request to: 
-`https://your.url/api/admin/token`
-
-The post data should contain the following fields:
-
-| field  | value  |
-|:----------|:----------|
-| username    | The username of the admin user   |
-| password   | The admin user's password   |
-| device_name   | A unique identifier for the device making the request    |
-| abilities   | An optional array of abilities to restrict the token to (e.g. Orders.*)   |
-
-#### Customer tokens
-Tokens can be generated for customers by sending a POST request to: 
+#### User tokens
+Tokens can be generated for admin and customers users by sending a POST request to: 
 `https://your.url/api/token`
 
 The post data should contain the following fields:
 
 | field  | value  |
 |:----------|:----------|
-| email    | The email of the customer   |
-| password   | The customer's password   |
+| username    | The username of the admin user, required when generating for admin   |
+| email    | The email of the customer, required when generating for customer   |
+| password   | The admin user's password   |
 | device_name   | A unique identifier for the device making the request    |
 | abilities   | An optional array of abilities to restrict the token to (e.g. Orders.*)   |
 
-
 #### cURL Example
-`curl -X POST --data "username=my_user&password=my_password&device_name=my_device" https://your.url/api/admin/token`
+`curl -X POST --data "username=my_user&password=my_password&device_name=my_device" https://your.url/api/token`
 
 #### Successful response
 If token generation is successful, you will receive a JSON payload in the format:
@@ -118,17 +111,17 @@ Tokens should be passed in the `Authorization` header with every request to a re
 
 ### API Reference
 
-- [Categories](docs/categories.md)
+- [Categories](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/customers.md)
     `categories` - List, create, retrieve, update and delete categories
-- [Customers](docs/customers.md)
+- [Customers](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/customers.md)
     `customers` - List, create, retrieve, update and delete customers
-- [Locations](docs/locations.md)
+- [Locations](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/locations.md)
     `locations` - List, create, retrieve, update and delete locations
-- [Menus](docs/menus.md)
+- [Menus](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/menus.md)
     `menus` - List, create, retrieve, update and delete menus
-- [Orders](docs/orders.md)
+- [Orders](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/orders.md)
     `orders` - List, create, retrieve, update and delete orders
-- [Reservations](docs/reservations.md)
+- [Reservations](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/reservations.md)
     `reservations` - List, create, retrieve, update and delete reservations
-- [Reviews](docs/reviews.md)
+- [Reviews](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/reviews.md)
     `reviews` - List, create, retrieve, update and delete reviews

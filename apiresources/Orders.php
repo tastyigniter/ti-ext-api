@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Request;
  */
 class Orders extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -20,9 +22,9 @@ class Orders extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'model' => \Admin\Models\Orders_model::class,
-        'transformer' => \Igniter\Api\ApiResources\Transformers\OrderTransformer::class,
-        'authorization' => ['index:users', 'store:users', 'show:users', 'update:admin', 'destroy:admin'],
+        'request' => Requests\OrderRequest::class,
+        'repository' => Repositories\OrderRepository::class,
+        'transformer' => Transformers\OrderTransformer::class,
     ];
 
     protected $requiredAbilities = ['orders:*'];

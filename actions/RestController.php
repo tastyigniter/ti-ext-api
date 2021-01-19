@@ -3,9 +3,11 @@
 namespace Igniter\Api\Actions;
 
 use Admin\Traits\FormModelWidget;
-use Igniter\Api\Classes\ApiManager;
-use Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Dingo\Api\Exception\ResourceException;
+use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Api\Traits\RestExtendable;
+use Igniter\Flame\Exception\ValidationException;
+use Illuminate\Support\Facades\Request;
 use System\Classes\ControllerAction;
 
 /**
@@ -13,6 +15,7 @@ use System\Classes\ControllerAction;
  */
 class RestController extends ControllerAction
 {
+    use RestExtendable;
     use FormModelWidget;
 
     /**
@@ -26,11 +29,6 @@ class RestController extends ControllerAction
     protected $model;
 
     /**
-     * @var string The prefix for verb methods.
-     */
-    protected $prefix = '';
-
-    /**
      * {@inheritdoc}
      */
     protected $requiredProperties = ['restConfig'];
@@ -39,26 +37,20 @@ class RestController extends ControllerAction
      * @var array Configuration values that must exist when applying the primary config file.
      * - model: Class name for the model
      */
-    protected $requiredConfig = ['model', 'actions'];
+    protected $requiredConfig = ['actions', 'repository', 'transformer'];
 
     /**
      * RestController constructor
-     * @param \Main\Classes\MainController $controller
+     * @param \Igniter\Api\Classes\ApiController $controller
      */
     public function __construct($controller)
     {
         parent::__construct($controller);
         $this->controller = $controller;
 
-        $this->mergeResourceConfigWith(
-            $controller->restConfig, $this->requiredConfig
-        );
+        $this->setConfig($controller->restConfig, $this->requiredConfig);
 
-        $this->allowedActions(
-            array_get($this->config, 'only', []), array_get($this->config, 'authorization', [])
-        );
-
-        $this->controller->transformer = array_get($this->config, 'transformer');
+        $this->mergeAllowedActions();
     }
 
     /**
@@ -68,29 +60,15 @@ class RestController extends ControllerAction
      */
     public function index()
     {
-        $options = array_merge($this->getActionOptions(), Request::all());
-        $transformer = $this->getConfig('transformer');
+        $requestQuery = $this->validateRequest('query');
 
-        $model = $this->controller->restCreateModelObject();
-        $model = $this->controller->restExtendModel($model) ?: $model;
+        $options = array_merge($this->getActionOptions(), $requestQuery);
 
-        $query = $model->newQuery();
-        $this->controller->restExtendQueryBefore($query);
+        $result = $this->makeRepository('query')->findAll($options);
 
-        $this->applyRelationsScope($query);
-
-        $this->controller->restExtendQuery($query);
-
-        if (method_exists($model, 'scopeListFrontEnd')) {
-            $result = $query->listFrontEnd($options);
-        }
-        else {
-            $page = array_get($options, 'page', Request::input('page', 1));
-            $pageSize = array_get($options, 'pageLimit', 5);
-            $result = $query->paginate($pageSize, $page);
-        }
-
-        return $this->controller->response()->paginator($result, $transformer);
+        return $this->controller->response()->paginator(
+            $result, $this->createTransformer(), $this->getResponseParameters()
+        );
     }
 
     /**
@@ -100,25 +78,13 @@ class RestController extends ControllerAction
      */
     public function store()
     {
-        $data = Request::all();
+        $request = $this->validateRequest('all');
 
-        $transformer = $this->getConfig('transformer');
+        $result = $this->makeRepository('create')->create($request);
 
-        $model = $this->controller->restCreateModelObject();
-        $model = $this->controller->restExtendModel($model) ?: $model;
-
-        $this->controller->restBeforeSave($model);
-        $this->controller->restBeforeCreate($model);
-
-        $modelsToSave = $this->prepareModelsToSave($model, $data);
-        foreach ($modelsToSave as $modelToSave) {
-            $modelToSave->save();
-        }
-
-        $this->controller->restAfterSave($model);
-        $this->controller->restAfterCreate($model);
-
-        return $this->controller->response()->created($model, $transformer);
+        return $this->controller->response()->created(
+            $result, $this->createTransformer(), null, $this->getResponseParameters()
+        );
     }
 
     /**
@@ -129,10 +95,13 @@ class RestController extends ControllerAction
      */
     public function show($recordId)
     {
-        $transformer = $this->getConfig('transformer');
-        $model = $this->controller->restFindModelObject($recordId);
+        $this->validateRequest('query');
 
-        return $this->controller->response()->resource($model, $transformer);
+        $result = $this->makeRepository('query')->find($recordId);
+
+        return $this->controller->response()->resource(
+            $result, $this->createTransformer(), $this->getResponseParameters()
+        );
     }
 
     /**
@@ -143,24 +112,13 @@ class RestController extends ControllerAction
      */
     public function update($recordId)
     {
-        $data = Request::all();
+        $request = $this->validateRequest('all');
 
-        $transformer = $this->getConfig('transformer');
+        $result = $this->makeRepository('update')->update($recordId, $request);
 
-        $model = $this->controller->restFindModelObject($recordId);
-
-        $this->controller->restBeforeSave($model);
-        $this->controller->restBeforeUpdate($model);
-
-        $modelsToSave = $this->prepareModelsToSave($model, $data);
-        foreach ($modelsToSave as $modelToSave) {
-            $modelToSave->save();
-        }
-
-        $this->controller->restAfterSave($model);
-        $this->controller->restAfterUpdate($model);
-
-        return $this->controller->response()->resource($model, $transformer);
+        return $this->controller->response()->resource(
+            $result, $this->createTransformer(), $this->getResponseParameters()
+        );
     }
 
     /**
@@ -168,13 +126,11 @@ class RestController extends ControllerAction
      *
      * @param int $recordId
      * @return mixed
+     * @throws \Exception
      */
     public function destroy($recordId)
     {
-        $model = $this->controller->restFindModelObject($recordId);
-        $model->delete();
-
-        $this->controller->restAfterDelete($model);
+        $this->makeRepository('delete')->delete($recordId);
 
         return $this->controller->response()->noContent();
     }
@@ -184,194 +140,117 @@ class RestController extends ControllerAction
         return array_get($this->getConfig('actions'), $this->controller->getAction(), []);
     }
 
-    /**
-     * Finds a Model record by its primary identifier, used by show, update actions.
-     * This logic can be changed by overriding it in the rest controller.
-     * @param string $recordId
-     * @return \Model
-     */
-    public function restFindModelObject($recordId)
+    //
+    //
+    //
+
+    protected function mergeAllowedActions()
     {
-        if (!strlen($recordId)) {
-            throw new HttpException(404, 'Record ID has not been specified.');
-        }
-
-        $model = $this->controller->restCreateModelObject();
-
-        /*
-         * Prepare query and find model record
-         */
-        $query = $model->newQuery();
-
-        $this->applyRelationsScope($query);
-
-        $this->controller->restExtendQuery($query);
-        $result = $query->find($recordId);
-
-        if (!$result) {
-            throw new HttpException(404,
-                sprintf('Record with an ID of %u could not be found.', $recordId)
-            );
-        }
-
-        $result = $this->controller->restExtendModel($result) ?: $result;
-
-        return $result;
-    }
-
-    /**
-     * Run logic before the store or update resource operation
-     * by overriding it in the controller.
-     * @param \Model $model
-     * @return void
-     */
-    public function restBeforeSave($model)
-    {
-    }
-
-    /**
-     * Run logic before the store resource operation
-     * by overriding it in the controller.
-     * @param \Model $model
-     * @return void
-     */
-    public function restBeforeCreate($model)
-    {
-    }
-
-    /**
-     * Run logic before the update resource operation
-     * by overriding it in the controller.
-     * @param \Model $model
-     * @return void
-     */
-    public function restBeforeUpdate($model)
-    {
-    }
-
-    /**
-     * Run logic after the store or update resource operation
-     * by overriding it in the controller.
-     * @param \Model $model
-     * @return void
-     */
-    public function restAfterSave($model)
-    {
-    }
-
-    /**
-     * Run logic after the store resource operation
-     * by overriding it in the controller.
-     * @param \Model $model
-     * @return void
-     */
-    public function restAfterCreate($model)
-    {
-    }
-
-    /**
-     * Run logic after the update resource operation
-     * by overriding it in the controller.
-     * @param \Model $model
-     * @return void
-     */
-    public function restAfterUpdate($model)
-    {
-    }
-
-    /**
-     * Run logic after the delete resource operation
-     * by overriding it in the controller.
-     * @param \Model $model
-     * @return void
-     */
-    public function restAfterDelete($model)
-    {
-    }
-
-    /**
-     * Creates a new instance of the model. This logic can be changed
-     * by overriding it in the rest controller.
-     * @return \Model
-     */
-    public function restCreateModelObject()
-    {
-        return $this->createModel();
-    }
-
-    /**
-     * Extend supplied model, the model can
-     * be altered by overriding it in the controller.
-     * @param \Model $model
-     * @return \Model
-     */
-    public function restExtendModel($model)
-    {
-    }
-
-    /**
-     * Extend supplied model query, the model query can
-     * be altered by overriding it in the controller.
-     * @param \Igniter\Flame\Database\Builder $query
-     * @return void
-     */
-    public function restExtendQueryBefore($query)
-    {
-    }
-
-    /**
-     * Extend supplied model query, the model query can
-     * be altered by overriding it in the controller.
-     * @param \Igniter\Flame\Database\Builder $query
-     * @return void
-     */
-    public function restExtendQuery($query)
-    {
-    }
-
-    /**
-     * Internal method, prepare the model object
-     * @return \Model
-     */
-    protected function createModel()
-    {
-        $class = $this->config['model'];
-
-        return new $class();
-    }
-
-    protected function mergeResourceConfigWith(array $restConfig, array $requiredConfig)
-    {
-        $this->setConfig(array_merge(
-            $restConfig, ApiManager::instance()->getCurrentResource()
-        ), $requiredConfig);
-    }
-
-    protected function allowedActions($allowedActions, $authActions)
-    {
-        $result = [];
-        foreach ($allowedActions as $action) {
-            $result[$action] = array_get($authActions, $action, 'admin');
-        }
+        $actions = array_get($this->config, 'actions', []);
 
         $this->controller->allowedActions = array_merge(
-            $this->controller->allowedActions, $result
+            $this->controller->allowedActions, $actions
         );
     }
 
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     */
-    protected function applyRelationsScope($query)
+    protected function createTransformer()
     {
-        if (!$transformer = $this->getConfig('transformer'))
-            return;
+        $transformerClass = $this->getConfig('transformer');
 
-        $transformerObj = new $transformer();
+        return new $transformerClass;
+    }
 
-        $includes = method_exists($transformerObj, 'getIncludes')
-            ? $transformerObj->getIncludes() : [];
+    /**
+     * @param string $requestMethod query or all
+     * @return array
+     * @throws \Dingo\Api\Exception\ValidationHttpException
+     */
+    protected function validateRequest($requestMethod)
+    {
+        $requestData = Request::$requestMethod();
 
-        $query->with($includes);
+        try {
+            if ($requestMethod == 'query')
+                return $this->controller->restValidateQuery($requestData);
+
+            if ($requestClass = $this->getConfig('request')) {
+                app()->resolving($requestClass, function ($request, $app) {
+                    if (method_exists($request, 'setController'))
+                        $request->setController($this->controller);
+                });
+
+                return app()->make($requestClass)->validated();
+            }
+
+            return $this->controller->restValidate($requestData);
+        }
+        catch (ValidationException $ex) {
+            throw new ResourceException(lang('igniter.api::default.alert_validation_failed'), $ex->getErrors());
+        }
+    }
+
+    /**
+     * @param string|null $context
+     * @return \Igniter\Api\Classes\AbstractRepository
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    protected function makeRepository($context)
+    {
+        $repository = app()->make($this->getConfig('repository'));
+
+        $repository->setContainer(app());
+
+        $methodName = studly_case('bind_'.$context.'_events');
+        if (method_exists($this, $methodName))
+            $this->{$methodName}($repository);
+
+        return $repository;
+    }
+
+    protected function bindQueryEvents(AbstractRepository $repository): void
+    {
+        $repository->bindEvent('repository.extendQuery', function ($query) {
+            $this->controller->restExtendQuery($query);
+        });
+    }
+
+    protected function bindCreateEvents(AbstractRepository $repository): void
+    {
+        $repository->bindEvent('repository.beforeCreate', function ($model) {
+            $this->controller->restBeforeSave($model);
+            $this->controller->restBeforeCreate($model);
+        });
+
+        $repository->bindEvent('repository.afterCreate', function ($model) {
+            $this->controller->restAfterSave($model);
+            $this->controller->restAfterCreate($model);
+        });
+    }
+
+    protected function bindUpdateEvents(AbstractRepository $repository): void
+    {
+        $repository->bindEvent('repository.beforeUpdate', function ($model) {
+            $this->controller->restBeforeSave($model);
+            $this->controller->restAfterUpdate($model);
+        });
+
+        $repository->bindEvent('repository.afterUpdate', function ($model) {
+            $this->controller->restAfterSave($model);
+            $this->controller->restAfterUpdate($model);
+        });
+    }
+
+    protected function bindDeleteEvents(AbstractRepository $repository): void
+    {
+        $repository->bindEvent('repository.afterDelete', function ($model) {
+            $this->controller->restAfterDelete($model);
+        });
+    }
+
+    protected function getResponseParameters(): array
+    {
+        return [
+            'key' => $this->getConfig('resourceKey', strtolower(class_basename($this->controller))),
+        ];
     }
 }

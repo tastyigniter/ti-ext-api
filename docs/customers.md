@@ -2,14 +2,18 @@
 
 This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` customers on your TastyIgniter site.
 
+The endpoint responses are formatted according to the [JSON:API specification](https://jsonapi.org).
+
 ### The customer object
 
 #### Attributes
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `first_name`           | `string`  | **Required**. The customer's first name (between 2 and 48 characters in length)      |
-| `last_name`           | `string`  | **Required**. The customer's last name (between 2 and 48 characters in length)       |
+| `first_name`           | `string`  | **
+Required**. The customer's first name (between 2 and 48 characters in length)      |
+| `last_name`           | `string`  | **
+Required**. The customer's last name (between 2 and 48 characters in length)       |
 | `full_name`           | `string`  | A concatenation of first_name and last_name       |
 | `email`           | `string`  | **Required**. The customer's email address       |
 | `telephone`           | `string`  | The customer's telephone number         |
@@ -20,7 +24,6 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `addresses`           | `array`  | The customer's addresses, if any        |
 | `orders`           | `array`  | The customer's orders, if any (see [Orders](orders.md) for structure)       |
 | `reservations`           | `array`  | The customer's addresses, if any (see [Reservations](reservations.md) for structure)        |
-
 
 #### Customer object example
 
@@ -59,12 +62,15 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `address_1`           | `string`  | **Required**. The first line of the customer's address (between 3 and 128 characters)     |
+| `address_1`           | `string`  | **
+Required**. The first line of the customer's address (between 3 and 128 characters)     |
 | `address_2`           | `string`  | The second line of the customer's address (between 3 and 128 characters)  |
-| `city`           | `string`  | **Required**. The city or town of the customer's address (between state and 128 characters)    |
+| `city`           | `string`  | **
+Required**. The city or town of the customer's address (between state and 128 characters)    |
 | `state`           | `string`  | The state or county of the customer's address (maximum of 128 characters)     |
 | `postcode`           | `string`  | The postcode or ZIP code of the customer's address (maximum of 128 characters)     |
-| `country_id`           | `integer`  | **Required**. The country code of the customers address. Should reference an id in the "countries" database table.  |
+| `country_id`           | `integer`  | **
+Required**. The country code of the customers address. Should reference an id in the "countries" database table.  |
 
 ### List customers
 
@@ -80,6 +86,8 @@ GET /api/customers
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
+| `page`           | `integer`  | The page number.         |
+| `pageLimit`           | `integer`  | The number of items per page.         |
 | `include`           | `string`  | What relations to include in the response. Options are `addresses`, `orders`, `reservations`. To include multiple seperate by comma (e.g. ?include=addresses,orders) |
 
 #### Response
@@ -92,43 +100,86 @@ Status: 200 OK
 {
   "data": [
     {
-      "customer_id": 1,
-      "first_name": "Joe",
-      "last_name": "Bloggs",
-      "email": "joe@bloggs.com",
-      "telephone": "1234512345",
-      "newsletter": false,
-      "customer_group_id": 1,
-      "date_added": "2020-05-20 08:34:37",
-      "status": true,
-      "full_name": "Joe Bloggs",
-      "addresses": [
-        {
-          "address_id": 1,
-          "customer_id": 1,
-          "address_1": "1 Some Road",
-          "address_2": null,
-          "city": "London",
-          "state": "",
-          "postcode": "W1A 3NN",
-          "country_id": 222
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "first_name": "Joe",
+        "last_name": "Bloggs",
+        "email": "joe@bloggs.com",
+        "telephone": "1234512345",
+        "newsletter": false,
+        "customer_group_id": 1,
+        "date_added": "2020-05-20 08:34:37",
+        "status": true,
+        "full_name": "Joe Bloggs",
+        "addresses": [
+          {
+            "address_id": 1,
+            "customer_id": 1,
+            "address_1": "1 Some Road",
+            "address_2": null,
+            "city": "London",
+            "state": "",
+            "postcode": "W1A 3NN",
+            "country_id": 222
+          }
+        ],
+        "orders": [...],
+        "reservations": [...]
+      },
+      "relationships": {
+        "orders": {
+          "data": [...]
+        },
+        "reservations": {
+          "data": [...]
         }
-      ]
+      }
     },
     {
-      "customer_id": 2,
-      "first_name": "Sherlock",
-      "last_name": "Holmes",
-      "email": "sherlock@holmes.com",
-      "telephone": "01234012345",
-      "newsletter": true,
-      "customer_group_id": 1,
-      "date_added": "2020-05-21 09:12:17",
-      "status": false,
-      "full_name": "Sherlock Holmes",
-      "addresses": []
+      "type": "customers",
+      "id": "2",
+      "attributes": {
+        "first_name": "Sherlock",
+        "last_name": "Holmes",
+        "email": "sherlock@holmes.com",
+        "telephone": "01234012345",
+        "newsletter": true,
+        "customer_group_id": 1,
+        "date_added": "2020-05-21 09:12:17",
+        "status": false,
+        "full_name": "Sherlock Holmes",
+        "addresses": [],
+        "orders": [...],
+        "reservations": [...]
+      },
+      "relationships": {
+        "orders": {
+          "data": [...]
+        },
+        "reservations": {
+          "data": [...]
+        }
+      }
     }
-  ]
+  ],
+  "included": [
+    ...
+  ],
+  "meta": {
+    "pagination": {
+      "total": 2,
+      "count": 2,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "https://your.url/api/customers?page=1",
+    "first": "https://your.url/api/customers?page=1",
+    "last": "https://your.url/api/customers?page=1"
+  }
 }
 ```
 
@@ -146,8 +197,10 @@ POST /api/customers
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `first_name`           | `string`  | **Required**. The customer's first name (between 2 and 32 characters in length)      |
-| `last_name`           | `string`  | **Required**. The customer's last name (between 2 and 32 characters in length)       |
+| `first_name`           | `string`  | **
+Required**. The customer's first name (between 2 and 32 characters in length)      |
+| `last_name`           | `string`  | **
+Required**. The customer's last name (between 2 and 32 characters in length)       |
 | `email`           | `string`  | **Required**. The customer's email address       |
 | `telephone`           | `string`  | The customer's telephone number         |
 | `newsletter`           | `boolean`  | Whether the customer opts into newsletter marketing         |
@@ -186,26 +239,33 @@ Status: 201 Created
 
 ```json
 {
-  "customer_id": 1,
-  "first_name": "Joe",
-  "last_name": "Bloggs",
-  "email": "joe@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "customer_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
+  "data": [
     {
-      "address_id": 1,
-      "customer_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "first_name": "Joe",
+        "last_name": "Bloggs",
+        "email": "joe@bloggs.com",
+        "telephone": "1234512345",
+        "newsletter": false,
+        "customer_group_id": 1,
+        "date_added": "2020-05-20 08:34:37",
+        "status": true,
+        "full_name": "Joe Bloggs",
+        "addresses": [
+          {
+            "address_id": 1,
+            "customer_id": 1,
+            "address_1": "1 Some Road",
+            "address_2": null,
+            "city": "London",
+            "state": "",
+            "postcode": "W1A 3NN",
+            "country_id": 222
+          }
+        ]
+      }
     }
   ]
 }
@@ -223,7 +283,9 @@ GET /api/customers/:customer_id
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `include`           | `string`  | What relations to include in the response. Options are `addresses`, `orders`, `reservations`. To include multiple seperate by comma (e.g. ?include=addresses,orders) |
 
 #### Response
 
@@ -233,27 +295,45 @@ Status: 200 OK
 
 ```json
 {
-  "customer_id": 1,
-  "first_name": "Joe",
-  "last_name": "Bloggs",
-  "email": "joe@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "customer_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
+  "data": [
     {
-      "address_id": 1,
-      "customer_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "first_name": "Joe",
+        "last_name": "Bloggs",
+        "email": "joe@bloggs.com",
+        "telephone": "1234512345",
+        "newsletter": false,
+        "customer_group_id": 1,
+        "date_added": "2020-05-20 08:34:37",
+        "status": true,
+        "full_name": "Joe Bloggs",
+        "addresses": [
+          {
+            "address_id": 1,
+            "customer_id": 1,
+            "address_1": "1 Some Road",
+            "address_2": null,
+            "city": "London",
+            "state": "",
+            "postcode": "W1A 3NN",
+            "country_id": 222
+          }
+        ]
+      },
+      "relationships": {
+        "orders": {
+          "data": [...]
+        },
+        "reservations": {
+          "data": [...]
+        }
+      }
     }
+  ],
+  "included": [
+	...
   ]
 }
 ```
@@ -298,26 +378,33 @@ Status: 200 OK
 
 ```json
 {
-  "customer_id": 1,
-  "first_name": "Joeseph",
-  "last_name": "Bloggs",
-  "email": "joeseph@bloggs.com",
-  "telephone": "1234512345",
-  "newsletter": false,
-  "customer_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
-  "status": true,
-  "full_name": "Joe Bloggs",
-  "addresses": [
+  "data": [
     {
-      "address_id": 1,
-      "customer_id": 1,
-      "address_1": "1 Some Road",
-      "address_2": null,
-      "city": "London",
-      "state": "",
-      "postcode": "W1A 3NN",
-      "country_id": 222
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "first_name": "Joseph",
+        "last_name": "Bloggs",
+        "email": "joseph@bloggs.com",
+        "telephone": "1234512345",
+        "newsletter": false,
+        "customer_group_id": 1,
+        "date_added": "2020-05-20 08:34:37",
+        "status": true,
+        "full_name": "Joe Bloggs",
+        "addresses": [
+          {
+            "address_id": 1,
+            "customer_id": 1,
+            "address_1": "1 Some Road",
+            "address_2": null,
+            "city": "London",
+            "state": "",
+            "postcode": "W1A 3NN",
+            "country_id": 222
+          }
+        ]
+      }
     }
   ]
 }
@@ -325,7 +412,7 @@ Status: 200 OK
 
 ### Delete a customer
 
-Permanently deletes a customer. It cannot be undone. 
+Permanently deletes a customer. It cannot be undone.
 
 Required abilities: `customers:write`
 

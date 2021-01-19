@@ -2,6 +2,8 @@
 
 This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` your categories.
 
+The endpoint responses are formatted according to the [JSON:API specification](https://jsonapi.org).
+
 ### The category object
 
 #### Attributes
@@ -39,7 +41,7 @@ Returns a list of categories you’ve previously created.
 Required abilities: `categories:read`
 
 ```
-POST /api/categories
+GET /api/categories
 ```
 
 #### Parameters
@@ -47,26 +49,61 @@ POST /api/categories
 | Key                  | Type      | Description          |
 | -------------------- | --------- | ------------------------- |
 | `page`           | `integer`  | The page number.         |
+| `pageLimit`           | `integer`  | The number of items per page.         |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
 
 #### Response
 
 ```html
-Status: 201 Created
+Status: 200 OK
 ```
 
 ```json
-[
-  {
-    "name": "Appetizer",
-    "permalink_slug": "appetizer",
-    "parent_id": null,
-    "locations": [],
-    "priority": null,
-    "status": true,
-    "description": "Sed consequat, sapien in scelerisque egestas",
-    "thumb": null
+{
+  "data": [
+    {
+      "type": "categories",
+      "id": "1",
+      "attributes": {
+        "name": "Appetizer",
+        "permalink_slug": "appetizer",
+        "parent_id": null,
+        "priority": null,
+        "status": true,
+        "description": "Sed consequat, sapien in scelerisque egestas",
+        "thumb": null,
+        "media": [...],
+        "menus": [...],
+        "locations": [...]
+      },
+      "relationships": {
+        "menus": {
+          "data": [...]
+        },
+        "locations": {
+          "data": [...]
+        }
+      }
+    }
+  ],
+  "included": [
+    ...
+  ],
+  "meta": {
+    "pagination": {
+      "total": 1,
+      "count": 1,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "https://your.url/api/categories?page=1",
+    "first": "https://your.url/api/categories?page=1",
+    "last": "https://your.url/api/categories?page=1"
   }
-]
+}
 ```
 
 ### Create a category
@@ -109,14 +146,21 @@ Status: 201 Created
 
 ```json
 {
-  "name": "Appetizer",
-  "permalink_slug": "appetizer",
-  "parent_id": null,
-  "locations": [],
-  "priority": null,
-  "status": true,
-  "description": "Sed consequat, sapien in scelerisque egestas",
-  "thumb": null
+  "data": [
+    {
+      "type": "categories",
+      "id": "1",
+      "attributes": {
+        "name": "Appetizer",
+        "permalink_slug": "appetizer",
+        "parent_id": null,
+        "priority": null,
+        "status": true,
+        "description": "Sed consequat, sapien in scelerisque egestas",
+        "thumb": null,
+      }
+    }
+  ]
 }
 ```
 
@@ -132,7 +176,9 @@ GET /api/categories/:category_id
 
 #### Parameters
 
-No parameters.
+| Key                  | Type      | Description          |
+| -------------------- | --------- | ------------------------- |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
 
 #### Response
 
@@ -142,14 +188,35 @@ Status: 200 OK
 
 ```json
 {
-  "name": "Appetizer",
-  "permalink_slug": "appetizer",
-  "parent_id": null,
-  "locations": [],
-  "priority": null,
-  "status": true,
-  "description": "Sed consequat, sapien in scelerisque egestas",
-  "thumb": null
+  "data": [
+    {
+      "type": "categories",
+      "id": "1",
+      "attributes": {
+        "name": "Appetizer",
+        "permalink_slug": "appetizer",
+        "parent_id": null,
+        "priority": null,
+        "status": true,
+        "description": "Sed consequat, sapien in scelerisque egestas",
+        "thumb": null,
+        "media": [...],
+        "menus": [...],
+        "locations": [...]
+      },
+      "relationships": {
+        "menus": {
+          "data": [...]
+        },
+        "locations": {
+          "data": [...]
+        }
+      }
+    }
+  ],
+  "included": [
+	...
+  ]
 }
 ```
 
@@ -193,20 +260,27 @@ Status: 200 OK
 
 ```json
 {
-  "name": "Appetizer",
-  "permalink_slug": "appetizer",
-  "parent_id": null,
-  "locations": [],
-  "priority": null,
-  "status": true,
-  "description": "Sed consequat, sapien in scelerisque egestas",
-  "thumb": null
+  "data": [
+    {
+      "type": "categories",
+      "id": "1",
+      "attributes": {
+        "name": "Appetizer",
+        "permalink_slug": "appetizer",
+        "parent_id": null,
+        "priority": null,
+        "status": true,
+        "description": "Sed consequat, sapien in scelerisque egestas",
+        "thumb": null,
+      }
+    }
+  ]
 }
 ```
 
 ### Delete a category
 
-Permanently deletes a category. It cannot be undone. 
+Permanently deletes a category. It cannot be undone.
 
 Required abilities: `categories:write`
 
