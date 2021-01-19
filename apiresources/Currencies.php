@@ -16,12 +16,8 @@ class Currencies extends ApiController
             'index' => [
                 'pageLimit' => 20,
             ],
-            'store' => [],
-            'show' => [],
-            'update' => [],
-            'destroy' => [],
         ],
-        'request' => \Admin\Requests\Currency::class,
+        'request' => \System\Requests\Currency::class,
         'repository' => Repositories\CurrencyRepository::class,
         'transformer' => Transformers\CurrencyTransformer::class,
     ];
