@@ -78,6 +78,14 @@ class Extension extends BaseExtension
                     'index', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
                 ],
             ],
+            'currencies' => [
+                'controller' => \Igniter\Api\ApiResources\Currencies::class,
+                'name' => 'Currencies',
+                'description' => 'An API resource for currencies',
+                'actions' => [
+                    'index',
+                ],
+            ],
             'customers' => [
                 'controller' => \Igniter\Api\ApiResources\Customers::class,
                 'name' => 'Customers',
