@@ -180,6 +180,7 @@ class AbstractRepository
             if ($visible = $this->getVisible())
                 $model->setVisible($visible);
 
+            $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
         });
 

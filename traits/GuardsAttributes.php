@@ -73,4 +73,33 @@ trait GuardsAttributes
 
         return $this;
     }
+
+    public function getModelAttribute($key, $value)
+    {
+        if ($this->hasGetMutator($key))
+            return $this->mutateAttribute($key, $value);
+    }
+
+    /**
+     * Determine if a get mutator exists for an attribute.
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function hasGetMutator($key)
+    {
+        return method_exists($this, 'get'.Str::studly($key).'Attribute');
+    }
+
+    /**
+     * Get the value of an attribute using its mutator.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function mutateAttribute($key, $value)
+    {
+        return $this->{'get'.Str::studly($key).'Attribute'}($value);
+    }
 }
