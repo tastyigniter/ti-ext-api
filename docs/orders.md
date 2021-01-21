@@ -56,7 +56,10 @@ The endpoint responses are formatted according to the [JSON:API specification](h
   "order_date_time": "2020-05-24 13:13:00",
   "processed": true,
   "total_items": 3,
-  "order_total": 15.0449,
+  "order_total": {
+      "currency": "GBP",
+      "value": "15.0449"
+  },
   "comment": "",
   "payment": "cod",
   "invoice_prefix": "INV-2020-00",
@@ -123,7 +126,10 @@ Status: 200 OK
         "order_date": "2020-05-24 00:00:00",
         "processed": true,
         "total_items": 3,
-        "order_total": 15.0449,
+        "order_total": {
+            "currency": "GBP",
+            "value": "15.0449"
+        },
         "comment": "",
         "payment": "cod",
         "invoice_prefix": "INV-2020-00",
@@ -239,7 +245,10 @@ Status: 200 OK
         "order_date": "2020-05-24 00:00:00",
         "processed": true,
         "total_items": 3,
-        "order_total": 15.0449,
+        "order_total": {
+            "currency": "GBP",
+            "value": "15.0449"
+        },
         "comment": "",
         "payment": "cod",
         "invoice_prefix": "INV-2020-00",
@@ -360,7 +369,10 @@ Status: 200 OK
         "order_date": "2020-05-24 00:00:00",
         "processed": true,
         "total_items": 3,
-        "order_total": 15.0449,
+        "order_total": {
+            "currency": "GBP",
+            "value": "15.0449"
+        },
         "comment": "",
         "payment": "cod",
         "invoice_prefix": "INV-2020-00",
