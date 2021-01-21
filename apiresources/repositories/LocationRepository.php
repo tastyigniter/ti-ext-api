@@ -10,4 +10,9 @@ class LocationRepository extends AbstractRepository
     protected $modelClass = Locations_model::class;
 
     protected $hidden = ['location_thumb'];
+
+    protected function extendQuery($query)
+    {
+        $query->select('*');
+    }
 }
