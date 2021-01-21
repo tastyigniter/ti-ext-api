@@ -21,7 +21,6 @@ class OrderTransformer extends TransformerAbstract
     public function transform(Orders_model $order)
     {
         return array_merge($order->toArray(), [
-            'order_total' => currency_json($order->order_total),
             'order_totals' => $order->getOrderTotals()->map(function ($total) {
                 $total->value = currency_json($total->value);
 
