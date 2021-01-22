@@ -13,6 +13,7 @@ class MenuOptionValueTransformer extends TransformerAbstract
         data_set($valueAsArray, 'new_price', currency_json($menuItemOptionValue->new_price));
         data_set($valueAsArray, 'price', currency_json($menuItemOptionValue->price));
         data_set($valueAsArray, 'option_value.price', currency_json($menuItemOptionValue->option_value->price));
+
         return $valueAsArray;
     }
 }
