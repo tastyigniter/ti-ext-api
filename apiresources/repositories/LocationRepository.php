@@ -11,6 +11,11 @@ class LocationRepository extends AbstractRepository
 
     protected $hidden = ['location_thumb'];
 
+    public function getOptionsAttribute($value)
+    {
+        return array_except($value, ['hours']);
+    }
+
     protected function extendQuery($query)
     {
         $query->select('*');
