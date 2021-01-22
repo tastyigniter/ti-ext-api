@@ -15,7 +15,9 @@ class MenuTransformer extends TransformerAbstract
 
     public function transform(Menus_model $menuItem)
     {
-        return $menuItem->toArray();
+        return array_merge($menuItem->toArray(), [
+            'menu_price' => currency_json($menuItem->menu_price),
+        ]);
     }
 
     public function includeMedia(Menus_model $menuItem)
