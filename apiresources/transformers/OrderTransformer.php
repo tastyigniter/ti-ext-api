@@ -21,23 +21,9 @@ class OrderTransformer extends TransformerAbstract
     public function transform(Orders_model $order)
     {
         return array_merge($order->toArray(), [
-            'order_totals' => $order->getOrderTotals()->map(function ($total) {
-                $total->value = currency_json($total->value);
-
-                return $total;
-            }),
-            'order_menus' => $order->getOrderMenusWithOptions()->map(function ($menu) {
-                $menu->price = currency_json($menu->price);
-                $menu->subtotal = currency_json($menu->subtotal);
-
-                $menu->menu_options = collect($menu->menu_options)->map(function ($menuOption) {
-                    $menuOption->order_option_price = currency_json($menuOption->order_option_price);
-
-                    return $menuOption;
-                });
-
-                return $menu;
-            }),
+            'currency' => app('currency')->getDefault()->currency_code,
+            'order_totals' => $order->getOrderTotals(),
+            'order_menus' => $order->getOrderMenusWithOptions(),
         ]);
     }
 
