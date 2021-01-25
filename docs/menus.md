@@ -31,10 +31,8 @@ The endpoint responses are formatted according to the [JSON:API specification](h
   "menu_id": 1,
   "menu_name": "Puff-Puff",
   "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-  "menu_price": {
-      "currency": "GBP",
-      "value": "4.99"
-  },
+  "menu_price": "4.99"
+  "currency": "GBP",
   "menu_photo": null,
   "stock_qty": 0,
   "minimum_qty": 3,
@@ -66,27 +64,21 @@ The endpoint responses are formatted according to the [JSON:API specification](h
           "menu_option_value_id": 1,
           "menu_option_id": 1,
           "option_value_id": 9,
-          "new_price": {
-            "currency": "GBP",
-            "value": "0"
-          },
+          "new_price": "0",
+          "currency": "GBP",
           "quantity": 0,
           "subtract_stock": 0,
           "priority": 1,
           "is_default": null,
           "name": "Coke",
-          "price": {
-            "currency": "GBP",
-            "value": "0"
-          },
+          "price": "0",
+          "currency": "GBP",
           "option_value": {
             "option_value_id": 9,
             "option_id": 4,
             "value": "Coke",
-            "price": {
-              "currency": "GBP",
-              "value": "0"
-            },
+            "price": "0"
+            "currency": "GBP",
             "priority": 1
           }
         }
@@ -133,10 +125,8 @@ Status: 200 OK
       "attributes": {
         "menu_name": "Puff-Puff",
         "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": {
-          "currency": "GBP",
-          "value": "4.99"
-        },
+        "menu_price": "4.99"
+        "currency": "GBP",
         "menu_photo": null,
         "stock_qty": 0,
         "minimum_qty": 3,
@@ -164,10 +154,8 @@ Status: 200 OK
       "attributes": {
         "menu_name": "Doughnut",
         "menu_description": "Deep fried from a flour dough with sweet fillings",
-        "menu_price": {
-          "currency": "GBP",
-          "value": "0.99"
-        },
+        "menu_price": "0.99"
+        "currency": "GBP",
         "menu_photo": null,
         "stock_qty": 1000,
         "minimum_qty": 1,
@@ -263,10 +251,8 @@ Status: 201 Created
       "attributes": {
         "menu_name": "Puff-Puff",
         "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": {
-          "currency": "GBP",
-          "value": "4.99"
-        },
+        "menu_price": "4.99"
+        "currency": "GBP",
         "menu_photo": null,
         "stock_qty": 0,
         "minimum_qty": 3,
@@ -311,10 +297,8 @@ Status: 200 OK
       "attributes": {
         "menu_name": "Puff-Puff",
         "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": {
-          "currency": "GBP",
-          "value": "4.99"
-        },
+        "menu_price": "4.99"
+        "currency": "GBP",
         "menu_photo": null,
         "stock_qty": 0,
         "minimum_qty": 3,
@@ -395,10 +379,8 @@ Status: 200 OK
       "attributes": {
         "menu_name": "Chin-Chin",
         "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": {
-          "currency": "GBP",
-          "value": "4.99"
-        },
+        "menu_price": "4.99"
+        "currency": "GBP",
         "menu_photo": null,
         "stock_qty": 0,
         "minimum_qty": 3,
