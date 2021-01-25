@@ -180,8 +180,8 @@ class AbstractRepository
             if ($visible = $this->getVisible())
                 $model->setVisible($visible);
 
-            $keysToRemove = array_keys($model->getRelations());
-            $model->makeHidden($keysToRemove);
+            if ($relationKeys = array_keys($model->getRelations()))
+                $model->makeHidden($relationKeys);
 
             $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
