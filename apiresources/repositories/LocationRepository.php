@@ -9,5 +9,15 @@ class LocationRepository extends AbstractRepository
 {
     protected $modelClass = Locations_model::class;
 
-    protected $hidden = ['options', 'location_thumb'];
+    protected $hidden = ['location_thumb'];
+
+    public function getOptionsAttribute($value)
+    {
+        return array_except($value, ['hours']);
+    }
+
+    protected function extendQuery($query)
+    {
+        $query->select('*');
+    }
 }

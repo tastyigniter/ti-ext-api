@@ -83,7 +83,7 @@ class ApiManager
                 'endpoint' => $resource->endpoint,
                 'controller' => $resource->controller,
                 'options' => array_merge($resource->meta, [
-                    'only' => array_get($resource->meta, 'actions'),
+                    'only' => $resource->getAvailableActions(),
                 ]),
             ];
 

@@ -180,6 +180,10 @@ class AbstractRepository
             if ($visible = $this->getVisible())
                 $model->setVisible($visible);
 
+            if ($relationKeys = collect($model->getRelationDefinitions())->collapse()->keys())
+                $model->makeHidden($relationKeys->toArray());
+
+            $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
         });
 

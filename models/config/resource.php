@@ -83,15 +83,9 @@ return [
                 ],
                 'meta' => [
                     'label' => 'lang:igniter.api::default.label_actions',
-                    'type' => 'actions',
+                    'type' => 'partial',
+                    'path' => 'form/field_actions',
                     'span' => 'left',
-                    'options' => [
-                        'index' => 'lang:igniter.api::default.actions.text_index',
-                        'show' => 'lang:igniter.api::default.actions.text_show',
-                        'store' => 'lang:igniter.api::default.actions.text_store',
-                        'update' => 'lang:igniter.api::default.actions.text_update',
-                        'destroy' => 'lang:igniter.api::default.actions.text_destroy',
-                    ],
                     'authOptions' => [
                         'admin' => 'lang:igniter.api::default.text_admin',
                         'customer' => 'lang:igniter.api::default.text_customer',

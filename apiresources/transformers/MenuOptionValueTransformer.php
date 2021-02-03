@@ -9,6 +9,8 @@ class MenuOptionValueTransformer extends TransformerAbstract
 {
     public function transform(Menu_item_option_values_model $menuItemOptionValue)
     {
-        return $menuItemOptionValue->toArray();
+        return array_merge($menuItemOptionValue->toArray(), [
+            'currency' => app('currency')->getDefault()->currency_code,
+        ]);
     }
 }
