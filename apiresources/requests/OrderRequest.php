@@ -2,10 +2,10 @@
 
 namespace Igniter\Api\ApiResources\Requests;
 
-use Igniter\Api\Classes\ApiRequest;
+use System\Classes\FormRequest;
 use Request;
 
-class OrderRequest extends ApiRequest
+class OrderRequest extends FormRequest
 {
     public function rules()
     {

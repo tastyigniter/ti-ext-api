@@ -2,9 +2,9 @@
 
 namespace Igniter\Api\ApiResources\Requests;
 
-use Igniter\Api\Classes\ApiRequest;
+use System\Classes\FormRequest;
 
-class ReservationRequest extends ApiRequest
+class ReservationRequest extends FormRequest
 {
     public function rules()
     {
