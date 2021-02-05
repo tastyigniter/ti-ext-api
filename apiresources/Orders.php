@@ -75,9 +75,9 @@ class Orders extends ApiController
         }
 
         if ($orderTotals = (array)Request::get('order_totals', []))
-            $model->addOrderTotals(json_decode(json_encode($orderTotals), true));    
+            $model->addOrderTotals(json_decode(json_encode($orderTotals), true));
 
         if ($orderStatus = Request::get('status_id', false))
-            $model->updateOrderStatus($orderStatus, ['comment' => Request::get('status_comment', null)]);            
+            $model->updateOrderStatus($orderStatus, ['comment' => Request::get('status_comment', null)]);
     }
 }
