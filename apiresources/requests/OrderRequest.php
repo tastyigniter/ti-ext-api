@@ -7,8 +7,6 @@ use System\Classes\FormRequest;
 
 class OrderRequest extends FormRequest
 {
-    protected $injectRuleParameters = FALSE;
-
     public function rules()
     {
         $namedRules = [
