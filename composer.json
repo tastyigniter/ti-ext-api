@@ -1,6 +1,6 @@
 {
   "name": "igniter/api",
-  "type": "igniter-extension",
+  "type": "tastyigniter-extension",
   "keywords": ["tastyigniter", "rest", "api"],
   "require": {
     "laravel/sanctum": "~2.2"
