@@ -40,7 +40,7 @@ Returns a list of tables you’ve previously created.
 Required abilities: `tables:read`
 
 ```
-POST /api/tables
+GET /api/tables
 ```
 
 #### Parameters

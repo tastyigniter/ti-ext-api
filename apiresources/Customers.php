@@ -42,6 +42,6 @@ class Customers extends ApiController
         if (($token = $this->getToken()) && $token->isForCustomer())
             Request::merge(['customer_id' => $token->tokenable_id]);
 
-        $this->asExtension('RestController')->store();
+        return $this->asExtension('RestController')->store();
     }
 }
