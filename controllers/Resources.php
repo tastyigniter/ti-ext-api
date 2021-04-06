@@ -3,8 +3,6 @@
 namespace Igniter\Api\Controllers;
 
 use AdminMenu;
-use Igniter\Api\Classes\ApiManager;
-use Igniter\Api\Models\Resource;
 
 /**
  * API Resources Admin Controller
@@ -58,10 +56,5 @@ class Resources extends \Admin\Classes\AdminController
         \Igniter\Api\Models\Resource::syncAll();
 
         $this->asExtension('ListController')->index();
-    }
-
-    public function formAfterSave($model)
-    {
-        ApiManager::instance()->writeResources(Resource::getResources());
     }
 }

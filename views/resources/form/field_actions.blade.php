@@ -9,45 +9,45 @@
         </thead>
         <tbody>
         @php
-        $fieldValue = !is_array($field->value) ? [$field->value] : $field->value;
+            $fieldValue = !is_array($field->value) ? [$field->value] : $field->value;
         @endphp
         @foreach ($field->options() as $action => $name)
-        <tr>
-            <td>
-                <select
-                    id="{{ $field->getId($action.'-authorization') }}"
-                    name="{{ $field->getName() }}[authorization][{{ $action }}]"
-                    class="form-control"
-                >
-                    @foreach ($field->getConfig('authOptions') as $key => $label)
-                        <option
-                            value="{{ $key }}"
-                            {!! $key == array_get($fieldValue, 'authorization.'.$action) ? 'selected="selected"' : '' !!}
-                        >@lang($label)</option>
-                    @endforeach
-                </select>
-            </td>
-            <td>@lang($name)</td>
-            <td class="list-action text-right">
-                <div class="field-custom-container">
-                    <div class="custom-control custom-switch">
-                        <input
-                            type="checkbox"
-                            class="custom-control-input"
-                            id="{{ $field->getId($action.'-actions') }}"
-                            name="{{ $field->getName() }}[actions][]"
-                            value="{{ $action }}"
-                            {!! $this->previewMode ? 'disabled="disabled"' : '' !!}
-                            {!! in_array($action, array_get($fieldValue, 'actions', [$action])) ? 'checked="checked"' : '' !!}
-                        />
-                        <label
-                            class="custom-control-label"
-                            for="{{ $field->getId($action.'-actions') }}"
-                        >&nbsp;</label>
+            <tr>
+                <td>
+                    <select
+                        id="{{ $field->getId($action.'-authorization') }}"
+                        name="{{ $field->getName() }}[authorization][{{ $action }}]"
+                        class="form-control"
+                    >
+                        @foreach ($field->getConfig('authOptions') as $key => $label)
+                            <option
+                                value="{{ $key }}"
+                                {!! $key == array_get($fieldValue, 'authorization.'.$action) ? 'selected="selected"' : '' !!}
+                            >@lang($label)</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>@lang($name)</td>
+                <td class="list-action text-right">
+                    <div class="field-custom-container">
+                        <div class="custom-control custom-switch">
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
+                                id="{{ $field->getId($action.'-actions') }}"
+                                name="{{ $field->getName() }}[actions][]"
+                                value="{{ $action }}"
+                                {!! $this->previewMode ? 'disabled="disabled"' : '' !!}
+                                {!! in_array($action, array_get($fieldValue, 'actions', [$action])) ? 'checked="checked"' : '' !!}
+                            />
+                            <label
+                                class="custom-control-label"
+                                for="{{ $field->getId($action.'-actions') }}"
+                            >&nbsp;</label>
+                        </div>
                     </div>
-                </div>
-            </td>
-        </tr>
+                </td>
+            </tr>
         @endforeach
         </tbody>
     </table>

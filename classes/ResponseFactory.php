@@ -2,26 +2,51 @@
 
 namespace Igniter\Api\Classes;
 
+use Closure;
+use Dingo\Api\Http\Response;
+use Dingo\Api\Http\Response\Factory;
+use ErrorException;
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ResponseFactory
 {
     /**
+     * @var \Dingo\Api\Http\Response\Factory
+     */
+    protected $factory;
+
+    /**
+     * @var \Dingo\Api\Transformer\Factory
+     */
+    protected $transformer;
+
+    public function __construct(Factory $factory, $transformer)
+    {
+        $this->factory = $factory;
+        $this->transformer = $transformer;
+    }
+
+    /**
      * Respond with a created response.
      *
      * @param mixed $content
-     * @param string $transformer
+     * @param mixed $transformer
      *
+     * @param null $location
+     * @param array $parameters
+     * @param \Closure|null $after
      * @return \Illuminate\Http\Response
      */
-    public function created($content = null, $transformer = null)
+    public function created($content = null, $transformer = null, $location = null, $parameters = [], Closure $after = null)
     {
-        $response = is_null($transformer)
-            ? new Response($content)
-            : $this->callTransformer($transformer, 'make', $content)->response();
+        $binding = $this->registerTransformer($content, $transformer, $parameters, $after);
+
+        $response = new Response($content, 201, [], $binding);
+
+        if (!is_null($location))
+            $response->header('Location', $location);
 
         return $response->setStatusCode(201);
     }
@@ -30,15 +55,21 @@ class ResponseFactory
      * Respond with an accepted response.
      *
      * @param mixed $content
-     * @param string $transformer
+     * @param mixed $transformer
      *
+     * @param null $location
+     * @param array $parameters
+     * @param \Closure|null $after
      * @return \Illuminate\Http\Response
      */
-    public function accepted($content = null, $transformer = null)
+    public function accepted($content = null, $transformer = null, $location = null, $parameters = [], Closure $after = null)
     {
-        $response = is_null($transformer)
-            ? new Response($content)
-            : $this->callTransformer($transformer, 'make', $content)->response();
+        $binding = $this->registerTransformer($content, $transformer, $parameters, $after);
+
+        $response = new Response($content, 202, [], $binding);
+
+        if (!is_null($location))
+            $response->header('Location', $location);
 
         return $response->setStatusCode(202);
     }
@@ -50,58 +81,72 @@ class ResponseFactory
      */
     public function noContent()
     {
-        return (new Response(null))->setStatusCode(204);
+        return $this->factory->noContent();
+    }
+
+    public function array($array, $transformer = null, array $parameters = [], Closure $after = null)
+    {
+        return $this->factory->array($array, $transformer, $parameters, $after);
     }
 
     /**
      * Respond with a array content response.
      *
-     * @param array $item
+     * @param mixed $item
+     * @param mixed $transformer
+     * @param array $parameters
+     * @param \Closure|null $after
      *
      * @return \Illuminate\Http\Response
      */
-    public function item($item)
+    public function item($item, $transformer, $parameters = [], Closure $after = null)
     {
-        return new Response($item);
+        return $this->factory->item($item, $transformer, $parameters, $after);
     }
 
     /**
      * Bind a resource to a transformer and start building a response.
      *
      * @param object $resource
-     * @param string $transformer
+     * @param mixed $transformer
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param array $parameters
+     * @param \Closure|null $after
+     * @return \Illuminate\Http\Response
      */
-    public function resource($resource, $transformer)
+    public function resource($resource, $transformer, $parameters = [], Closure $after = null)
     {
-        return $this->callTransformer($transformer, 'make', $resource)->response();
+        return $this->item($resource, $transformer, $parameters, $after);
     }
 
     /**
      * Bind a collection to a transformer and start building a response.
      *
      * @param \Illuminate\Support\Collection $collection
-     * @param string $transformer
+     * @param mixed $transformer
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param array $parameters
+     * @param \Closure|null $after
+     * @return \Illuminate\Http\Response
      */
-    public function collection(Collection $collection, $transformer)
+    public function collection(Collection $collection, $transformer, $parameters = [], Closure $after = null)
     {
-        return $this->callTransformer($transformer, 'collection', $collection)->response();
+        return $this->factory->collection($collection, $transformer, $parameters, $after);
     }
 
     /**
      * Bind a paginator to a transformer and start building a response.
      *
      * @param \Illuminate\Contracts\Pagination\Paginator $paginator
-     * @param string $transformer
+     * @param mixed $transformer
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param array $parameters
+     * @param \Closure|null $after
+     * @return \Illuminate\Http\Response
      */
-    public function paginator(Paginator $paginator, $transformer)
+    public function paginator(Paginator $paginator, $transformer, $parameters = [], Closure $after = null)
     {
-        return $this->callTransformer($transformer, 'collection', $paginator)->response();
+        return $this->factory->paginator($paginator, $transformer, $parameters, $after);
     }
 
     /**
@@ -196,23 +241,23 @@ class ResponseFactory
         $this->error($message, 405);
     }
 
-    /**
-     * Call a resource transformer using a specific method and parameters.
-     *
-     * @param string $transformer
-     * @param string $method
-     * @param mixed $result
-     *
-     * @return \Illuminate\Http\Resources\Json\Resource
-     */
-    protected function callTransformer($transformer, $method, $result = null)
+    public function __call($method, $parameters)
     {
-        if (!$transformer)
-            throw new HttpException(500, 'Required property [transformer] missing on the REST Controller.');
+        if (method_exists($this->factory, $method))
+            return call_user_func_array([$this->factory, $method], $parameters);
 
-        if (!class_exists($transformer))
-            throw new HttpException(500, sprintf('Invalid transformer class [%s] specified in REST Controller configuration', $transformer));
+        throw new ErrorException('Undefined method '.get_class($this).'::'.$method);
+    }
 
-        return $transformer::$method($result);
+    protected function registerTransformer($resource, $transformer = null, array $parameters = [], Closure $after = null)
+    {
+        if (is_null($transformer))
+            return null;
+
+        $class = is_object($resource)
+            ? get_class($resource)
+            : \StdClass::class;
+
+        return $this->transformer->register($class, $transformer, $parameters, $after);
     }
 }

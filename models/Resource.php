@@ -3,12 +3,11 @@
 namespace Igniter\Api\Models;
 
 use Exception;
-use Igniter\Api\Classes\ApiManager;
+use Igniter\Flame\Database\Model;
 use Igniter\Flame\Database\Traits\HasPermalink;
-use Igniter\Flame\Database\Traits\Purgeable;
 use Igniter\Flame\Database\Traits\Validation;
 use Igniter\Flame\Mail\Markdown;
-use Model;
+use Igniter\Flame\Support\Facades\File;
 use System\Classes\ExtensionManager;
 
 /**
@@ -18,7 +17,6 @@ class Resource extends Model
 {
     use HasPermalink;
     use Validation;
-    use Purgeable;
 
     /**
      * @var array A cache of api resources.
@@ -32,10 +30,12 @@ class Resource extends Model
 
     protected static $registeredResources;
 
-    public static $defaultMetaDefinition = [
-        'actions' => ['index', 'store', 'show', 'update', 'destroy'],
-        'middleware' => ['api'],
-        'authorization' => ['index:admin', 'store:admin', 'show:admin', 'update:admin', 'destroy:admin'],
+    protected static $defaultActionDefinition = [
+        'index' => 'lang:igniter.api::default.actions.text_index',
+        'show' => 'lang:igniter.api::default.actions.text_show',
+        'store' => 'lang:igniter.api::default.actions.text_store',
+        'update' => 'lang:igniter.api::default.actions.text_update',
+        'destroy' => 'lang:igniter.api::default.actions.text_destroy',
     ];
 
     /**
@@ -58,20 +58,21 @@ class Resource extends Model
         ],
     ];
 
-    protected $purgeable = ['transformer_content'];
-
     protected $rules = [
-        'name' => 'required|min:2|max:128|unique:igniter_api_resources,endpoint|regex:/^[\pL\s\-]+$/u',
+        'name' => 'required|min:2|max:128|alpha_dash',
         'description' => 'required|min:2|max:255',
-        'endpoint' => 'max:255|unique:igniter_api_resources,endpoint',
-        'model' => 'required|min:2|max:255',
+        'endpoint' => 'max:255|regex:/^[a-z0-9\-_\/]+$/i|unique:igniter_api_resources,endpoint',
+        'controller' => 'required|min:2|max:255',
         'meta' => 'array',
-        'meta.actions.*' => 'string',
+        'meta.actions.*' => 'alpha',
+        'meta.authorization.*' => 'alpha',
     ];
 
-    public static function getModelOptions()
+    public function getMetaOptions()
     {
-        return self::make()->listGlobalModels();
+        $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
+
+        return array_get($registeredResource, 'options.names', self::$defaultActionDefinition);
     }
 
     public function listGlobalModels()
@@ -103,16 +104,30 @@ class Resource extends Model
 
     public function getBaseEndpointAttribute($value)
     {
-        return ApiManager::instance()->getBaseEndpoint($this->endpoint);
+        return sprintf('/%s/%s', config('api.prefix'), $this->endpoint);
+    }
+
+    public function getAvailableActions()
+    {
+        $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
+        $registeredActions = array_get($registeredResource, 'options.actions', []);
+        $dbActions = array_get($this->meta, 'actions');
+
+        return array_intersect($dbActions, $registeredActions);
     }
 
     public function renderSetupPartial()
     {
-        $docsPath = extension_path('igniter/api/docs/'.sprintf('%s.md', $this->endpoint));
+        $registeredResources = (new static())->listRegisteredResources();
+        $resources = collect($registeredResources)->keyBy('endpoint')->toArray();
+        $extensionCode = array_get($resources, $this->endpoint.'.owner');
 
-        $markdown = Markdown::parseFile($docsPath);
+        $path = ExtensionManager::instance()->path($extensionCode);
+        $docsPath = $path.sprintf('docs/%s.md', $this->endpoint);
 
-        return $markdown ? $markdown->toHtml() : 'No documentation provided';
+        return File::existsInsensitive($docsPath)
+            ? Markdown::parseFile($docsPath)->toHtml()
+            : 'No documentation provided';
     }
 
     //
@@ -126,34 +141,31 @@ class Resource extends Model
     public static function syncAll()
     {
         $registeredResources = (new static())->listRegisteredResources();
-        $resources = collect($registeredResources)->keyBy('controller')->toArray();
-        $dbResources = self::lists('is_custom', 'controller')->toArray();
+        $resources = collect($registeredResources)->keyBy('endpoint')->toArray();
+        $dbResources = self::lists('is_custom', 'endpoint')->toArray();
         $newResources = array_diff_key($resources, $dbResources);
 
         // Clean up non-customized api resources
-        foreach ($dbResources as $controller => $isCustom) {
+        foreach ($dbResources as $endpoint => $isCustom) {
             if ($isCustom)
                 continue;
 
-            if (!array_key_exists($controller, $resources))
-                self::where('controller', $controller)->delete();
+            if (!array_key_exists($endpoint, $resources))
+                self::where('endpoint', $endpoint)->delete();
         }
 
         // Create new resources
-        foreach ($newResources as $controller => $definition) {
+        foreach ($newResources as $endpoint => $definition) {
             $model = self::make();
             $model->endpoint = array_get($definition, 'endpoint');
             $model->name = array_get($definition, 'name');
-            $model->model = array_get($definition, 'model');
-            $model->controller = array_get($definition, 'controller');
-            $model->transformer = array_get($definition, 'transformer');
             $model->description = array_get($definition, 'description');
-            $model->meta = array_get($definition, 'meta', self::$defaultMetaDefinition);
+            $model->controller = array_get($definition, 'controller');
+            /** @var TYPE_NAME $model */
+            $model->meta = array_except(array_get($definition, 'options'), 'names');
             $model->is_custom = FALSE;
             $model->save();
         }
-
-        ApiManager::instance()->writeResources(self::getResources());
     }
 
     public static function getResources()
@@ -173,6 +185,28 @@ class Resource extends Model
         ksort($resources);
 
         return $resources;
+    }
+
+    protected function processOptions($definition)
+    {
+        $actions = array_get($definition, 'actions', []);
+
+        $result = $names = [];
+        foreach ($actions as $action => $name) {
+            if (!is_string($action)) {
+                $action = $name;
+            }
+
+            $action = explode(':', $action, 2);
+            $result[$action[0]] = $action[1] ?? 'admin';
+            $names[$action[0]] = array_get(self::$defaultActionDefinition, $action[0], $name);
+        }
+
+        return [
+            'names' => $names,
+            'actions' => array_keys($result),
+            'authorization' => $result,
+        ];
     }
 
     //
@@ -208,7 +242,7 @@ class Resource extends Model
 
         $registeredResources = ExtensionManager::instance()->getRegistrationMethodValues('registerApiResources');
         foreach ($registeredResources as $extensionCode => $resources) {
-            $this->registerResources($resources);
+            $this->registerResources($resources, $extensionCode);
         }
     }
 
@@ -216,13 +250,15 @@ class Resource extends Model
      * Registers the api resources.
      * @param array $definitions
      */
-    public function registerResources(array $definitions)
+    public function registerResources(array $definitions, string $owner = null)
     {
         $defaultDefinitions = [
             'name' => null,
             'description' => null,
             'controller' => null,
-            'transformer' => null,
+            'endpoint' => null,
+            'owner' => null,
+            'options' => [],
         ];
 
         foreach ($definitions as $endpoint => $definition) {
@@ -230,6 +266,8 @@ class Resource extends Model
                 $definition = ['controller' => $definition];
 
             $definition['endpoint'] = $endpoint;
+            $definition['owner'] = $owner;
+            $definition['options'] = $this->processOptions($definition);
 
             static::$registeredResources[$endpoint] = array_merge($defaultDefinitions, $definition);
         }

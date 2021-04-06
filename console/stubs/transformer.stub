@@ -1,11 +1,11 @@
 <?php namespace {{studly_author}}\{{studly_extension}}\ApiResources\Transformers;
 
-use Igniter\Api\Classes\TransformerAbstract;
+use League\Fractal\TransformerAbstract;
 
 class {{studly_singular_name}}Transformer extends TransformerAbstract
 {
-	public function toArray($request)
+	public function transform($resource)
 	{
-        return parent::toArray($request);
+        return $resource->toArray();
 	}
 }

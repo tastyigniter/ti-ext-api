@@ -2,22 +2,47 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Api\Classes\TransformerAbstract;
+use Admin\Models\Menus_model;
+use League\Fractal\TransformerAbstract;
 
 class MenuTransformer extends TransformerAbstract
 {
     protected $availableIncludes = [
+        'media',
         'categories',
         'menu_options',
-        'menu_options.menu_option_values',
     ];
 
-    public function toArray($request)
+    public function transform(Menus_model $menuItem)
     {
-        return array_merge(parent::toArray($request), [
-            'categories' => $this->whenLoaded('categories'),
-            'menu_options' => $this->whenLoaded('menu_options'),
-            'menu_options.menu_option_values' => $this->whenLoaded('menu_options.menu_option_values'),
+        return array_merge($menuItem->toArray(), [
+            'currency' => app('currency')->getDefault()->currency_code,
         ]);
+    }
+
+    public function includeMedia(Menus_model $menuItem)
+    {
+        if (!$thumb = $menuItem->getFirstMedia())
+            return null;
+
+        return $this->item($thumb, new MediaTransformer, 'media');
+    }
+
+    public function includeCategories(Menus_model $menuItem)
+    {
+        return $this->collection(
+            $menuItem->categories,
+            new CategoryTransformer,
+            'categories'
+        );
+    }
+
+    public function includeMenuOptions(Menus_model $menuItem)
+    {
+        return $this->collection(
+            $menuItem->menu_options,
+            new MenuOptionTransformer,
+            'menu_options'
+        );
     }
 }

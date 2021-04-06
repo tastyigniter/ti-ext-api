@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Request;
  */
 class Orders extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -20,9 +22,9 @@ class Orders extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'model' => \Admin\Models\Orders_model::class,
-        'transformer' => \Igniter\Api\ApiResources\Transformers\OrderTransformer::class,
-        'authorization' => ['index:users', 'store:users', 'show:users', 'update:admin', 'destroy:admin'],
+        'request' => Requests\OrderRequest::class,
+        'repository' => Repositories\OrderRepository::class,
+        'transformer' => Transformers\OrderTransformer::class,
     ];
 
     protected $requiredAbilities = ['orders:*'];
@@ -40,7 +42,7 @@ class Orders extends ApiController
         if (($token = $this->getToken()) && $token->isForCustomer())
             Request::merge(['customer_id' => $token->tokenable_id]);
 
-        $this->asExtension('RestController')->store();
+        return $this->asExtension('RestController')->store();
     }
 
     public function update($recordId)
@@ -48,12 +50,34 @@ class Orders extends ApiController
         if (($token = $this->getToken()) && $token->isForCustomer())
             Request::merge(['customer_id' => $token->tokenable_id]);
 
-        $this->asExtension('RestController')->update($recordId);
+        return $this->asExtension('RestController')->update($recordId);
     }
 
     public function restAfterSave($model)
     {
-        if ($menuItems = (array)Request::get('menu_items', []))
-            $model->addOrderMenus(json_decode(json_encode($menuItems)));
+        $requireSave = false;
+        foreach (['order_date', 'order_time', 'location_id', 'processed', 'order_total'] as $field) {
+            if ($fieldValue = Request::get($field, false)) {
+                $model->$field = $fieldValue;
+                $requireSave = true;
+            }
+        }
+
+        if ($orderMenus = (array)Request::get('order_menus', [])) {
+            $model->addOrderMenus(json_decode(json_encode($orderMenus)));
+
+            $total_items = 0;
+            foreach ($orderMenus as $menuItem) {
+                $total_items += $menuItem['qty'];
+            }
+
+            $model->total_items = $total_items;
+        }
+
+        if ($orderTotals = (array)Request::get('order_totals', []))
+            $model->addOrderTotals(json_decode(json_encode($orderTotals), true));
+
+        if ($orderStatus = Request::get('status_id', false))
+            $model->updateOrderStatus($orderStatus, ['comment' => Request::get('status_comment', null)]);
     }
 }

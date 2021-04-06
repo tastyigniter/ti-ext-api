@@ -34,9 +34,7 @@ return [
     'label_description_comment' => 'Describe your API resource',
     'label_base_endpoint_comment' => 'https://example.com/api/<b>endpoint</b>',
 
-    'label_model' => 'Model',
     'label_controller' => 'Controller',
-    'label_transformer' => 'Transformer',
     'label_actions' => 'Actions',
     'help_actions' => 'Leave blank to deactivate the endpoint.',
     'label_require_authorization' => 'Require authorization',
@@ -53,4 +51,5 @@ return [
     'alert_auth_failed' => 'No valid API token provided.',
     'alert_auth_restricted' => 'The API token doesn\'t have permissions to perform the request.',
     'alert_token_restricted' => 'The API token doesn\'t have the right abilities to perform this action',
+    'alert_validation_failed' => 'Failed to validate request parameters',
 ];

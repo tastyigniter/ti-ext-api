@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Request;
  */
 class Customers extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -20,9 +22,9 @@ class Customers extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'model' => \Admin\Models\Customers_model::class,
-        'transformer' => \Igniter\Api\ApiResources\Transformers\CustomerTransformer::class,
-        'authorization' => ['index:admin', 'store:users', 'show:admin', 'update:users', 'destroy:admin'],
+        'request' => \Admin\Requests\Customer::class,
+        'repository' => Repositories\CustomerRepository::class,
+        'transformer' => Transformers\CustomerTransformer::class,
     ];
 
     protected $requiredAbilities = ['customers:*'];
@@ -40,6 +42,6 @@ class Customers extends ApiController
         if (($token = $this->getToken()) && $token->isForCustomer())
             Request::merge(['customer_id' => $token->tokenable_id]);
 
-        $this->asExtension('RestController')->store();
+        return $this->asExtension('RestController')->store();
     }
 }

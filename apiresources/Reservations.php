@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Request;
  */
 class Reservations extends ApiController
 {
+    public $implement = ['Igniter.Api.Actions.RestController'];
+
     public $restConfig = [
         'actions' => [
             'index' => [
@@ -20,9 +22,9 @@ class Reservations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'model' => \Admin\Models\Reservations_model::class,
-        'transformer' => \Igniter\Api\ApiResources\Transformers\ReservationTransformer::class,
-        'authorization' => ['index:users', 'store:users', 'show:users', 'update:admin', 'destroy:admin'],
+        'request' => Requests\ReservationRequest::class,
+        'repository' => Repositories\ReservationRepository::class,
+        'transformer' => Transformers\ReservationTransformer::class,
     ];
 
     protected $requiredAbilities = ['reservations:*'];
@@ -40,6 +42,6 @@ class Reservations extends ApiController
         if (($token = $this->getToken()) && $token->isForCustomer())
             Request::merge(['customer_id' => $token->tokenable_id]);
 
-        $this->asExtension('RestController')->store();
+        return $this->asExtension('RestController')->store();
     }
 }

@@ -4,9 +4,6 @@ namespace Igniter\Api;
 
 use Admin\Models\Customers_model;
 use Admin\Models\Users_model;
-use Event;
-use Igniter\Api\Exception\ExceptionHandler;
-use Igniter\Api\Models\Token;
 use Igniter\Flame\Database\Model;
 use Illuminate\Contracts\Http\Kernel;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
@@ -21,21 +18,24 @@ class Extension extends BaseExtension
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/config/api.php', 'api');
-
         $this->mergeConfigFrom(__DIR__.'/config/sanctum.php', 'sanctum');
 
-        Sanctum::usePersonalAccessTokenModel(Token::class);
+        Sanctum::usePersonalAccessTokenModel(Models\Token::class);
+
+        $this->app->register(\Dingo\Api\Provider\LaravelServiceProvider::class);
 
         $this->registerResponseFactory();
+        $this->registerSerializer();
 
-        $this->registerConsoleCommand('create.apiresource', \Igniter\Api\Console\CreateApiResource::class);
-        $this->registerConsoleCommand('issue.apitoken', \Igniter\Api\Console\IssueApiToken::class);
-
-        $this->registerExceptionHandler();
+        $this->registerConsoleCommand('create.apiresource', Console\CreateApiResource::class);
+        $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
     }
 
     public function boot()
     {
+        // Register all the available API routes
+        Classes\ApiManager::instance();
+
         $this->sanctumConfigureAuthModels();
         $this->sanctumConfigureMiddleware();
     }
@@ -71,55 +71,91 @@ class Extension extends BaseExtension
     {
         return [
             'categories' => [
+                'controller' => \Igniter\Api\ApiResources\Categories::class,
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
-                'model' => \Admin\Models\Categories_model::class,
-                'controller' => \Igniter\Api\ApiResources\Categories::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\CategoryTransformer::class,
+                'actions' => [
+                    'index', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
+                ],
+            ],
+            'currencies' => [
+                'controller' => \Igniter\Api\ApiResources\Currencies::class,
+                'name' => 'Currencies',
+                'description' => 'An API resource for currencies',
+                'actions' => [
+                    'index',
+                ],
             ],
             'customers' => [
+                'controller' => \Igniter\Api\ApiResources\Customers::class,
                 'name' => 'Customers',
                 'description' => 'An API resource for customers',
-                'model' => \Admin\Models\Customers_model::class,
-                'controller' => \Igniter\Api\ApiResources\Customers::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\CustomerTransformer::class,
+                'actions' => [
+                    'index:admin', 'show:admin',
+                    'store:users', 'update:users',
+                    'destroy:admin',
+                ],
             ],
             'locations' => [
+                'controller' => \Igniter\Api\ApiResources\Locations::class,
                 'name' => 'Locations',
                 'description' => 'An API resource for locations',
-                'model' => \Admin\Models\Locations_model::class,
-                'controller' => \Igniter\Api\ApiResources\Locations::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\LocationTransformer::class,
+                'actions' => [
+                    'index:all', 'show:admin',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
             ],
             'menus' => [
+                'controller' => \Igniter\Api\ApiResources\Menus::class,
                 'name' => 'Menus',
                 'description' => 'An API resource for menus',
-                'model' => \Admin\Models\Menus_model::class,
-                'controller' => \Igniter\Api\ApiResources\Menus::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\MenuTransformer::class,
+                'actions' => [
+                    'index:all', 'show:all',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
             ],
             'orders' => [
+                'controller' => \Igniter\Api\ApiResources\Orders::class,
                 'name' => 'Orders',
                 'description' => 'An API resource for orders',
-                'model' => \Admin\Models\Orders_model::class,
-                'controller' => \Igniter\Api\ApiResources\Orders::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\OrderTransformer::class,
+                'actions' => [
+                    'index:users', 'show:users',
+                    'store:users', 'update:admin',
+                    'destroy:admin',
+                ],
             ],
             'reservations' => [
+                'controller' => \Igniter\Api\ApiResources\Reservations::class,
                 'name' => 'Reservations',
                 'description' => 'An API resource for reservations',
-                'model' => \Admin\Models\Reservations_model::class,
-                'controller' => \Igniter\Api\ApiResources\Reservations::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\ReservationTransformer::class,
+                'actions' => [
+                    'index:users', 'show:users',
+                    'store:users', 'update:admin',
+                    'destroy:admin',
+                ],
             ],
             'reviews' => [
+                'controller' => \Igniter\Api\ApiResources\Reviews::class,
                 'name' => 'Reviews',
                 'description' => 'An API resource for reviews',
-                'model' => \Admin\Models\Reviews_model::class,
-                'controller' => \Igniter\Api\ApiResources\Reviews::class,
-                'transformer' => \Igniter\Api\ApiResources\Transformers\ReviewTransformer::class,
+                'actions' => [
+                    'index:users', 'show:users',
+                    'store:users', 'update:admin',
+                    'destroy:admin',
+                ],
             ],
-
+            'tables' => [
+                'controller' => \Igniter\Api\ApiResources\Tables::class,
+                'name' => 'Tables',
+                'description' => 'An API resource for tables',
+                'authorization' => [
+                    'index:admin', 'show:admin',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
+            ],
         ];
     }
 
@@ -130,23 +166,13 @@ class Extension extends BaseExtension
      */
     protected function registerResponseFactory()
     {
-        $this->app->alias('api.response', \Igniter\Api\Classes\ResponseFactory::class);
+        $this->app->alias('api.response', Classes\ResponseFactory::class);
 
         $this->app->singleton('api.response', function ($app) {
-            return new \Igniter\Api\Classes\ResponseFactory();
-        });
-    }
-
-    protected function registerExceptionHandler()
-    {
-        Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
-            if (!$request->is('api/*'))
-                return;
-
-            $format = $this->app['config']->get('api.errorFormat');
-            $handler = new ExceptionHandler($format);
-
-            return $handler->handleException($exception);
+            return new Classes\ResponseFactory(
+                $app['api.http.response'],
+                $app['api.transformer']
+            );
         });
     }
 
@@ -170,6 +196,14 @@ class Extension extends BaseExtension
 
         Customers_model::extend(function (Model $model) {
             $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+        });
+    }
+
+    protected function registerSerializer()
+    {
+        $this->app->resolving(\Dingo\Api\Transformer\Adapter\Fractal::class, function ($adapter, $app) {
+            $serializer = config('api.serializer');
+            $adapter->getFractal()->setSerializer(new $serializer);
         });
     }
 }
