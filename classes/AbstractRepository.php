@@ -70,10 +70,8 @@ class AbstractRepository
         return $query->paginate($perPage, $page, $columns, $pageName);
     }
 
-    public function create(array $attributes)
+    public function create($model, array $attributes)
     {
-        $model = $this->createModel();
-
         $this->fireSystemEvent('api.repository.beforeCreate', [$model, $attributes]);
 
         $model->fill($attributes);
@@ -85,9 +83,10 @@ class AbstractRepository
         return $model;
     }
 
-    public function update(int $id, array $attributes = [])
+    public function update($id, array $attributes = [])
     {
-        $model = $this->find($id);
+        $model = is_numeric($id)
+            ? $this->find($id) : $id;
 
         if (!$model) return $model;
 
@@ -124,6 +123,27 @@ class AbstractRepository
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Model
+     * @throws \Igniter\Flame\Exception\SystemException
+     */
+    public function createModel()
+    {
+        $modelClass = $this->getModelClass();
+
+        if (!class_exists('\\'.ltrim($modelClass, '\\'))) {
+            throw new SystemException("Class {$modelClass} does NOT exist!");
+        }
+
+        $this->prepareModel($modelClass);
+
+        $model = new $modelClass;
+        if (!$model instanceof Model)
+            throw new SystemException("Class {$model} must be an instance of \\Igniter\\Flame\\Database\\Model");
+
+        return $model;
+    }
+
+    /**
      * @return \Illuminate\Contracts\Container\Container
      */
     public function getContainer()
@@ -142,31 +162,8 @@ class AbstractRepository
         return $this;
     }
 
-    protected function prepareQuery($model)
+    protected function prepareModel(string $modelClass): void
     {
-        $query = $model->newQuery();
-
-        $this->applyScopes($query);
-
-        $this->extendQuery($query);
-
-        $this->fireSystemEvent('api.repository.extendQuery', [$query]);
-
-        return $query;
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Model
-     * @throws \Igniter\Flame\Exception\SystemException
-     */
-    protected function createModel()
-    {
-        $modelClass = $this->getModelClass();
-
-        if (!class_exists('\\'.ltrim($modelClass, '\\'))) {
-            throw new SystemException("Class {$modelClass} does NOT exist!");
-        }
-
         $modelClass::extend(function (Model $model) {
             if ($fillable = $this->getFillable())
                 $model->fillable($fillable);
@@ -186,12 +183,19 @@ class AbstractRepository
             $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
         });
+    }
 
-        $model = new $modelClass;
-        if (!$model instanceof Model)
-            throw new SystemException("Class {$model} must be an instance of \\Igniter\\Flame\\Database\\Model");
+    protected function prepareQuery($model)
+    {
+        $query = $model->newQuery();
 
-        return $model;
+        $this->applyScopes($query);
+
+        $this->extendQuery($query);
+
+        $this->fireSystemEvent('api.repository.extendQuery', [$query]);
+
+        return $query;
     }
 
     protected function extendQuery($query)

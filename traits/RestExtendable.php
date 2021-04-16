@@ -4,6 +4,11 @@ namespace Igniter\Api\Traits;
 
 trait RestExtendable
 {
+    public function getRestModel()
+    {
+        return $this->model;
+    }
+
     /**
      * Run logic before the store or update resource operation
      * by overriding it in the controller.

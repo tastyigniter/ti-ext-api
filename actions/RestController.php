@@ -78,12 +78,16 @@ class RestController extends ControllerAction
      */
     public function store()
     {
+        $repository = $this->makeRepository('create');
+
+        $this->model = $repository->createModel();
+
         $request = $this->validateRequest('all');
 
-        $result = $this->makeRepository('create')->create($request);
+        $model = $repository->create($this->model, $request);
 
         return $this->controller->response()->created(
-            $result, $this->createTransformer(), null, $this->getResponseParameters()
+            $model, $this->createTransformer(), null, $this->getResponseParameters()
         );
     }
 
@@ -112,9 +116,13 @@ class RestController extends ControllerAction
      */
     public function update($recordId)
     {
+        $repository = $this->makeRepository('update');
+
+        $this->model = $repository->find($recordId);
+
         $request = $this->validateRequest('all');
 
-        $result = $this->makeRepository('update')->update($recordId, $request);
+        $result = $this->makeRepository('update')->update($this->model, $request);
 
         return $this->controller->response()->resource(
             $result, $this->createTransformer(), $this->getResponseParameters()
