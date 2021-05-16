@@ -23,10 +23,10 @@ class SanctumProvider implements Provider
         $accessToken = $this->authManager->authenticate($request->bearerToken());
 
         $allowedGroup = $this->getAllowedGroup($route);
-        if ($allowedGroup == 'all')
+        if ($allowedGroup === 'all')
             return $accessToken;
 
-        if ($allowedGroup != 'guest' AND !$accessToken)
+        if ($allowedGroup !== 'guest' AND !$accessToken)
             throw new UnauthorizedHttpException('Bearer', lang('igniter.api::default.alert_auth_failed'));
 
         if (!$this->authManager->checkGroup($allowedGroup, $accessToken))

@@ -21,7 +21,10 @@ class {{studly_name}} extends ApiController
              'update' => [],
              'destroy' => [],
         ],
-        'model' => '{{model}}',
+        'request' => '{{request}}',
+        'repository' => '{{repository}}',
         'transformer' => '{{studly_author}}\{{studly_extension}}\ApiResources\Transformers\{{studly_singular_name}}Transformer',
     ];
+
+    protected $requiredAbilities = ['{{lower_name}}:*'];
 }

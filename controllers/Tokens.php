@@ -42,7 +42,7 @@ class Tokens extends \Admin\Classes\AdminController
             'email' => 'required_without:username|email:filter',
             'password' => 'required',
             'device_name' => 'required|alpha_dash',
-            'abilities.*' => 'alpha_dash',
+            'abilities.*' => 'regex:/^[a-zA-Z-_\*]+$/',
         ]);
 
         $forAdmin = $request->has('username') AND !$request->has('email');

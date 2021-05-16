@@ -71,13 +71,13 @@ class CreateApiResource extends GeneratorCommand
         $extension = array_pop($parts);
         $author = array_pop($parts);
         $controller = $this->argument('controller');
-        $model = $this->option('model') ?? studly_case($author)
+        $repository = $this->option('repository') ?? studly_case($author)
             .'\\'.studly_case($extension).'\\Models\\'.studly_case(str_singular($controller));
 
         $data = $this->option('meta');
 
         $this->vars = [
-            'model' => $model,
+            'repository' => $repository,
 
             'extension' => $extension,
             'lower_extension' => strtolower($extension),
