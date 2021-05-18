@@ -2,7 +2,7 @@
   "code": "igniter.api",
   "name": "APIs",
   "description": "Manages and generates RESTful APIs using available models",
-  "version": "v0.3.0",
+  "version": "v1.0.0",
   "author": "SamPoyigi",
   "icon": {
     "class": "fa fa-cloud",
