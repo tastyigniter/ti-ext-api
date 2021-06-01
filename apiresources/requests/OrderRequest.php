@@ -9,14 +9,16 @@ class OrderRequest extends FormRequest
 {
     public function rules()
     {
+        $method = Request::method();
+
         $namedRules = [
-            ['first_name', 'lang:igniter.cart::default.checkout.label_first_name', 'required|between:1,48'],
-            ['last_name', 'lang:igniter.cart::default.checkout.label_last_name', 'required|between:1,48'],
+            ['first_name', 'lang:igniter.cart::default.checkout.label_first_name', ($method == 'post' ? 'required|' : '').'between:1,48'],
+            ['last_name', 'lang:igniter.cart::default.checkout.label_last_name', ($method == 'post' ? 'required|' : '').'between:1,48'],
             ['email', 'lang:igniter.cart::default.checkout.label_email', 'sometimes|required|email:filter|max:96'],
             ['telephone', 'lang:igniter.cart::default.checkout.label_telephone', ''],
             ['comment', 'lang:igniter.cart::default.checkout.label_comment', 'max:500'],
             ['payment', 'lang:igniter.cart::default.checkout.label_payment_method', 'sometimes|required|alpha_dash'],
-            ['order_type', 'lang:igniter.cart::default.checkout.label_order_type', 'required'],
+            ['order_type', 'lang:igniter.cart::default.checkout.label_order_type', ($method == 'post' ? 'required' : '')],
         ];
 
         if (Request::input('order_type', 'collection') == 'delivery') {
