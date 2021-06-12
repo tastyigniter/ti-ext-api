@@ -111,7 +111,7 @@ class Resource extends Model
     {
         $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
         $registeredActions = array_get($registeredResource, 'options.actions', []);
-        $dbActions = array_get($this->meta, 'actions');
+        $dbActions = (array)array_get($this->meta, 'actions', []);
 
         return array_intersect($dbActions, $registeredActions);
     }

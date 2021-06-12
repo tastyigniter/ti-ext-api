@@ -20,7 +20,7 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's ordering priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
+| `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 
@@ -39,9 +39,9 @@ The endpoint responses are formatted according to the [JSON:API specification](h
   "subtract_stock": false,
   "mealtime_id": null,
   "menu_status": true,
-  "menu_priority": 0,
-  "order_restriction": 0,
-  "categories": [],
+    "menu_priority": 0,
+    "order_restriction": null,
+    "categories": [],
   "menu_options": [
     {
       "menu_option_id": 1,
@@ -133,9 +133,11 @@ Status: 200 OK
         "subtract_stock": false,
         "mealtime_id": null,
         "menu_status": true,
-        "menu_priority": 0,
-        "order_restriction": 0,
-        "media": [...],
+          "menu_priority": 0,
+          "order_restriction": null,
+          "media": [
+              ...
+          ],
         "categories": [...],
         "menu_options": [...]
       },
@@ -162,9 +164,11 @@ Status: 200 OK
         "subtract_stock": true,
         "mealtime_id": null,
         "menu_status": true,
-        "menu_priority": 0,
-        "order_restriction": 0,
-        "media": [...],
+          "menu_priority": 0,
+          "order_restriction": null,
+          "media": [
+              ...
+          ],
         "categories": [...],
         "menu_options": [...]
       },
@@ -222,7 +226,7 @@ POST /api/menus
 | `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's ordering priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.        |
+| `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 
@@ -231,8 +235,8 @@ POST /api/menus
 ```json
 {
   "menu_name": "Chin-Chin",
-  "menu_price": 1.99,
-  "order_restriction": 0
+    "menu_price": 1.99,
+    "order_restriction": null
 }
 ```
 
@@ -259,9 +263,9 @@ Status: 201 Created
         "subtract_stock": false,
         "mealtime_id": null,
         "menu_status": true,
-        "menu_priority": 0,
-        "order_restriction": 0
-    }
+          "menu_priority": 0,
+          "order_restriction": null
+      }
   ]
 }
 ```
@@ -305,9 +309,11 @@ Status: 200 OK
         "subtract_stock": false,
         "mealtime_id": null,
         "menu_status": true,
-        "menu_priority": 0,
-        "order_restriction": 0,
-        "media": [...],
+          "menu_priority": 0,
+          "order_restriction": null,
+          "media": [
+              ...
+          ],
         "categories": [...],
         "menu_options": [...]
       },
@@ -351,7 +357,7 @@ PATCH /api/menus/:menu_id
 | `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.         |
+| `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 
@@ -387,9 +393,9 @@ Status: 200 OK
         "subtract_stock": false,
         "mealtime_id": null,
         "menu_status": false,
-        "menu_priority": 0,
-        "order_restriction": 0
-    }
+          "menu_priority": 0,
+          "order_restriction": null
+      }
   ]
 }
 ```
