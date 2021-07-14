@@ -107,7 +107,7 @@ class AbstractRepository
 
         if (!$model) return $model;
 
-        $deleted = $model->save();
+        $deleted = $model->delete();
 
         $this->fireSystemEvent('api.repository.afterDelete', [$model, $deleted]);
 
