@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\Controllers;
 
-use AdminMenu;
+use Admin\Facades\AdminMenu;
 
 /**
  * API Resources Admin Controller

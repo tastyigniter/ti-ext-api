@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Requests;
 
-use Request;
+use Illuminate\Support\Facades\Request;
 use System\Classes\FormRequest;
 
 class OrderRequest extends FormRequest

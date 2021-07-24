@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\Controllers;
 
-use AdminMenu;
+use Admin\Facades\AdminMenu;
 use Igniter\Api\Models\Token;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
