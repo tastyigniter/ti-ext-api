@@ -4,8 +4,12 @@ namespace Igniter\Api;
 
 use Admin\Models\Customers_model;
 use Admin\Models\Users_model;
+use Dingo\Api\Auth\Auth;
 use Igniter\Flame\Database\Model;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
 use System\Classes\BaseExtension;
@@ -26,6 +30,7 @@ class Extension extends BaseExtension
 
         $this->registerResponseFactory();
         $this->registerSerializer();
+        $this->registerRequestUserResolver();
 
         $this->registerConsoleCommand('create.apiresource', Console\CreateApiResource::class);
         $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
@@ -33,6 +38,8 @@ class Extension extends BaseExtension
 
     public function boot()
     {
+        $this->configureRateLimiting();
+
         // Register all the available API routes
         Classes\ApiManager::instance();
 
@@ -204,6 +211,25 @@ class Extension extends BaseExtension
         $this->app->resolving(\Dingo\Api\Transformer\Adapter\Fractal::class, function ($adapter, $app) {
             $serializer = config('api.serializer');
             $adapter->getFractal()->setSerializer(new $serializer);
+        });
+    }
+
+    protected function registerRequestUserResolver()
+    {
+        $this->app->rebinding('request', function ($app, $request) {
+            if (!$request instanceof \Dingo\Api\Http\Request)
+                return;
+
+            $request->setUserResolver(function () use ($app) {
+                return $app[Auth::class]->user();
+            });
+        });
+    }
+
+    protected function configureRateLimiting()
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
     }
 }
