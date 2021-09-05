@@ -12,7 +12,7 @@ trait RestExtendable
     /**
      * Run logic before the store or update resource operation
      * by overriding it in the controller.
-     * @param \Model $model
+     * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
     public function restBeforeSave($model)
@@ -22,7 +22,7 @@ trait RestExtendable
     /**
      * Run logic before the store resource operation
      * by overriding it in the controller.
-     * @param \Model $model
+     * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
     public function restBeforeCreate($model)
@@ -32,7 +32,7 @@ trait RestExtendable
     /**
      * Run logic before the update resource operation
      * by overriding it in the controller.
-     * @param \Model $model
+     * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
     public function restBeforeUpdate($model)
@@ -42,7 +42,7 @@ trait RestExtendable
     /**
      * Run logic after the store or update resource operation
      * by overriding it in the controller.
-     * @param \Model $model
+     * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
     public function restAfterSave($model)
@@ -52,7 +52,7 @@ trait RestExtendable
     /**
      * Run logic after the store resource operation
      * by overriding it in the controller.
-     * @param \Model $model
+     * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
     public function restAfterCreate($model)
@@ -62,7 +62,7 @@ trait RestExtendable
     /**
      * Run logic after the update resource operation
      * by overriding it in the controller.
-     * @param \Model $model
+     * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
     public function restAfterUpdate($model)
@@ -72,7 +72,7 @@ trait RestExtendable
     /**
      * Run logic after the delete resource operation
      * by overriding it in the controller.
-     * @param \Model $model
+     * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
     public function restAfterDelete($model)
