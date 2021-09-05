@@ -32,7 +32,7 @@ class IssueApiToken extends Command
             return $this->error('Missing --name option');
 
         if (!strlen($username = $this->option('username'))
-            OR !strlen($email = $this->option('email'))
+            AND !strlen($email = $this->option('email'))
         ) {
             return $this->error('Missing --username OR --email option');
         }
