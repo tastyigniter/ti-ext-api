@@ -24,7 +24,7 @@ class RestController extends ControllerAction
     protected $controller;
 
     /**
-     * @var \Model The initialized model used by the rest controller.
+     * @var \Igniter\Flame\Database\Model The initialized model used by the rest controller.
      */
     protected $model;
 

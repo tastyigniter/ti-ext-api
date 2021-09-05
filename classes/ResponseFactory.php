@@ -129,7 +129,7 @@ class ResponseFactory
      * @param \Closure|null $after
      * @return \Illuminate\Http\Response
      */
-    public function collection(Collection $collection, $transformer, $parameters = [], Closure $after = null)
+    public function collection(Collection $collection, $transformer = null, $parameters = [], Closure $after = null)
     {
         return $this->factory->collection($collection, $transformer, $parameters, $after);
     }
@@ -144,7 +144,7 @@ class ResponseFactory
      * @param \Closure|null $after
      * @return \Illuminate\Http\Response
      */
-    public function paginator(Paginator $paginator, $transformer, $parameters = [], Closure $after = null)
+    public function paginator(Paginator $paginator, $transformer = null, $parameters = [], Closure $after = null)
     {
         return $this->factory->paginator($paginator, $transformer, $parameters, $after);
     }
