@@ -3,8 +3,7 @@
   "type": "tastyigniter-extension",
   "keywords": ["tastyigniter", "rest", "api"],
   "require": {
-    "dingo/api": "^3.0",
+    "dingo/api": "~3.0",
     "laravel/sanctum": "~2.2"
-  },
-  "minimum-stability": "dev"
+  }
 }
