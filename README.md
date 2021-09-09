@@ -107,7 +107,7 @@ Tokens should be passed in the `Authorization` header with every request to a re
 
 ### API Reference
 
-- [Categories](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/customers.md)
+- [Categories](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/categories.md)
   `categories` - List, create, retrieve, update and delete categories
 - [Coupons](https://github.com/tastyigniter/ti-ext-coupons/blob/master/docs/coupons.md)
   `coupons` - List, create, retrieve, update and delete coupons
