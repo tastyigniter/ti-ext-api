@@ -17,7 +17,8 @@ Required**. The customer's last name (between 2 and 48 characters in length)    
 | `full_name`           | `string`  | A concatenation of first_name and last_name       |
 | `email`           | `string`  | **Required**. The customer's email address       |
 | `telephone`           | `string`  | The customer's telephone number         |
-| `date_added`           | `datetime`  | The date and time the customer was added to your site       |
+| `created_at`           | `timestamp`  | The date and time the customer was added to your site       |
+| `updated_at`           | `timestamp`  | The date and time the customer was updated       |
 | `newsletter`           | `boolean`  | Whether the customer opts into newsletter marketing         |
 | `customer_group_id`           | `integer`  | The group the customer belongs to, if any.         |
 | `status`           | `boolean`  | Has the value `true` if the customer is enabled or the value `false` if the customer is disabled.         |
@@ -36,7 +37,8 @@ Required**. The customer's last name (between 2 and 48 characters in length)    
   "telephone": "1234512345",
   "newsletter": false,
   "customer_group_id": 1,
-  "date_added": "2020-05-20 08:34:37",
+  "created_at": "2020-05-20 08:34:37",
+  "updated_at": "2020-05-20 08:34:37",
   "status": true,
   "full_name": "Joe Bloggs",
   "addresses": [
@@ -109,7 +111,8 @@ Status: 200 OK
         "telephone": "1234512345",
         "newsletter": false,
         "customer_group_id": 1,
-        "date_added": "2020-05-20 08:34:37",
+        "created_at": "2020-05-20 08:34:37",
+        "updated_at": "2020-05-20 08:34:37",
         "status": true,
         "full_name": "Joe Bloggs",
         "addresses": [
@@ -146,7 +149,8 @@ Status: 200 OK
         "telephone": "01234012345",
         "newsletter": true,
         "customer_group_id": 1,
-        "date_added": "2020-05-21 09:12:17",
+        "created_at": "2020-05-21 09:12:17",
+        "updated_at": "2020-05-21 09:12:17",
         "status": false,
         "full_name": "Sherlock Holmes",
         "addresses": [],
@@ -250,7 +254,8 @@ Status: 201 Created
         "telephone": "1234512345",
         "newsletter": false,
         "customer_group_id": 1,
-        "date_added": "2020-05-20 08:34:37",
+        "created_at": "2020-05-20 08:34:37",
+        "updated_at": "2020-05-20 08:34:37",
         "status": true,
         "full_name": "Joe Bloggs",
         "addresses": [
@@ -306,7 +311,8 @@ Status: 200 OK
         "telephone": "1234512345",
         "newsletter": false,
         "customer_group_id": 1,
-        "date_added": "2020-05-20 08:34:37",
+        "created_at": "2020-05-20 08:34:37",
+        "updated_at": "2020-05-20 08:34:37",
         "status": true,
         "full_name": "Joe Bloggs",
         "addresses": [
@@ -389,7 +395,8 @@ Status: 200 OK
         "telephone": "1234512345",
         "newsletter": false,
         "customer_group_id": 1,
-        "date_added": "2020-05-20 08:34:37",
+        "created_at": "2020-05-20 08:34:37",
+        "updated_at": "2020-05-20 08:34:37",
         "status": true,
         "full_name": "Joe Bloggs",
         "addresses": [

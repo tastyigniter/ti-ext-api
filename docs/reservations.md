@@ -28,8 +28,8 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
 | `hash`           | `string`  | The reservation's unique hash.         |
 | `ip_address`           | `string`  | The IP address used when the reservation was created.         |
 | `user_agent`           | `string`  | The HTTP User-Agent of the browser user when the reservation was created.         |
-| `date_added`           | `dateTime`  | The datetime for when the reservation was created.         |
-| `date_modified`           | `dateTime`  | The datetime for when the reservation was last modified.         |
+| `created_at`           | `dateTime`  | The datetime for when the reservation was created.         |
+| `updated_at`           | `dateTime`  | The datetime for when the reservation was last modified.         |
 
 #### Reservation object example
 
@@ -56,8 +56,8 @@ This endpoint allows you to `list`, `create`, `retrieve`, `update` and `delete` 
   "hash": "fcf74e695a35c0db456d76b2f5180e95",
   "ip_address": "192.168.10.1",
   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-  "date_added": "2020-06-03",
-  "date_modified": "2020-06-03"
+  "created_at": "2020-06-03",
+  "updated_at": "2020-06-03"
 }
 ```
 
@@ -116,8 +116,8 @@ Status: 200 OK
         "hash": "fcf74e695a35c0db456d76b2f5180e95",
         "ip_address": "192.168.10.1",
         "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-        "date_added": "2020-06-03",
-        "date_modified": "2020-06-03",
+        "created_at": "2020-06-03",
+        "updated_at": "2020-06-03",
         "order_totals": [...],
         "customer": [...],
 		"location": [...],
@@ -247,8 +247,8 @@ Status: 201 Created
       "hash": "fcf74e695a35c0db456d76b2f5180e95",
       "ip_address": "192.168.10.1",
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-      "date_added": "2020-06-03",
-      "date_modified": "2020-06-03"
+      "created_at": "2020-06-03",
+      "updated_at": "2020-06-03"
     }
   ]
 }
@@ -303,8 +303,8 @@ Status: 200 OK
         "hash": "fcf74e695a35c0db456d76b2f5180e95",
         "ip_address": "192.168.10.1",
         "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-        "date_added": "2020-06-03",
-        "date_modified": "2020-06-03",
+        "created_at": "2020-06-03",
+        "updated_at": "2020-06-03",
         "order_totals": [...],
         "customer": [...],
 		"location": [...],
@@ -410,8 +410,8 @@ Status: 200 OK
         "hash": "fcf74e695a35c0db456d76b2f5180e95",
         "ip_address": "192.168.10.1",
         "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-        "date_added": "2020-06-03",
-        "date_modified": "2020-06-03"
+        "created_at": "2020-06-03",
+        "updated_at": "2020-06-03"
       }
     }
   ]
