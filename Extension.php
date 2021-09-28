@@ -123,9 +123,9 @@ class Extension extends BaseExtension
                     'destroy:admin',
                 ],
             ],
-            'options' => [
-                'controller' => \Igniter\Api\ApiResources\Options::class,
-                'name' => 'Options',
+            'menu_options' => [
+                'controller' => \Igniter\Api\ApiResources\MenuOptions::class,
+                'name' => 'MenuOptions',
                 'description' => 'An API resource for Menu options',
                 'actions' => [
                     'index:admin', 'show:admin',

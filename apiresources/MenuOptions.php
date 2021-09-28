@@ -7,7 +7,7 @@ use Igniter\Api\Classes\ApiController;
 /**
  * Options API Controller
  */
-class Options extends ApiController
+class MenuOptions extends ApiController
 {
     public $implement = ['Igniter.Api.Actions.RestController'];
 
@@ -21,11 +21,11 @@ class Options extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\OptionRequest::class,
+        'request' => Requests\MenuOptionRequest::class,
         'repository' => Repositories\MenuOptionRepository::class,
-        'transformer' => Transformers\OptionTransformer::class,
+        'transformer' => Transformers\MenuOptionTransformer::class,
     ];
 
-    protected $requiredAbilities = ['options:*'];
+    protected $requiredAbilities = ['menuoptions:*'];
 
 }

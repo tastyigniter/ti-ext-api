@@ -2,26 +2,35 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Admin\Models\Menu_item_options_model;
+use Admin\Models\Menu_options_model;
 use League\Fractal\TransformerAbstract;
 
 class MenuOptionTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
-        'menu_option_values',
+    protected $defaultIncludes = [
+        'option_values',
     ];
 
-    public function transform(Menu_item_options_model $menuItemOption)
+    public function transform(Menu_options_model $menuOption)
     {
-        return $menuItemOption->toArray();
+        return $menuOption->toArray();
     }
 
-    public function includeMenuOptionValues(Menu_item_options_model $menuItemOption)
+    public function includeOptionValues(Menu_options_model $menuOption)
     {
+        //When Post/Patch and inside body comes with an json array option_values the deserialized object is a collection of array
+        if (is_array($menuOption->option_values)){
+            return $this->collection(
+                $menuOption->option_values,
+                new OptionValueArrayTransformer,
+                'option_values'
+            );
+        }
+
         return $this->collection(
-            $menuItemOption->menu_option_values,
-            new MenuOptionValueTransformer,
-            'menu_option_values'
+            $menuOption->option_values,
+            new OptionValueTransformer,
+            'option_values'
         );
     }
 }

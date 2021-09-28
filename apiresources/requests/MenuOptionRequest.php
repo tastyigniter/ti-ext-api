@@ -5,7 +5,7 @@ namespace Igniter\Api\ApiResources\Requests;
 use Illuminate\Support\Facades\Request;
 use System\Classes\FormRequest;
 
-class OptionRequest extends FormRequest
+class MenuOptionRequest extends FormRequest
 {
     public function rules()
     {

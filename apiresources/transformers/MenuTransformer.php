@@ -41,7 +41,7 @@ class MenuTransformer extends TransformerAbstract
     {
         return $this->collection(
             $menuItem->menu_options,
-            new MenuOptionTransformer,
+            new MenuItemOptionTransformer,
             'menu_options'
         );
     }
