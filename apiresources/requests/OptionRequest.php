@@ -24,4 +24,5 @@ class OptionRequest extends FormRequest
         ];
         return $namedRules;
     }
+    
 }

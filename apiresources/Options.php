@@ -28,5 +28,4 @@ class Options extends ApiController
 
     protected $requiredAbilities = ['options:*'];
 
-    
 }
