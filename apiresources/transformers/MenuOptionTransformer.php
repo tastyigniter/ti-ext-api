@@ -13,7 +13,9 @@ class MenuOptionTransformer extends TransformerAbstract
 
     public function transform(Menu_options_model $menuOption)
     {
-        return $menuOption->toArray();
+        return array_merge($menuOption->toArray(), [
+            'id' => $menuOption->option_id,
+        ]);
     }
 
     public function includeOptionValues(Menu_options_model $menuOption)
