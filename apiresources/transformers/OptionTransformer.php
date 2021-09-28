@@ -8,8 +8,8 @@ use League\Fractal\TransformerAbstract;
 
 class OptionTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
-        'option_values',
+    protected $defaultIncludes = [
+        'option_values'
     ];
 
     public function transform(Menu_options_model $menuItemOption)
