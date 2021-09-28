@@ -26,6 +26,6 @@ class MenuOptions extends ApiController
         'transformer' => Transformers\MenuOptionTransformer::class,
     ];
 
-    protected $requiredAbilities = ['menuoptions:*'];
+    protected $requiredAbilities = ['menu_options:*'];
 
 }
