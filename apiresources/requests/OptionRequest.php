@@ -13,6 +13,7 @@ class OptionRequest extends FormRequest
         $namedRules = [
             ['option_name', 'lang:admin::lang.menu_options.label_option_name', 'required|min:2|max:32'],
             ['display_type', 'lang:admin::lang.menu_options.label_display_type', 'required|alpha'],
+            ['priority', 'lang:admin::lang.menu_options.label_priority', 'integer'],
             ['locations.*', 'lang:admin::lang.label_location', 'integer'],
             ['option_values.*.option_value_id', 'lang:admin::lang.label_option_value_id', 'integer'],
             ['option_values.*.option_id', 'lang:admin::lang.label_option_id', 'integer'],
