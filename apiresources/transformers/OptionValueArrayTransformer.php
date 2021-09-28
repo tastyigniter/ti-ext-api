@@ -9,7 +9,7 @@ class OptionValueArrayTransformer extends TransformerAbstract
     public function transform(array $menuItemOptionValue)
     {
         $menuItemOptionValue['currrency'] = app('currency')->getDefault()->currency_code;
-        
+
         return $menuItemOptionValue;
     }
 }

@@ -22,7 +22,7 @@ class OptionRequest extends FormRequest
             ['option_values.*.priority', 'lang:admin::lang.menu_options.label_option_price', 'integer'],
             ['option_values.*.allergens.*', 'lang:admin::lang.menus.label_allergens', 'integer'],
         ];
+
         return $namedRules;
     }
-    
 }
