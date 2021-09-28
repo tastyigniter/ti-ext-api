@@ -22,14 +22,14 @@ class MenuOptionTransformer extends TransformerAbstract
         if (is_array($menuOption->option_values)){
             return $this->collection(
                 $menuOption->option_values,
-                new OptionValueArrayTransformer,
+                new MenuOptionValueArrayTransformer,
                 'option_values'
             );
         }
 
         return $this->collection(
             $menuOption->option_values,
-            new OptionValueTransformer,
+            new MenuOptionValueTransformer,
             'option_values'
         );
     }
