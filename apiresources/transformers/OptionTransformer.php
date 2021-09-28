@@ -19,6 +19,15 @@ class OptionTransformer extends TransformerAbstract
 
     public function includeOptionValues(Menu_options_model $menuItemOption)
     {
+        //When Post/Patch and inside body comes with an json array option_values the deserialized object is a collection of array
+        if (is_array($menuItemOption->option_values)){
+            return $this->collection(
+                $menuItemOption->option_values,
+                new OptionValueArrayTransformer,
+                'option_values'
+            );
+        }
+
         return $this->collection(
             $menuItemOption->option_values,
             new OptionValueTransformer,
