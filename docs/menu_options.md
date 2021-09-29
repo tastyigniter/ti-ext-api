@@ -14,7 +14,7 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `display_type`             | `enum`    | **Required**. available options (`checkbox`, `radio`, `select`, `quantity`)    |
 | `priority`                 | `integer` | The option's position in the storefront                                        |
 | `update_related_menu_item` | `boolean` | Update option values of associated menu items                                  |
-| `option_values`            | `array`   | The option's option_value's if any (see [OptionValues](optionvalues.md))       |
+| `option_values`            | `array`   | The option's option_value's if any (see [OptionValues](menu_option_values.md))       |
 
 
 #### Option object example
