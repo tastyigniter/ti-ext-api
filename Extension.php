@@ -133,6 +133,16 @@ class Extension extends BaseExtension
                     'destroy:admin',
                 ],
             ],
+            'menu_item_options' => [
+                'controller' => \Igniter\Api\ApiResources\MenuItemOptions::class,
+                'name' => 'MenuItemOptions',
+                'description' => 'An API resource for Menu item options',
+                'actions' => [
+                    'index:admin', 'show:admin',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
+            ],
             'orders' => [
                 'controller' => \Igniter\Api\ApiResources\Orders::class,
                 'name' => 'Orders',
