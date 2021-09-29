@@ -39,7 +39,7 @@ Required abilities: `options:write`
   
 Relations and ID's are automaticaly set.
 
-** option_value items are not appended. the state in the json array will be the state on the website. previose option_value(s) will be deleted. to add a option to an existing one `option_value_id` && `option_id` are mandatory. 
+** option_value items are not appended. the state in the json array will be the state on the website. previous option_value(s) will be deleted. to add a option to an existing one `option_value_id` && `option_id` are mandatory. 
 
 #### Payload example
 
