@@ -31,10 +31,10 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 Retrieves a list of options.
 
-Required abilities: `options:read`
+Required abilities: `menuoptions:read`
 
 ```
-GET /api/options
+GET /api/menu_options
 ```
 
 #### Parameters
@@ -54,7 +54,7 @@ Status: 200 OK
 {
   "data": [
     {
-      "type": "options",
+      "type": "menuoptions",
       "id": "1",
       "attributes": {
         "option_name": "Toppings",
@@ -116,10 +116,10 @@ Status: 200 OK
 
 Creates a new option.
 
-Required abilities: `options:write`
+Required abilities: `menuoptions:write`
 
 ```
-POST /api/options
+POST /api/menu_options
 ```
 
 #### Parameters
@@ -153,7 +153,7 @@ Status: 201 Created
 ```json
 {
     "data": {
-        "type": "options",
+        "type": "menuoptions",
         "id": "9",
         "attributes": {
             "option_name": "Toppings",
@@ -195,10 +195,10 @@ Status: 201 Created
 
 Retrieves a option.
 
-Required abilities: `options:read`
+Required abilities: `menuoptions:read`
 
 ```
-GET /api/options/:option_id
+GET /api/menu_options/:option_id
 ```
 
 #### Response
@@ -210,7 +210,7 @@ Status: 200 OK
 ```json
 {
     "data": {
-        "type": "options",
+        "type": "menuoptions",
         "id": "9",
         "attributes": {
             "option_name": "Toppings",
@@ -238,10 +238,10 @@ Status: 200 OK
 
 Updates a option.
 
-Required abilities: `options:write`
+Required abilities: `menuoptions:write`
 
 ```
-PATCH /api/options/:option_id
+PATCH /api/menu_options/:option_id
 ```
 
 #### Parameters
@@ -273,7 +273,7 @@ Status: 200 OK
 ```json
 {
     "data": {
-        "type": "options",
+        "type": "menuoptions",
         "id": "8",
         "attributes": {
             "option_name": "Chin-Chin",
@@ -314,10 +314,10 @@ Status: 200 OK
 
 Permanently deletes a option. It cannot be undone.
 
-Required abilities: `options:write`
+Required abilities: `menuoptions:write`
 
 ```
-DELETE /api/options/:option_id
+DELETE /api/menu_options/:option_id
 ```
 
 #### Parameters
