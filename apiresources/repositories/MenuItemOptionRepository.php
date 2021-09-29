@@ -30,9 +30,9 @@ class MenuItemOptionRepository extends AbstractRepository
         if (!$model) return $model;
 
         $this->fireSystemEvent('api.repository.beforeUpdate', [$model, $attributes]);
-        
+
         $this->fill($model, $attributes);
-        
+
         $updated = $model->save();
 
         $this->fireSystemEvent('api.repository.afterUpdate', [$model, $updated]);
@@ -40,7 +40,7 @@ class MenuItemOptionRepository extends AbstractRepository
         return $model;
     }
 
-    private function fill($model, $attributes){
+    private function fill($model, $attributes) {
         $model->fill($attributes);
         if (isset($attributes['menu_option_values']))
             $model->menu_option_values = $attributes['menu_option_values'];
