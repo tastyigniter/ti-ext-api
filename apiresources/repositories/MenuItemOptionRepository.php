@@ -9,5 +9,5 @@ class MenuItemOptionRepository extends AbstractRepository
 {
     protected $modelClass = Menu_item_options_model::class;
 
-    protected $fillable = ["menu_option_values"];
+    protected $fillable = ['menu_option_values'];
 }
