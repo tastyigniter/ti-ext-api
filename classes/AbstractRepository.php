@@ -166,10 +166,10 @@ class AbstractRepository
     {
         $modelClass::extend(function (Model $model) {
             if ($fillable = $this->getFillable())
-                $model->fillable($fillable);
+                $model->mergeFillable($fillable);
 
             if ($guarded = $this->getGuarded())
-                $model->guard($guarded);
+                $model->mergeGuarded($guarded);
 
             if ($hidden = $this->getHidden())
                 $model->setHidden($hidden);
