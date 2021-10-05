@@ -12,6 +12,7 @@ class MenuItemOptionRepository extends AbstractRepository
     public function create($model, array $attributes)
     {
         $this->fill($model, $attributes);
+        
         return $this->create($model, $attributes);
     }
 
