@@ -11,21 +11,13 @@ class MenuItemOptionRepository extends AbstractRepository
 
     public function create($model, array $attributes)
     {
-        $this->fireSystemEvent('api.repository.beforeCreate', [$model, $attributes]);
-
         $this->fill($model, $attributes);
-
-        $created = $model->save();
-
-        $this->fireSystemEvent('api.repository.afterCreate', [$model, $created]);
-
-        return $model;
+        return $this->create($model, $attributes);
     }
 
     public function update($id, array $attributes = [])
     {
-        $model = is_numeric($id)
-            ? $this->find($id) : $id;
+        $model = is_numeric($id) ? $this->find($id) : $id;
 
         if (!$model) return $model;
 
