@@ -67,12 +67,12 @@ class ApiController extends BaseController
     {
         $abilities = $this->getAbilities();
 
-        if ($abilities AND !$this->tokenCan($abilities))
+        if ($abilities && !$this->tokenCan($abilities))
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
     }
 
     protected function isResponsable($response)
     {
-        return $response instanceof Response OR $response instanceof Responsable;
+        return $response instanceof Response || $response instanceof Responsable;
     }
 }

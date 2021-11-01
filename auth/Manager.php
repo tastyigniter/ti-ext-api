@@ -29,7 +29,7 @@ class Manager
 
     public function authenticate($token)
     {
-        if ($user = app('auth')->user() AND $this->supportsTokens($user)) {
+        if ($user = app('auth')->user() && $this->supportsTokens($user)) {
             $this->setToken($token = (new TransientToken));
 
             return $token;
@@ -40,7 +40,7 @@ class Manager
                 return null;
 
             $expiration = config('sanctum.expiration');
-            if ($expiration AND $token->created_at->lte(now()->subMinutes($expiration)))
+            if ($expiration && $token->created_at->lte(now()->subMinutes($expiration)))
                 return null;
 
             $user = $token->tokenable;
@@ -85,10 +85,10 @@ class Manager
             if ($group == 'guest')
                 return FALSE;
 
-            if ($group == 'admin' AND !$token->isForAdmin())
+            if ($group == 'admin' && !$token->isForAdmin())
                 return FALSE;
 
-            if ($group == 'customer' AND $token->isForAdmin())
+            if ($group == 'customer' && $token->isForAdmin())
                 return FALSE;
         }
         else {
@@ -149,6 +149,6 @@ class Manager
         if (in_array(HasApiTokens::class, class_uses_recursive(get_class($tokenable))))
             return TRUE;
 
-        return $tokenable instanceof \Igniter\Flame\Auth\Models\User AND $tokenable->hasRelation('tokens');
+        return $tokenable instanceof \Igniter\Flame\Auth\Models\User && $tokenable->hasRelation('tokens');
     }
 }

@@ -45,7 +45,7 @@ class Tokens extends \Admin\Classes\AdminController
             'abilities.*' => 'regex:/^[a-zA-Z-_\*]+$/',
         ]);
 
-        $forAdmin = $request->has('username') AND !$request->has('email');
+        $forAdmin = $request->has('username') && !$request->has('email');
         $loginFieldName = $forAdmin ? 'username' : 'email';
 
         $credentials = [
@@ -56,7 +56,7 @@ class Tokens extends \Admin\Classes\AdminController
         $auth = app($forAdmin ? 'admin.auth' : 'auth');
         $user = $auth->getByCredentials($credentials);
 
-        if (!$user OR !$auth->validateCredentials($user, $credentials))
+        if (!$user || !$auth->validateCredentials($user, $credentials))
             throw ValidationException::withMessages([
                 $loginFieldName => ['The provided credentials are incorrect.'],
             ]);
