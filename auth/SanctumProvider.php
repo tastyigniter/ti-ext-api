@@ -26,7 +26,7 @@ class SanctumProvider implements Provider
         if ($allowedGroup === 'all')
             return $accessToken;
 
-        if ($allowedGroup !== 'guest' AND !$accessToken)
+        if ($allowedGroup !== 'guest' && !$accessToken)
             throw new UnauthorizedHttpException('Bearer', lang('igniter.api::default.alert_auth_failed'));
 
         if (!$this->authManager->checkGroup($allowedGroup, $accessToken))
