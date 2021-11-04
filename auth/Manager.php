@@ -29,7 +29,7 @@ class Manager
 
     public function authenticate($token)
     {
-        if ($user = app('auth')->user() && $this->supportsTokens($user)) {
+        if (($user = app('auth')->user()) && $this->supportsTokens($user)) {
             $this->setToken($token = (new TransientToken));
 
             return $token;
