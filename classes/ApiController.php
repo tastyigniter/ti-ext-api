@@ -40,7 +40,7 @@ class ApiController extends BaseController
             $this->authorizeToken();
 
         // Execute the action
-        $response = call_user_func_array([$this, $action], $parameters);
+        $response = call_user_func_array([$this, $action], array_values($parameters));
 
         return $this->isResponsable($response)
             ? $response : $this->response()->array($response);
