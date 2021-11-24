@@ -11,6 +11,7 @@ class MenuTransformer extends TransformerAbstract
         'media',
         'categories',
         'menu_options',
+        'mealtimes'
     ];
 
     public function transform(Menus_model $menuItem)
@@ -43,6 +44,15 @@ class MenuTransformer extends TransformerAbstract
             $menuItem->menu_options,
             new MenuItemOptionTransformer,
             'menu_options'
+        );
+    }
+
+    public function includeMealtimes(Menus_model $menuItem)
+    {
+        return $this->collection(
+            $menuItem->mealtimes,
+            new MealtimeTransformer,
+            'mealtimes'
         );
     }
 }
