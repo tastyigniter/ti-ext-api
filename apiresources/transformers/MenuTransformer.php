@@ -11,7 +11,7 @@ class MenuTransformer extends TransformerAbstract
         'media',
         'categories',
         'menu_options',
-        'mealtimes'
+        'mealtimes',
     ];
 
     public function transform(Menus_model $menuItem)
