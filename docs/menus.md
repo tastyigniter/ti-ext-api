@@ -23,6 +23,7 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
+| `mealtimes`           | `array`  | The menu's mealtimes, if any        |
 
 #### Menu object example
 
@@ -108,7 +109,7 @@ GET /api/menus
 | `location`           | `integer`  | The id of the location you wan to return menu items for         |
 | `category`           | `integer`  | The id of the category you wan to return menu items for         |
 | `search`           | `string`  | The phrase to search for in the menu item name and decsription       |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `mealtimes`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
 #### Response
 
@@ -229,6 +230,7 @@ POST /api/menus
 | `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
+| `mealtimes`           | `array`  | The mealtime's options, if any        |
 
 #### Payload example
 
@@ -284,7 +286,7 @@ GET /api/menus/:menu_id
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `mealtimes`, `categories`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
 #### Response
 
@@ -360,6 +362,7 @@ PATCH /api/menus/:menu_id
 | `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
+| `mealtimes`           | `array`  | The mealtime's options, if any        |
 
 #### Payload example
 
