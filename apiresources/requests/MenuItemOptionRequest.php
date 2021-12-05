@@ -4,6 +4,9 @@ namespace Igniter\Api\ApiResources\Requests;
 
 use System\Classes\FormRequest;
 
+/**
+ * @deprecated remove before v4. Added for backward compatibility
+ */
 class MenuItemOptionRequest extends FormRequest
 {
     public function rules()

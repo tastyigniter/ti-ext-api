@@ -6,6 +6,8 @@ use Igniter\Api\Classes\ApiController;
 
 /**
  * Options API Controller
+ *
+ * @deprecated remove before v4. Added for backward compatibility
  */
 class MenuItemOptions extends ApiController
 {
