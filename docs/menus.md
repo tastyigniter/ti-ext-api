@@ -107,7 +107,7 @@ GET /api/menus
 | `pageLimit`           | `integer`  | The number of items per page.            |
 | `enabled`           | `boolean`  | If true only menu items that are enabled will be returned        |
 | `location`           | `integer`  | The id of the location you wan to return menu items for         |
-| `category`           | `integer`  | The id of the category you wan to return menu items for         |
+| `category`           | `string`  | The slug of the category you wan to return menu items for         |
 | `search`           | `string`  | The phrase to search for in the menu item name and decsription       |
 | `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `mealtimes`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
