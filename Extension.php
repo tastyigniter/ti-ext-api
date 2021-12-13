@@ -177,7 +177,7 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Tables::class,
                 'name' => 'Tables',
                 'description' => 'An API resource for tables',
-                'authorization' => [
+                'actions' => [
                     'index:admin', 'show:admin',
                     'store:admin', 'update:admin',
                     'destroy:admin',
