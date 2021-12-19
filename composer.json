@@ -1,9 +1,36 @@
 {
-  "name": "igniter/api",
+  "name": "tastyigniter/ti-ext-api",
   "type": "tastyigniter-extension",
-  "keywords": ["tastyigniter", "rest", "api"],
+  "description": "Manages and generates RESTful APIs using available models in your TastyIgniter app.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "SamPoyigi",
+      "email": "sam@sampoyigi.com"
+    }
+  ],
+  "keywords": [
+    "tastyigniter",
+    "rest",
+    "api"
+  ],
   "require": {
     "dingo/api": "~3.0",
     "laravel/sanctum": "~2.2"
+  },
+  "extra": {
+    "tastyigniter-extension": {
+      "code": "igniter.api",
+      "name": "APIs",
+      "icon": {
+        "class": "fa fa-cloud",
+        "color": "#fff",
+        "backgroundColor": "#02586F"
+      },
+      "homepage": "https://tastyigniter.com/marketplace/item/igniter-api",
+      "require": {
+        "igniter.local": "*"
+      }
+    }
   }
 }
