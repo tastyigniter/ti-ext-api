@@ -29,7 +29,7 @@ class Manager
 
     public function authenticate($token)
     {
-        if (($user = app('auth')->user()) && $this->supportsTokens($user)) {
+        if (($user = app('auth')->user()) && $user->is_activated && $this->supportsTokens($user)) {
             $this->setToken($token = (new TransientToken));
 
             return $token;
@@ -46,6 +46,9 @@ class Manager
             $user = $token->tokenable;
 
             if (!$this->supportsTokens($user))
+                return null;
+
+            if (!$user->is_activated)
                 return null;
 
             $this->setToken(
