@@ -105,7 +105,7 @@ GET /api/menus
 | -------------------- | --------- | ------------------------------------------------------------ |
 | `page`           | `integer`  | The page number.         |
 | `pageLimit`           | `integer`  | The number of items per page.            |
-| `enabled`           | `boolean`  | If true only menu items that are enabled will be returned        |
+| `enabled`           | `integer`  | If 1 (default) only menu items that are enabled will be returned. If 0 all items will be returned.     |
 | `location`           | `integer`  | The id of the location you wan to return menu items for         |
 | `category`           | `string`  | The slug of the category you wan to return menu items for         |
 | `search`           | `string`  | The phrase to search for in the menu item name and decsription       |
