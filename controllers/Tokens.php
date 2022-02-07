@@ -61,6 +61,11 @@ class Tokens extends \Admin\Classes\AdminController
                 $loginFieldName => ['The provided credentials are incorrect.'],
             ]);
 
+        if (!$user->is_activated)
+            throw ValidationException::withMessages([
+                $loginFieldName => ['Inactive user account'],
+            ]);
+
         $token = Token::createToken($user, $request->device_name, $request->abilities ?? ['*']);
 
         return response()->json([
