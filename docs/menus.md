@@ -13,11 +13,7 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `menu_name`           | `string`  | **Required**. The menu's name (between 2 and 255 characters in length)       |
 | `menu_description`     | `text`  | A short description of the menu (between 2 and 1028 characters in length)      |
 | `menu_price`           | `float`  | **Required**. The menu's price       |
-| `menu_photo`           | `string`  | An image of the menu (if available)        |
-| `stock_qty`           | `integer`  | The menu's remaining stock quantity       |
 | `minimum_qty`           | `integer`  | The minimum quantity required to order.          |
-| `subtract_stock`           | `boolean`  | Has the value `true` if the menu stock quantity should be subtracted when ordered or the value `false` if the menu stock quantity should not be subtracted.         |
-| `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's ordering priority.        |
 | `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
@@ -30,30 +26,28 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 ```json
 {
-  "menu_id": 1,
-  "menu_name": "Puff-Puff",
-  "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-  "menu_price": "4.99"
-  "currency": "GBP",
-  "menu_photo": null,
-  "stock_qty": 0,
-  "minimum_qty": 3,
-  "subtract_stock": false,
-  "mealtime_id": null,
-  "menu_status": true,
+    "menu_id": 1,
+    "menu_name": "Puff-Puff",
+    "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+    "menu_price": "4.99"
+    "currency": "GBP",
+    "minimum_qty": 3,
+    "menu_status": true,
     "menu_priority": 0,
     "order_restriction": null,
     "categories": [],
-  "menu_options": [
-    {
-      "menu_option_id": 1,
-      "option_id": 4,
-      "menu_id": 1,
-      "required": false,
-      "priority": 0,
-      "min_selected": 0,
-      "max_selected": 0,
-      "option_name": "Drinks",
+    "stocks": [],
+    "mealtimes": [],
+    "menu_options": [
+        {
+            "menu_option_id": 1,
+            "option_id": 4,
+            "menu_id": 1,
+            "required": false,
+            "priority": 0,
+            "min_selected": 0,
+            "max_selected": 0,
+            "option_name": "Drinks",
       "display_type": "checkbox",
       "option": {
         "option_id": 4,
@@ -110,7 +104,7 @@ GET /api/menus
 | `location`           | `integer`  | The id of the location you wan to return menu items for         |
 | `category`           | `string`  | The slug of the category you wan to return menu items for         |
 | `search`           | `string`  | The phrase to search for in the menu item name and decsription       |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `mealtimes`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `mealtimes`, `stocks`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
 #### Response
 
@@ -127,14 +121,10 @@ Status: 200 OK
       "attributes": {
         "menu_name": "Puff-Puff",
         "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": "4.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 0,
-        "minimum_qty": 3,
-        "subtract_stock": false,
-        "mealtime_id": null,
-        "menu_status": true,
+          "menu_price": "4.99"
+          "currency": "GBP",
+          "minimum_qty": 3,
+          "menu_status": true,
           "menu_priority": 0,
           "order_restriction": null,
           "media": [
@@ -228,12 +218,12 @@ Status: 200 OK
           }
       }
   ],
-  "included": [
-    ...
-  ],
-  "meta": {
-    "pagination": {
-      "total": 2,
+    "included": [
+        ...
+    ],
+    "meta": {
+        "pagination": {
+            "total": 2,
       "count": 2,
       "per_page": 20,
       "current_page": 1,
@@ -265,11 +255,7 @@ POST /api/menus
 | `menu_name`           | `string`  | **Required**. The menu's name (between 2 and 255 characters in length)       |
 | `menu_description`     | `text`  | A short description of the menu (between 2 and 1028 characters in length)      |
 | `menu_price`           | `float`  | **Required**. The menu's price       |
-| `menu_photo`           | `string`  | An image of the menu (if available)        |
-| `stock_qty`           | `integer`  | The menu's remaining stock quantity       |
 | `minimum_qty`           | `integer`  | The minimum quantity required to order.          |
-| `subtract_stock`           | `boolean`  | Has the value `true` if the menu stock quantity should be subtracted when ordered or the value `false` if the menu stock quantity should not be subtracted.         |
-| `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's ordering priority.        |
 | `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
@@ -297,25 +283,21 @@ Status: 201 Created
 ```json
 {
   "data": [
-    {
-      "type": "menus",
-      "id": "1",
-      "attributes": {
-        "menu_name": "Puff-Puff",
-        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": "4.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 0,
-        "minimum_qty": 3,
-        "subtract_stock": false,
-        "mealtime_id": null,
-        "menu_status": true,
-          "menu_priority": 0,
-          "order_restriction": null
+      {
+          "type": "menus",
+          "id": "1",
+          "attributes": {
+              "menu_name": "Puff-Puff",
+              "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+              "menu_price": "4.99"
+              "currency": "GBP",
+              "minimum_qty": 3,
+              "menu_status": true,
+              "menu_priority": 0,
+              "order_restriction": null
+          }
+      ]
       }
-  ]
-}
 ```
 
 ### Retrieve a menu
@@ -332,7 +314,7 @@ GET /api/menus/:menu_id
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `mealtimes`, `categories`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `mealtimes`, `categories`, `menu_options`, `stocks`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
 #### Response
 
@@ -343,35 +325,41 @@ Status: 200 OK
 ```json
 {
   "data": [
-    {
-      "type": "menus",
-      "id": "1",
-      "attributes": {
-        "menu_name": "Puff-Puff",
-        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": "4.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 0,
-        "minimum_qty": 3,
-        "subtract_stock": false,
-        "mealtime_id": null,
-        "menu_status": true,
-          "menu_priority": 0,
-          "order_restriction": null,
-          "media": [
-              ...
-          ],
-        "categories": [...],
-        "menu_options": [...],
-        "mealtimes": [...],
-        "stocks": [...]
-      },
-      "relationships": {
-        "categories": {
-          "data": [...]
-        },
-        "menu_options": {
+      {
+          "type": "menus",
+          "id": "1",
+          "attributes": {
+              "menu_name": "Puff-Puff",
+              "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+              "menu_price": "4.99"
+              "currency": "GBP",
+              "minimum_qty": 3,
+              "menu_status": true,
+              "menu_priority": 0,
+              "order_restriction": null,
+              "media": [
+                  ...
+              ],
+              "categories": [
+                  ...
+              ],
+              "menu_options": [
+                  ...
+              ],
+              "mealtimes": [
+                  ...
+              ],
+              "stocks": [
+                  ...
+              ]
+          },
+          "relationships": {
+              "categories": {
+                  "data": [
+                      ...
+                  ]
+              },
+              "menu_options": {
           "data": [...]
         },
         "mealtimes": {
@@ -406,11 +394,7 @@ PATCH /api/menus/:menu_id
 | `menu_name`           | `string`  | **Required**. The menu's name (between 2 and 255 characters in length)       |
 | `menu_description`     | `text`  | A short description of the menu (between 2 and 1028 characters in length)      |
 | `menu_price`           | `float`  | **Required**. The menu's price       |
-| `menu_photo`           | `string`  | An image of the menu (if available)        |
-| `stock_qty`           | `integer`  | The menu's remaining stock quantity       |
 | `minimum_qty`           | `integer`  | The minimum quantity required to order.          |
-| `subtract_stock`           | `boolean`  | Has the value `true` if the menu stock quantity should be subtracted when ordered or the value `false` if the menu stock quantity should not be subtracted.         |
-| `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's priority.        |
 | `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
@@ -437,25 +421,21 @@ Status: 200 OK
 ```json
 {
   "data": [
-    {
-      "type": "menus",
-      "id": "1",
-      "attributes": {
-        "menu_name": "Chin-Chin",
-        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": "4.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 0,
-        "minimum_qty": 3,
-        "subtract_stock": false,
-        "mealtime_id": null,
-        "menu_status": false,
-          "menu_priority": 0,
-          "order_restriction": null
+      {
+          "type": "menus",
+          "id": "1",
+          "attributes": {
+              "menu_name": "Chin-Chin",
+              "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+              "menu_price": "4.99"
+              "currency": "GBP",
+              "minimum_qty": 3,
+              "menu_status": false,
+              "menu_priority": 0,
+              "order_restriction": null
+          }
+      ]
       }
-  ]
-}
 ```
 
 ### Delete a menu

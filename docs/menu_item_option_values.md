@@ -12,8 +12,6 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `menu_option_id`           | `integer` | The Menu Item Option ID |
 | `option_value_id`          | `integer` | The option_value primary ID |
 | `new_price`                | `float`   | The price that differce from the original option_value price |
-| `quantity`                 | `string`  | The option_value's name (between 2 and 255 characters in length) |
-| `subtract_stock`           | `boolean` | The price of the option_value default 0 |
 | `priority`                 | `integer` | The currency off the price as code **SET Automaticaly** |
 | `is_default`               | `boolean` | The default selected Option |
 | `stocks`                  | `array`  | The stocks, if any        |
@@ -26,8 +24,6 @@ The endpoint responses are formatted according to the [JSON:API specification](h
     "menu_option_id": 13,
     "option_value_id": 5,
     "new_price": 1.5,
-    "quantity": 0,
-    "subtract_stock": 0,
     "priority": 1,
     "is_default": true,
     "stocks": []
