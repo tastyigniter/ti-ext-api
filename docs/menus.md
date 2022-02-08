@@ -24,6 +24,7 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 | `mealtimes`           | `array`  | The menu's mealtimes, if any        |
+| `stocks`           | `array`  | The menu's stocks, if any        |
 
 #### Menu object example
 
@@ -139,49 +140,93 @@ Status: 200 OK
           "media": [
               ...
           ],
-        "categories": [...],
-        "menu_options": [...]
-      },
-      "relationships": {
-        "categories": {
-          "data": [...]
-        },
-        "menu_options": {
-          "data": [...]
-        }
-      }
-    },
-    {
-      "type": "menus",
-      "id": "2",
-      "attributes": {
-        "menu_name": "Doughnut",
-        "menu_description": "Deep fried from a flour dough with sweet fillings",
-        "menu_price": "0.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 1000,
-        "minimum_qty": 1,
-        "subtract_stock": true,
-        "mealtime_id": null,
-        "menu_status": true,
-          "menu_priority": 0,
-          "order_restriction": null,
-          "media": [
+          "categories": [
               ...
           ],
-        "categories": [...],
-        "menu_options": [...]
+          "menu_options": [
+              ...
+          ],
+          "mealtimes": [
+              ...
+          ],
+          "stocks": [
+              ...
+          ]
       },
-      "relationships": {
-        "categories": {
-          "data": [...]
-        },
-        "menu_options": {
-          "data": [...]
+        "relationships": {
+            "categories": {
+                "data": [
+                    ...
+                ]
+            },
+            "menu_options": {
+                "data": [
+                    ...
+                ]
+            },
+            "mealtimes": {
+                "data": [
+                    ...
+                ]
+            },
+            "stocks": {
+                "data": [
+                    ...
+                ]
+            }
         }
+    },
+      {
+          "type": "menus",
+          "id": "2",
+          "attributes": {
+              "menu_name": "Doughnut",
+              "menu_description": "Deep fried from a flour dough with sweet fillings",
+              "menu_price": "0.99"
+              "currency": "GBP",
+              "minimum_qty": 1,
+              "menu_status": true,
+              "menu_priority": 0,
+              "order_restriction": null,
+              "media": [
+                  ...
+              ],
+              "categories": [
+                  ...
+              ],
+              "menu_options": [
+                  ...
+              ],
+              "mealtimes": [
+                  ...
+              ],
+              "stocks": [
+                  ...
+              ]
+          },
+          "relationships": {
+              "categories": {
+                  "data": [
+                      ...
+                  ]
+              },
+              "menu_options": {
+                  "data": [
+                      ...
+                  ]
+              },
+              "mealtimes": {
+                  "data": [
+                      ...
+                  ]
+              },
+              "stocks": {
+                  "data": [
+                      ...
+                  ]
+              }
+          }
       }
-    }
   ],
   "included": [
     ...
@@ -231,6 +276,7 @@ POST /api/menus
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 | `mealtimes`           | `array`  | The mealtime's options, if any        |
+| `stocks`           | `array`  | The stock's options, if any        |
 
 #### Payload example
 
@@ -317,7 +363,9 @@ Status: 200 OK
               ...
           ],
         "categories": [...],
-        "menu_options": [...]
+        "menu_options": [...],
+        "mealtimes": [...],
+        "stocks": [...]
       },
       "relationships": {
         "categories": {
@@ -325,6 +373,12 @@ Status: 200 OK
         },
         "menu_options": {
           "data": [...]
+        },
+        "mealtimes": {
+        "data": [...]
+        },
+        "stocks": {
+        "data": [...]
         }
       }
     }
@@ -363,6 +417,7 @@ PATCH /api/menus/:menu_id
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
 | `mealtimes`           | `array`  | The mealtime's options, if any        |
+| `stocks`           | `array`  | The stock's options, if any        |
 
 #### Payload example
 

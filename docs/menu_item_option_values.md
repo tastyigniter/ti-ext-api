@@ -16,6 +16,8 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `subtract_stock`           | `boolean` | The price of the option_value default 0 |
 | `priority`                 | `integer` | The currency off the price as code **SET Automaticaly** |
 | `is_default`               | `boolean` | The default selected Option |
+| `stocks`                  | `array`  | The stocks, if any        |
+
 #### Option_value object example
 
 ```json
@@ -27,7 +29,8 @@ The endpoint responses are formatted according to the [JSON:API specification](h
     "quantity": 0,
     "subtract_stock": 0,
     "priority": 1,
-    "is_default": true
+    "is_default": true,
+    "stocks": []
 }
 ```
 

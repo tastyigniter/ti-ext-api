@@ -12,6 +12,7 @@ class MenuTransformer extends TransformerAbstract
         'categories',
         'menu_options',
         'mealtimes',
+        'stocks',
     ];
 
     public function transform(Menus_model $menuItem)
@@ -53,6 +54,15 @@ class MenuTransformer extends TransformerAbstract
             $menuItem->mealtimes,
             new MealtimeTransformer,
             'mealtimes'
+        );
+    }
+
+    public function includeStocks(Menus_model $menuItem)
+    {
+        return $this->collection(
+            $menuItem->stocks,
+            new StockTransformer,
+            'stocks'
         );
     }
 }
