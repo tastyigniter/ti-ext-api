@@ -187,7 +187,9 @@ class RestController extends ControllerAction
                         $request->setController($this->controller);
                 });
 
-                return app()->make($requestClass)->validated();
+                app()->make($requestClass);
+
+                return $requestData;
             }
 
             return $this->controller->restValidate($requestData);
