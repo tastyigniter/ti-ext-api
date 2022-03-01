@@ -2,12 +2,12 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Admin\Models\Staffs_model;
+use Admin\Models\Users_model;
 use League\Fractal\TransformerAbstract;
 
-class StaffTransformer extends TransformerAbstract
+class UserTransformer extends TransformerAbstract
 {
-    public function transform(Staffs_model $staff)
+    public function transform(Users_model $staff)
     {
         return $staff->toArray();
     }

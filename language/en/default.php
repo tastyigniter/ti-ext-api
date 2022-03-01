@@ -6,12 +6,12 @@ return [
 
     'text_tab_general' => 'General',
     'text_tokens_title' => 'Access Tokens',
-    'text_token_type_staff' => 'Staff',
+    'text_token_type_staff' => 'User',
     'text_token_type_customer' => 'Customer',
     'text_guest' => 'Guests',
-    'text_admin' => 'Staff',
+    'text_admin' => 'User',
     'text_customer' => 'Customers',
-    'text_admin_customer' => 'Staff or Customers',
+    'text_admin_customer' => 'User or Customers',
     'text_all' => 'All',
     'text_allow_only' => 'Allow Only',
 

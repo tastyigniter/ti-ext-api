@@ -71,7 +71,7 @@ class OrderTransformer extends TransformerAbstract
         if (!$order->assignee)
             return;
 
-        return $this->item($order->assignee, new StaffTransformer, 'staff');
+        return $this->item($order->assignee, new UserTransformer, 'staff');
     }
 
     public function includeAssigneeGroup(Orders_model $order)
@@ -79,6 +79,6 @@ class OrderTransformer extends TransformerAbstract
         if (!$order->assignee_group)
             return;
 
-        return $this->item($order->assignee_group, new StaffGroupTransformer, 'staff_group');
+        return $this->item($order->assignee_group, new UserGroupTransformer, 'staff_group');
     }
 }

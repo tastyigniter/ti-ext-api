@@ -43,7 +43,7 @@ class ReservationTransformer extends TransformerAbstract
 
     public function includeAssignee(Reservations_model $reservation)
     {
-        return $this->item($reservation->assignee, new StaffTransformer, 'staff');
+        return $this->item($reservation->assignee, new UserTransformer, 'staff');
     }
 
     public function includeAssigneeGroup(Reservations_model $reservation)
