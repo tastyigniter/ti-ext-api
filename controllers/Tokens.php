@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 class Tokens extends \Admin\Classes\AdminController
 {
     public $implement = [
-        'Admin\Actions\ListController',
+        \Admin\Actions\ListController::class,
     ];
 
     public $listConfig = [
