@@ -195,6 +195,8 @@ Required**. The reservation's first name (between 2 and 32 characters in length)
 Required**. The reservation's last name (between 2 and 32 characters in length)       |
 | `email`           | `string`  | **Required**. The reservation's email address       |
 | `telephone`           | `string`  | The reservation's telephone number         |
+| `reserve_date`           | `string`  | The reservation's date in format Y-m-d         |
+| `reserve_time`           | `string`  | The reservation's hour in format H:i         |
 
 #### Payload example
 
@@ -209,7 +211,8 @@ Required**. The reservation's last name (between 2 and 32 characters in length) 
   "email": "xigakube@mailinator.net",
   "telephone": "+1 (828) 231-8892",
   "comment": "Cillum eum cupidatat",
-  "reserve_date_time": "2020-06-26 19:35:00"
+  "reserve_date": "2022-06-26"
+  "reserve_time": "19:35"  
 }
 ```
 
@@ -395,7 +398,7 @@ Status: 200 OK
         "table_id": 0,
         "guest_num": 2,
         "first_name": "Joseph",
-        "last_name": "joseph@bloggs.com",
+        "last_name": "Student",
         "email": "xigakube@mailinator.net",
         "telephone": "+1 (828) 231-8892",
         "comment": "Cillum eum cupidatat",
