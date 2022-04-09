@@ -13,12 +13,12 @@ use Illuminate\Validation\ValidationException;
 class Tokens extends \Admin\Classes\AdminController
 {
     public $implement = [
-        'Admin\Actions\ListController',
+        \Admin\Actions\ListController::class,
     ];
 
     public $listConfig = [
         'list' => [
-            'model' => 'Igniter\Api\Models\Token',
+            'model' => \Igniter\Api\Models\Token::class,
             'title' => 'igniter.api::default.text_tokens_title',
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
             'defaultSort' => ['id', 'DESC'],

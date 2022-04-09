@@ -10,13 +10,13 @@ use Admin\Facades\AdminMenu;
 class Resources extends \Admin\Classes\AdminController
 {
     public $implement = [
-        'Admin\Actions\FormController',
-        'Admin\Actions\ListController',
+        \Admin\Actions\FormController::class,
+        \Admin\Actions\ListController::class,
     ];
 
     public $listConfig = [
         'list' => [
-            'model' => 'Igniter\Api\Models\Resource',
+            'model' => \Igniter\Api\Models\Resource::class,
             'title' => 'APIs',
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
             'defaultSort' => ['id', 'DESC'],
@@ -26,7 +26,7 @@ class Resources extends \Admin\Classes\AdminController
 
     public $formConfig = [
         'name' => 'APIs',
-        'model' => 'Igniter\Api\Models\Resource',
+        'model' => \Igniter\Api\Models\Resource::class,
         'edit' => [
             'title' => 'lang:admin::lang.form.edit_title',
             'redirect' => 'igniter/api/resources/edit/{id}',
