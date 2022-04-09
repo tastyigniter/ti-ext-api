@@ -399,7 +399,7 @@ Status: 200 OK
         "guest_num": 2,
         "first_name": "Joseph",
         "last_name": "Student",
-        "email": "joseph@bloggs.com",
+        "email": "xigakube@mailinator.net",
         "telephone": "+1 (828) 231-8892",
         "comment": "Cillum eum cupidatat",
         "reserve_date_time": "2020-06-26 19:35:00",
