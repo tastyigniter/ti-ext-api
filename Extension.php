@@ -82,7 +82,7 @@ class Extension extends BaseExtension
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
                 'actions' => [
-                    'index', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
+                    'index', 'show', 'store:admin', 'update:admin', 'destroy:admin',
                 ],
             ],
             'currencies' => [

@@ -198,7 +198,7 @@ class Resource extends Model
             }
 
             $action = explode(':', $action, 2);
-            $result[$action[0]] = $action[1] ?? 'admin';
+            $result[$action[0]] = $action[1] ?? 'all';
             $names[$action[0]] = array_get(self::$defaultActionDefinition, $action[0], $name);
         }
 

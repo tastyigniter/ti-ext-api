@@ -32,7 +32,7 @@ class SanctumProvider implements Provider
         if (!$this->authManager->checkGroup($allowedGroup, $accessToken))
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_auth_restricted'));
 
-        return $accessToken->tokenable;
+        return optional($accessToken)->tokenable;
     }
 
     protected function getAllowedGroup(Route $route)
