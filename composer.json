@@ -16,7 +16,7 @@
   ],
   "require": {
     "dingo/api": "~3.0",
-    "laravel/sanctum": "~2.2"
+    "laravel/sanctum": "~2.13.0"
   },
   "extra": {
     "tastyigniter-extension": {
@@ -27,10 +27,7 @@
         "color": "#fff",
         "backgroundColor": "#02586F"
       },
-      "homepage": "https://tastyigniter.com/marketplace/item/igniter-api",
-      "require": {
-        "igniter.local": "*"
-      }
+      "homepage": "https://tastyigniter.com/marketplace/item/igniter-api"
     }
   }
 }
