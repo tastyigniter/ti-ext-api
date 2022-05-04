@@ -69,7 +69,7 @@ class Token extends PersonalAccessToken
             $ability = [$ability];
 
         if (in_array('*', $this->abilities))
-            return TRUE;
+            return true;
 
         $diff = array_diff_key(array_flip($ability), array_flip($this->abilities));
 
