@@ -11,7 +11,7 @@ class MakePrimaryKeyBigintAllTables extends Migration
     public function up()
     {
         Schema::table('igniter_api_resources', function (Blueprint $table) {
-            $table->unsignedBigInteger('id', TRUE)->change();
+            $table->unsignedBigInteger('id', true)->change();
         });
     }
 

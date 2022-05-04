@@ -218,11 +218,11 @@ class Extension extends BaseExtension
     protected function sanctumConfigureAuthModels()
     {
         Users_model::extend(function (Model $model) {
-            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => true];
         });
 
         Customers_model::extend(function (Model $model) {
-            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => true];
         });
     }
 

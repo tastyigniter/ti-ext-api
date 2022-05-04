@@ -163,7 +163,7 @@ class Resource extends Model
             $model->controller = array_get($definition, 'controller');
             /** @var TYPE_NAME $model */
             $model->meta = array_except(array_get($definition, 'options'), 'names');
-            $model->is_custom = FALSE;
+            $model->is_custom = false;
             $model->save();
         }
     }

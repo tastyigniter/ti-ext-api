@@ -31,11 +31,11 @@ return [
             ],
             'name' => [
                 'name' => 'lang:igniter.api::default.column_api_name',
-                'searchable' => TRUE,
+                'searchable' => true,
             ],
             'base_endpoint' => [
                 'label' => 'lang:igniter.api::default.column_base_endpoint',
-                'sortable' => FALSE,
+                'sortable' => false,
             ],
             'description' => [
                 'label' => 'lang:igniter.api::default.column_description',
@@ -73,7 +73,7 @@ return [
                     'type' => 'text',
                     'span' => 'right',
                     'comment' => 'lang:igniter.api::default.label_description_comment',
-                    'commentHtml' => TRUE,
+                    'commentHtml' => true,
                 ],
                 'endpoint' => [
                     'label' => 'lang:igniter.api::default.label_base_endpoint',
@@ -85,7 +85,7 @@ return [
                     'label' => 'lang:igniter.api::default.label_controller',
                     'type' => 'text',
                     'span' => 'right',
-                    'disabled' => TRUE,
+                    'disabled' => true,
                 ],
                 'meta' => [
                     'label' => 'lang:igniter.api::default.label_actions',

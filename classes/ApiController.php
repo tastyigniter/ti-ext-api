@@ -49,10 +49,10 @@ class ApiController extends BaseController
     public function checkAction($action)
     {
         if (!array_key_exists($action, $this->allowedActions))
-            return FALSE;
+            return false;
 
         if (!$methodExists = $this->methodExists($action))
-            return FALSE;
+            return false;
 
         if ($ownMethod = method_exists($this, $action)) {
             $methodInfo = new \ReflectionMethod($this, $action);

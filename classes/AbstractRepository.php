@@ -89,7 +89,7 @@ class AbstractRepository
             }
         });
 
-        $this->fireSystemEvent('api.repository.afterCreate', [$model, TRUE]);
+        $this->fireSystemEvent('api.repository.afterCreate', [$model, true]);
 
         return $model;
     }
@@ -112,7 +112,7 @@ class AbstractRepository
             }
         });
 
-        $this->fireSystemEvent('api.repository.afterUpdate', [$model, TRUE]);
+        $this->fireSystemEvent('api.repository.afterUpdate', [$model, true]);
 
         return $model;
     }
