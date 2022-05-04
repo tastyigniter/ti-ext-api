@@ -256,7 +256,7 @@ class ResponseFactory
 
         $class = is_object($resource)
             ? get_class($resource)
-            : \StdClass::class;
+            : \stdClass::class;
 
         return $this->transformer->register($class, $transformer, $parameters, $after);
     }
