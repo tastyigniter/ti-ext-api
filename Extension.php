@@ -5,6 +5,7 @@ namespace Igniter\Api;
 use Admin\Models\Customers_model;
 use Admin\Models\Users_model;
 use Dingo\Api\Auth\Auth;
+use Igniter\Api\Classes\ScopeFactory;
 use Igniter\Flame\Database\Model;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Http\Kernel;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
+use League\Fractal\Manager;
 use System\Classes\BaseExtension;
 
 /**
@@ -193,6 +195,10 @@ class Extension extends BaseExtension
      */
     protected function registerResponseFactory()
     {
+        $this->app->bind(Manager::class, function () {
+            return new Manager(new ScopeFactory);
+        });
+
         $this->app->alias('api.response', Classes\ResponseFactory::class);
 
         $this->app->singleton('api.response', function ($app) {

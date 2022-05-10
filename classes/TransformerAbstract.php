@@ -4,6 +4,10 @@ namespace Igniter\Api\Classes;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @deprecated
+ * @package Igniter\Api\Classes
+ */
 class TransformerAbstract extends JsonResource
 {
     /**

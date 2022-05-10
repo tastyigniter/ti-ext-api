@@ -19,6 +19,11 @@
     "laravel/sanctum": "~2.13.0"
   },
   "extra": {
+    "laravel": {
+      "dont-discover": [
+        "*"
+      ]
+    },
     "tastyigniter-extension": {
       "code": "igniter.api",
       "name": "APIs",
