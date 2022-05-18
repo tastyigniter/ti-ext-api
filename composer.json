@@ -18,6 +18,11 @@
     "dingo/api": "~3.0",
     "laravel/sanctum": "~2.13.0"
   },
+  "autoload": {
+    "psr-4": {
+      "Igniter\\Api\\": "src/"
+    }
+  },
   "extra": {
     "laravel": {
       "dont-discover": [
