@@ -2,19 +2,16 @@
 
 namespace Igniter\Api;
 
-use Dingo\Api\Auth\Auth;
-use Igniter\Admin\Models\Customer;
-use Igniter\Admin\Models\User;
-use Igniter\Api\Classes\ScopeFactory;
-use Igniter\Flame\Database\Model;
+use Igniter\Api\Classes\Fractal;
+use Igniter\Api\Listeners\TokenEventSubscriber;
 use Igniter\System\Classes\BaseExtension;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
-use League\Fractal\Manager;
 
 /**
  * Api Extension Information File
@@ -23,19 +20,17 @@ class Extension extends BaseExtension
 {
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/api.php', 'api');
-        $this->mergeConfigFrom(__DIR__.'/config/sanctum.php', 'sanctum');
+        $this->mergeConfigFrom(__DIR__.'/../config/api.php', 'igniter.api');
+
+        $this->app['config']->set('fractal.fractal_class', Fractal::class);
+        $this->app['config']->set('fractal.default_serializer', $this->app['config']->get('igniter.api.serializer'));
 
         Sanctum::usePersonalAccessTokenModel(Models\Token::class);
 
-        $this->app->register(\Dingo\Api\Provider\LaravelServiceProvider::class);
-
         $this->registerResponseFactory();
-        $this->registerSerializer();
-        $this->registerRequestUserResolver();
 
         $this->registerConsoleCommand('create.apiresource', Console\CreateApiResource::class);
-        $this->registerConsoleCommand('api.token', Console\CreateProject::class);
+        $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
     }
 
     public function boot()
@@ -45,7 +40,7 @@ class Extension extends BaseExtension
         // Register all the available API routes
         Classes\ApiManager::instance();
 
-        $this->sanctumConfigureAuthModels();
+        $this->sanctumConfigureAuth();
         $this->sanctumConfigureMiddleware();
     }
 
@@ -195,17 +190,8 @@ class Extension extends BaseExtension
      */
     protected function registerResponseFactory()
     {
-        $this->app->bind(Manager::class, function () {
-            return new Manager(new ScopeFactory);
-        });
-
-        $this->app->alias('api.response', Classes\ResponseFactory::class);
-
         $this->app->singleton('api.response', function ($app) {
-            return new Classes\ResponseFactory(
-                $app['api.http.response'],
-                $app['api.transformer']
-            );
+            return Fractal::create();
         });
     }
 
@@ -221,35 +207,9 @@ class Extension extends BaseExtension
         $kernel->prependToMiddlewarePriority(EnsureFrontendRequestsAreStateful::class);
     }
 
-    protected function sanctumConfigureAuthModels()
+    protected function sanctumConfigureAuth()
     {
-        User::extend(function (Model $model) {
-            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => true];
-        });
-
-        Customer::extend(function (Model $model) {
-            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => true];
-        });
-    }
-
-    protected function registerSerializer()
-    {
-        $this->app->resolving(\Dingo\Api\Transformer\Adapter\Fractal::class, function ($adapter, $app) {
-            $serializer = config('api.serializer');
-            $adapter->getFractal()->setSerializer(new $serializer);
-        });
-    }
-
-    protected function registerRequestUserResolver()
-    {
-        $this->app->rebinding('request', function ($app, $request) {
-            if (!$request instanceof \Dingo\Api\Http\Request)
-                return;
-
-            $request->setUserResolver(function () use ($app) {
-                return $app[Auth::class]->user();
-            });
-        });
+        Event::subscribe(TokenEventSubscriber::class);
     }
 
     protected function configureRateLimiting()

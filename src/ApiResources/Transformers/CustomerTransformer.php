@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class CustomerTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
+    protected array $availableIncludes = [
         'addresses',
         'orders',
         'reservations',

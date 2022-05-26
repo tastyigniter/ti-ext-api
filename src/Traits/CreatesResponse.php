@@ -7,7 +7,7 @@ trait CreatesResponse
     /**
      * Get the response factory instance.
      *
-     * @return \Igniter\Api\Classes\ResponseFactory
+     * @return \Spatie\Fractal\Fractal
      */
     public function response()
     {

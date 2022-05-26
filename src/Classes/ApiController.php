@@ -43,7 +43,7 @@ class ApiController extends BaseController
         $response = call_user_func_array([$this, $action], array_values($parameters));
 
         return $this->isResponsable($response)
-            ? $response : $this->response()->array($response);
+            ? $response : response()->json($response);
     }
 
     public function checkAction($action)

@@ -2,90 +2,8 @@
 
 namespace Igniter\Api\Traits;
 
-use Dingo\Api\Auth\Auth;
-use Dingo\Api\Dispatcher;
-use Igniter\Api\Auth\Manager;
-
 trait AuthorizesRequest
 {
-    /**
-     * Controller scopes.
-     *
-     * @var array
-     */
-    protected $scopes = [];
-
-    /**
-     * Controller authentication providers.
-     *
-     * @var array
-     */
-    protected $authenticationProviders = [];
-
-    /**
-     * Controller rate limit and expiration.
-     *
-     * @var array
-     */
-    protected $rateLimit = [];
-
-    /**
-     * Controller rate limit throttles.
-     *
-     * @var array
-     */
-    protected $throttles = [];
-
-    /**
-     * Get the controllers rate limiting throttles.
-     *
-     * @return array
-     */
-    public function getThrottles()
-    {
-        return $this->throttles;
-    }
-
-    /**
-     * Get the controllers rate limit and expiration.
-     *
-     * @return array
-     */
-    public function getRateLimit()
-    {
-        return $this->rateLimit;
-    }
-
-    /**
-     * Get the controllers scopes.
-     *
-     * @return array
-     */
-    public function getScopes()
-    {
-        return $this->scopes;
-    }
-
-    /**
-     * Get the controllers authentication providers.
-     *
-     * @return array
-     */
-    public function getAuthenticationProviders()
-    {
-        return $this->authenticationProviders;
-    }
-
-    /**
-     * Get the internal dispatcher instance.
-     *
-     * @return \Dingo\Api\Dispatcher
-     */
-    public function api()
-    {
-        return app(Dispatcher::class);
-    }
-
     /**
      * Get the authenticated token.
      *
@@ -93,7 +11,7 @@ trait AuthorizesRequest
      */
     protected function token()
     {
-        return Manager::instance()->token();
+        return request()->user()->currentAccessToken();
     }
 
     /**
@@ -103,7 +21,7 @@ trait AuthorizesRequest
      */
     protected function user()
     {
-        return app(Auth::class)->user();
+        return request()->user();
     }
 
     /**
@@ -113,7 +31,7 @@ trait AuthorizesRequest
      */
     protected function auth()
     {
-        return app(Auth::class);
+        return app('auth');
     }
 
     protected function getToken()
@@ -121,13 +39,8 @@ trait AuthorizesRequest
         return $this->token();
     }
 
-    protected function checkToken($allowedGroup)
-    {
-        return Manager::instance()->checkGroup($allowedGroup, $this->token());
-    }
-
     protected function tokenCan($abilities = ['*'])
     {
-        return $this->token()->can($abilities);
+        return request()->user()->tokenCan($abilities);
     }
 }

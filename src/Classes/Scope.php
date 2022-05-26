@@ -14,7 +14,7 @@ use League\Fractal\Scope as FractalScope;
  */
 class Scope extends FractalScope
 {
-    protected function fireTransformer($transformer, $data)
+    protected function fireTransformer($transformer, $data): array
     {
         [$transformedData, $includedData] = parent::fireTransformer($transformer, $data);
 

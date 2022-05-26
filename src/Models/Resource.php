@@ -104,7 +104,7 @@ class Resource extends Model
 
     public function getBaseEndpointAttribute($value)
     {
-        return sprintf('/%s/%s', config('api.prefix'), $this->endpoint);
+        return sprintf('/%s/%s', config('igniter.api.prefix'), $this->endpoint);
     }
 
     public function getAvailableActions()

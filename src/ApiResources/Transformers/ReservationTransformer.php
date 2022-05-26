@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class ReservationTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
+    protected array $availableIncludes = [
         'location',
         'tables',
         'status',

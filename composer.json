@@ -1,6 +1,5 @@
 {
   "name": "tastyigniter/ti-ext-api",
-  "type": "tastyigniter-extension",
   "description": "Manages and generates RESTful APIs using available models in your TastyIgniter app.",
   "license": "MIT",
   "authors": [
@@ -15,8 +14,7 @@
     "api"
   ],
   "require": {
-    "dingo/api": "~3.0",
-    "laravel/sanctum": "~2.2"
+    "spatie/laravel-fractal": "^6.0"
   },
   "autoload": {
     "psr-4": {
@@ -25,7 +23,6 @@
   },
   "extra": {
     "tastyigniter-extension": {
-      "code": "igniter.api",
       "name": "APIs",
       "icon": {
         "class": "fa fa-cloud",

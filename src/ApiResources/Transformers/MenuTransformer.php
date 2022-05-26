@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class MenuTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
+    protected array $availableIncludes = [
         'media',
         'categories',
         'menu_options',
