@@ -8,7 +8,7 @@ use League\Fractal\ScopeFactory as FractalScopeFactory;
 
 class ScopeFactory extends FractalScopeFactory
 {
-    public function createScopeFor(Manager $manager, ResourceInterface $resource, $scopeIdentifier = null)
+    public function createScopeFor(Manager $manager, ResourceInterface $resource, $scopeIdentifier = null): Scope
     {
         return new Scope($manager, $resource, $scopeIdentifier);
     }

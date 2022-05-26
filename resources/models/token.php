@@ -10,7 +10,7 @@ return [
         ],
         'toolbar' => [
             'buttons' => [
-                'back' => ['label' => 'lang:admin::lang.button_icon_back', 'class' => 'btn btn-outline-secondary', 'href' => 'igniter/api/resources'],
+                'back' => ['label' => 'lang:admin::lang.button_icon_back', 'class' => 'btn btn-outline-default', 'href' => 'igniter/api/resources'],
             ],
         ],
         'bulkActions' => [

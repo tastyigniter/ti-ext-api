@@ -9,7 +9,7 @@ use Igniter\Api\Classes\ApiController;
  */
 class Tables extends ApiController
 {
-    public $implement = ['Igniter.Api.Actions.RestController'];
+    public $implement = [\Igniter\Api\Http\Actions\RestController::class];
 
     public $restConfig = [
         'actions' => [

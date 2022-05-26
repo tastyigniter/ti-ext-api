@@ -1,10 +1,10 @@
 <?php
 
-namespace Igniter\Api\Actions;
+namespace Igniter\Api\Http\Actions;
 
-use Dingo\Api\Exception\ResourceException;
 use Igniter\Admin\Traits\FormModelWidget;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Api\Exceptions\ResourceException;
 use Igniter\Api\Traits\RestExtendable;
 use Igniter\Flame\Exception\ValidationException;
 use Igniter\System\Classes\ControllerAction;
@@ -64,11 +64,16 @@ class RestController extends ControllerAction
 
         $options = array_merge($this->getActionOptions(), $requestQuery);
 
-        $result = $this->makeRepository('query')->findAll($options);
+        $records = $this->makeRepository('query')->findAll($options);
 
-        return $this->controller->response()->paginator(
-            $result, $this->createTransformer(), $this->getResponseParameters()
-        );
+        return $this->controller->response()
+            ->collection($records)
+            ->transformWith($this->createTransformer())
+            ->withResourceName($this->getResourceKey())
+            ->toArray();
+//            ->paginator(
+//            $result, , $this->getResponseParameters()
+//        );
     }
 
     /**
@@ -257,10 +262,8 @@ class RestController extends ControllerAction
         });
     }
 
-    protected function getResponseParameters(): array
+    protected function getResourceKey(): string
     {
-        return [
-            'key' => $this->getConfig('resourceKey', strtolower(class_basename($this->controller))),
-        ];
+        return $this->getConfig('resourceKey', strtolower(class_basename($this->controller)));
     }
 }

@@ -28,24 +28,19 @@ class IssueApiToken extends Command
      */
     public function handle()
     {
-        if (!strlen($name = $this->option('name')))
-            return $this->error('Missing --name option');
+        $name = $this->option('name');
+        $email = $this->option('email');
 
-        if (!strlen($username = $this->option('username'))
-            && !strlen($email = $this->option('email'))
-        ) {
-            return $this->error('Missing --username OR --email option');
+        if (!strlen($isForAdmin = $this->option('admin'))) {
+            return $this->error('Missing --admin option');
         }
 
-        $user = $username
-            ? User::where('username', $username)->first()
-            : Customer::where('email', $email)->first();
+        $query = $isForAdmin ? User::query() : Customer::query();
 
-        if (!$user)
+        $query->where('email', $email);
+
+        if (!$user = $query->first())
             return $this->error('User does not exist!');
-
-        if (!strlen($name = $this->option('name')))
-            return $this->error('Missing --name option');
 
         $accessToken = Token::createToken($user, $name, ['*']);
         $this->info(sprintf('Access Token: %s', $accessToken->plainTextToken));
@@ -58,8 +53,8 @@ class IssueApiToken extends Command
     {
         return [
             ['name', null, InputOption::VALUE_REQUIRED, 'The name to identify the token.'],
-            ['username', null, InputOption::VALUE_OPTIONAL, 'The username of the admin you want to issue a token.'],
-            ['email', null, InputOption::VALUE_OPTIONAL, 'The email of the customer you want to issue a token.'],
+            ['email', null, InputOption::VALUE_REQUIRED, 'The email of the user you want to issue a token.'],
+            ['admin', null, InputOption::VALUE_NONE, 'Specify to issue token for admin users'],
         ];
     }
 }

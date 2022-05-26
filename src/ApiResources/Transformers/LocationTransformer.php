@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class LocationTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
+    protected array $availableIncludes = [
         'media',
         'working_hours',
         'delivery_areas',

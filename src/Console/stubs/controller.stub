@@ -8,7 +8,7 @@ use Igniter\Api\Classes\ApiController;
 class {{studly_name}} extends ApiController
 {
     public $implement = [
-        'Igniter.Api.Actions.RestController'
+        \Igniter\Api\Http\Actions\RestController::class
     ];
 
     public $restConfig = [

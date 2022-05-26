@@ -1,6 +1,6 @@
 <?php
 
-namespace Igniter\Api\Controllers;
+namespace Igniter\Api\Http\Controllers;
 
 use Igniter\Admin\Facades\AdminMenu;
 use Igniter\Api\Models\Token;
@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 class Tokens extends \Igniter\Admin\Classes\AdminController
 {
     public $implement = [
-        \Igniter\Admin\Actions\ListController::class,
+        \Igniter\Admin\Http\Actions\ListController::class,
     ];
 
     public $listConfig = [

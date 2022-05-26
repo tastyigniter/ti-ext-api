@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class ReviewTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
+    protected array $availableIncludes = [
         'location',
         'customer',
     ];

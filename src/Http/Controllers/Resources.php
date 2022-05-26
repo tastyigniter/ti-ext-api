@@ -1,6 +1,6 @@
 <?php
 
-namespace Igniter\Api\Controllers;
+namespace Igniter\Api\Http\Controllers;
 
 use Igniter\Admin\Facades\AdminMenu;
 
@@ -10,8 +10,8 @@ use Igniter\Admin\Facades\AdminMenu;
 class Resources extends \Igniter\Admin\Classes\AdminController
 {
     public $implement = [
-        \Igniter\Admin\Actions\FormController::class,
-        \Igniter\Admin\Actions\ListController::class,
+        \Igniter\Admin\Http\Actions\FormController::class,
+        \Igniter\Admin\Http\Actions\ListController::class,
     ];
 
     public $listConfig = [

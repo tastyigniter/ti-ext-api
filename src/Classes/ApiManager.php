@@ -4,7 +4,8 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Traits\Singleton;
-use Illuminate\Support\Facades\Artisan;
+use Igniter\Igniter;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -15,11 +16,6 @@ class ApiManager
     protected $resources;
 
     /**
-     * @var \Dingo\Api\Routing\Router
-     */
-    protected $router;
-
-    /**
      * The access token the user is using for the current request.
      *
      * @var \Laravel\Sanctum\Contracts\HasAbilities
@@ -28,8 +24,6 @@ class ApiManager
 
     public function initialize()
     {
-        $this->router = app('api.router');
-
         $this->registerRoutes();
     }
 
@@ -48,14 +42,14 @@ class ApiManager
 
     public function getCurrentResource()
     {
-        $currentResourceName = Str::before(Str::after($this->router->currentRouteName(), 'api.'), '.');
+        $currentResourceName = Str::before(Str::after(Route::currentRouteName(), 'api.'), '.');
 
         return $this->getResource($currentResourceName);
     }
 
     public function getCurrentAction()
     {
-        return Str::afterLast($this->router->currentRouteAction(), '@');
+        return Str::afterLast(Route::currentRouteAction(), '@');
     }
 
     public function buildResource($name, $model, $meta = [])
@@ -64,7 +58,7 @@ class ApiManager
         $singularController = str_singular($controller);
         $namespace = '\\Igniter\\Api\\ApiResources';
 
-        Artisan::call('create:apiresource', [
+        \Artisan::call('create:apiresource', [
             'extension' => 'Igniter.Api',
             'controller' => $controller,
             '--model' => $model,
@@ -79,57 +73,49 @@ class ApiManager
 
     protected function loadResources()
     {
-        $resources = Resource::all()
-            ->filter(function ($resource) {
-                return class_exists($resource->controller);
-            })
-            ->filter(function ($resource) {
-                return resolve($resource->controller)->isClassExtendedWith('Igniter.Api.Actions.RestController');
-            })
-            ->filter(function ($resource) {
-                return count($resource->getAvailableActions()) > 0;
-            })
-            ->mapWithKeys(function ($resource) {
-                $resourceObj = (object)[
-                    'endpoint' => $resource->endpoint,
-                    'controller' => $resource->controller,
-                    'options' => array_merge($resource->meta, [
-                        'only' => $resource->getAvailableActions(),
-                    ]),
-                ];
+        $resources = Resource::all()->mapWithKeys(function ($resource) {
+            $resourceObj = (object)[
+                'endpoint' => $resource->endpoint,
+                'controller' => $resource->controller,
+                'options' => array_merge($resource->meta, [
+                    'only' => $resource->getAvailableActions(),
+                ]),
+            ];
 
-                return [$resource->endpoint => $resourceObj];
-            });
+            return [$resource->endpoint => $resourceObj];
+        });
 
         $this->resources = $resources;
     }
 
     protected function registerRoutes()
     {
-        if (!app()->hasDatabase() || !Schema::hasTable('igniter_api_resources'))
+        if (!Igniter::hasDatabase() || !Schema::hasTable('igniter_api_resources'))
             return;
 
-        if (!$resources = $this->getResources())
-            return;
-
-        $this->router->version('v1', function ($api) use ($resources) {
-            $api->group([
-                'as' => 'api',
-                'middleware' => ['api', 'api.auth'],
-            ], function ($api) use ($resources) {
-                foreach ($resources as $endpoint => $resourceObj) {
-                    $api->resource(
+        Route::middleware(config('igniter.api.middleware'))
+            ->as('igniter.api.')
+            ->prefix(config('igniter.api.prefix'))
+            ->group(function ($router) {
+                foreach ($this->getResources() as $endpoint => $resourceObj) {
+                    $router->resource(
                         $endpoint,
                         $resourceObj->controller,
                         $resourceObj->options
                     );
                 }
             });
-        });
     }
 
     protected function parseName($name)
     {
         return studly_case(preg_replace('/[0-9]+/', '', $name));
+    }
+
+    protected function getClassPath($class)
+    {
+        $path = trim(str_replace('\\', '/', $class), '/');
+
+        return extension_path(strtolower(dirname($path)).'/'.basename($path).'.php');
     }
 }
