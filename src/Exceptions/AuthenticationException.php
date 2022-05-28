@@ -3,11 +3,10 @@
 namespace Igniter\Api\Exceptions;
 
 use Illuminate\Auth\AuthenticationException as Exception;
-use Illuminate\Contracts\Support\Responsable;
 
-class AuthenticationException extends Exception implements Responsable
+class AuthenticationException extends Exception
 {
-    public function toResponse($request)
+    public function render($request)
     {
         return response()->json(['message' => $this->getMessage()], 401);
     }

@@ -2,9 +2,9 @@
 
 namespace Igniter\Api\Console;
 
-use Igniter\Admin\Models\Customer;
 use Igniter\Admin\Models\User;
 use Igniter\Api\Models\Token;
+use Igniter\Main\Models\Customer;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 

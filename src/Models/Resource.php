@@ -81,7 +81,7 @@ class Resource extends Model
             return $this->modelListCache;
 
         $result = [];
-        $manager = ExtensionManager::instance();
+        $manager = resolve(ExtensionManager::class);
         $extensions = $manager->getExtensions();
         foreach ($extensions as $code => $extension) {
             try {
@@ -122,7 +122,7 @@ class Resource extends Model
         $resources = collect($registeredResources)->keyBy('endpoint')->toArray();
         $extensionCode = array_get($resources, $this->endpoint.'.owner');
 
-        $path = ExtensionManager::instance()->path($extensionCode);
+        $path = resolve(ExtensionManager::class)->path($extensionCode);
         $docsPath = $path.sprintf('docs/%s.md', $this->endpoint);
 
         return File::existsInsensitive($docsPath)
@@ -240,7 +240,7 @@ class Resource extends Model
             $callback($this);
         }
 
-        $registeredResources = ExtensionManager::instance()->getRegistrationMethodValues('registerApiResources');
+        $registeredResources = resolve(ExtensionManager::class)->getRegistrationMethodValues('registerApiResources');
         foreach ($registeredResources as $extensionCode => $resources) {
             $this->registerResources($resources, $extensionCode);
         }

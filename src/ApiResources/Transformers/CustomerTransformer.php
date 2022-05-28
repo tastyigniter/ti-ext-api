@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\Customer;
+use Igniter\Main\Models\Customer;
 use League\Fractal\TransformerAbstract;
 
 class CustomerTransformer extends TransformerAbstract

@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\Models;
 
-use Igniter\Admin\Models\Customer;
 use Igniter\Admin\Models\User;
+use Igniter\Main\Models\Customer;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;

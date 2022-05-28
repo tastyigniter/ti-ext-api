@@ -3,8 +3,8 @@
 namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
+use Igniter\Flame\Igniter;
 use Igniter\Flame\Traits\Singleton;
-use Igniter\Igniter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
