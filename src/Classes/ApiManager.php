@@ -4,15 +4,12 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Igniter;
-use Igniter\Flame\Traits\Singleton;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class ApiManager
 {
-    use Singleton;
-
     protected $resources;
 
     /**
@@ -21,11 +18,6 @@ class ApiManager
      * @var \Laravel\Sanctum\Contracts\HasAbilities
      */
     protected $accessToken;
-
-    public function initialize()
-    {
-        $this->registerRoutes();
-    }
 
     public function getResources()
     {
@@ -88,7 +80,7 @@ class ApiManager
         $this->resources = $resources;
     }
 
-    protected function registerRoutes()
+    public static function registerRoutes()
     {
         if (!Igniter::hasDatabase() || !Schema::hasTable('igniter_api_resources'))
             return;

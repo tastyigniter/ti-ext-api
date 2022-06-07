@@ -2,6 +2,7 @@
 
 namespace Igniter\Api;
 
+use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Classes\Fractal;
 use Igniter\Api\Listeners\TokenEventSubscriber;
 use Igniter\System\Classes\BaseExtension;
@@ -27,6 +28,8 @@ class Extension extends BaseExtension
 
         Sanctum::usePersonalAccessTokenModel(Models\Token::class);
 
+        $this->app->singleton(ApiManager::class);
+
         $this->registerResponseFactory();
 
         $this->registerConsoleCommand('create.apiresource', Console\CreateApiResource::class);
@@ -38,7 +41,7 @@ class Extension extends BaseExtension
         $this->configureRateLimiting();
 
         // Register all the available API routes
-        Classes\ApiManager::instance();
+        Classes\ApiManager::registerRoutes();
 
         $this->sanctumConfigureAuth();
         $this->sanctumConfigureMiddleware();
