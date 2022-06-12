@@ -22,6 +22,8 @@ behavior logic for several common verbs are supported — create, store, show, e
 To install this extension, click on the **Add to Site** button on the TastyIgniter marketplace item page or search
 for **Igniter.Api** in **Admin System > Updates > Browse Extensions**
 
+> After installation, enable the extension through your TastyIgniter admin and navigate to Tools > API Resources, which will generate the default endpoints automatically.
+
 If you are using an Apache installation you will need to add these lines to your .htaccess file for tokens to be passed
 correctly.
 

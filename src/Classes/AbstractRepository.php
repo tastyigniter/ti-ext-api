@@ -96,6 +96,9 @@ class AbstractRepository
             }
         });
 
+        // Reload attributes
+        $model->reload();
+
         $this->fireSystemEvent('api.repository.afterCreate', [$model, true]);
 
         return $model;

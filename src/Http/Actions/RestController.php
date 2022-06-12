@@ -4,7 +4,7 @@ namespace Igniter\Api\Http\Actions;
 
 use Igniter\Admin\Traits\FormModelWidget;
 use Igniter\Api\Classes\AbstractRepository;
-use Igniter\Api\Exceptions\ResourceException;
+use Igniter\Api\Exceptions\ValidationHttpException;
 use Igniter\Api\Traits\RestExtendable;
 use Igniter\Flame\Exception\ValidationException;
 use Igniter\System\Classes\ControllerAction;
@@ -66,14 +66,11 @@ class RestController extends ControllerAction
 
         $records = $this->makeRepository('query')->findAll($options);
 
-        return $this->controller->response()
+        return $this->controller->fractal()
             ->collection($records)
             ->transformWith($this->createTransformer())
             ->withResourceName($this->getResourceKey())
             ->toArray();
-//            ->paginator(
-//            $result, , $this->getResponseParameters()
-//        );
     }
 
     /**
@@ -91,9 +88,13 @@ class RestController extends ControllerAction
 
         $model = $repository->create($this->model, $request);
 
-        return $this->controller->response()->created(
-            $model, $this->createTransformer(), null, $this->getResponseParameters()
-        );
+        $response = $this->controller->fractal()
+            ->item($model)
+            ->transformWith($this->createTransformer())
+            ->withResourceName($this->getResourceKey())
+            ->toArray();
+
+        return response()->json($response)->setStatusCode(201);
     }
 
     /**
@@ -108,9 +109,11 @@ class RestController extends ControllerAction
 
         $result = $this->makeRepository('query')->find($recordId);
 
-        return $this->controller->response()->resource(
-            $result, $this->createTransformer(), $this->getResponseParameters()
-        );
+        return $this->controller->fractal()
+            ->item($result)
+            ->transformWith($this->createTransformer())
+            ->withResourceName($this->getResourceKey())
+            ->toArray();
     }
 
     /**
@@ -129,9 +132,11 @@ class RestController extends ControllerAction
 
         $result = $this->makeRepository('update')->update($this->model, $request);
 
-        return $this->controller->response()->resource(
-            $result, $this->createTransformer(), $this->getResponseParameters()
-        );
+        return $this->controller->fractal()
+            ->item($result)
+            ->transformWith($this->createTransformer())
+            ->withResourceName($this->getResourceKey())
+            ->toArray();
     }
 
     /**
@@ -145,7 +150,7 @@ class RestController extends ControllerAction
     {
         $this->makeRepository('delete')->delete($recordId);
 
-        return $this->controller->response()->noContent();
+        return response()->setStatusCode(204);
     }
 
     public function getActionOptions()
@@ -176,7 +181,7 @@ class RestController extends ControllerAction
     /**
      * @param string $requestMethod query or all
      * @return array
-     * @throws \Dingo\Api\Exception\ValidationHttpException
+     * @throws \Igniter\Api\Exceptions\ValidationHttpException
      */
     protected function validateRequest($requestMethod)
     {
@@ -192,15 +197,13 @@ class RestController extends ControllerAction
                         $request->setController($this->controller);
                 });
 
-                app()->make($requestClass);
-
-                return $requestData;
+                return app()->make($requestClass)->validated();
             }
 
             return $this->controller->restValidate($requestData);
         }
         catch (ValidationException $ex) {
-            throw new ResourceException(lang('igniter.api::default.alert_validation_failed'), $ex->getErrors());
+            throw new ValidationHttpException($ex->getErrors(), $ex);
         }
     }
 

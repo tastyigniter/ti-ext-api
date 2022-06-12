@@ -14,6 +14,7 @@
     "api"
   ],
   "require": {
+    "tastyigniter/flame": "v4.x-dev",
     "spatie/laravel-fractal": "^6.0"
   },
   "autoload": {

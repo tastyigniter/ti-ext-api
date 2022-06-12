@@ -56,23 +56,4 @@ class Token extends PersonalAccessToken
     {
         return $this->tokenable_type == Customer::make()->getMorphClass();
     }
-
-    /**
-     * Determine if the token has a given ability.
-     *
-     * @param mixed $ability
-     * @return bool
-     */
-    public function can($ability)
-    {
-        if (!is_array($ability))
-            $ability = [$ability];
-
-        if (in_array('*', $this->abilities))
-            return true;
-
-        $diff = array_diff_key(array_flip($ability), array_flip($this->abilities));
-
-        return count($diff) != count($ability);
-    }
 }

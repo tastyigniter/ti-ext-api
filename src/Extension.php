@@ -4,9 +4,11 @@ namespace Igniter\Api;
 
 use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Classes\Fractal;
+use Igniter\Api\Exceptions\ErrorHandler;
 use Igniter\Api\Listeners\TokenEventSubscriber;
 use Igniter\System\Classes\BaseExtension;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -30,7 +32,7 @@ class Extension extends BaseExtension
 
         $this->app->singleton(ApiManager::class);
 
-        $this->registerResponseFactory();
+        $this->registerErrorHandler();
 
         $this->registerConsoleCommand('create.apiresource', Console\CreateApiResource::class);
         $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
@@ -186,15 +188,10 @@ class Extension extends BaseExtension
         ];
     }
 
-    /**
-     * Register the response factory.
-     *
-     * @return void
-     */
-    protected function registerResponseFactory()
+    protected function registerErrorHandler()
     {
-        $this->app->singleton('api.response', function ($app) {
-            return Fractal::create();
+        $this->callAfterResolving(ExceptionHandler::class, function ($handler) {
+            new ErrorHandler($handler, config('igniter.api.errorFormat'), config('igniter.api.debug'));
         });
     }
 

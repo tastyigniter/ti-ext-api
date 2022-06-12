@@ -54,7 +54,7 @@ class ApiController extends BaseController
         if (!$methodExists = $this->methodExists($action))
             return false;
 
-        if ($ownMethod = method_exists($this, $action)) {
+        if (method_exists($this, $action)) {
             $methodInfo = new \ReflectionMethod($this, $action);
 
             return $methodInfo->isPublic();
@@ -65,9 +65,13 @@ class ApiController extends BaseController
 
     protected function authorizeToken()
     {
-        $abilities = $this->getAbilities();
+        if (!$ability = $this->getAbilities())
+            return;
 
-        if ($abilities && !$this->tokenCan($abilities))
+        if (is_array($ability))
+            $ability = implode(',', $ability);
+
+        if (!$this->tokenCan($ability))
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
     }
 
