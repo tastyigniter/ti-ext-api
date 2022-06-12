@@ -2,9 +2,9 @@
 
 namespace Igniter\Api\Exceptions;
 
-use Exception;
 use Illuminate\Support\MessageBag;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 class ResourceException extends HttpException
 {
@@ -20,13 +20,13 @@ class ResourceException extends HttpException
      *
      * @param string $message
      * @param \Illuminate\Support\MessageBag|array $errors
-     * @param \Exception $previous
+     * @param \Throwable $previous
      * @param array $headers
      * @param int $code
      *
      * @return void
      */
-    public function __construct($message = null, $errors = null, Exception $previous = null, $headers = [], $code = 0)
+    public function __construct($message = null, $errors = '', Throwable $previous = null, $headers = [], $code = 0)
     {
         if (is_null($errors)) {
             $this->errors = new MessageBag;

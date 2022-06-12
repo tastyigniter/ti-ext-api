@@ -38,32 +38,31 @@ class Tokens extends \Igniter\Admin\Classes\AdminController
     public function create(Request $request)
     {
         $request->validate([
-            'username' => 'required_without:email|alpha_dash',
-            'email' => 'required_without:username|email:filter',
+            'email' => 'email:filter',
             'password' => 'required',
+            'is_admin' => 'boolean',
             'device_name' => 'required|alpha_dash',
             'abilities.*' => 'regex:/^[a-zA-Z-_\*]+$/',
         ]);
 
-        $forAdmin = $request->has('username') && !$request->has('email');
-        $loginFieldName = $forAdmin ? 'username' : 'email';
+        $forAdmin = $request->get('is_admin', false);
 
         $credentials = [
-            $loginFieldName => $request->$loginFieldName,
+            'email' => $request->email,
             'password' => $request->password,
         ];
 
-        $auth = app($forAdmin ? 'admin.auth' : 'auth');
+        $auth = app($forAdmin ? 'admin.auth' : 'main.auth');
         $user = $auth->getByCredentials($credentials);
 
         if (!$user || !$auth->validateCredentials($user, $credentials))
             throw ValidationException::withMessages([
-                $loginFieldName => ['The provided credentials are incorrect.'],
+                'email' => ['The provided credentials are incorrect.'],
             ]);
 
         if (!$user->is_activated)
             throw ValidationException::withMessages([
-                $loginFieldName => ['Inactive user account'],
+                'email' => ['Inactive user account'],
             ]);
 
         $token = Token::createToken($user, $request->device_name, $request->abilities ?? ['*']);

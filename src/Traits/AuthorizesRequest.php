@@ -24,11 +24,6 @@ trait AuthorizesRequest
         return request()->user();
     }
 
-    /**
-     * Get the auth instance.
-     *
-     * @return \Dingo\Api\Auth\Auth
-     */
     protected function auth()
     {
         return app('auth');
@@ -39,8 +34,8 @@ trait AuthorizesRequest
         return $this->token();
     }
 
-    protected function tokenCan($abilities = ['*'])
+    protected function tokenCan($ability = '*')
     {
-        return request()->user()->tokenCan($abilities);
+        return request()->user()->tokenCan($ability);
     }
 }

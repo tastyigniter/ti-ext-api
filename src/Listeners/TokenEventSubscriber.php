@@ -63,7 +63,7 @@ class TokenEventSubscriber
 
     public function getAllowedGroup(Route $route)
     {
-        $resourceOptions = optional(ApiManager::instance()->getCurrentResource())->options ?? [];
+        $resourceOptions = optional(resolve(ApiManager::class)->getCurrentResource())->options ?? [];
 
         $authActions = array_get($resourceOptions, 'authorization', []);
 

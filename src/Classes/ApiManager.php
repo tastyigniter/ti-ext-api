@@ -89,12 +89,8 @@ class ApiManager
             ->as('igniter.api.')
             ->prefix(config('igniter.api.prefix'))
             ->group(function ($router) {
-                foreach ($this->getResources() as $endpoint => $resourceObj) {
-                    $router->resource(
-                        $endpoint,
-                        $resourceObj->controller,
-                        $resourceObj->options
-                    );
+                foreach (resolve(static::class)->getResources() as $endpoint => $resourceObj) {
+                    $router->resource($endpoint, $resourceObj->controller, $resourceObj->options);
                 }
             });
     }
