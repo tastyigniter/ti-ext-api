@@ -27,4 +27,5 @@ security vulnerabilities.
 
 ### License
 
-TastyIgniter API extension is open-sourced software licensed under the [MIT license](LICENSE).
+TastyIgniter API extension is open-sourced software licensed under
+the [MIT license](https://github.com/tastyigniter/ti-ext-api/LICENSE.md).
