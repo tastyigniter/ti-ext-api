@@ -63,6 +63,10 @@ class Orders extends ApiController
             }
         }
 
+        if ($requireSave) {
+            $model->saveQuietly();
+        }
+
         if ($orderMenus = (array)Request::get('order_menus', [])) {
             $model->addOrderMenus(json_decode(json_encode($orderMenus)));
 
