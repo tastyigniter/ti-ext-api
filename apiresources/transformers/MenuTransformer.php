@@ -45,4 +45,13 @@ class MenuTransformer extends TransformerAbstract
             'menu_options'
         );
     }
+
+	public function includeAllergens(Menus_model $menuItem)
+    {
+        return $this->collection(
+            $menuItem->allergens,
+            new AllergensTransformer,
+            'allergens'
+        );
+    }
 }
