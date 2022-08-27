@@ -3,7 +3,6 @@
 namespace Igniter\Api\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
-use Illuminate\Support\Facades\Request;
 
 /**
  * Reservations API Controller
@@ -35,13 +34,5 @@ class Reservations extends ApiController
             $query->where('customer_id', $token->tokenable_id);
 
         return $query;
-    }
-
-    public function store()
-    {
-        if (($token = $this->getToken()) && $token->isForCustomer())
-            Request::merge(['customer_id' => $token->tokenable_id]);
-
-        return $this->asExtension('RestController')->store();
     }
 }
