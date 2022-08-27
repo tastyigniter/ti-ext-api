@@ -95,7 +95,7 @@ class ApiManager
 
     protected function registerRoutes()
     {
-        if (!Schema::hasTable('igniter_api_resources'))
+        if (!app()->hasDatabase() || !Schema::hasTable('igniter_api_resources'))
             return;
 
         if (!$resources = $this->getResources())

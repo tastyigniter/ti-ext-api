@@ -10,14 +10,20 @@ return [
         ],
         'toolbar' => [
             'buttons' => [
-                'back' => ['label' => 'lang:admin::lang.button_icon_back', 'class' => 'btn btn-default', 'href' => 'igniter/api/resources'],
-                'delete' => ['label' => 'lang:admin::lang.button_delete', 'class' => 'btn btn-danger', 'data-request-form' => '#list-form', 'data-request' => 'onDelete', 'data-request-data' => "_method:'DELETE'", 'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm'],
+                'back' => ['label' => 'lang:admin::lang.button_icon_back', 'class' => 'btn btn-outline-secondary', 'href' => 'igniter/api/resources'],
+            ],
+        ],
+        'bulkActions' => [
+            'delete' => [
+                'label' => 'lang:admin::lang.button_delete',
+                'class' => 'btn btn-light text-danger',
+                'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm',
             ],
         ],
         'columns' => [
             'tokenable_id' => [
                 'label' => 'lang:igniter.api::default.column_issued_to',
-                'searchable' => TRUE,
+                'searchable' => true,
                 'formatter' => function ($record, $column, $value) {
                     $value = $record->tokenable_type == 'users'
                         ? $record->tokenable->username : $record->tokenable->email;
@@ -27,14 +33,14 @@ return [
             ],
             'tokenable_type' => [
                 'label' => 'lang:igniter.api::default.column_token_type',
-                'searchable' => TRUE,
+                'searchable' => true,
                 'formatter' => function ($record, $column, $value) {
                     return $value == 'users' ? lang('igniter.api::default.text_token_type_staff') : lang('igniter.api::default.text_token_type_customer');
                 },
             ],
             'name' => [
                 'label' => 'lang:igniter.api::default.column_device_name',
-                'searchable' => TRUE,
+                'searchable' => true,
             ],
             'created_at' => [
                 'label' => 'lang:igniter.api::default.column_created',

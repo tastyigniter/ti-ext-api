@@ -8,6 +8,7 @@ use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Facades\DB;
 
 class AbstractRepository
 {
@@ -28,6 +29,11 @@ class AbstractRepository
      * @var string
      */
     protected $modelClass;
+
+    /**
+     * @var array List of prepared models that require saving.
+     */
+    protected $modelsToSave = [];
 
     public function find(int $id, array $attributes = ['*'])
     {
@@ -70,15 +76,20 @@ class AbstractRepository
         return $query->paginate($perPage, $page, $columns, $pageName);
     }
 
-    public function create($model, array $attributes)
+    public function create(Model $model, array $attributes)
     {
         $this->fireSystemEvent('api.repository.beforeCreate', [$model, $attributes]);
 
-        $model->fill($attributes);
+        $this->modelsToSave = [];
+        $this->setModelAttributes($model, $attributes);
 
-        $created = $model->save();
+        DB::transaction(function () {
+            foreach ($this->modelsToSave as $modelToSave) {
+                $modelToSave->save();
+            }
+        });
 
-        $this->fireSystemEvent('api.repository.afterCreate', [$model, $created]);
+        $this->fireSystemEvent('api.repository.afterCreate', [$model, true]);
 
         return $model;
     }
@@ -92,11 +103,16 @@ class AbstractRepository
 
         $this->fireSystemEvent('api.repository.beforeUpdate', [$model, $attributes]);
 
-        $model->fill($attributes);
+        $this->modelsToSave = [];
+        $this->setModelAttributes($model, $attributes);
 
-        $updated = $model->save();
+        DB::transaction(function () {
+            foreach ($this->modelsToSave as $modelToSave) {
+                $modelToSave->save();
+            }
+        });
 
-        $this->fireSystemEvent('api.repository.afterUpdate', [$model, $updated]);
+        $this->fireSystemEvent('api.repository.afterUpdate', [$model, true]);
 
         return $model;
     }
@@ -107,7 +123,7 @@ class AbstractRepository
 
         if (!$model) return $model;
 
-        $deleted = $model->save();
+        $deleted = $model->delete();
 
         $this->fireSystemEvent('api.repository.afterDelete', [$model, $deleted]);
 
@@ -166,10 +182,10 @@ class AbstractRepository
     {
         $modelClass::extend(function (Model $model) {
             if ($fillable = $this->getFillable())
-                $model->fillable($fillable);
+                $model->mergeFillable($fillable);
 
             if ($guarded = $this->getGuarded())
-                $model->guard($guarded);
+                $model->mergeGuarded($guarded);
 
             if ($hidden = $this->getHidden())
                 $model->setHidden($hidden);
@@ -200,5 +216,29 @@ class AbstractRepository
 
     protected function extendQuery($query)
     {
+    }
+
+    protected function setModelAttributes($model, $saveData)
+    {
+        if (!is_array($saveData) || !$model) {
+            return;
+        }
+
+        $this->modelsToSave[] = $model;
+
+        $singularTypes = ['belongsTo', 'hasOne', 'morphOne'];
+        foreach ($saveData as $attribute => $value) {
+            $isNested = ($attribute == 'pivot' || (
+                    $model->hasRelation($attribute) &&
+                    in_array($model->getRelationType($attribute), $singularTypes)
+                ));
+
+            if ($isNested && is_array($value) && $model->{$attribute}) {
+                $this->setModelAttributes($model->{$attribute}, $value);
+            }
+            elseif (!starts_with($attribute, '_')) {
+                $model->{$attribute} = $value;
+            }
+        }
     }
 }

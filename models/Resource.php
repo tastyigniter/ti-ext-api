@@ -111,7 +111,7 @@ class Resource extends Model
     {
         $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
         $registeredActions = array_get($registeredResource, 'options.actions', []);
-        $dbActions = array_get($this->meta, 'actions');
+        $dbActions = (array)array_get($this->meta, 'actions', []);
 
         return array_intersect($dbActions, $registeredActions);
     }
@@ -163,7 +163,7 @@ class Resource extends Model
             $model->controller = array_get($definition, 'controller');
             /** @var TYPE_NAME $model */
             $model->meta = array_except(array_get($definition, 'options'), 'names');
-            $model->is_custom = FALSE;
+            $model->is_custom = false;
             $model->save();
         }
     }
@@ -198,7 +198,7 @@ class Resource extends Model
             }
 
             $action = explode(':', $action, 2);
-            $result[$action[0]] = $action[1] ?? 'admin';
+            $result[$action[0]] = $action[1] ?? 'all';
             $names[$action[0]] = array_get(self::$defaultActionDefinition, $action[0], $name);
         }
 

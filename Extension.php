@@ -4,10 +4,16 @@ namespace Igniter\Api;
 
 use Admin\Models\Customers_model;
 use Admin\Models\Users_model;
+use Dingo\Api\Auth\Auth;
+use Igniter\Api\Classes\ScopeFactory;
 use Igniter\Flame\Database\Model;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
+use League\Fractal\Manager;
 use System\Classes\BaseExtension;
 
 /**
@@ -26,6 +32,7 @@ class Extension extends BaseExtension
 
         $this->registerResponseFactory();
         $this->registerSerializer();
+        $this->registerRequestUserResolver();
 
         $this->registerConsoleCommand('create.apiresource', Console\CreateApiResource::class);
         $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
@@ -33,6 +40,8 @@ class Extension extends BaseExtension
 
     public function boot()
     {
+        $this->configureRateLimiting();
+
         // Register all the available API routes
         Classes\ApiManager::instance();
 
@@ -75,7 +84,7 @@ class Extension extends BaseExtension
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
                 'actions' => [
-                    'index', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
+                    'index', 'show', 'store:admin', 'update:admin', 'destroy:admin',
                 ],
             ],
             'currencies' => [
@@ -116,6 +125,26 @@ class Extension extends BaseExtension
                     'destroy:admin',
                 ],
             ],
+            'menu_options' => [
+                'controller' => \Igniter\Api\ApiResources\MenuOptions::class,
+                'name' => 'MenuOptions',
+                'description' => 'An API resource for Menu options',
+                'actions' => [
+                    'index:admin', 'show:admin',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
+            ],
+            'menu_item_options' => [
+                'controller' => \Igniter\Api\ApiResources\MenuItemOptions::class,
+                'name' => 'MenuItemOptions',
+                'description' => 'An API resource for Menu item options',
+                'actions' => [
+                    'index:admin', 'show:admin',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
+            ],
             'orders' => [
                 'controller' => \Igniter\Api\ApiResources\Orders::class,
                 'name' => 'Orders',
@@ -150,7 +179,7 @@ class Extension extends BaseExtension
                 'controller' => \Igniter\Api\ApiResources\Tables::class,
                 'name' => 'Tables',
                 'description' => 'An API resource for tables',
-                'authorization' => [
+                'actions' => [
                     'index:admin', 'show:admin',
                     'store:admin', 'update:admin',
                     'destroy:admin',
@@ -166,6 +195,10 @@ class Extension extends BaseExtension
      */
     protected function registerResponseFactory()
     {
+        $this->app->bind(Manager::class, function () {
+            return new Manager(new ScopeFactory);
+        });
+
         $this->app->alias('api.response', Classes\ResponseFactory::class);
 
         $this->app->singleton('api.response', function ($app) {
@@ -191,11 +224,11 @@ class Extension extends BaseExtension
     protected function sanctumConfigureAuthModels()
     {
         Users_model::extend(function (Model $model) {
-            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => true];
         });
 
         Customers_model::extend(function (Model $model) {
-            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => TRUE];
+            $model->relation['morphMany']['tokens'] = [Sanctum::$personalAccessTokenModel, 'name' => 'tokenable', 'delete' => true];
         });
     }
 
@@ -204,6 +237,25 @@ class Extension extends BaseExtension
         $this->app->resolving(\Dingo\Api\Transformer\Adapter\Fractal::class, function ($adapter, $app) {
             $serializer = config('api.serializer');
             $adapter->getFractal()->setSerializer(new $serializer);
+        });
+    }
+
+    protected function registerRequestUserResolver()
+    {
+        $this->app->rebinding('request', function ($app, $request) {
+            if (!$request instanceof \Dingo\Api\Http\Request)
+                return;
+
+            $request->setUserResolver(function () use ($app) {
+                return $app[Auth::class]->user();
+            });
+        });
+    }
+
+    protected function configureRateLimiting()
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
     }
 }

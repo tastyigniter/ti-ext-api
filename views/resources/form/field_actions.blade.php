@@ -17,7 +17,7 @@
                     <select
                         id="{{ $field->getId($action.'-authorization') }}"
                         name="{{ $field->getName() }}[authorization][{{ $action }}]"
-                        class="form-control"
+                        class="form-select"
                     >
                         @foreach ($field->getConfig('authOptions') as $key => $label)
                             <option
@@ -30,10 +30,10 @@
                 <td>@lang($name)</td>
                 <td class="list-action text-right">
                     <div class="field-custom-container">
-                        <div class="custom-control custom-switch">
+                        <div class="form-check form-switch">
                             <input
                                 type="checkbox"
-                                class="custom-control-input"
+                                class="form-check-input"
                                 id="{{ $field->getId($action.'-actions') }}"
                                 name="{{ $field->getName() }}[actions][]"
                                 value="{{ $action }}"
@@ -41,7 +41,7 @@
                                 {!! in_array($action, array_get($fieldValue, 'actions', [$action])) ? 'checked="checked"' : '' !!}
                             />
                             <label
-                                class="custom-control-label"
+                                class="form-check-label"
                                 for="{{ $field->getId($action.'-actions') }}"
                             >&nbsp;</label>
                         </div>

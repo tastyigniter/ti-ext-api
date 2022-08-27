@@ -33,7 +33,7 @@ Required**. The country code of the location's physical address. Should referenc
 | `options.delivery_lead_time`           | `integer`  | The average time in minutes it takes an order to be delivered after being placed        |
 | `options.collection_lead_time`           | `integer`  | The average time in minutes it takes an order to be available for collection after being placed        |
 | `options.reservation_time_interval`           | `integer`  | The number of minutes between each reservation time  |
-| `options.reservation_lead_time`           | `integer`  | The average time in minutes a guest will stay at a table |
+| `options.reservation_stay_time`           | `integer`  | The average time in minutes a guest will stay at a table |
 | `location_status`           | `boolean`  | Has the value `true` if the location is enabled or the value `false` if the location is disabled.         |
 | `permalink_slug`           | `string`  | The URL slug for this location. Use only alpha-numeric lowercase characters, _ or - and make sure it is unique.    |
 | `location_thumb`           | `string` or `null`  | The thumbnail image of the location (if available)         |

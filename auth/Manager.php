@@ -29,7 +29,7 @@ class Manager
 
     public function authenticate($token)
     {
-        if ($user = app('auth')->user() AND $this->supportsTokens($user)) {
+        if (($user = app('auth')->user()) && $user->is_activated && $this->supportsTokens($user)) {
             $this->setToken($token = (new TransientToken));
 
             return $token;
@@ -40,12 +40,15 @@ class Manager
                 return null;
 
             $expiration = config('sanctum.expiration');
-            if ($expiration AND $token->created_at->lte(now()->subMinutes($expiration)))
+            if ($expiration && $token->created_at->lte(now()->subMinutes($expiration)))
                 return null;
 
             $user = $token->tokenable;
 
             if (!$this->supportsTokens($user))
+                return null;
+
+            if (!$user->is_activated)
                 return null;
 
             $this->setToken(
@@ -83,20 +86,20 @@ class Manager
     {
         if (!is_null($token)) {
             if ($group == 'guest')
-                return FALSE;
+                return false;
 
-            if ($group == 'admin' AND !$token->isForAdmin())
-                return FALSE;
+            if ($group == 'admin' && !$token->isForAdmin())
+                return false;
 
-            if ($group == 'customer' AND $token->isForAdmin())
-                return FALSE;
+            if ($group == 'customer' && $token->isForAdmin())
+                return false;
         }
         else {
             if (in_array($group, ['admin', 'customer', 'users']))
-                return FALSE;
+                return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -144,11 +147,11 @@ class Manager
     protected function supportsTokens($tokenable = null)
     {
         if (is_null($tokenable))
-            return FALSE;
+            return false;
 
         if (in_array(HasApiTokens::class, class_uses_recursive(get_class($tokenable))))
-            return TRUE;
+            return true;
 
-        return $tokenable instanceof \Igniter\Flame\Auth\Models\User AND $tokenable->hasRelation('tokens');
+        return $tokenable instanceof \Igniter\Flame\Auth\Models\User && $tokenable->hasRelation('tokens');
     }
 }

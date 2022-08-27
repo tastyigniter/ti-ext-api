@@ -71,13 +71,13 @@ class CreateApiResource extends GeneratorCommand
         $extension = array_pop($parts);
         $author = array_pop($parts);
         $controller = $this->argument('controller');
-        $model = $this->option('model') ?? studly_case($author)
-            .'\\'.studly_case($extension).'\\Models\\'.studly_case(str_singular($controller));
+        $repository = $this->option('repository') ?? studly_case($author)
+            .'\\'.studly_case($extension).'\\Repositories\\'.studly_case(str_singular($controller));
 
         $data = $this->option('meta');
 
         $this->vars = [
-            'model' => $model,
+            'repository' => $repository,
 
             'extension' => $extension,
             'lower_extension' => strtolower($extension),
@@ -125,7 +125,7 @@ class CreateApiResource extends GeneratorCommand
     {
         return [
             ['force', null, InputOption::VALUE_NONE, 'Overwrite existing files with generated ones.'],
-            ['model', null, InputOption::VALUE_OPTIONAL, 'Define which model name to use, otherwise the singular controller name is used.'],
+            ['repository', null, InputOption::VALUE_OPTIONAL, 'Define which repository name to use, otherwise the singular controller name is used.'],
             ['meta', null, InputOption::VALUE_OPTIONAL, 'Define which controller config values.'],
         ];
     }

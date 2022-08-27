@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\Controllers;
 
-use AdminMenu;
+use Admin\Facades\AdminMenu;
 use Igniter\Api\Models\Token;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -13,12 +13,12 @@ use Illuminate\Validation\ValidationException;
 class Tokens extends \Admin\Classes\AdminController
 {
     public $implement = [
-        'Admin\Actions\ListController',
+        \Admin\Actions\ListController::class,
     ];
 
     public $listConfig = [
         'list' => [
-            'model' => 'Igniter\Api\Models\Token',
+            'model' => \Igniter\Api\Models\Token::class,
             'title' => 'igniter.api::default.text_tokens_title',
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
             'defaultSort' => ['id', 'DESC'],
@@ -42,10 +42,10 @@ class Tokens extends \Admin\Classes\AdminController
             'email' => 'required_without:username|email:filter',
             'password' => 'required',
             'device_name' => 'required|alpha_dash',
-            'abilities.*' => 'alpha_dash',
+            'abilities.*' => 'regex:/^[a-zA-Z-_\*]+$/',
         ]);
 
-        $forAdmin = $request->has('username') AND !$request->has('email');
+        $forAdmin = $request->has('username') && !$request->has('email');
         $loginFieldName = $forAdmin ? 'username' : 'email';
 
         $credentials = [
@@ -56,9 +56,14 @@ class Tokens extends \Admin\Classes\AdminController
         $auth = app($forAdmin ? 'admin.auth' : 'auth');
         $user = $auth->getByCredentials($credentials);
 
-        if (!$user OR !$auth->validateCredentials($user, $credentials))
+        if (!$user || !$auth->validateCredentials($user, $credentials))
             throw ValidationException::withMessages([
                 $loginFieldName => ['The provided credentials are incorrect.'],
+            ]);
+
+        if (!$user->is_activated)
+            throw ValidationException::withMessages([
+                $loginFieldName => ['Inactive user account'],
             ]);
 
         $token = Token::createToken($user, $request->device_name, $request->abilities ?? ['*']);

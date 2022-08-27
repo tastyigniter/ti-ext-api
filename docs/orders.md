@@ -35,8 +35,8 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `hash`           | `string`  | The order's unique hash.         |
 | `ip_address`           | `string`  | The IP address used when the order was created.         |
 | `user_agent`           | `string`  | The HTTP User-Agent of the browser user when the order was created.         |
-| `date_added`           | `dateTime`  | The datetime for when the order was created.         |
-| `date_modified`           | `dateTime`  | The datetime for when the order was last modified.         |
+| `created_at`           | `dateTime`  | The datetime for when the order was created.         |
+| `updated_at`           | `dateTime`  | The datetime for when the order was last modified.         |
 | `order_totals`           | `array`  | Collection of totals associated with the order.         |
 
 #### Order object example
@@ -70,8 +70,8 @@ The endpoint responses are formatted according to the [JSON:API specification](h
   "ip_address": "192.168.10.1",
   "hash": "7158b25ef2f10b151f87fc4d26b3b27d",
   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-  "date_added": "2020-05-24 12:58:43",
-  "date_modified": "2020-05-24 12:58:43",
+  "created_at": "2020-05-24 12:58:43",
+  "updated_at": "2020-05-24 12:58:43",
   "order_totals": []
 }
 ```
@@ -94,7 +94,7 @@ GET /api/orders
 | `pageLimit`           | `integer`  | The number of items per page.         |
 | `customer`           | `integer`  | The customer id to return orders for |
 | `location`           | `integer `  | The location id to return orders for |
-| `sort`           | `string`  | The order to return results in. Possible values are `order_id asc`, `order_id desc`, `date_added asc`, `date_added desc` |
+| `sort`           | `string`  | The order to return results in. Possible values are `order_id asc`, `order_id desc`, `created_at asc`, `created_at desc` |
 | `include`           | `string`  | What relations to include in the response. Options are `customer`, `location`, `address`, `payment_method`, `status`, `assignee`, `assignee_group`, `status_history`. To include multiple seperate by comma (e.g. ?include= customer,location) |
 
 
@@ -138,8 +138,8 @@ Status: 200 OK
         "ip_address": "192.168.10.1",
         "hash": "7158b25ef2f10b151f87fc4d26b3b27d",
         "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-        "date_added": "2020-05-24 12:58:43",
-        "date_modified": "2020-05-24 12:58:43",
+        "created_at": "2020-05-24 12:58:43",
+        "updated_at": "2020-05-24 12:58:43",
         "order_totals": [...],
         "customer": [...],
 		"location": [...],
@@ -311,8 +311,8 @@ Status: 201 Created
         "ip_address": "192.168.10.1",
         "hash": "7158b25ef2f10b151f87fc4d26b3b27d",
         "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-        "date_added": "2020-05-24 12:58:43",
-        "date_modified": "2020-05-24 12:58:43"]
+        "created_at": "2020-05-24 12:58:43",
+        "updated_at": "2020-05-24 12:58:43"]
        }
     }]
 }
@@ -374,8 +374,8 @@ Status: 200 OK
         "ip_address": "192.168.10.1",
         "hash": "7158b25ef2f10b151f87fc4d26b3b27d",
         "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-        "date_added": "2020-05-24 12:58:43",
-        "date_modified": "2020-05-24 12:58:43",
+        "created_at": "2020-05-24 12:58:43",
+        "updated_at": "2020-05-24 12:58:43",
         "order_totals": [...],
         "customer": [...],
 		"location": [...],
@@ -496,8 +496,8 @@ Status: 200 OK
         "ip_address": "192.168.10.1",
         "hash": "7158b25ef2f10b151f87fc4d26b3b27d",
         "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:76.0) Gecko/20100101 Firefox/76.0",
-        "date_added": "2020-05-24 12:58:43",
-        "date_modified": "2020-05-24 12:58:43"
+        "created_at": "2020-05-24 12:58:43",
+        "updated_at": "2020-05-24 12:58:43"
       }
     ]
   ]

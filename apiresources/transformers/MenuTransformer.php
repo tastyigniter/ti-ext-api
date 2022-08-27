@@ -11,6 +11,8 @@ class MenuTransformer extends TransformerAbstract
         'media',
         'categories',
         'menu_options',
+        'mealtimes',
+        'stocks',
     ];
 
     public function transform(Menus_model $menuItem)
@@ -41,17 +43,34 @@ class MenuTransformer extends TransformerAbstract
     {
         return $this->collection(
             $menuItem->menu_options,
-            new MenuOptionTransformer,
+            new MenuItemOptionTransformer,
             'menu_options'
         );
     }
 
-	public function includeAllergens(Menus_model $menuItem)
+	  public function includeAllergens(Menus_model $menuItem)
     {
         return $this->collection(
             $menuItem->allergens,
             new AllergensTransformer,
             'allergens'
+    }
+    
+    public function includeMealtimes(Menus_model $menuItem)
+    {
+        return $this->collection(
+            $menuItem->mealtimes,
+            new MealtimeTransformer,
+            'mealtimes'
+        );
+    }
+
+    public function includeStocks(Menus_model $menuItem)
+    {
+        return $this->collection(
+            $menuItem->stocks,
+            new StockTransformer,
+            'stocks'
         );
     }
 }

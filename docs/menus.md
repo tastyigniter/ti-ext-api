@@ -13,45 +13,41 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `menu_name`           | `string`  | **Required**. The menu's name (between 2 and 255 characters in length)       |
 | `menu_description`     | `text`  | A short description of the menu (between 2 and 1028 characters in length)      |
 | `menu_price`           | `float`  | **Required**. The menu's price       |
-| `menu_photo`           | `string`  | An image of the menu (if available)        |
-| `stock_qty`           | `integer`  | The menu's remaining stock quantity       |
 | `minimum_qty`           | `integer`  | The minimum quantity required to order.          |
-| `subtract_stock`           | `boolean`  | Has the value `true` if the menu stock quantity should be subtracted when ordered or the value `false` if the menu stock quantity should not be subtracted.         |
-| `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's ordering priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
+| `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
+| `mealtimes`           | `array`  | The menu's mealtimes, if any        |
+| `stocks`           | `array`  | The menu's stocks, if any        |
 
 #### Menu object example
 
 ```json
 {
-  "menu_id": 1,
-  "menu_name": "Puff-Puff",
-  "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-  "menu_price": "4.99"
-  "currency": "GBP",
-  "menu_photo": null,
-  "stock_qty": 0,
-  "minimum_qty": 3,
-  "subtract_stock": false,
-  "mealtime_id": null,
-  "menu_status": true,
-  "menu_priority": 0,
-  "order_restriction": 0,
-  "categories": [],
-  "menu_options": [
-    {
-      "menu_option_id": 1,
-      "option_id": 4,
-      "menu_id": 1,
-      "required": false,
-      "priority": 0,
-      "min_selected": 0,
-      "max_selected": 0,
-      "option_name": "Drinks",
+    "menu_id": 1,
+    "menu_name": "Puff-Puff",
+    "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+    "menu_price": "4.99"
+    "currency": "GBP",
+    "minimum_qty": 3,
+    "menu_status": true,
+    "menu_priority": 0,
+    "order_restriction": null,
+    "categories": [],
+    "stocks": [],
+    "mealtimes": [],
+    "menu_options": [
+        {
+            "menu_option_id": 1,
+            "option_id": 4,
+            "menu_id": 1,
+            "required": false,
+            "priority": 0,
+            "min_selected": 0,
+            "max_selected": 0,
+            "option_name": "Drinks",
       "display_type": "checkbox",
       "option": {
         "option_id": 4,
@@ -106,9 +102,9 @@ GET /api/menus
 | `pageLimit`           | `integer`  | The number of items per page.            |
 | `enabled`           | `boolean`  | If true only menu items that are enabled will be returned        |
 | `location`           | `integer`  | The id of the location you wan to return menu items for         |
-| `category`           | `integer`  | The id of the category you wan to return menu items for         |
+| `category`           | `string`  | The slug of the category you wan to return menu items for         |
 | `search`           | `string`  | The phrase to search for in the menu item name and decsription       |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `mealtimes`, `stocks`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
 #### Response
 
@@ -125,65 +121,109 @@ Status: 200 OK
       "attributes": {
         "menu_name": "Puff-Puff",
         "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": "4.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 0,
-        "minimum_qty": 3,
-        "subtract_stock": false,
-        "mealtime_id": null,
-        "menu_status": true,
-        "menu_priority": 0,
-        "order_restriction": 0,
-        "media": [...],
-        "categories": [...],
-        "menu_options": [...]
+          "menu_price": "4.99"
+          "currency": "GBP",
+          "minimum_qty": 3,
+          "menu_status": true,
+          "menu_priority": 0,
+          "order_restriction": null,
+          "media": [
+              ...
+          ],
+          "categories": [
+              ...
+          ],
+          "menu_options": [
+              ...
+          ],
+          "mealtimes": [
+              ...
+          ],
+          "stocks": [
+              ...
+          ]
       },
-      "relationships": {
-        "categories": {
-          "data": [...]
-        },
-        "menu_options": {
-          "data": [...]
+        "relationships": {
+            "categories": {
+                "data": [
+                    ...
+                ]
+            },
+            "menu_options": {
+                "data": [
+                    ...
+                ]
+            },
+            "mealtimes": {
+                "data": [
+                    ...
+                ]
+            },
+            "stocks": {
+                "data": [
+                    ...
+                ]
+            }
         }
-      }
     },
-    {
-      "type": "menus",
-      "id": "2",
-      "attributes": {
-        "menu_name": "Doughnut",
-        "menu_description": "Deep fried from a flour dough with sweet fillings",
-        "menu_price": "0.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 1000,
-        "minimum_qty": 1,
-        "subtract_stock": true,
-        "mealtime_id": null,
-        "menu_status": true,
-        "menu_priority": 0,
-        "order_restriction": 0,
-        "media": [...],
-        "categories": [...],
-        "menu_options": [...]
-      },
-      "relationships": {
-        "categories": {
-          "data": [...]
-        },
-        "menu_options": {
-          "data": [...]
-        }
+      {
+          "type": "menus",
+          "id": "2",
+          "attributes": {
+              "menu_name": "Doughnut",
+              "menu_description": "Deep fried from a flour dough with sweet fillings",
+              "menu_price": "0.99"
+              "currency": "GBP",
+              "minimum_qty": 1,
+              "menu_status": true,
+              "menu_priority": 0,
+              "order_restriction": null,
+              "media": [
+                  ...
+              ],
+              "categories": [
+                  ...
+              ],
+              "menu_options": [
+                  ...
+              ],
+              "mealtimes": [
+                  ...
+              ],
+              "stocks": [
+                  ...
+              ]
+          },
+          "relationships": {
+              "categories": {
+                  "data": [
+                      ...
+                  ]
+              },
+              "menu_options": {
+                  "data": [
+                      ...
+                  ]
+              },
+              "mealtimes": {
+                  "data": [
+                      ...
+                  ]
+              },
+              "stocks": {
+                  "data": [
+                      ...
+                  ]
+              }
+          }
       }
-    }
   ],
-  "included": [
-    ...
-  ],
-  "meta": {
-    "pagination": {
-      "total": 2,
+    "included": [
+        ...
+    ],
+    "meta": {
+        "pagination": {
+            "total": 2,
       "count": 2,
       "per_page": 20,
       "current_page": 1,
@@ -215,24 +255,22 @@ POST /api/menus
 | `menu_name`           | `string`  | **Required**. The menu's name (between 2 and 255 characters in length)       |
 | `menu_description`     | `text`  | A short description of the menu (between 2 and 1028 characters in length)      |
 | `menu_price`           | `float`  | **Required**. The menu's price       |
-| `menu_photo`           | `string`  | An image of the menu (if available)        |
-| `stock_qty`           | `integer`  | The menu's remaining stock quantity       |
 | `minimum_qty`           | `integer`  | The minimum quantity required to order.          |
-| `subtract_stock`           | `boolean`  | Has the value `true` if the menu stock quantity should be subtracted when ordered or the value `false` if the menu stock quantity should not be subtracted.         |
-| `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's ordering priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.        |
+| `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
+| `mealtimes`           | `array`  | The mealtime's options, if any        |
+| `stocks`           | `array`  | The stock's options, if any        |
 
 #### Payload example
 
 ```json
 {
   "menu_name": "Chin-Chin",
-  "menu_price": 1.99,
-  "order_restriction": 0
+    "menu_price": 1.99,
+    "order_restriction": null
 }
 ```
 
@@ -245,25 +283,21 @@ Status: 201 Created
 ```json
 {
   "data": [
-    {
-      "type": "menus",
-      "id": "1",
-      "attributes": {
-        "menu_name": "Puff-Puff",
-        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": "4.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 0,
-        "minimum_qty": 3,
-        "subtract_stock": false,
-        "mealtime_id": null,
-        "menu_status": true,
-        "menu_priority": 0,
-        "order_restriction": 0
-    }
-  ]
-}
+      {
+          "type": "menus",
+          "id": "1",
+          "attributes": {
+              "menu_name": "Puff-Puff",
+              "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+              "menu_price": "4.99"
+              "currency": "GBP",
+              "minimum_qty": 3,
+              "menu_status": true,
+              "menu_priority": 0,
+              "order_restriction": null
+          }
+      ]
+      }
 ```
 
 ### Retrieve a menu
@@ -280,7 +314,7 @@ GET /api/menus/:menu_id
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `categories`, `menu_options`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
+| `include`           | `string`  | What relations to include in the response. Options are `media`, `mealtimes`, `categories`, `menu_options`, `stocks`. To include multiple seperate by comma (e.g. ?include=categories,menu_options) |
 
 #### Response
 
@@ -291,32 +325,48 @@ Status: 200 OK
 ```json
 {
   "data": [
-    {
-      "type": "menus",
-      "id": "1",
-      "attributes": {
-        "menu_name": "Puff-Puff",
-        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": "4.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 0,
-        "minimum_qty": 3,
-        "subtract_stock": false,
-        "mealtime_id": null,
-        "menu_status": true,
-        "menu_priority": 0,
-        "order_restriction": 0,
-        "media": [...],
-        "categories": [...],
-        "menu_options": [...]
-      },
-      "relationships": {
-        "categories": {
+      {
+          "type": "menus",
+          "id": "1",
+          "attributes": {
+              "menu_name": "Puff-Puff",
+              "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+              "menu_price": "4.99"
+              "currency": "GBP",
+              "minimum_qty": 3,
+              "menu_status": true,
+              "menu_priority": 0,
+              "order_restriction": null,
+              "media": [
+                  ...
+              ],
+              "categories": [
+                  ...
+              ],
+              "menu_options": [
+                  ...
+              ],
+              "mealtimes": [
+                  ...
+              ],
+              "stocks": [
+                  ...
+              ]
+          },
+          "relationships": {
+              "categories": {
+                  "data": [
+                      ...
+                  ]
+              },
+              "menu_options": {
           "data": [...]
         },
-        "menu_options": {
-          "data": [...]
+        "mealtimes": {
+        "data": [...]
+        },
+        "stocks": {
+        "data": [...]
         }
       }
     }
@@ -344,16 +394,14 @@ PATCH /api/menus/:menu_id
 | `menu_name`           | `string`  | **Required**. The menu's name (between 2 and 255 characters in length)       |
 | `menu_description`     | `text`  | A short description of the menu (between 2 and 1028 characters in length)      |
 | `menu_price`           | `float`  | **Required**. The menu's price       |
-| `menu_photo`           | `string`  | An image of the menu (if available)        |
-| `stock_qty`           | `integer`  | The menu's remaining stock quantity       |
 | `minimum_qty`           | `integer`  | The minimum quantity required to order.          |
-| `subtract_stock`           | `boolean`  | Has the value `true` if the menu stock quantity should be subtracted when ordered or the value `false` if the menu stock quantity should not be subtracted.         |
-| `mealtime_id`           | `integer`  | The Unique identifier of the menu's mealtime, if any.        |
 | `menu_status`           | `boolean`  | Has the value `true` if the menu is enabled or the value `false` if the menu is disabled.        |
 | `menu_priority`           | `integer`  | The menu's priority.        |
-| `order_restriction`           | `integer`  | Has the value `1` if the menu is only available for delivery orders, the value `2` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.         |
+| `order_restriction`           | `string`  | Has the value `delivery` if the menu is only available for delivery orders, the value `collection` if the menu is only available for pick-up orders, or the value `0` if the menu is available for both pick-up and delivery.      |
 | `categories`           | `array`  | The menu's categories, if any (see [Categories](locations.md))       |
 | `menu_options`           | `array`  | The menu's options, if any        |
+| `mealtimes`           | `array`  | The mealtime's options, if any        |
+| `stocks`           | `array`  | The stock's options, if any        |
 
 #### Payload example
 
@@ -373,25 +421,21 @@ Status: 200 OK
 ```json
 {
   "data": [
-    {
-      "type": "menus",
-      "id": "1",
-      "attributes": {
-        "menu_name": "Chin-Chin",
-        "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
-        "menu_price": "4.99"
-        "currency": "GBP",
-        "menu_photo": null,
-        "stock_qty": 0,
-        "minimum_qty": 3,
-        "subtract_stock": false,
-        "mealtime_id": null,
-        "menu_status": false,
-        "menu_priority": 0,
-        "order_restriction": 0
-    }
-  ]
-}
+      {
+          "type": "menus",
+          "id": "1",
+          "attributes": {
+              "menu_name": "Chin-Chin",
+              "menu_description": "Traditional Nigerian donut ball, rolled in sugar",
+              "menu_price": "4.99"
+              "currency": "GBP",
+              "minimum_qty": 3,
+              "menu_status": false,
+              "menu_priority": 0,
+              "order_restriction": null
+          }
+      ]
+      }
 ```
 
 ### Delete a menu

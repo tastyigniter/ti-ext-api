@@ -24,7 +24,7 @@ class RestController extends ControllerAction
     protected $controller;
 
     /**
-     * @var \Model The initialized model used by the rest controller.
+     * @var \Igniter\Flame\Database\Model The initialized model used by the rest controller.
      */
     protected $model;
 
@@ -187,7 +187,9 @@ class RestController extends ControllerAction
                         $request->setController($this->controller);
                 });
 
-                return app()->make($requestClass)->validated();
+                app()->make($requestClass);
+
+                return $requestData;
             }
 
             return $this->controller->restValidate($requestData);

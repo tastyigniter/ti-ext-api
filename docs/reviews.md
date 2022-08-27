@@ -35,7 +35,8 @@ The endpoint responses are formatted according to the [JSON:API specification](h
   "delivery": 5,
   "service": 5,
   "review_text": "This restaurant is amazing!",
-  "date_added": "2020-06-03 09:17:12",
+  "created_at": "2020-06-03 09:17:12",
+  "updated_at": "2020-06-03 09:17:12",
   "review_status": true,
   "location": {},
   "customer": {}
@@ -59,7 +60,7 @@ GET /api/reviews
 | -------------------- | --------- | ------------------------------------------------------------ |
 | `page`           | `integer`  | The page number.         |
 | `pageLimit`           | `integer`  | The number of items per page.         |
-| `sort`           | `string`  | The order to return results in. Possible values are `date_added asc`, `date_added desc`      |
+| `sort`           | `string`  | The order to return results in. Possible values are `created_at asc`, `created_at desc`      |
 | `enabled`           | `boolean`  | If true only menu items that are enabled will be returned        |
 | `location`           | `integer`  | The id of the location you wan to return reviews for         |
 | `customer`           | `integer`  | The id of the customer you wan to return reviews for             |
@@ -88,7 +89,8 @@ Status: 200 OK
         "delivery": 5,
         "service": 5,
         "review_text": "This restaurant is amazing!",
-        "date_added": "2020-06-03 09:17:12",
+        "created_at": "2020-06-03 09:17:12",
+        "updated_at": "2020-06-03 09:17:12",
         "review_status": true,
         "location": {},
         "customer": {}
@@ -186,7 +188,8 @@ Status: 201 Created
         "delivery": 5,
         "service": 5,
         "review_text": "This restaurant is amazing!",
-        "date_added": "2020-06-03 09:17:12",
+        "created_at": "2020-06-03 09:17:12",
+        "updated_at": "2020-06-03 09:17:12",
         "review_status": true,
         "location": {},
         "customer": {}
@@ -235,7 +238,8 @@ Status: 200 OK
         "delivery": 5,
         "service": 5,
         "review_text": "This restaurant is amazing!",
-        "date_added": "2020-06-03 09:17:12",
+        "created_at": "2020-06-03 09:17:12",
+        "updated_at": "2020-06-03 09:17:12",
         "review_status": true,
         "location": {},
         "customer": {}
@@ -312,7 +316,8 @@ Status: 200 OK
         "delivery": 5,
         "service": 5,
         "review_text": "This restaurant is *really* amazing!",
-        "date_added": "2020-06-03 09:17:12",
+        "created_at": "2020-06-03 09:17:12",
+        "updated_at": "2020-06-03 09:17:12",
         "review_status": true,
         "location": {},
         "customer": {}

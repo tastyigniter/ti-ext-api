@@ -40,7 +40,7 @@ class ApiController extends BaseController
             $this->authorizeToken();
 
         // Execute the action
-        $response = call_user_func_array([$this, $action], $parameters);
+        $response = call_user_func_array([$this, $action], array_values($parameters));
 
         return $this->isResponsable($response)
             ? $response : $this->response()->array($response);
@@ -49,10 +49,10 @@ class ApiController extends BaseController
     public function checkAction($action)
     {
         if (!array_key_exists($action, $this->allowedActions))
-            return FALSE;
+            return false;
 
         if (!$methodExists = $this->methodExists($action))
-            return FALSE;
+            return false;
 
         if ($ownMethod = method_exists($this, $action)) {
             $methodInfo = new \ReflectionMethod($this, $action);
@@ -67,12 +67,12 @@ class ApiController extends BaseController
     {
         $abilities = $this->getAbilities();
 
-        if ($abilities AND !$this->tokenCan($abilities))
+        if ($abilities && !$this->tokenCan($abilities))
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
     }
 
     protected function isResponsable($response)
     {
-        return $response instanceof Response OR $response instanceof Responsable;
+        return $response instanceof Response || $response instanceof Responsable;
     }
 }

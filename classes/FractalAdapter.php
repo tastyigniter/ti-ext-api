@@ -23,6 +23,9 @@ class FractalAdapter extends Fractal
     {
         $this->parseFractalIncludes($request);
 
+        if ($sparseFieldsets = request('fields', false))
+            $this->getFractal()->parseFieldsets($sparseFieldsets);
+
         $resource = $this->createResource($response, $transformer, $parameters = $binding->getParameters());
 
         if ($response instanceof IlluminatePaginator) {
