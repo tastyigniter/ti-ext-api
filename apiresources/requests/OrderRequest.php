@@ -2,6 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Requests;
 
+use Igniter\Api\Auth\Manager;
 use Illuminate\Support\Facades\Request;
 use System\Classes\FormRequest;
 
@@ -59,5 +60,13 @@ class OrderRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    protected function prepareForValidation()
+    {
+        $token = Manager::instance()->token();
+        if ($token && $token->isForCustomer()) {
+            $this->merge(['customer_id' => $token->tokenable_id]);
+        }
     }
 }

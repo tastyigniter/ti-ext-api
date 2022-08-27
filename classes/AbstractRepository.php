@@ -198,6 +198,13 @@ class AbstractRepository
 
             $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
+
+            foreach (['beforeCreate', 'afterCreate', 'beforeSave', 'afterSave'] as $method) {
+                $model->bindEvent('model.'.$method, function ($model) use ($method) {
+                    if (method_exists($this, $method))
+                        $this->$method($model);
+                });
+            }
         });
     }
 
