@@ -22,6 +22,8 @@ class Reservations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
+        'locationAware' => [],
+        'customerAware' => [],
         'request' => Requests\ReservationRequest::class,
         'repository' => Repositories\ReservationRepository::class,
         'transformer' => Transformers\ReservationTransformer::class,

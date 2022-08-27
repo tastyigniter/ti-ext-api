@@ -21,6 +21,7 @@ class Categories extends ApiController
             'update' => [],
             'destroy' => [],
         ],
+        'locationAware' => [],
         'request' => \Admin\Requests\Category::class,
         'repository' => Repositories\CategoryRepository::class,
         'transformer' => Transformers\CategoryTransformer::class,

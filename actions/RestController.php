@@ -4,6 +4,7 @@ namespace Igniter\Api\Actions;
 
 use Admin\Traits\FormModelWidget;
 use Dingo\Api\Exception\ResourceException;
+use Igniter\Api\Auth\Manager;
 use Igniter\Api\Classes\AbstractRepository;
 use Igniter\Api\Traits\RestExtendable;
 use Igniter\Flame\Exception\ValidationException;
@@ -220,6 +221,12 @@ class RestController extends ControllerAction
     protected function bindQueryEvents(AbstractRepository $repository): void
     {
         $repository->bindEvent('repository.extendQuery', function ($query) {
+            if (is_array($locationAwareConfig = $this->getConfig('locationAware')))
+                $this->applyLocationAwareScope($query, $locationAwareConfig);
+
+            if (is_array($customerAwareConfig = $this->getConfig('customerAware')))
+                $this->applyCustomerAwareScope($query, $customerAwareConfig);
+
             $this->controller->restExtendQuery($query);
         });
     }
@@ -262,5 +269,32 @@ class RestController extends ControllerAction
         return [
             'key' => $this->getConfig('resourceKey', strtolower(class_basename($this->controller))),
         ];
+    }
+
+    protected function applyLocationAwareScope($query, array $config)
+    {
+        if (!in_array(\Admin\Traits\Locationable::class, class_uses($query->getModel())))
+            return;
+
+        $token = Manager::instance()->token();
+        if (!$token->isForAdmin() || $token->tokenable->isSuperUser())
+            return;
+
+        $ids = $token->tokenable->staff->locations->where('location_status', true)->pluck('location_id')->all();
+        if (is_null($ids))
+            return;
+
+        array_get($config, 'addAbsenceConstraint', true)
+            ? $query->whereHasOrDoesntHaveLocation($ids)
+            : $query->whereHasLocation($ids);
+    }
+
+    protected function applyCustomerAwareScope($query, array $config)
+    {
+        $token = Manager::instance()->token();
+        if (!$token->isForCustomer())
+            return;
+
+        $query->where(array_get($config, 'column', 'customer_id'), $token->tokenable->getKey());
     }
 }

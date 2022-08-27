@@ -21,6 +21,7 @@ class Tables extends ApiController
             'update' => [],
             'destroy' => [],
         ],
+        'locationAware' => [],
         'request' => \Admin\Requests\Table::class,
         'repository' => Repositories\TableRepository::class,
         'transformer' => Transformers\TableTransformer::class,

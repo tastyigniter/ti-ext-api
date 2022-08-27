@@ -21,6 +21,7 @@ class MenuOptions extends ApiController
             'update' => [],
             'destroy' => [],
         ],
+        'locationAware' => [],
         'request' => Requests\MenuOptionRequest::class,
         'repository' => Repositories\MenuOptionRepository::class,
         'transformer' => Transformers\MenuOptionTransformer::class,
