@@ -28,14 +28,6 @@ class Orders extends ApiController
 
     protected $requiredAbilities = ['orders:*'];
 
-    public function restExtendQuery($query)
-    {
-        if (($token = $this->getToken()) && $token->isForCustomer())
-            $query->where('customer_id', $token->tokenable_id);
-
-        return $query;
-    }
-
     public function restAfterSave($model)
     {
         if ($orderMenus = (array)request()->input('order_menus', [])) {
@@ -53,6 +45,9 @@ class Orders extends ApiController
             $model->addOrderTotals(json_decode(json_encode($orderTotals), true));
 
         if ($orderStatus = request()->input('status_id', false))
-            $model->updateOrderStatus($orderStatus, ['comment' => request()->input('status_comment', null)]);
+            $model->updateOrderStatus($orderStatus, ['comment' => request()->input('status_comment')]);
+
+        if (request()->input('processed', false))
+            $model->markAsPaymentProcessed();
     }
 }
