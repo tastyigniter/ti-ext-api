@@ -9,6 +9,8 @@ class MenuRepository extends AbstractRepository
 {
     protected $modelClass = Menus_model::class;
 
+    protected static $locationAwareConfig = [];
+
     protected function extendQuery($query)
     {
         $query->with(['menu_options.menu_option_values']);
