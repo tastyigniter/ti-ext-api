@@ -9,6 +9,10 @@ class OrderRepository extends AbstractRepository
 {
     protected $modelClass = Orders_model::class;
 
+    protected static $locationAwareConfig = [];
+
+    protected static $customerAwareConfig = [];
+
     public function beforeSave($model)
     {
         foreach (['order_date', 'order_time', 'location_id', 'processed', 'order_total'] as $field) {

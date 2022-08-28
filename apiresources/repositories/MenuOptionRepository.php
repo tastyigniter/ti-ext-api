@@ -8,4 +8,6 @@ use Igniter\Api\Classes\AbstractRepository;
 class MenuOptionRepository extends AbstractRepository
 {
     protected $modelClass = Menu_options_model::class;
+
+    protected static $locationAwareConfig = [];
 }
