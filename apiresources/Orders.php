@@ -22,8 +22,6 @@ class Orders extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'locationAware' => [],
-        'customerAware' => [],
         'request' => Requests\OrderRequest::class,
         'repository' => Repositories\OrderRepository::class,
         'transformer' => Transformers\OrderTransformer::class,

@@ -10,4 +10,6 @@ class TableRepository extends AbstractRepository
     protected $guarded = [];
 
     protected $modelClass = Tables_model::class;
+
+    protected static $locationAwareConfig = [];
 }
