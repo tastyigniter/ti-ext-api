@@ -12,13 +12,4 @@ class OrderRepository extends AbstractRepository
     protected static $locationAwareConfig = [];
 
     protected static $customerAwareConfig = [];
-
-    public function beforeSave($model)
-    {
-        foreach (['order_date', 'order_time', 'location_id', 'processed', 'order_total'] as $field) {
-            if ($fieldValue = request()->input($field, false)) {
-                $model->$field = $fieldValue;
-            }
-        }
-    }
 }

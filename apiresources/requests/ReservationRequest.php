@@ -2,7 +2,6 @@
 
 namespace Igniter\Api\ApiResources\Requests;
 
-use Igniter\Api\Auth\Manager;
 use System\Classes\FormRequest;
 
 class ReservationRequest extends FormRequest
@@ -37,13 +36,5 @@ class ReservationRequest extends FormRequest
             'telephone' => ['required'],
             'comment' => ['max:520'],
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        $token = Manager::instance()->token();
-        if ($token && $token->isForCustomer()) {
-            $this->merge(['customer_id' => $token->tokenable_id]);
-        }
     }
 }
