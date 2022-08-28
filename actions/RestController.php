@@ -7,7 +7,6 @@ use Dingo\Api\Exception\ResourceException;
 use Igniter\Api\Classes\AbstractRepository;
 use Igniter\Api\Traits\RestExtendable;
 use Igniter\Flame\Exception\ValidationException;
-use Illuminate\Support\Facades\Request;
 use System\Classes\ControllerAction;
 
 /**
@@ -175,7 +174,7 @@ class RestController extends ControllerAction
      */
     protected function validateRequest($requestMethod)
     {
-        $requestData = Request::$requestMethod();
+        $requestData = request()->$requestMethod();
 
         try {
             if ($requestMethod == 'query')
@@ -187,9 +186,9 @@ class RestController extends ControllerAction
                         $request->setController($this->controller);
                 });
 
-                app()->make($requestClass);
+                $request = app()->make($requestClass);
 
-                return $requestData;
+                return $request->$requestMethod();
             }
 
             return $this->controller->restValidate($requestData);

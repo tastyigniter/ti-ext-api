@@ -3,7 +3,6 @@
 namespace Igniter\Api\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
-use Illuminate\Support\Facades\Request;
 
 /**
  * Orders API Controller
@@ -37,33 +36,9 @@ class Orders extends ApiController
         return $query;
     }
 
-    public function store()
-    {
-        if (($token = $this->getToken()) && $token->isForCustomer())
-            Request::merge(['customer_id' => $token->tokenable_id]);
-
-        return $this->asExtension('RestController')->store();
-    }
-
-    public function update($recordId)
-    {
-        if (($token = $this->getToken()) && $token->isForCustomer())
-            Request::merge(['customer_id' => $token->tokenable_id]);
-
-        return $this->asExtension('RestController')->update($recordId);
-    }
-
     public function restAfterSave($model)
     {
-        $requireSave = false;
-        foreach (['order_date', 'order_time', 'location_id', 'processed', 'order_total'] as $field) {
-            if ($fieldValue = Request::get($field, false)) {
-                $model->$field = $fieldValue;
-                $requireSave = true;
-            }
-        }
-
-        if ($orderMenus = (array)Request::get('order_menus', [])) {
+        if ($orderMenus = (array)request()->input('order_menus', [])) {
             $model->addOrderMenus(json_decode(json_encode($orderMenus)));
 
             $total_items = 0;
@@ -74,10 +49,10 @@ class Orders extends ApiController
             $model->total_items = $total_items;
         }
 
-        if ($orderTotals = (array)Request::get('order_totals', []))
+        if ($orderTotals = (array)request()->input('order_totals', []))
             $model->addOrderTotals(json_decode(json_encode($orderTotals), true));
 
-        if ($orderStatus = Request::get('status_id', false))
-            $model->updateOrderStatus($orderStatus, ['comment' => Request::get('status_comment', null)]);
+        if ($orderStatus = request()->input('status_id', false))
+            $model->updateOrderStatus($orderStatus, ['comment' => request()->input('status_comment', null)]);
     }
 }
