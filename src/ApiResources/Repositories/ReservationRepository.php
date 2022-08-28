@@ -8,4 +8,8 @@ use Igniter\Api\Classes\AbstractRepository;
 class ReservationRepository extends AbstractRepository
 {
     protected $modelClass = Reservation::class;
+
+    protected static $locationAwareConfig = [];
+
+    protected static $customerAwareConfig = [];
 }

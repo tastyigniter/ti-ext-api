@@ -8,7 +8,6 @@ use Igniter\Api\Exceptions\ValidationHttpException;
 use Igniter\Api\Traits\RestExtendable;
 use Igniter\Flame\Exception\ValidationException;
 use Igniter\System\Classes\ControllerAction;
-use Illuminate\Support\Facades\Request;
 
 /**
  * Rest Controller Action
@@ -185,7 +184,7 @@ class RestController extends ControllerAction
      */
     protected function validateRequest($requestMethod)
     {
-        $requestData = Request::$requestMethod();
+        $requestData = request()->$requestMethod();
 
         try {
             if ($requestMethod == 'query')
@@ -197,7 +196,9 @@ class RestController extends ControllerAction
                         $request->setController($this->controller);
                 });
 
-                return app()->make($requestClass)->validated();
+                $request = app()->make($requestClass);
+
+                return $request->$requestMethod();
             }
 
             return $this->controller->restValidate($requestData);

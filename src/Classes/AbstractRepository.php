@@ -231,9 +231,9 @@ class AbstractRepository
 
         $this->applyScopes($query);
 
-        $this->applyLocationAwareScope($query);
+        $this->applyLocationAwareScopes($query);
 
-        $this->applyCustomerAwareScope($query);
+        $this->applyCustomerAwareScopes($query);
 
         $this->extendQuery($query);
 
@@ -256,9 +256,6 @@ class AbstractRepository
 
         $singularTypes = ['belongsTo', 'hasOne', 'morphOne'];
         foreach ($saveData as $attribute => $value) {
-            if ($model->isGuarded($attribute))
-                continue;
-
             $isNested = ($attribute == 'pivot' || (
                     $model->hasRelation($attribute) &&
                     in_array($model->getRelationType($attribute), $singularTypes)
@@ -273,7 +270,7 @@ class AbstractRepository
         }
     }
 
-    protected function applyLocationAwareScope($query)
+    protected function applyLocationAwareScope($query, array $config)
     {
         if (!is_array($config = static::$locationAwareConfig))
             return;
@@ -293,7 +290,7 @@ class AbstractRepository
             : $query->whereHasLocation($ids);
     }
 
-    protected function applyCustomerAwareScope($query)
+    protected function applyCustomerAwareScope($query, array $config)
     {
         if (!is_array($config = static::$customerAwareConfig))
             return;

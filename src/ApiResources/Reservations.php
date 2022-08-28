@@ -27,4 +27,12 @@ class Reservations extends ApiController
     ];
 
     protected $requiredAbilities = ['reservations:*'];
+
+    public function restExtendQuery($query)
+    {
+        if (($token = $this->getToken()) && $token->isForCustomer())
+            $query->where('customer_id', $token->tokenable_id);
+
+        return $query;
+    }
 }

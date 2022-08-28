@@ -8,4 +8,8 @@ use Igniter\Local\Models\Review;
 class ReviewRepository extends AbstractRepository
 {
     protected $modelClass = Review::class;
+
+    protected static $locationAwareConfig = [];
+
+    protected static $customerAwareConfig = [];
 }

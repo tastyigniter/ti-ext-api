@@ -8,4 +8,8 @@ use Igniter\Api\Classes\AbstractRepository;
 class OrderRepository extends AbstractRepository
 {
     protected $modelClass = Order::class;
+
+    protected static $locationAwareConfig = [];
+
+    protected static $customerAwareConfig = [];
 }

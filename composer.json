@@ -15,6 +15,7 @@
   ],
   "require": {
     "tastyigniter/flame": "v4.x-dev",
+    "laravel/sanctum": "^2.15",
     "spatie/laravel-fractal": "^6.0"
   },
   "require-dev": {
@@ -40,10 +41,7 @@
         "color": "#fff",
         "backgroundColor": "#02586F"
       },
-      "homepage": "https://tastyigniter.com/marketplace/item/igniter-api",
-      "require": {
-        "igniter.local": "*"
-      }
+      "homepage": "https://tastyigniter.com/marketplace/item/igniter-api"
     }
   }
 }

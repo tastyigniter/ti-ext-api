@@ -11,6 +11,7 @@ class MenuTransformer extends TransformerAbstract
         'media',
         'categories',
         'menu_options',
+        'ingredients',
         'mealtimes',
         'stocks',
     ];
@@ -45,6 +46,15 @@ class MenuTransformer extends TransformerAbstract
             $menuItem->menu_options,
             new MenuItemOptionTransformer,
             'menu_options'
+        );
+    }
+
+    public function includeIngredients(Menu $menuItem)
+    {
+        return $this->collection(
+            $menuItem->ingredients,
+            new IngredientTransformer,
+            'ingredients'
         );
     }
 
