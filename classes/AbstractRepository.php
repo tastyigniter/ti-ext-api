@@ -228,9 +228,9 @@ class AbstractRepository
 
         $this->applyScopes($query);
 
-        $this->applyLocationAwareScopes($query);
+        $this->applyLocationAwareScope($query);
 
-        $this->applyCustomerAwareScopes($query);
+        $this->applyCustomerAwareScope($query);
 
         $this->extendQuery($query);
 
@@ -267,7 +267,7 @@ class AbstractRepository
         }
     }
 
-    protected function applyLocationAwareScope($query, array $config)
+    protected function applyLocationAwareScope($query)
     {
         if (!is_array($config = static::$locationAwareConfig))
             return;
@@ -287,7 +287,7 @@ class AbstractRepository
             : $query->whereHasLocation($ids);
     }
 
-    protected function applyCustomerAwareScope($query, array $config)
+    protected function applyCustomerAwareScope($query)
     {
         if (!is_array($config = static::$customerAwareConfig))
             return;
