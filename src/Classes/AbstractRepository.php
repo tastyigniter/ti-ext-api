@@ -2,6 +2,7 @@
 
 namespace Igniter\Api\Classes;
 
+use Igniter\Api\Auth\Manager;
 use Igniter\Api\Traits\GuardsAttributes;
 use Igniter\Api\Traits\HasGlobalScopes;
 use Igniter\Flame\Database\Model;
@@ -34,6 +35,10 @@ class AbstractRepository
      * @var array List of prepared models that require saving.
      */
     protected $modelsToSave = [];
+
+    protected static $locationAwareConfig;
+
+    protected static $customerAwareConfig;
 
     public function find(int $id, array $attributes = ['*'])
     {
@@ -83,6 +88,8 @@ class AbstractRepository
         $this->modelsToSave = [];
         $this->setModelAttributes($model, $attributes);
 
+        $this->setCustomerAwareAttributes($model);
+
         DB::transaction(function () {
             foreach ($this->modelsToSave as $modelToSave) {
                 $modelToSave->save();
@@ -108,6 +115,8 @@ class AbstractRepository
 
         $this->modelsToSave = [];
         $this->setModelAttributes($model, $attributes);
+
+        $this->setCustomerAwareAttributes($model);
 
         DB::transaction(function () {
             foreach ($this->modelsToSave as $modelToSave) {
@@ -201,6 +210,18 @@ class AbstractRepository
 
             $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
+
+            foreach ([
+                'beforeCreate', 'afterCreate',
+                'beforeUpdate', 'afterUpdate',
+                'beforeSave', 'afterSave',
+                'beforeDelete', 'afterDelete',
+            ] as $method) {
+                $model->bindEvent('model.'.$method, function () use ($model, $method) {
+                    if (method_exists($this, $method))
+                        $this->$method($model);
+                });
+            }
         });
     }
 
@@ -209,6 +230,10 @@ class AbstractRepository
         $query = $model->newQuery();
 
         $this->applyScopes($query);
+
+        $this->applyLocationAwareScopes($query);
+
+        $this->applyCustomerAwareScopes($query);
 
         $this->extendQuery($query);
 
@@ -243,5 +268,47 @@ class AbstractRepository
                 $model->{$attribute} = $value;
             }
         }
+    }
+
+    protected function applyLocationAwareScope($query, array $config)
+    {
+        if (!is_array($config = static::$locationAwareConfig))
+            return;
+
+        if (!in_array(\Admin\Traits\Locationable::class, class_uses($query->getModel())))
+            return;
+
+        if (!optional($token = Manager::instance()->token())->isForAdmin() || $token->tokenable->isSuperUser())
+            return;
+
+        $ids = $token->tokenable->staff->locations->where('location_status', true)->pluck('location_id')->all();
+        if (is_null($ids))
+            return;
+
+        array_get($config, 'addAbsenceConstraint', true)
+            ? $query->whereHasOrDoesntHaveLocation($ids)
+            : $query->whereHasLocation($ids);
+    }
+
+    protected function applyCustomerAwareScope($query, array $config)
+    {
+        if (!is_array($config = static::$customerAwareConfig))
+            return;
+
+        if (!optional($token = Manager::instance()->token())->isForCustomer())
+            return;
+
+        $query->where(array_get($config, 'column', 'customer_id'), $token->tokenable->getKey());
+    }
+
+    protected function setCustomerAwareAttributes($model)
+    {
+        if (!is_array($config = static::$customerAwareConfig))
+            return;
+
+        if (!optional($token = Manager::instance()->token())->isForCustomer())
+            return;
+
+        $model->{array_get($config, 'column', 'customer_id')} = $token->tokenable->getKey();
     }
 }

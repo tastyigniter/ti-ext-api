@@ -52,4 +52,8 @@ return [
     'alert_auth_restricted' => 'The API token doesn\'t have permissions to perform the request.',
     'alert_token_restricted' => 'The API token doesn\'t have the right abilities to perform this action',
     'alert_validation_failed' => 'Failed to validate request parameters',
+
+    'orders' => [
+        'label_customer_id' => 'Customer ID',
+    ],
 ];

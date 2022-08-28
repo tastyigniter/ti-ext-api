@@ -8,4 +8,6 @@ use Igniter\Api\Classes\AbstractRepository;
 class CategoryRepository extends AbstractRepository
 {
     protected $modelClass = Category::class;
+
+    protected static $locationAwareConfig = [];
 }

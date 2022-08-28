@@ -24,6 +24,7 @@ class OrderRequest extends FormRequest
             'address.state' => lang('igniter.cart::default.checkout.label_state'),
             'address.postcode' => lang('igniter.cart::default.checkout.label_postcode'),
             'address.country_id' => lang('igniter.cart::default.checkout.label_country'),
+            'customer_id' => lang('igniter.api::default.orders.label_customer_id'),
         ];
     }
 
@@ -37,12 +38,14 @@ class OrderRequest extends FormRequest
             'email' => ['sometimes', 'required', 'email:filter', 'max:96'],
             'comment' => ['max:500'],
             'payment' => ['sometimes', 'required', 'alpha_dash'],
+            'customer_id' => ['integer'],
         ];
 
         if ($method == 'post') {
             $rules['first_name'][] = 'required';
             $rules['last_name'][] = 'required';
             $rules['order_type'][] = 'required';
+            $rules['customer_id'][] = 'required';
         }
 
         if (Request::input('order_type', 'collection') == 'delivery') {
