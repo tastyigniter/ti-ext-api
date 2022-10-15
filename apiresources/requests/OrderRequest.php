@@ -60,4 +60,9 @@ class OrderRequest extends FormRequest
 
         return $rules;
     }
+
+    public function all($keys = null)
+    {
+        return array_except(parent::all($keys), ['order_menus', 'order_totals']);
+    }
 }
