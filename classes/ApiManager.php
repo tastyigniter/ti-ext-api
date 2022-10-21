@@ -121,11 +121,4 @@ class ApiManager
     {
         return studly_case(preg_replace('/[0-9]+/', '', $name));
     }
-
-    protected function getClassPath($class)
-    {
-        $path = trim(str_replace('\\', '/', $class), '/');
-
-        return extension_path(strtolower(dirname($path)).'/'.basename($path).'.php');
-    }
 }
