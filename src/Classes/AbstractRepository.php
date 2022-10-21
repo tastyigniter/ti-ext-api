@@ -256,6 +256,9 @@ class AbstractRepository
 
         $singularTypes = ['belongsTo', 'hasOne', 'morphOne'];
         foreach ($saveData as $attribute => $value) {
+            if ($model->isGuarded($attribute))
+                continue;
+
             $isNested = ($attribute == 'pivot' || (
                     $model->hasRelation($attribute) &&
                     in_array($model->getRelationType($attribute), $singularTypes)
