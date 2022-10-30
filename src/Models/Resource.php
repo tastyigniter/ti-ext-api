@@ -59,7 +59,7 @@ class Resource extends Model
     ];
 
     protected $rules = [
-        'name' => 'required|min:2|max:128|alpha_dash',
+        'name' => 'required|min:2|max:128|string',
         'description' => 'required|min:2|max:255',
         'endpoint' => 'max:255|regex:/^[a-z0-9\-_\/]+$/i|unique:igniter_api_resources,endpoint',
         'controller' => 'required|min:2|max:255',
