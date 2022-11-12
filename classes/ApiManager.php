@@ -4,6 +4,7 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Traits\Singleton;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -63,7 +64,7 @@ class ApiManager
         $singularController = str_singular($controller);
         $namespace = '\\Igniter\\Api\\ApiResources';
 
-        \Artisan::call('create:apiresource', [
+        Artisan::call('create:apiresource', [
             'extension' => 'Igniter.Api',
             'controller' => $controller,
             '--model' => $model,
@@ -78,17 +79,24 @@ class ApiManager
 
     protected function loadResources()
     {
-        $resources = Resource::all()->mapWithKeys(function ($resource) {
-            $resourceObj = (object)[
-                'endpoint' => $resource->endpoint,
-                'controller' => $resource->controller,
-                'options' => array_merge($resource->meta, [
-                    'only' => $resource->getAvailableActions(),
-                ]),
-            ];
+        $resources = Resource::all()
+            ->filter(function ($resource) {
+                return resolve($resource->controller)->isClassExtendedWith('Igniter.Api.Actions.RestController');
+            })
+            ->filter(function ($resource) {
+                return count($resource->getAvailableActions()) > 0;
+            })
+            ->mapWithKeys(function ($resource) {
+                $resourceObj = (object)[
+                    'endpoint' => $resource->endpoint,
+                    'controller' => $resource->controller,
+                    'options' => array_merge($resource->meta, [
+                        'only' => $resource->getAvailableActions(),
+                    ]),
+                ];
 
-            return [$resource->endpoint => $resourceObj];
-        });
+                return [$resource->endpoint => $resourceObj];
+            });
 
         $this->resources = $resources;
     }
