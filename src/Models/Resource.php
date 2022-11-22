@@ -7,8 +7,8 @@ use Igniter\Flame\Database\Model;
 use Igniter\Flame\Database\Traits\HasPermalink;
 use Igniter\Flame\Database\Traits\Validation;
 use Igniter\Flame\Mail\Markdown;
-use Igniter\Flame\Support\Facades\File;
 use Igniter\System\Classes\ExtensionManager;
+use Illuminate\Support\Facades\File;
 
 /**
  * Resource Model
