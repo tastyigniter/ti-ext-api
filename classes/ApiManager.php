@@ -81,6 +81,9 @@ class ApiManager
     {
         $resources = Resource::all()
             ->filter(function ($resource) {
+                return class_exists($resource->controller);
+            })
+            ->filter(function ($resource) {
                 return resolve($resource->controller)->isClassExtendedWith('Igniter.Api.Actions.RestController');
             })
             ->filter(function ($resource) {
