@@ -1,5 +1,6 @@
 {
   "name": "tastyigniter/ti-ext-api",
+  "type": "tastyigniter-package",
   "description": "Manages and generates RESTful APIs using available models in your TastyIgniter app.",
   "license": "MIT",
   "authors": [
@@ -14,13 +15,10 @@
     "api"
   ],
   "require": {
-    "tastyigniter/flame": "v4.x-dev",
-    "laravel/sanctum": "^2.15",
+    "laravel/sanctum": "^2.15|^3.2",
     "spatie/laravel-fractal": "^6.0"
   },
   "require-dev": {
-    "fakerphp/faker": "~1.14",
-    "mockery/mockery": "^1.4.4",
     "nunomaduro/collision": "^6.1",
     "orchestra/testbench": "^7.0",
     "laravel/pint": "^1.2",
@@ -31,6 +29,11 @@
   "autoload": {
     "psr-4": {
       "Igniter\\Api\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Igniter\\Api\\Tests\\": "tests"
     }
   },
   "extra": {
