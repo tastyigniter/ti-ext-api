@@ -4,6 +4,7 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Igniter;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -50,7 +51,7 @@ class ApiManager
         $singularController = str_singular($controller);
         $namespace = '\\Igniter\\Api\\ApiResources';
 
-        \Artisan::call('create:apiresource', [
+        Artisan::call('create:apiresource', [
             'extension' => 'Igniter.Api',
             'controller' => $controller,
             '--model' => $model,
@@ -90,6 +91,10 @@ class ApiManager
             ->prefix(config('igniter.api.prefix'))
             ->group(function ($router) {
                 foreach (resolve(static::class)->getResources() as $endpoint => $resourceObj) {
+                    if (!class_exists($resourceObj->controller)) {
+                        continue;
+                    }
+
                     $router->resource($endpoint, $resourceObj->controller, $resourceObj->options);
                 }
             });

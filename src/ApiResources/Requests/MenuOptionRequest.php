@@ -9,7 +9,7 @@ class MenuOptionRequest extends FormRequest
     public function attributes()
     {
         return [
-            'option_name' => lang('admin::lang.menu_options.label_option_name'),
+            'option_name' => lang('admin::lang.menu_options.label_option_group_name'),
             'display_type' => lang('admin::lang.menu_options.label_display_type'),
             'priority' => lang('admin::lang.menu_options.label_priority'),
             'locations.*' => lang('admin::lang.label_location'),
