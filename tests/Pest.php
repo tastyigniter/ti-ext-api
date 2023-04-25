@@ -1,3 +1,3 @@
 <?php
 
-uses(Igniter\Testbench\TestCase::class)->in(__DIR__);
+uses(Orchestra\Testbench\TestCase::class)->in(__DIR__);
