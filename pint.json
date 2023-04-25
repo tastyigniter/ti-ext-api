@@ -11,9 +11,10 @@
     "phpdoc_summary": false,
     "braces": false,
     "self_accessor": false,
-    "Laravel/laravel_phpdoc_separation": false,
+    "phpdoc_separation": false,
     "Laravel/laravel_phpdoc_alignment": false,
     "no_trailing_comma_in_singleline": false,
+    "phpdoc_trim_consecutive_blank_line_separation": true,
     "blank_line_before_statement": {
       "statements": [
         "declare",
@@ -21,6 +22,7 @@
         "throw",
         "try"
       ]
-    }
+    },
+    "single_blank_line_at_eof": false
   }
 }
