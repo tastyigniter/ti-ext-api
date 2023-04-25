@@ -29,8 +29,9 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeCustomer(Order $order)
     {
-        if (!$order->customer)
+        if (!$order->customer) {
             return;
+        }
 
         return $this->item($order->customer, new CustomerTransformer, 'customers');
     }
@@ -42,16 +43,18 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeAddress(Order $order)
     {
-        if (!$order->address)
+        if (!$order->address) {
             return;
+        }
 
         return $this->item($order->address, new AddressTransformer, 'addresses');
     }
 
     public function includePaymentMethod(Order $order)
     {
-        if (!$order->payment_method)
+        if (!$order->payment_method) {
             return;
+        }
 
         return $this->item($order->payment_method, new PaymentMethodTransformer, 'payment_methods');
     }
@@ -68,16 +71,18 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeAssignee(Order $order)
     {
-        if (!$order->assignee)
+        if (!$order->assignee) {
             return;
+        }
 
         return $this->item($order->assignee, new StaffTransformer, 'staff');
     }
 
     public function includeAssigneeGroup(Order $order)
     {
-        if (!$order->assignee_group)
+        if (!$order->assignee_group) {
             return;
+        }
 
         return $this->item($order->assignee_group, new StaffGroupTransformer, 'staff_group');
     }

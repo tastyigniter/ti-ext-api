@@ -22,8 +22,6 @@ class Token extends PersonalAccessToken
      * Create a new personal access token for the user.
      *
      * @param \Igniter\Flame\Database\Model $tokenable
-     * @param string $name
-     * @param array $abilities
      * @return \Laravel\Sanctum\NewAccessToken
      */
     public static function createToken($tokenable, string $name, array $abilities = ['*'])

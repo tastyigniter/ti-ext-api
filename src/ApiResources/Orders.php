@@ -41,13 +41,16 @@ class Orders extends ApiController
             $model->total_items = $total_items;
         }
 
-        if ($orderTotals = (array)request()->input('order_totals', []))
+        if ($orderTotals = (array)request()->input('order_totals', [])) {
             $model->addOrderTotals(json_decode(json_encode($orderTotals), true));
+        }
 
-        if ($orderStatus = request()->input('status_id', false))
+        if ($orderStatus = request()->input('status_id', false)) {
             $model->updateOrderStatus($orderStatus, ['comment' => request()->input('status_comment')]);
+        }
 
-        if (request()->input('processed', false))
+        if (request()->input('processed', false)) {
             $model->markAsPaymentProcessed();
+        }
     }
 }

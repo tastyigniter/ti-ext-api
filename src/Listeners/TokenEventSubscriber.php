@@ -15,14 +15,17 @@ class TokenEventSubscriber
         $accessToken = $event->token;
 
         $allowedGroup = $this->getAllowedGroup(request()->route());
-        if ($allowedGroup === 'all')
+        if ($allowedGroup === 'all') {
             return $accessToken;
+        }
 
-        if ($allowedGroup !== 'guest' && !$accessToken)
+        if ($allowedGroup !== 'guest' && !$accessToken) {
             throw new UnauthorizedHttpException('Bearer', lang('igniter.api::default.alert_auth_failed'));
+        }
 
-        if (!$this->checkGroup($allowedGroup, $accessToken))
+        if (!$this->checkGroup($allowedGroup, $accessToken)) {
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_auth_restricted'));
+        }
 
         return optional($accessToken)->tokenable;
     }
@@ -44,18 +47,21 @@ class TokenEventSubscriber
     public function checkGroup(mixed $group, mixed $token)
     {
         if (!is_null($token)) {
-            if ($group == 'guest')
+            if ($group == 'guest') {
                 return false;
+            }
 
-            if ($group == 'admin' && !$token->isForAdmin())
+            if ($group == 'admin' && !$token->isForAdmin()) {
                 return false;
+            }
 
-            if ($group == 'customer' && $token->isForAdmin())
+            if ($group == 'customer' && $token->isForAdmin()) {
                 return false;
-        }
-        else {
-            if (in_array($group, ['admin', 'customer', 'users']))
+            }
+        } else {
+            if (in_array($group, ['admin', 'customer', 'users'])) {
                 return false;
+            }
         }
 
         return true;

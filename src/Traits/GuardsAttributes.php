@@ -68,16 +68,18 @@ trait GuardsAttributes
     {
         $mutatorMethod = 'set'.Str::studly($key).'Attribute';
 
-        if (method_exists($this, $mutatorMethod))
+        if (method_exists($this, $mutatorMethod)) {
             return $this->{$mutatorMethod}($value);
+        }
 
         return $this;
     }
 
     public function getModelAttribute($key, $value)
     {
-        if ($this->hasGetMutator($key))
+        if ($this->hasGetMutator($key)) {
             return $this->mutateAttribute($key, $value);
+        }
     }
 
     /**

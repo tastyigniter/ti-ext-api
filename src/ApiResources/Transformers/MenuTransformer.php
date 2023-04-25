@@ -25,8 +25,9 @@ class MenuTransformer extends TransformerAbstract
 
     public function includeMedia(Menu $menuItem)
     {
-        if (!$thumb = $menuItem->getFirstMedia())
+        if (!$thumb = $menuItem->getFirstMedia()) {
             return null;
+        }
 
         return $this->item($thumb, new MediaTransformer, 'media');
     }

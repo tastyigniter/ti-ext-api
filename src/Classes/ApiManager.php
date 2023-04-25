@@ -22,8 +22,9 @@ class ApiManager
 
     public function getResources()
     {
-        if (is_null($this->resources))
+        if (is_null($this->resources)) {
             $this->loadResources();
+        }
 
         return $this->resources;
     }
@@ -58,8 +59,9 @@ class ApiManager
             '--meta' => $meta,
         ]);
 
-        if (!class_exists($controllerName = $namespace."\\{$controller}"))
+        if (!class_exists($controllerName = $namespace."\\{$controller}")) {
             return [null, null];
+        }
 
         return [$controllerName, $namespace."\\Transformers\\{$singularController}Transformer"];
     }
@@ -83,8 +85,9 @@ class ApiManager
 
     public static function registerRoutes()
     {
-        if (!Igniter::hasDatabase() || !Schema::hasTable('igniter_api_resources'))
+        if (!Igniter::hasDatabase() || !Schema::hasTable('igniter_api_resources')) {
             return;
+        }
 
         Route::middleware(config('igniter.api.middleware'))
             ->as('igniter.api.')

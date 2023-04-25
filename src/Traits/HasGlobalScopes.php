@@ -14,7 +14,6 @@ trait HasGlobalScopes
      * Register a new global scope on the model.
      *
      * @param \Illuminate\Database\Eloquent\Scope|\Closure|string $scope
-     * @param \Closure|null $implementation
      * @return mixed
      *
      * @throws \InvalidArgumentException
@@ -23,11 +22,9 @@ trait HasGlobalScopes
     {
         if (is_string($scope) && !is_null($implementation)) {
             return $this->scopes[static::class][$scope] = $implementation;
-        }
-        elseif ($scope instanceof Closure) {
+        } elseif ($scope instanceof Closure) {
             return $this->scopes[static::class][spl_object_hash($scope)] = $scope;
-        }
-        elseif ($scope instanceof Scope) {
+        } elseif ($scope instanceof Scope) {
             return $this->scopes[static::class][get_class($scope)] = $scope;
         }
 

@@ -33,11 +33,13 @@ class ApiController extends BaseController
     {
         $this->action = $action;
 
-        if (!$this->checkAction($action))
+        if (!$this->checkAction($action)) {
             $this->response()->errorNotFound();
+        }
 
-        if ($this->token())
+        if ($this->token()) {
             $this->authorizeToken();
+        }
 
         // Execute the action
         $response = call_user_func_array([$this, $action], array_values($parameters));
@@ -48,11 +50,13 @@ class ApiController extends BaseController
 
     public function checkAction($action)
     {
-        if (!array_key_exists($action, $this->allowedActions))
+        if (!array_key_exists($action, $this->allowedActions)) {
             return false;
+        }
 
-        if (!$methodExists = $this->methodExists($action))
+        if (!$methodExists = $this->methodExists($action)) {
             return false;
+        }
 
         if (method_exists($this, $action)) {
             $methodInfo = new \ReflectionMethod($this, $action);
@@ -65,14 +69,17 @@ class ApiController extends BaseController
 
     protected function authorizeToken()
     {
-        if (!$ability = $this->getAbilities())
+        if (!$ability = $this->getAbilities()) {
             return;
+        }
 
-        if (is_array($ability))
+        if (is_array($ability)) {
             $ability = implode(',', $ability);
+        }
 
-        if (!$this->tokenCan($ability))
+        if (!$this->tokenCan($ability)) {
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
+        }
     }
 
     protected function isResponsable($response)

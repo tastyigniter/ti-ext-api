@@ -57,23 +57,26 @@ class ErrorHandler
      * Render an exception into an HTTP response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Throwable $e
      * @return \Illuminate\Http\Response|void
      */
     public function render($request, Throwable $e)
     {
         // Convert Eloquent's 500 ModelNotFoundException into a 404 NotFoundHttpException
-        if ($e instanceof ModelNotFoundException)
+        if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
+        }
 
-        if ($e instanceof ValidationException)
+        if ($e instanceof ValidationException) {
             $e = new ValidationHttpException($e->getErrors(), $e);
+        }
 
-        if ($e instanceof \Igniter\Flame\Exception\ValidationException)
+        if ($e instanceof \Igniter\Flame\Exception\ValidationException) {
             $e = new ValidationHttpException($e->getErrors(), $e);
+        }
 
-        if (!$request->routeIs('igniter.api.*'))
+        if (!$request->routeIs('igniter.api.*')) {
             return;
+        }
 
         return $this->genericResponse($e);
     }
@@ -81,11 +84,8 @@ class ErrorHandler
     /**
      * Handle a generic error response if there is no handler available.
      *
-     * @param Throwable $exception
-     *
      * @return \Illuminate\Http\Response
      * @throws Throwable
-     *
      */
     protected function genericResponse(Throwable $exception)
     {
@@ -107,19 +107,15 @@ class ErrorHandler
     /**
      * Get the status code from the exception.
      *
-     * @param Throwable $exception
-     *
      * @return int
      */
     protected function getStatusCode(Throwable $exception)
     {
         if ($exception instanceof ValidationException) {
             $statusCode = $exception->status;
-        }
-        elseif ($exception instanceof HttpExceptionInterface) {
+        } elseif ($exception instanceof HttpExceptionInterface) {
             $statusCode = $exception->getStatusCode();
-        }
-        else {
+        } else {
             // By default throw 500
             $statusCode = 500;
         }
@@ -135,8 +131,6 @@ class ErrorHandler
     /**
      * Get the headers from the exception.
      *
-     * @param Throwable $exception
-     *
      * @return array
      */
     protected function getHeaders(Throwable $exception)
@@ -146,8 +140,6 @@ class ErrorHandler
 
     /**
      * Prepare the replacements array by gathering the keys and values.
-     *
-     * @param Throwable $exception
      *
      * @return array
      */
@@ -201,8 +193,6 @@ class ErrorHandler
 
     /**
      * Recursively remove any empty replacement values in the response array.
-     *
-     * @param array $input
      *
      * @return array
      */

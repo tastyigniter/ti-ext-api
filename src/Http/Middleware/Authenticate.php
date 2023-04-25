@@ -28,8 +28,7 @@ class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
             }
 
             return parent::handle($request, $next, ...$guards);
-        }
-        catch (AuthenticationException $e) {
+        } catch (AuthenticationException $e) {
             throw new Exceptions\AuthenticationException('Unauthenticated.', $e->guards());
         }
     }
