@@ -1,0 +1,1341 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Function lang not found\\.$#"
+			count: 2
+			path: resources/models/token.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Requests\\\\Category not found\\.$#"
+			count: 1
+			path: src/ApiResources/Categories.php
+
+		-
+			message: "#^Class Igniter\\\\System\\\\Requests\\\\Currency not found\\.$#"
+			count: 1
+			path: src/ApiResources/Currencies.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\ApiResources\\\\Customers\\:\\:asExtension\\(\\)\\.$#"
+			count: 1
+			path: src/ApiResources/Customers.php
+
+		-
+			message: "#^Class Igniter\\\\Main\\\\Requests\\\\Customer not found\\.$#"
+			count: 1
+			path: src/ApiResources/Customers.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Requests\\\\Location not found\\.$#"
+			count: 1
+			path: src/ApiResources/Locations.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Requests\\\\Menu not found\\.$#"
+			count: 1
+			path: src/ApiResources/Menus.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Category not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/CategoryRepository.php
+
+		-
+			message: "#^Class Igniter\\\\System\\\\Models\\\\Currency not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/CurrencyRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Main\\\\Models\\\\Customer not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/CustomerRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Location not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/LocationRepository.php
+
+		-
+			message: "#^Function array_except not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/LocationRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Models\\\\MenuItemOption not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/MenuItemOptionRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Models\\\\MenuOption not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/MenuOptionRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Menu not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/MenuRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Order not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/OrderRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Reservation not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/ReservationRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Local\\\\Models\\\\Review not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/ReviewRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Table not found\\.$#"
+			count: 1
+			path: src/ApiResources/Repositories/TableRepository.php
+
+		-
+			message: "#^Function lang not found\\.$#"
+			count: 7
+			path: src/ApiResources/Requests/MenuItemOptionRequest.php
+
+		-
+			message: "#^Function lang not found\\.$#"
+			count: 10
+			path: src/ApiResources/Requests/MenuOptionRequest.php
+
+		-
+			message: "#^Function array_except not found\\.$#"
+			count: 1
+			path: src/ApiResources/Requests/OrderRequest.php
+
+		-
+			message: "#^Function lang not found\\.$#"
+			count: 15
+			path: src/ApiResources/Requests/OrderRequest.php
+
+		-
+			message: "#^Igniter\\\\Api\\\\ApiResources\\\\Requests\\\\OrderRequest\\:\\:all\\(\\) calls parent\\:\\:all\\(\\) but Igniter\\\\Api\\\\ApiResources\\\\Requests\\\\OrderRequest does not extend any class\\.$#"
+			count: 1
+			path: src/ApiResources/Requests/OrderRequest.php
+
+		-
+			message: "#^Function lang not found\\.$#"
+			count: 10
+			path: src/ApiResources/Requests/ReservationRequest.php
+
+		-
+			message: "#^Class Igniter\\\\Local\\\\Requests\\\\Review not found\\.$#"
+			count: 1
+			path: src/ApiResources/Reviews.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Requests\\\\Table not found\\.$#"
+			count: 1
+			path: src/ApiResources/Tables.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Address\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/AddressTransformer.php
+
+		-
+			message: "#^Parameter \\$address of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\AddressTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Address\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/AddressTransformer.php
+
+		-
+			message: "#^Access to property \\$locations on an unknown class Igniter\\\\Admin\\\\Models\\\\Category\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CategoryTransformer.php
+
+		-
+			message: "#^Access to property \\$menus on an unknown class Igniter\\\\Admin\\\\Models\\\\Category\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CategoryTransformer.php
+
+		-
+			message: "#^Call to method getFirstMedia\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Category\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CategoryTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Category\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CategoryTransformer.php
+
+		-
+			message: "#^Parameter \\$category of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CategoryTransformer\\:\\:includeLocations\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Category\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CategoryTransformer.php
+
+		-
+			message: "#^Parameter \\$category of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CategoryTransformer\\:\\:includeMedia\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Category\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CategoryTransformer.php
+
+		-
+			message: "#^Parameter \\$category of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CategoryTransformer\\:\\:includeMenus\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Category\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CategoryTransformer.php
+
+		-
+			message: "#^Parameter \\$category of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CategoryTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Category\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CategoryTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\System\\\\Models\\\\Currency\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CurrencyTransformer.php
+
+		-
+			message: "#^Parameter \\$currency of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CurrencyTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\System\\\\Models\\\\Currency\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CurrencyTransformer.php
+
+		-
+			message: "#^Access to property \\$addresses on an unknown class Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CustomerTransformer.php
+
+		-
+			message: "#^Access to property \\$orders on an unknown class Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CustomerTransformer.php
+
+		-
+			message: "#^Access to property \\$reservations on an unknown class Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CustomerTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CustomerTransformer.php
+
+		-
+			message: "#^Parameter \\$customer of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CustomerTransformer\\:\\:includeAddresses\\(\\) has invalid type Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CustomerTransformer.php
+
+		-
+			message: "#^Parameter \\$customer of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CustomerTransformer\\:\\:includeOrders\\(\\) has invalid type Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CustomerTransformer.php
+
+		-
+			message: "#^Parameter \\$customer of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CustomerTransformer\\:\\:includeReservations\\(\\) has invalid type Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CustomerTransformer.php
+
+		-
+			message: "#^Parameter \\$customer of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CustomerTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CustomerTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\LocationArea\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/DeliveryAreaTransformer.php
+
+		-
+			message: "#^Parameter \\$deliveryArea of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\DeliveryAreaTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\LocationArea\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/DeliveryAreaTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Ingredient\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/IngredientTransformer.php
+
+		-
+			message: "#^Parameter \\$ingredient of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\IngredientTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Ingredient\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/IngredientTransformer.php
+
+		-
+			message: "#^Access to property \\$delivery_areas on an unknown class Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Access to property \\$reviews on an unknown class Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Access to property \\$working_hours on an unknown class Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Call to method getFirstMedia\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Parameter \\$location of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\LocationTransformer\\:\\:includeDeliveryAreas\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Parameter \\$location of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\LocationTransformer\\:\\:includeMedia\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Parameter \\$location of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\LocationTransformer\\:\\:includeReviews\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Parameter \\$location of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\LocationTransformer\\:\\:includeWorkingHours\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Parameter \\$location of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\LocationTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Location\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/LocationTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Mealtime\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MealtimeTransformer.php
+
+		-
+			message: "#^Parameter \\$mealTime of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MealtimeTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Mealtime\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MealtimeTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Attach\\\\Media\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MediaTransformer.php
+
+		-
+			message: "#^Parameter \\$media of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MediaTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Attach\\\\Media\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MediaTransformer.php
+
+		-
+			message: "#^Access to property \\$menu_option_values on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\.$#"
+			count: 2
+			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
+
+		-
+			message: "#^Cannot access property \\$menu_option_id on array\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
+
+		-
+			message: "#^Cannot access property \\$option on array\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItemOption of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuItemOptionArrayTransformer\\:\\:includeMenuOptionValues\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
+
+		-
+			message: "#^Undefined variable\\: \\$menuOption$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
+
+		-
+			message: "#^Access to property \\$menu_option_id on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
+
+		-
+			message: "#^Access to property \\$menu_option_values on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\.$#"
+			count: 3
+			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
+
+		-
+			message: "#^Access to property \\$option on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItemOption of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuItemOptionTransformer\\:\\:includeMenuOptionValues\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItemOption of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuItemOptionTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuItemOptionValue\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionValueTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItemOptionValue of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuItemOptionValueTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\MenuItemOptionValue\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionValueTransformer.php
+
+		-
+			message: "#^Access to property \\$option_id on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuOptionTransformer.php
+
+		-
+			message: "#^Access to property \\$option_values on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuOption\\.$#"
+			count: 3
+			path: src/ApiResources/Transformers/MenuOptionTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuOptionTransformer.php
+
+		-
+			message: "#^Parameter \\$menuOption of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuOptionTransformer\\:\\:includeOptionValues\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\MenuOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuOptionTransformer.php
+
+		-
+			message: "#^Parameter \\$menuOption of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuOptionTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\MenuOption\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuOptionTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\MenuOptionValue\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuOptionValueTransformer.php
+
+		-
+			message: "#^Parameter \\$menuOptionValue of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuOptionValueTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\MenuOptionValue\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuOptionValueTransformer.php
+
+		-
+			message: "#^Access to property \\$categories on an unknown class Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Access to property \\$ingredients on an unknown class Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Access to property \\$mealtimes on an unknown class Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Access to property \\$menu_options on an unknown class Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Access to property \\$stocks on an unknown class Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Call to method getFirstMedia\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItem of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuTransformer\\:\\:includeCategories\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItem of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuTransformer\\:\\:includeIngredients\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItem of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuTransformer\\:\\:includeMealtimes\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItem of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuTransformer\\:\\:includeMedia\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItem of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuTransformer\\:\\:includeMenuOptions\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItem of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuTransformer\\:\\:includeStocks\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Parameter \\$menuItem of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: "#^Access to property \\$address on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 2
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Access to property \\$assignee on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 2
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Access to property \\$assignee_group on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 2
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Access to property \\$customer on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 2
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Access to property \\$location on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Access to property \\$payment_method on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 2
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Access to property \\$status on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Access to property \\$status_history on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Call to method getOrderMenusWithOptions\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Call to method getOrderTotals\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:includeAddress\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:includeAssignee\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:includeAssigneeGroup\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:includeCustomer\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:includeLocation\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:includePaymentMethod\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:includeStatus\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:includeStatusHistory\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Parameter \\$order of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\OrderTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
+			message: "#^Access to property \\$code on an unknown class Igniter\\\\Admin\\\\Models\\\\Payment\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
+
+		-
+			message: "#^Access to property \\$description on an unknown class Igniter\\\\Admin\\\\Models\\\\Payment\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
+
+		-
+			message: "#^Access to property \\$name on an unknown class Igniter\\\\Admin\\\\Models\\\\Payment\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
+
+		-
+			message: "#^Call to method getKey\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Payment\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
+
+		-
+			message: "#^Parameter \\$payment of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\PaymentMethodTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Payment\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
+
+		-
+			message: "#^Access to property \\$assignee on an unknown class Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Access to property \\$assignee_group on an unknown class Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Access to property \\$location on an unknown class Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Access to property \\$status on an unknown class Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Access to property \\$status_history on an unknown class Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Access to property \\$tables on an unknown class Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Parameter \\$reservation of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReservationTransformer\\:\\:includeAssignee\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Parameter \\$reservation of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReservationTransformer\\:\\:includeAssigneeGroup\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Parameter \\$reservation of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReservationTransformer\\:\\:includeLocation\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Parameter \\$reservation of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReservationTransformer\\:\\:includeStatus\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Parameter \\$reservation of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReservationTransformer\\:\\:includeStatusHistory\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Parameter \\$reservation of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReservationTransformer\\:\\:includeTables\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Parameter \\$reservation of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReservationTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Reservation\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReservationTransformer.php
+
+		-
+			message: "#^Access to property \\$customer on an unknown class Igniter\\\\Local\\\\Models\\\\Review\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReviewTransformer.php
+
+		-
+			message: "#^Access to property \\$location on an unknown class Igniter\\\\Local\\\\Models\\\\Review\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReviewTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Local\\\\Models\\\\Review\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReviewTransformer.php
+
+		-
+			message: "#^Parameter \\$review of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReviewTransformer\\:\\:includeCustomer\\(\\) has invalid type Igniter\\\\Local\\\\Models\\\\Review\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReviewTransformer.php
+
+		-
+			message: "#^Parameter \\$review of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReviewTransformer\\:\\:includeLocation\\(\\) has invalid type Igniter\\\\Local\\\\Models\\\\Review\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReviewTransformer.php
+
+		-
+			message: "#^Parameter \\$review of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReviewTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Local\\\\Models\\\\Review\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/ReviewTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\UserGroup\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StaffGroupTransformer.php
+
+		-
+			message: "#^Parameter \\$staffGroup of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\StaffGroupTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\UserGroup\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StaffGroupTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Staff\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StaffTransformer.php
+
+		-
+			message: "#^Parameter \\$staff of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\StaffTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Staff\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StaffTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\StatusHistory\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StatusHistoryTransformer.php
+
+		-
+			message: "#^Parameter \\$statusHistory of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\StatusHistoryTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\StatusHistory\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StatusHistoryTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Status\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StatusTransformer.php
+
+		-
+			message: "#^Parameter \\$status of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\StatusTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Status\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StatusTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Stock\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StockTransformer.php
+
+		-
+			message: "#^Parameter \\$stock of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\StockTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Stock\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StockTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Table\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/TableTransformer.php
+
+		-
+			message: "#^Parameter \\$table of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\TableTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Table\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/TableTransformer.php
+
+		-
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\WorkingHour\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/WorkingHourTransformer.php
+
+		-
+			message: "#^Parameter \\$workingHour of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\WorkingHourTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\WorkingHour\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/WorkingHourTransformer.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\AbstractRepository\\:\\:fireSystemEvent\\(\\)\\.$#"
+			count: 6
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to method bindEvent\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 3
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to method getRelationDefinitions\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to method makeHidden\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to method mergeFillable\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to method mergeGuarded\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to method reload\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to method setHidden\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to method setVisible\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Call to static method instance\\(\\) on an unknown class Igniter\\\\Api\\\\Auth\\\\Manager\\.$#"
+			count: 3
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Class Admin\\\\Traits\\\\Locationable not found\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Class Igniter\\\\Flame\\\\Database\\\\Model not found\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Function array_get not found\\.$#"
+			count: 5
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Function starts_with not found\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Instantiated class Igniter\\\\Flame\\\\Exception\\\\SystemException not found\\.$#"
+			count: 3
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^PHPDoc tag @throws with type Igniter\\\\Flame\\\\Exception\\\\SystemException is not subtype of Throwable$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Parameter \\$model of anonymous function has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Parameter \\$model of method Igniter\\\\Api\\\\Classes\\\\AbstractRepository\\:\\:create\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/AbstractRepository.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:\\$action\\.$#"
+			count: 1
+			path: src/Classes/ApiController.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:methodExists\\(\\)\\.$#"
+			count: 1
+			path: src/Classes/ApiController.php
+
+		-
+			message: "#^Call to an undefined method Spatie\\\\Fractal\\\\Fractal\\:\\:errorNotFound\\(\\)\\.$#"
+			count: 1
+			path: src/Classes/ApiController.php
+
+		-
+			message: "#^Function lang not found\\.$#"
+			count: 1
+			path: src/Classes/ApiController.php
+
+		-
+			message: "#^Call to an undefined static method Igniter\\\\Api\\\\Models\\\\Resource\\:\\:all\\(\\)\\.$#"
+			count: 1
+			path: src/Classes/ApiManager.php
+
+		-
+			message: "#^Call to static method hasDatabase\\(\\) on an unknown class Igniter\\\\Flame\\\\Igniter\\.$#"
+			count: 1
+			path: src/Classes/ApiManager.php
+
+		-
+			message: "#^Function array_get not found\\.$#"
+			count: 1
+			path: src/Classes/ApiManager.php
+
+		-
+			message: "#^Function str_singular not found\\.$#"
+			count: 1
+			path: src/Classes/ApiManager.php
+
+		-
+			message: "#^Function studly_case not found\\.$#"
+			count: 1
+			path: src/Classes/ApiManager.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/Classes/Fractal.php
+
+		-
+			message: "#^Call to method getKey\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Classes/Scope.php
+
+		-
+			message: "#^Class Igniter\\\\Flame\\\\Database\\\\Model not found\\.$#"
+			count: 1
+			path: src/Classes/Scope.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Console\\\\CreateApiResource\\:\\:\\$vars\\.$#"
+			count: 1
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Console\\\\CreateApiResource\\:\\:argument\\(\\)\\.$#"
+			count: 2
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Console\\\\CreateApiResource\\:\\:buildStubs\\(\\)\\.$#"
+			count: 1
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Console\\\\CreateApiResource\\:\\:info\\(\\)\\.$#"
+			count: 1
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Console\\\\CreateApiResource\\:\\:option\\(\\)\\.$#"
+			count: 2
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Function snake_case not found\\.$#"
+			count: 2
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Function str_plural not found\\.$#"
+			count: 4
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Function str_singular not found\\.$#"
+			count: 4
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Function studly_case not found\\.$#"
+			count: 8
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Function title_case not found\\.$#"
+			count: 3
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Method Igniter\\\\Api\\\\Console\\\\CreateApiResource\\:\\:handle\\(\\) should return bool\\|null but return statement is missing\\.$#"
+			count: 1
+			path: src/Console/CreateApiResource.php
+
+		-
+			message: "#^Call to static method query\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\User\\.$#"
+			count: 1
+			path: src/Console/IssueApiToken.php
+
+		-
+			message: "#^Call to static method query\\(\\) on an unknown class Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/Console/IssueApiToken.php
+
+		-
+			message: "#^Result of method Illuminate\\\\Console\\\\Command\\:\\:error\\(\\) \\(void\\) is used\\.$#"
+			count: 2
+			path: src/Console/IssueApiToken.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Debug\\\\ExceptionHandler\\:\\:renderable\\(\\)\\.$#"
+			count: 1
+			path: src/Exceptions/ErrorHandler.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Validation\\\\ValidationException\\:\\:getErrors\\(\\)\\.$#"
+			count: 1
+			path: src/Exceptions/ErrorHandler.php
+
+		-
+			message: "#^Call to method getErrors\\(\\) on an unknown class Igniter\\\\Flame\\\\Exception\\\\ValidationException\\.$#"
+			count: 1
+			path: src/Exceptions/ErrorHandler.php
+
+		-
+			message: "#^Class Igniter\\\\Flame\\\\Exception\\\\ValidationException not found\\.$#"
+			count: 1
+			path: src/Exceptions/ErrorHandler.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$errors \\(string\\) of method Igniter\\\\Api\\\\Exceptions\\\\ResourceException\\:\\:__construct\\(\\) is incompatible with type array\\|Illuminate\\\\Support\\\\MessageBag\\.$#"
+			count: 1
+			path: src/Exceptions/ResourceException.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Extension\\:\\:\\$app\\.$#"
+			count: 5
+			path: src/Extension.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Extension\\:\\:callAfterResolving\\(\\)\\.$#"
+			count: 1
+			path: src/Extension.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Extension\\:\\:mergeConfigFrom\\(\\)\\.$#"
+			count: 1
+			path: src/Extension.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Extension\\:\\:registerConsoleCommand\\(\\)\\.$#"
+			count: 2
+			path: src/Extension.php
+
+		-
+			message: "#^Function admin_url not found\\.$#"
+			count: 1
+			path: src/Extension.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:\\$restConfig\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:\\$config\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\AbstractRepository\\:\\:bindEvent\\(\\)\\.$#"
+			count: 6
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\|Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:getAction\\(\\)\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:getConfig\\(\\)\\.$#"
+			count: 5
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:setConfig\\(\\)\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Call to method getErrors\\(\\) on an unknown class Igniter\\\\Flame\\\\Exception\\\\ValidationException\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Caught class Igniter\\\\Flame\\\\Exception\\\\ValidationException not found\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Function array_get not found\\.$#"
+			count: 2
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Function studly_case not found\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:__construct\\(\\) calls parent\\:\\:__construct\\(\\) but Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController does not extend any class\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Parameter \\$model of method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:restAfterCreate\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Parameter \\$model of method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:restAfterDelete\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Parameter \\$model of method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:restAfterSave\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Parameter \\$model of method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:restAfterUpdate\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Parameter \\$model of method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:restBeforeCreate\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Parameter \\$model of method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:restBeforeSave\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Parameter \\$model of method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:restBeforeUpdate\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Parameter \\$query of method Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:restExtendQuery\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Builder\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Property Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController\\:\\:\\$model has unknown class Igniter\\\\Flame\\\\Database\\\\Model as its type\\.$#"
+			count: 1
+			path: src/Http/Actions/RestController.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Api\\\\Http\\\\Controllers\\\\Resources\\:\\:asExtension\\(\\)\\.$#"
+			count: 1
+			path: src/Http/Controllers/Resources.php
+
+		-
+			message: "#^Call to static method setContext\\(\\) on an unknown class Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\.$#"
+			count: 1
+			path: src/Http/Controllers/Resources.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Http\\\\Actions\\\\FormController not found\\.$#"
+			count: 1
+			path: src/Http/Controllers/Resources.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Http\\\\Actions\\\\ListController not found\\.$#"
+			count: 1
+			path: src/Http/Controllers/Resources.php
+
+		-
+			message: "#^Igniter\\\\Api\\\\Http\\\\Controllers\\\\Resources\\:\\:__construct\\(\\) calls parent\\:\\:__construct\\(\\) but Igniter\\\\Api\\\\Http\\\\Controllers\\\\Resources does not extend any class\\.$#"
+			count: 1
+			path: src/Http/Controllers/Resources.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$device_name\\.$#"
+			count: 1
+			path: src/Http/Controllers/Tokens.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$email\\.$#"
+			count: 1
+			path: src/Http/Controllers/Tokens.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$password\\.$#"
+			count: 1
+			path: src/Http/Controllers/Tokens.php
+
+		-
+			message: "#^Call to static method setContext\\(\\) on an unknown class Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\.$#"
+			count: 1
+			path: src/Http/Controllers/Tokens.php
+
+		-
+			message: "#^Class Igniter\\\\Admin\\\\Http\\\\Actions\\\\ListController not found\\.$#"
+			count: 1
+			path: src/Http/Controllers/Tokens.php
+
+		-
+			message: "#^Igniter\\\\Api\\\\Http\\\\Controllers\\\\Tokens\\:\\:__construct\\(\\) calls parent\\:\\:__construct\\(\\) but Igniter\\\\Api\\\\Http\\\\Controllers\\\\Tokens does not extend any class\\.$#"
+			count: 1
+			path: src/Http/Controllers/Tokens.php
+
+		-
+			message: "#^Function array_get not found\\.$#"
+			count: 2
+			path: src/Listeners/TokenEventSubscriber.php
+
+		-
+			message: "#^Function lang not found\\.$#"
+			count: 2
+			path: src/Listeners/TokenEventSubscriber.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$endpoint\\.$#"
+			count: 5
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$meta\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$modelListCache\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Access to property \\$is_custom on an unknown class Igniter\\\\Api\\\\Models\\\\TYPE_NAME\\.$#"
+			count: 2
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Access to property \\$meta on an unknown class Igniter\\\\Api\\\\Models\\\\TYPE_NAME\\.$#"
+			count: 2
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Call to an undefined static method Igniter\\\\Api\\\\Models\\\\Resource\\:\\:all\\(\\)\\.$#"
+			count: 2
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Call to an undefined static method Igniter\\\\Api\\\\Models\\\\Resource\\:\\:lists\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Call to an undefined static method Igniter\\\\Api\\\\Models\\\\Resource\\:\\:make\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Call to an undefined static method Igniter\\\\Api\\\\Models\\\\Resource\\:\\:where\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Call to an undefined static method Illuminate\\\\Support\\\\Facades\\\\File\\:\\:existsInsensitive\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Call to method save\\(\\) on an unknown class Igniter\\\\Api\\\\Models\\\\TYPE_NAME\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Call to static method files\\(\\) on an unknown class File\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Call to static method parseFile\\(\\) on an unknown class Igniter\\\\Flame\\\\Mail\\\\Markdown\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Class Igniter\\\\System\\\\Classes\\\\ExtensionManager not found\\.$#"
+			count: 3
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Function array_except not found\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Function array_get not found\\.$#"
+			count: 13
+			path: src/Models/Resource.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$model contains unknown class Igniter\\\\Api\\\\Models\\\\TYPE_NAME\\.$#"
+			count: 1
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 3
+			path: src/Models/Resource.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Token\\:\\:\\$tokenable_type\\.$#"
+			count: 2
+			path: src/Models/Token.php
+
+		-
+			message: "#^Call to method tokens\\(\\) on an unknown class Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Models/Token.php
+
+		-
+			message: "#^Call to static method make\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\User\\.$#"
+			count: 1
+			path: src/Models/Token.php
+
+		-
+			message: "#^Call to static method make\\(\\) on an unknown class Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			count: 1
+			path: src/Models/Token.php
+
+		-
+			message: "#^Parameter \\$tokenable of method Igniter\\\\Api\\\\Models\\\\Token\\:\\:createToken\\(\\) has invalid type Igniter\\\\Flame\\\\Database\\\\Model\\.$#"
+			count: 1
+			path: src/Models/Token.php
