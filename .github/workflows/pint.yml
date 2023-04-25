@@ -1,10 +1,6 @@
 name: PHP Linting (Pint)
 
-on:
-  workflow_dispatch:
-  push:
-    branches-ignore:
-      - 'dependabot/npm_and_yarn/*'
+on: [push, pull_request]
 
 jobs:
   phplint:
@@ -14,10 +10,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Composer Install
-        run: composer install --no-interaction --ignore-platform-reqs
-
-      - name: Remove Extensions & Themes
-        run: rm -rf extensions themes
+        run: composer install --no-interaction
 
       - name: Run Laravel Pint
         run: ./vendor/bin/pint
