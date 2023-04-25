@@ -1,61 +1,55 @@
 {
-    "name": "tastyigniter/ti-ext-api",
-    "type": "tastyigniter-package",
-    "description": "Manages and generates RESTful APIs using available models in your TastyIgniter app.",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Sam Poyigi",
-            "email": "sam@sampoyigi.com"
-        }
-    ],
-    "keywords": [
-        "tastyigniter",
-        "rest",
-        "api"
-    ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../../misc/testbench"
-        }
-    ],
-    "require": {
-        "laravel/sanctum": "^2.15|^3.2",
-        "spatie/laravel-fractal": "^6.0"
-    },
-    "require-dev": {
-        "tastyigniter/testbench": "*@dev",
-        "laravel/pint": "^1.2",
-        "nunomaduro/larastan": "^2.4.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
-        "pestphp/pest": "^2.5"
-    },
-    "autoload": {
-        "psr-4": {
-            "Igniter\\Api\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Igniter\\Api\\Tests\\": "tests"
-        }
-    },
-    "extra": {
-        "tastyigniter-extension": {
-            "name": "APIs",
-            "icon": {
-                "class": "fa fa-cloud",
-                "color": "#fff",
-                "backgroundColor": "#02586F"
-            },
-            "homepage": "https://tastyigniter.com/marketplace/item/igniter-api"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        },
-        "sort-packages": true
+  "name": "tastyigniter/ti-ext-api",
+  "type": "tastyigniter-package",
+  "description": "Manages and generates RESTful APIs using available models in your TastyIgniter app.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sam Poyigi",
+      "email": "sam@sampoyigi.com"
     }
+  ],
+  "keywords": [
+    "tastyigniter",
+    "rest",
+    "api"
+  ],
+  "require": {
+    "laravel/sanctum": "^2.15|^3.2",
+    "spatie/laravel-fractal": "^6.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.2",
+    "nunomaduro/larastan": "^2.4.0",
+    "orchestral/testbench": "^8.5",
+    "pestphp/pest-plugin-laravel": "^2.0",
+    "pestphp/pest": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Igniter\\Api\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Igniter\\Api\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "tastyigniter-extension": {
+      "name": "APIs",
+      "icon": {
+        "class": "fa fa-cloud",
+        "color": "#fff",
+        "backgroundColor": "#02586F"
+      },
+      "homepage": "https://tastyigniter.com/marketplace/item/igniter-api"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    },
+    "sort-packages": true
+  }
 }
