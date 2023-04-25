@@ -63,8 +63,7 @@ class AbstractRepository
         if (method_exists($model, 'scopeListFrontEnd')) {
             $query = $this->prepareQuery($model);
             $result = $query->listFrontEnd($options);
-        }
-        else {
+        } else {
             $page = array_get($options, 'page');
             $pageSize = array_get($options, 'pageLimit', 5);
             $result = $this->paginate($pageSize, $page);
@@ -109,7 +108,9 @@ class AbstractRepository
         $model = is_numeric($id)
             ? $this->find($id) : $id;
 
-        if (!$model) return $model;
+        if (!$model) {
+            return $model;
+        }
 
         $this->fireSystemEvent('api.repository.beforeUpdate', [$model, $attributes]);
 
@@ -133,7 +134,9 @@ class AbstractRepository
     {
         $model = $this->find($id);
 
-        if (!$model) return $model;
+        if (!$model) {
+            return $model;
+        }
 
         $deleted = $model->delete();
 
@@ -144,8 +147,9 @@ class AbstractRepository
 
     public function getModelClass()
     {
-        if (!strlen($modelClass = $this->modelClass))
+        if (!strlen($modelClass = $this->modelClass)) {
             throw new SystemException('Missing model on '.get_class($this));
+        }
 
         return $modelClass;
     }
@@ -165,8 +169,9 @@ class AbstractRepository
         $this->prepareModel($modelClass);
 
         $model = new $modelClass;
-        if (!$model instanceof Model)
+        if (!$model instanceof Model) {
             throw new SystemException("Class {$model} must be an instance of \\Igniter\\Flame\\Database\\Model");
+        }
 
         return $model;
     }
@@ -180,7 +185,6 @@ class AbstractRepository
     }
 
     /**
-     * @param \Illuminate\Contracts\Container\Container $container
      * @return \Igniter\Api\Classes\AbstractRepository
      */
     public function setContainer(Container $container)
@@ -193,20 +197,25 @@ class AbstractRepository
     protected function prepareModel(string $modelClass): void
     {
         $modelClass::extend(function (Model $model) {
-            if ($fillable = $this->getFillable())
+            if ($fillable = $this->getFillable()) {
                 $model->mergeFillable($fillable);
+            }
 
-            if ($guarded = $this->getGuarded())
+            if ($guarded = $this->getGuarded()) {
                 $model->mergeGuarded($guarded);
+            }
 
-            if ($hidden = $this->getHidden())
+            if ($hidden = $this->getHidden()) {
                 $model->setHidden($hidden);
+            }
 
-            if ($visible = $this->getVisible())
+            if ($visible = $this->getVisible()) {
                 $model->setVisible($visible);
+            }
 
-            if ($relationKeys = collect($model->getRelationDefinitions())->collapse()->keys())
+            if ($relationKeys = collect($model->getRelationDefinitions())->collapse()->keys()) {
                 $model->makeHidden($relationKeys->toArray());
+            }
 
             $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
@@ -218,8 +227,9 @@ class AbstractRepository
                 'beforeDelete', 'afterDelete',
             ] as $method) {
                 $model->bindEvent('model.'.$method, function () use ($model, $method) {
-                    if (method_exists($this, $method))
+                    if (method_exists($this, $method)) {
                         $this->$method($model);
+                    }
                 });
             }
         });
@@ -256,18 +266,18 @@ class AbstractRepository
 
         $singularTypes = ['belongsTo', 'hasOne', 'morphOne'];
         foreach ($saveData as $attribute => $value) {
-            if ($model->isGuarded($attribute))
+            if ($model->isGuarded($attribute)) {
                 continue;
+            }
 
             $isNested = ($attribute == 'pivot' || (
-                    $model->hasRelation($attribute) &&
-                    in_array($model->getRelationType($attribute), $singularTypes)
-                ));
+                $model->hasRelation($attribute) &&
+                in_array($model->getRelationType($attribute), $singularTypes)
+            ));
 
             if ($isNested && is_array($value) && $model->{$attribute}) {
                 $this->setModelAttributes($model->{$attribute}, $value);
-            }
-            elseif (!starts_with($attribute, '_')) {
+            } elseif (!starts_with($attribute, '_')) {
                 $model->{$attribute} = $value;
             }
         }
@@ -275,18 +285,22 @@ class AbstractRepository
 
     protected function applyLocationAwareScope($query)
     {
-        if (!is_array($config = static::$locationAwareConfig))
+        if (!is_array($config = static::$locationAwareConfig)) {
             return;
+        }
 
-        if (!in_array(\Admin\Traits\Locationable::class, class_uses($query->getModel())))
+        if (!in_array(\Admin\Traits\Locationable::class, class_uses($query->getModel()))) {
             return;
+        }
 
-        if (!optional($token = Manager::instance()->token())->isForAdmin() || $token->tokenable->isSuperUser())
+        if (!optional($token = Manager::instance()->token())->isForAdmin() || $token->tokenable->isSuperUser()) {
             return;
+        }
 
         $ids = $token->tokenable->staff->locations->where('location_status', true)->pluck('location_id')->all();
-        if (is_null($ids))
+        if (is_null($ids)) {
             return;
+        }
 
         array_get($config, 'addAbsenceConstraint', true)
             ? $query->whereHasOrDoesntHaveLocation($ids)
@@ -295,22 +309,26 @@ class AbstractRepository
 
     protected function applyCustomerAwareScope($query)
     {
-        if (!is_array($config = static::$customerAwareConfig))
+        if (!is_array($config = static::$customerAwareConfig)) {
             return;
+        }
 
-        if (!optional($token = Manager::instance()->token())->isForCustomer())
+        if (!optional($token = Manager::instance()->token())->isForCustomer()) {
             return;
+        }
 
         $query->where(array_get($config, 'column', 'customer_id'), $token->tokenable->getKey());
     }
 
     protected function setCustomerAwareAttributes($model)
     {
-        if (!is_array($config = static::$customerAwareConfig))
+        if (!is_array($config = static::$customerAwareConfig)) {
             return;
+        }
 
-        if (!optional($token = Manager::instance()->token())->isForCustomer())
+        if (!optional($token = Manager::instance()->token())->isForCustomer()) {
             return;
+        }
 
         $model->{array_get($config, 'column', 'customer_id')} = $token->tokenable->getKey();
     }

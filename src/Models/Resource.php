@@ -77,8 +77,9 @@ class Resource extends Model
 
     public function listGlobalModels()
     {
-        if (!is_null($this->modelListCache))
+        if (!is_null($this->modelListCache)) {
             return $this->modelListCache;
+        }
 
         $result = [];
         $manager = resolve(ExtensionManager::class);
@@ -93,8 +94,7 @@ class Resource extends Model
                     $fullClassName = $modelNamespace.$model->getBasename('.php');
                     $result[$fullClassName] = $code.' - '.$model->getBasename('.php');
                 }
-            }
-            catch (Exception $ex) {
+            } catch (Exception $ex) {
                 // Ignore invalid extensions and models
             }
         }
@@ -147,11 +147,13 @@ class Resource extends Model
 
         // Clean up non-customized api resources
         foreach ($dbResources as $endpoint => $isCustom) {
-            if ($isCustom)
+            if ($isCustom) {
                 continue;
+            }
 
-            if (!array_key_exists($endpoint, $resources))
+            if (!array_key_exists($endpoint, $resources)) {
                 self::where('endpoint', $endpoint)->delete();
+            }
         }
 
         // Create new resources
@@ -248,7 +250,6 @@ class Resource extends Model
 
     /**
      * Registers the api resources.
-     * @param array $definitions
      */
     public function registerResources(array $definitions, string $owner = null)
     {
@@ -262,8 +263,9 @@ class Resource extends Model
         ];
 
         foreach ($definitions as $endpoint => $definition) {
-            if (!is_array($definition))
+            if (!is_array($definition)) {
                 $definition = ['controller' => $definition];
+            }
 
             $definition['endpoint'] = $endpoint;
             $definition['owner'] = $owner;

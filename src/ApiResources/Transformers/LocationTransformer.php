@@ -21,8 +21,9 @@ class LocationTransformer extends TransformerAbstract
 
     public function includeMedia(Location $location)
     {
-        if (!$thumb = $location->getFirstMedia())
+        if (!$thumb = $location->getFirstMedia()) {
             return null;
+        }
 
         return $this->item($thumb, new MediaTransformer, 'media');
     }

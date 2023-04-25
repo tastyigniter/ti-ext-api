@@ -55,15 +55,17 @@ class Tokens extends \Igniter\Admin\Classes\AdminController
         $auth = app($forAdmin ? 'admin.auth' : 'main.auth');
         $user = $auth->getByCredentials($credentials);
 
-        if (!$user || !$auth->validateCredentials($user, $credentials))
+        if (!$user || !$auth->validateCredentials($user, $credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
+        }
 
-        if (!$user->is_activated)
+        if (!$user->is_activated) {
             throw ValidationException::withMessages([
                 'email' => ['Inactive user account'],
             ]);
+        }
 
         $token = Token::createToken($user, $request->device_name, $request->abilities ?? ['*']);
 

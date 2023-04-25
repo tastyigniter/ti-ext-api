@@ -30,8 +30,7 @@ class ResourceException extends HttpException
     {
         if (is_null($errors)) {
             $this->errors = new MessageBag;
-        }
-        else {
+        } else {
             $this->errors = is_array($errors) ? new MessageBag($errors) : $errors;
         }
 

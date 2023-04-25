@@ -31,16 +31,18 @@ class Customers extends ApiController
 
     public function restExtendQuery($query)
     {
-        if (($token = $this->getToken()) && $token->isForCustomer())
+        if (($token = $this->getToken()) && $token->isForCustomer()) {
             $query->where('customer_id', $token->tokenable_id);
+        }
 
         return $query;
     }
 
     public function store()
     {
-        if (($token = $this->getToken()) && $token->isForCustomer())
+        if (($token = $this->getToken()) && $token->isForCustomer()) {
             Request::merge(['customer_id' => $token->tokenable_id]);
+        }
 
         return $this->asExtension('RestController')->store();
     }

@@ -18,8 +18,9 @@ class Scope extends FractalScope
     {
         [$transformedData, $includedData] = parent::fireTransformer($transformer, $data);
 
-        if (!array_key_exists('id', $transformedData) && $data instanceof Model)
+        if (!array_key_exists('id', $transformedData) && $data instanceof Model) {
             $transformedData['id'] = $data->getKey();
+        }
 
         return [$transformedData, $includedData];
     }

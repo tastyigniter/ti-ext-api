@@ -27,5 +27,4 @@ class MenuItemOptions extends ApiController
     ];
 
     protected $requiredAbilities = ['menu_item_options:*'];
-
 }

@@ -39,8 +39,9 @@ class IssueApiToken extends Command
 
         $query->where('email', $email);
 
-        if (!$user = $query->first())
+        if (!$user = $query->first()) {
             return $this->error('User does not exist!');
+        }
 
         $accessToken = Token::createToken($user, $name, ['*']);
         $this->info(sprintf('Access Token: %s', $accessToken->plainTextToken));

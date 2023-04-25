@@ -187,13 +187,15 @@ class RestController extends ControllerAction
         $requestData = request()->$requestMethod();
 
         try {
-            if ($requestMethod == 'query')
+            if ($requestMethod == 'query') {
                 return $this->controller->restValidateQuery($requestData);
+            }
 
             if ($requestClass = $this->getConfig('request')) {
                 app()->resolving($requestClass, function ($request, $app) {
-                    if (method_exists($request, 'setController'))
+                    if (method_exists($request, 'setController')) {
                         $request->setController($this->controller);
+                    }
                 });
 
                 $request = app()->make($requestClass);
@@ -202,8 +204,7 @@ class RestController extends ControllerAction
             }
 
             return $this->controller->restValidate($requestData);
-        }
-        catch (ValidationException $ex) {
+        } catch (ValidationException $ex) {
             throw new ValidationHttpException($ex->getErrors(), $ex);
         }
     }
@@ -220,8 +221,9 @@ class RestController extends ControllerAction
         $repository->setContainer(app());
 
         $methodName = studly_case('bind_'.$context.'_events');
-        if (method_exists($this, $methodName))
+        if (method_exists($this, $methodName)) {
             $this->{$methodName}($repository);
+        }
 
         return $repository;
     }
