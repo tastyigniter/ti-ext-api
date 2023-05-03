@@ -51,5 +51,11 @@
             "pestphp/pest-plugin": true
         },
         "sort-packages": true
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint",
+        "static": "vendor/bin/phpstan analyse --ansi --memory-limit 1056M"
     }
 }
