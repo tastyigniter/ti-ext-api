@@ -48,9 +48,11 @@ class ErrorHandler
         $this->format = $format;
         $this->debug = $debug;
 
-        $handler->renderable(function (Throwable $ex) {
-            return $this->render(request(), $ex);
-        });
+        if (method_exists($handler, 'renderable')) {
+            $handler->renderable(function (Throwable $ex) {
+                return $this->render(request(), $ex);
+            });
+        }
     }
 
     /**
