@@ -19,11 +19,15 @@
         "spatie/laravel-fractal": "^6.0"
     },
     "require-dev": {
+        "fakerphp/faker": "~1.14",
         "laravel/pint": "^1.2",
+        "mockery/mockery": "^1.4.4",
         "nunomaduro/larastan": "^2.4.0",
         "orchestra/testbench": "^8.5",
-        "pestphp/pest": "^2.5",
-        "pestphp/pest-plugin-laravel": "^2.0"
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.2",
+        "pestphp/pest-plugin-faker": "^1.0",
+        "tastyigniter/core": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -48,7 +52,8 @@
     },
     "config": {
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "composer/installers": true
         },
         "sort-packages": true
     },
