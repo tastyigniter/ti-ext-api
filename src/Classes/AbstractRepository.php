@@ -2,14 +2,17 @@
 
 namespace Igniter\Api\Classes;
 
+use Igniter\Admin\Models\User;
 use Igniter\Api\Auth\Manager;
 use Igniter\Api\Traits\GuardsAttributes;
 use Igniter\Api\Traits\HasGlobalScopes;
 use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
+use Igniter\Main\Models\Customer;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AbstractRepository
 {
@@ -45,7 +48,12 @@ class AbstractRepository
         $model = $this->createModel();
         $query = $this->prepareQuery($model);
 
-        return $query->find($id, $attributes);
+        throw_unless(
+            $record = $query->find($id, $attributes),
+            new NotFoundHttpException(sprintf('Record with identifier [%s] not found.', $id))
+        );
+
+        return $record;
     }
 
     public function findBy($attribute, $value, array $attributes = ['*'])
@@ -116,8 +124,6 @@ class AbstractRepository
 
         $this->modelsToSave = [];
         $this->setModelAttributes($model, $attributes);
-
-        $this->setCustomerAwareAttributes($model);
 
         DB::transaction(function () {
             foreach ($this->modelsToSave as $modelToSave) {
@@ -217,6 +223,8 @@ class AbstractRepository
                 $model->makeHidden($relationKeys->toArray());
             }
 
+            $this->extendModel($model);
+
             $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
 
@@ -256,6 +264,10 @@ class AbstractRepository
     {
     }
 
+    protected function extendModel($model)
+    {
+    }
+
     protected function setModelAttributes($model, $saveData)
     {
         if (!is_array($saveData) || !$model) {
@@ -266,14 +278,18 @@ class AbstractRepository
 
         $singularTypes = ['belongsTo', 'hasOne', 'morphOne'];
         foreach ($saveData as $attribute => $value) {
-            if ($model->isGuarded($attribute)) {
+            if ($attribute === $model->getKeyName() || !$model->isFillable($attribute)) {
+                continue;
+            }
+
+            if ($attribute === $this->getCustomerAwareColumn() && request()->user() instanceof Customer) {
                 continue;
             }
 
             $isNested = ($attribute == 'pivot' || (
-                $model->hasRelation($attribute) &&
-                in_array($model->getRelationType($attribute), $singularTypes)
-            ));
+                    $model->hasRelation($attribute) &&
+                    in_array($model->getRelationType($attribute), $singularTypes)
+                ));
 
             if ($isNested && is_array($value) && $model->{$attribute}) {
                 $this->setModelAttributes($model->{$attribute}, $value);
@@ -289,15 +305,16 @@ class AbstractRepository
             return;
         }
 
-        if (!in_array(\Admin\Traits\Locationable::class, class_uses($query->getModel()))) {
+        if (!in_array(\Igniter\Admin\Traits\Locationable::class, class_uses($query->getModel()))) {
             return;
         }
 
-        if (!optional($token = Manager::instance()->token())->isForAdmin() || $token->tokenable->isSuperUser()) {
+        $user = request()->user();
+        if (!$user instanceof User || $user->isSuperUser()) {
             return;
         }
 
-        $ids = $token->tokenable->staff->locations->where('location_status', true)->pluck('location_id')->all();
+        $ids = $user->locations->where('location_status', true)->pluck('location_id')->all();
         if (is_null($ids)) {
             return;
         }
@@ -309,27 +326,27 @@ class AbstractRepository
 
     protected function applyCustomerAwareScope($query)
     {
-        if (!is_array($config = static::$customerAwareConfig)) {
-            return;
+        $columnName = $this->getCustomerAwareColumn();
+        if ($columnName && $customer = $this->getCustomerAwareUser()) {
+            $query->where($columnName, $customer->getKey());
         }
-
-        if (!optional($token = Manager::instance()->token())->isForCustomer()) {
-            return;
-        }
-
-        $query->where(array_get($config, 'column', 'customer_id'), $token->tokenable->getKey());
     }
 
     protected function setCustomerAwareAttributes($model)
     {
-        if (!is_array($config = static::$customerAwareConfig)) {
-            return;
+        $columnName = $this->getCustomerAwareColumn();
+        if ($columnName && $model->getKeyName() !== $columnName && $customer = $this->getCustomerAwareUser()) {
+            $model->{$columnName} = $customer->getKey();
         }
+    }
 
-        if (!optional($token = Manager::instance()->token())->isForCustomer()) {
-            return;
-        }
+    protected function getCustomerAwareColumn()
+    {
+        return array_get(static::$customerAwareConfig, 'column', 'customer_id');
+    }
 
-        $model->{array_get($config, 'column', 'customer_id')} = $token->tokenable->getKey();
+    protected function getCustomerAwareUser()
+    {
+        return ($customer = request()->user()) instanceof Customer ? $customer : null;
     }
 }
