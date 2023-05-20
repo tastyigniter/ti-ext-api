@@ -111,7 +111,7 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for customers',
                 'actions' => [
                     'index:admin', 'show:admin',
-                    'store:users', 'update:users',
+                    'store:admin', 'update:users',
                     'destroy:admin',
                 ],
             ],
