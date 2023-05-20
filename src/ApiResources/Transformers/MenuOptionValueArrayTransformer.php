@@ -6,7 +6,7 @@ use League\Fractal\TransformerAbstract;
 
 class MenuOptionValueArrayTransformer extends TransformerAbstract
 {
-    public function transform(array $menuOptionValue)
+    public function transform($menuOptionValue)
     {
         $menuOptionValue['currrency'] = app('currency')->getDefault()->currency_code;
 
