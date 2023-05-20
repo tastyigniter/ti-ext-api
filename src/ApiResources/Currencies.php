@@ -17,7 +17,7 @@ class Currencies extends ApiController
                 'pageLimit' => 20,
             ],
         ],
-        'request' => \Igniter\System\Requests\Currency::class,
+        'request' => \Igniter\System\Requests\CurrencyRequest::class,
         'repository' => Repositories\CurrencyRepository::class,
         'transformer' => Transformers\CurrencyTransformer::class,
     ];

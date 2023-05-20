@@ -21,7 +21,7 @@ class Menus extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Admin\Requests\Menu::class,
+        'request' => \Igniter\Admin\Requests\MenuRequest::class,
         'repository' => Repositories\MenuRepository::class,
         'transformer' => Transformers\MenuTransformer::class,
     ];
