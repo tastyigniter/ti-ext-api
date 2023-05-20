@@ -23,8 +23,8 @@ it('shows a menu item', function () {
     $this
         ->get(route('igniter.api.menus.show', [$menu->getKey()]))
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('menu_name', $menu->menu_name)
                 ->where('menu_price', $menu->menu_price)
                 ->etc()
@@ -42,8 +42,8 @@ it('creates a menu item', function () {
             'menu_price' => 99.999,
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('menu_name', 'Test menu item')
                 ->where('menu_price', 99.999)
                 ->etc()
@@ -60,8 +60,8 @@ it('updates a menu item', function () {
             'menu_price' => 99.999,
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('menu_name', 'Test menu item')
                 ->where('menu_price', 99.999)
                 ->etc()

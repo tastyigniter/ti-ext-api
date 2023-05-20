@@ -25,8 +25,8 @@ it('shows a location', function () {
     $this
         ->get(route('igniter.api.locations.show', [$location->getKey()]))
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('location_name', $location->location_name)
                 ->where('location_email', $location->location_email)
                 ->where('location_address_1', $location->location_address_1)
@@ -47,8 +47,8 @@ it('creates a location', function () {
             ],
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('location_name', 'Test Location')
                 ->where('location_email', 'test@location.tld')
                 ->where('location_address_1', '123 Test Address')
@@ -70,8 +70,8 @@ it('updates a location', function () {
             ],
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('location_name', 'Test Location')
                 ->where('location_email', 'test@location.tld')
                 ->where('location_address_1', '123 Test Address')
