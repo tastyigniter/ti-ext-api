@@ -29,15 +29,6 @@ class Customers extends ApiController
 
     protected $requiredAbilities = ['customers:*'];
 
-    public function restExtendQuery($query)
-    {
-        if (($token = $this->getToken()) && $token->isForCustomer()) {
-            $query->where('customer_id', $token->tokenable_id);
-        }
-
-        return $query;
-    }
-
     public function store()
     {
         if (($token = $this->getToken()) && $token->isForCustomer()) {
