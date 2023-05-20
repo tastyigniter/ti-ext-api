@@ -21,7 +21,7 @@ class Categories extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Admin\Requests\Category::class,
+        'request' => \Igniter\Admin\Requests\CategoryRequest::class,
         'repository' => Repositories\CategoryRepository::class,
         'transformer' => Transformers\CategoryTransformer::class,
     ];
