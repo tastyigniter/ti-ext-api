@@ -68,6 +68,8 @@ class ApiManager
 
     protected function loadResources()
     {
+        Resource::syncAll();
+
         $resources = Resource::all()->mapWithKeys(function ($resource) {
             $resourceObj = (object)[
                 'endpoint' => $resource->endpoint,
