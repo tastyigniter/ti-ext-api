@@ -149,7 +149,7 @@ class RestController extends ControllerAction
     {
         $this->makeRepository('delete')->delete($recordId);
 
-        return response()->setStatusCode(204);
+        return response()->json()->setStatusCode(204);
     }
 
     public function getActionOptions()

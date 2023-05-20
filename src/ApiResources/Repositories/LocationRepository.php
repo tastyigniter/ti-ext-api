@@ -11,8 +11,6 @@ class LocationRepository extends AbstractRepository
 
     protected $hidden = ['location_thumb'];
 
-    protected $guarded = [];
-
     public function getOptionsAttribute($value)
     {
         return array_except($value, ['hours']);
