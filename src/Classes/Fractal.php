@@ -15,7 +15,7 @@ class Fractal extends \Spatie\Fractal\Fractal
     {
         $fractal = new static(new Manager(new ScopeFactory));
 
-        if ($include = app('request')->get(config('fractal.auto_includes.request_key'))) {
+        if ($include = request()->get(config('fractal.auto_includes.request_key'))) {
             $fractal->parseIncludes($include);
         }
 
