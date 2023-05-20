@@ -11,7 +11,7 @@ class MenuItemOptionArrayTransformer extends TransformerAbstract
         'menu_option_values',
     ];
 
-    public function transform(array $menuItemOption)
+    public function transform($menuItemOption)
     {
         return array_merge($menuItemOption, [
             'id' => $menuItemOption->menu_option_id,
@@ -24,7 +24,7 @@ class MenuItemOptionArrayTransformer extends TransformerAbstract
         //When Post/Patch and inside body comes with an json array option_values the deserialized object is a collection of array
         if (is_array($menuItemOption->menu_option_values)) {
             return $this->collection(
-                $menuOption->menu_option_values,
+                $menuItemOption->menu_option_values,
                 new MenuItemOptionValueArrayTransformer,
                 'menu_option_values'
             );

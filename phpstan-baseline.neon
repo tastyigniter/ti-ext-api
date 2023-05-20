@@ -1,16 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Class Igniter\\\\Local\\\\Models\\\\Review not found\\.$#"
-			count: 1
-			path: src/ApiResources/Repositories/ReviewRepository.php
-
-		-
-			message: "#^Class Igniter\\\\Local\\\\Requests\\\\Review not found\\.$#"
-			count: 1
-			path: src/ApiResources/Reviews.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Category\\:\\:\\$locations\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/CategoryTransformer.php
@@ -52,21 +42,6 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_values\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
-
-		-
-			message: "#^Cannot access property \\$menu_option_id on array\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
-
-		-
-			message: "#^Cannot access property \\$option on array\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
-
-		-
-			message: "#^Undefined variable\\: \\$menuOption$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
 
@@ -206,42 +181,17 @@ parameters:
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to property \\$customer on an unknown class Igniter\\\\Local\\\\Models\\\\Review\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Review\\:\\:\\$customer\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: "#^Access to property \\$location on an unknown class Igniter\\\\Local\\\\Models\\\\Review\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Review\\:\\:\\$location\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Local\\\\Models\\\\Review\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/ReviewTransformer.php
-
-		-
-			message: "#^Parameter \\$review of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReviewTransformer\\:\\:includeCustomer\\(\\) has invalid type Igniter\\\\Local\\\\Models\\\\Review\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/ReviewTransformer.php
-
-		-
-			message: "#^Parameter \\$review of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReviewTransformer\\:\\:includeLocation\\(\\) has invalid type Igniter\\\\Local\\\\Models\\\\Review\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/ReviewTransformer.php
-
-		-
-			message: "#^Parameter \\$review of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\ReviewTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Local\\\\Models\\\\Review\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/ReviewTransformer.php
-
-		-
-			message: "#^Call to static method instance\\(\\) on an unknown class Igniter\\\\Api\\\\Auth\\\\Manager\\.$#"
-			count: 3
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: "#^Class Admin\\\\Traits\\\\Locationable not found\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\User\\:\\:\\$locations\\.$#"
 			count: 1
 			path: src/Classes/AbstractRepository.php
 
@@ -279,11 +229,6 @@ parameters:
 			message: "#^Result of method Illuminate\\\\Console\\\\Command\\:\\:error\\(\\) \\(void\\) is used\\.$#"
 			count: 2
 			path: src/Console/IssueApiToken.php
-
-		-
-			message: "#^Call to an undefined method Illuminate\\\\Validation\\\\ValidationException\\:\\:getErrors\\(\\)\\.$#"
-			count: 1
-			path: src/Exceptions/ErrorHandler.php
 
 		-
 			message: "#^Default value of the parameter \\#2 \\$errors \\(string\\) of method Igniter\\\\Api\\\\Exceptions\\\\ResourceException\\:\\:__construct\\(\\) is incompatible with type array\\|Illuminate\\\\Support\\\\MessageBag\\.$#"
