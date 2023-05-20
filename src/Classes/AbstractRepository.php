@@ -3,7 +3,6 @@
 namespace Igniter\Api\Classes;
 
 use Igniter\Admin\Models\User;
-use Igniter\Api\Auth\Manager;
 use Igniter\Api\Traits\GuardsAttributes;
 use Igniter\Api\Traits\HasGlobalScopes;
 use Igniter\Flame\Database\Model;
@@ -287,9 +286,9 @@ class AbstractRepository
             }
 
             $isNested = ($attribute == 'pivot' || (
-                    $model->hasRelation($attribute) &&
-                    in_array($model->getRelationType($attribute), $singularTypes)
-                ));
+                $model->hasRelation($attribute) &&
+                in_array($model->getRelationType($attribute), $singularTypes)
+            ));
 
             if ($isNested && is_array($value) && $model->{$attribute}) {
                 $this->setModelAttributes($model->{$attribute}, $value);

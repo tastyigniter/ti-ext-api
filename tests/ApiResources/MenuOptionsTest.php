@@ -23,8 +23,8 @@ it('shows a menu option', function () {
     $this
         ->get(route('igniter.api.menu_options.show', [$menuOption->getKey()]))
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('option_name', $menuOption->option_name)
                 ->where('display_type', $menuOption->display_type)
                 ->etc()
@@ -42,8 +42,8 @@ it('creates a menu option', function () {
             'display_type' => 'radio',
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
                 ->etc()
@@ -60,8 +60,8 @@ it('updates a menu option', function () {
             'display_type' => 'radio',
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
                 ->etc()

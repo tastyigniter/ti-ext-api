@@ -24,9 +24,9 @@ it('shows a menu item option', function () {
     $this
         ->get(route('igniter.api.menu_item_options.show', [$menuItemOption->getKey()]))
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
             ->has('data.attributes.option')
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('option_id', $menuItemOption->option->getKey())
                 ->etc()
             )->etc()
@@ -42,8 +42,8 @@ it('creates a menu item option', function () {
             'option_id' => $menuOption->getKey(),
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('option_id', $menuOption->getKey())
                 ->etc()
             ));
@@ -58,8 +58,8 @@ it('updates a menu item option', function () {
             'option_id' => $menuItemOption->option->getKey(),
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.attributes', fn (AssertableJson $json) => $json
                 ->where('option_id', $menuItemOption->option->getKey())
                 ->etc()
             )->etc());
