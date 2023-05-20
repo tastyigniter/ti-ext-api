@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
+use Laravel\Sanctum\SanctumServiceProvider;
+use Spatie\Fractal\FractalServiceProvider;
 
 /**
  * Api Extension Information File
@@ -29,10 +31,14 @@ class Extension extends BaseExtension
             $this->publishes([__DIR__.'/../config/api.php' => config_path('igniter-api.php')], 'igniter-config');
         }
 
+        Sanctum::ignoreMigrations();
+        Sanctum::usePersonalAccessTokenModel(Models\Token::class);
+
+        $this->app->register(FractalServiceProvider::class);
+        $this->app->register(SanctumServiceProvider::class);
+
         $this->app['config']->set('fractal.fractal_class', Fractal::class);
         $this->app['config']->set('fractal.default_serializer', $this->app['config']->get('igniter.api.serializer'));
-
-        Sanctum::usePersonalAccessTokenModel(Models\Token::class);
 
         $this->app->singleton(ApiManager::class);
 
