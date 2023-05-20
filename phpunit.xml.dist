@@ -12,6 +12,7 @@
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:YzE5YjR2b3hrem1ucmdmc2Fkbm92NW1veHBkMWdpa3k="/>
+        <env name="DB_DATABASE" value="testbench"/>
     </php>
     <source>
         <include>
