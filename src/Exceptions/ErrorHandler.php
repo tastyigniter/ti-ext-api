@@ -63,21 +63,21 @@ class ErrorHandler
      */
     public function render($request, Throwable $e)
     {
+        if (!$request->routeIs('igniter.api.*')) {
+            return;
+        }
+
         // Convert Eloquent's 500 ModelNotFoundException into a 404 NotFoundHttpException
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
         if ($e instanceof ValidationException) {
-            $e = new ValidationHttpException($e->getErrors(), $e);
+            $e = new ValidationHttpException($e->errors(), $e);
         }
 
         if ($e instanceof \Igniter\Flame\Exception\ValidationException) {
             $e = new ValidationHttpException($e->getErrors(), $e);
-        }
-
-        if (!$request->routeIs('igniter.api.*')) {
-            return;
         }
 
         return $this->genericResponse($e);
