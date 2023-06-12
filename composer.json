@@ -1,64 +1,65 @@
 {
-	"name": "tastyigniter/ti-ext-api",
-	"type": "tastyigniter-package",
-	"description": "Manages and generates RESTful APIs using available models in your TastyIgniter app.",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Sam Poyigi",
-			"email": "sam@sampoyigi.com"
-		}
-	],
-	"keywords": [
-		"tastyigniter",
-		"rest",
-		"api"
-	],
-	"require": {
-		"laravel/sanctum": "^2.15|^3.2",
-		"spatie/laravel-fractal": "^6.0"
-	},
-	"require-dev": {
-		"laravel/pint": "^1.2",
-		"nunomaduro/larastan": "^2.4.0",
-		"sampoyigi/testbench": "dev-main as 1.0",
-		"pestphp/pest-plugin-laravel": "^2.0",
-		"tastyigniter/core": "dev-master"
-	},
-	"autoload": {
-		"psr-4": {
-			"Igniter\\Api\\": "src/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Igniter\\Api\\Tests\\": "tests/"
-		}
-	},
-	"extra": {
-		"tastyigniter-extension": {
-			"name": "APIs",
-			"icon": {
-				"class": "fa fa-cloud",
-				"color": "#fff",
-				"backgroundColor": "#02586F"
-			},
-			"homepage": "https://tastyigniter.com/marketplace/item/igniter-api"
-		}
-	},
-	"scripts": {
-		"test": "vendor/bin/pest",
-		"test-coverage": "vendor/bin/pest --coverage",
-		"format": "vendor/bin/pint",
-		"static": "vendor/bin/phpstan analyse --ansi --memory-limit 1056M"
-	},
-	"config": {
-		"allow-plugins": {
-			"pestphp/pest-plugin": true,
-			"composer/installers": true,
-			"php-http/discovery": true
-		},
-		"sort-packages": true
-	},
-	"minimum-stability": "dev"
+    "name": "tastyigniter/ti-ext-api",
+    "type": "tastyigniter-package",
+    "description": "Manages and generates RESTful APIs using available models in your TastyIgniter app.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sam Poyigi",
+            "email": "sam@sampoyigi.com"
+        }
+    ],
+    "keywords": [
+        "tastyigniter",
+        "rest",
+        "api"
+    ],
+    "require": {
+        "laravel/sanctum": "^2.15|^3.2",
+        "spatie/laravel-fractal": "^6.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.2",
+        "nunomaduro/larastan": "^2.4.0",
+        "sampoyigi/testbench": "dev-main as 1.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "tastyigniter/core": "dev-master",
+        "tastyigniter/ti-ext-reservation": "v4.x-dev as 4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Igniter\\Api\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Igniter\\Api\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "tastyigniter-extension": {
+            "name": "APIs",
+            "icon": {
+                "class": "fa fa-cloud",
+                "color": "#fff",
+                "backgroundColor": "#02586F"
+            },
+            "homepage": "https://tastyigniter.com/marketplace/item/igniter-api"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint",
+        "static": "vendor/bin/phpstan analyse --ansi --memory-limit 1056M"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "composer/installers": true,
+            "php-http/discovery": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "dev"
 }
