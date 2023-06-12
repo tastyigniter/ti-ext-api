@@ -21,7 +21,7 @@ class Tables extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Admin\Requests\TableRequest::class,
+        'request' => \Igniter\Reservation\Requests\TableRequest::class,
         'repository' => Repositories\TableRepository::class,
         'transformer' => Transformers\TableTransformer::class,
     ];

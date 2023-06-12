@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Repositories;
 
-use Igniter\Admin\Models\MenuOption;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Cart\Models\MenuOption;
 
 class MenuOptionRepository extends AbstractRepository
 {

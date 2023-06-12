@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\Tests\ApiResources;
 
-use Igniter\Admin\Models\Location;
-use Igniter\Admin\Models\User;
+use Igniter\Local\Models\Location;
+use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 

@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Repositories;
 
-use Igniter\Admin\Models\Order;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Cart\Models\Order;
 
 class OrderRepository extends AbstractRepository
 {

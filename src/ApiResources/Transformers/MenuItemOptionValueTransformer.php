@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\MenuItemOptionValue;
+use Igniter\Cart\Models\MenuItemOptionValue;
 use League\Fractal\TransformerAbstract;
 
 class MenuItemOptionValueTransformer extends TransformerAbstract

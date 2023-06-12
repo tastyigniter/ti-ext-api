@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\UserGroup;
+use Igniter\User\Models\UserGroup;
 use League\Fractal\TransformerAbstract;
 
 class StaffGroupTransformer extends TransformerAbstract

@@ -3,7 +3,7 @@
 namespace Igniter\Api\ApiResources\Repositories;
 
 use Igniter\Api\Classes\AbstractRepository;
-use Igniter\Main\Models\Customer;
+use Igniter\User\Models\Customer;
 
 class CustomerRepository extends AbstractRepository
 {

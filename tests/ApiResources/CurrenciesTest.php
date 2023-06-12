@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\Tests\ApiResources;
 
-use Igniter\Admin\Models\User;
 use Igniter\System\Models\Currency;
+use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all currencies', function () {

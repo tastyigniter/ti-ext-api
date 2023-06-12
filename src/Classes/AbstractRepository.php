@@ -2,13 +2,13 @@
 
 namespace Igniter\Api\Classes;
 
-use Igniter\Admin\Models\User;
 use Igniter\Api\Traits\GuardsAttributes;
 use Igniter\Api\Traits\HasGlobalScopes;
 use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
-use Igniter\Main\Models\Customer;
+use Igniter\User\Models\Customer;
+use Igniter\User\Models\User;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -304,7 +304,7 @@ class AbstractRepository
             return;
         }
 
-        if (!in_array(\Igniter\Admin\Traits\Locationable::class, class_uses($query->getModel()))) {
+        if (!in_array(\Igniter\Local\Models\Concerns\Locationable::class, class_uses($query->getModel()))) {
             return;
         }
 

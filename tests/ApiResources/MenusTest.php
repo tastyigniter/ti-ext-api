@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\Tests\ApiResources;
 
-use Igniter\Admin\Models\Menu;
-use Igniter\Admin\Models\User;
+use Igniter\Cart\Models\Menu;
+use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 

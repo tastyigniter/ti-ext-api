@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\Payment;
+use Igniter\PayRegister\Models\Payment;
 use League\Fractal\TransformerAbstract;
 
 class PaymentMethodTransformer extends TransformerAbstract

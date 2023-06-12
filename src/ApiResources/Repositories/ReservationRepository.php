@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Repositories;
 
-use Igniter\Admin\Models\Reservation;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Reservation\Models\Reservation;
 
 class ReservationRepository extends AbstractRepository
 {
