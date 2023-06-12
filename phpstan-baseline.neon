@@ -1,182 +1,182 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Category\\:\\:\\$locations\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Category\\:\\:\\$locations\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/CategoryTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Category\\:\\:\\$menus\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Category\\:\\:\\$menus\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/CategoryTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Main\\\\Models\\\\Customer\\:\\:\\$addresses\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\User\\\\Models\\\\Customer\\:\\:\\$addresses\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/CustomerTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Main\\\\Models\\\\Customer\\:\\:\\$orders\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\User\\\\Models\\\\Customer\\:\\:\\$orders\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/CustomerTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Main\\\\Models\\\\Customer\\:\\:\\$reservations\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\User\\\\Models\\\\Customer\\:\\:\\$reservations\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/CustomerTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Location\\:\\:\\$delivery_areas\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Location\\:\\:\\$delivery_areas\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Location\\:\\:\\$reviews\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Location\\:\\:\\$reviews\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Location\\:\\:\\$working_hours\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Location\\:\\:\\$working_hours\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_values\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_values\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionArrayTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_id\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_id\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_values\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_values\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\MenuItemOption\\:\\:\\$option\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$option\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\MenuOption\\:\\:\\$option_id\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuOption\\:\\:\\$option_id\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuOptionTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\MenuOption\\:\\:\\$option_values\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuOption\\:\\:\\$option_values\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuOptionTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Menu\\:\\:\\$categories\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$categories\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Menu\\:\\:\\$ingredients\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$ingredients\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Menu\\:\\:\\$mealtimes\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$mealtimes\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Menu\\:\\:\\$menu_options\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$menu_options\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Menu\\:\\:\\$stocks\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$stocks\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$address\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$address\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$assignee\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$assignee\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$assignee_group\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$assignee_group\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$customer\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$customer\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$location\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$location\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$payment_method\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$payment_method\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$status\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$status\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$status_history\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$status_history\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Payment\\:\\:\\$code\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\PayRegister\\\\Models\\\\Payment\\:\\:\\$code\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Payment\\:\\:\\$description\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\PayRegister\\\\Models\\\\Payment\\:\\:\\$description\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Payment\\:\\:\\$name\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\PayRegister\\\\Models\\\\Payment\\:\\:\\$name\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Reservation\\:\\:\\$assignee\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$assignee\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Reservation\\:\\:\\$assignee_group\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$assignee_group\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Reservation\\:\\:\\$location\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$location\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Reservation\\:\\:\\$status\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$status\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Reservation\\:\\:\\$status_history\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$status_history\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Reservation\\:\\:\\$tables\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$tables\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
@@ -191,7 +191,17 @@ parameters:
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\User\\:\\:\\$locations\\.$#"
+			message: "#^Call to method toArray\\(\\) on an unknown class Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\Staff\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StaffTransformer.php
+
+		-
+			message: "#^Parameter \\$staff of method Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\StaffTransformer\\:\\:transform\\(\\) has invalid type Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\Staff\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/StaffTransformer.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\User\\\\Models\\\\User\\:\\:\\$locations\\.$#"
 			count: 1
 			path: src/Classes/AbstractRepository.php
 
