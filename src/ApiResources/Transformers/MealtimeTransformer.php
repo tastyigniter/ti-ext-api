@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\Mealtime;
+use Igniter\Cart\Models\Mealtime;
 use League\Fractal\TransformerAbstract;
 
 class MealtimeTransformer extends TransformerAbstract

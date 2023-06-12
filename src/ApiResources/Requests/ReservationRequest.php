@@ -9,7 +9,7 @@ class ReservationRequest extends FormRequest
     public function attributes()
     {
         return [
-            'table_id' => lang('admin::lang.reservations.column_table'),
+            'table_id' => lang('igniter.reservation::default.column_table'),
             'location_id' => lang('igniter.reservation::default.label_location'),
             'guest_num' => lang('igniter.reservation::default.label_guest_num'),
             'reserve_date' => lang('igniter.reservation::default.label_date'),

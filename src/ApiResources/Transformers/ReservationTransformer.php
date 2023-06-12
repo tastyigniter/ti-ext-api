@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\Reservation;
+use Igniter\Reservation\Models\Reservation;
 use League\Fractal\TransformerAbstract;
 
 class ReservationTransformer extends TransformerAbstract

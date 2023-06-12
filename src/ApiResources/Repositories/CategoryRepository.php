@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Repositories;
 
-use Igniter\Admin\Models\Category;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Cart\Models\Category;
 
 class CategoryRepository extends AbstractRepository
 {

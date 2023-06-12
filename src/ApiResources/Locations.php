@@ -21,7 +21,7 @@ class Locations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Admin\Requests\LocationRequest::class,
+        'request' => \Igniter\Local\Requests\LocationRequest::class,
         'repository' => Repositories\LocationRepository::class,
         'transformer' => Transformers\LocationTransformer::class,
     ];

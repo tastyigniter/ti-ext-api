@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\Tests\ApiResources;
 
-use Igniter\Admin\Models\Category;
-use Igniter\Admin\Models\User;
+use Igniter\Cart\Models\Category;
+use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all categories', function () {

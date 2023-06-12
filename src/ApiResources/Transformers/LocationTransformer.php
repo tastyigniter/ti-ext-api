@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\Location;
+use Igniter\Local\Models\Location;
 use League\Fractal\TransformerAbstract;
 
 class LocationTransformer extends TransformerAbstract

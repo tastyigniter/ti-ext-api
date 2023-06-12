@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\Address;
+use Igniter\User\Models\Address;
 use League\Fractal\TransformerAbstract;
 
 class AddressTransformer extends TransformerAbstract

@@ -18,7 +18,7 @@ class MenuOptionRequest extends FormRequest
             'option_values.*.value' => lang('admin::lang.menu_options.label_option_value'),
             'option_values.*.price' => lang('admin::lang.menu_options.label_option_price'),
             'option_values.*.priority' => lang('admin::lang.menu_options.label_option_price'),
-            'option_values.*.allergens.*' => lang('admin::lang.menus.label_allergens'),
+            'option_values.*.allergens.*' => lang('igniter.cart::default.menus.label_allergens'),
         ];
     }
 

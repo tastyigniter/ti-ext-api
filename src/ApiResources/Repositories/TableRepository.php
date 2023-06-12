@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Repositories;
 
-use Igniter\Admin\Models\Table;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Reservation\Models\Table;
 
 class TableRepository extends AbstractRepository
 {

@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Repositories;
 
-use Igniter\Admin\Models\Location;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Local\Models\Location;
 
 class LocationRepository extends AbstractRepository
 {

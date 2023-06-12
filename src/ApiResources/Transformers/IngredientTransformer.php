@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
-use Igniter\Admin\Models\Ingredient;
+use Igniter\Cart\Models\Ingredient;
 use League\Fractal\TransformerAbstract;
 
 class IngredientTransformer extends TransformerAbstract

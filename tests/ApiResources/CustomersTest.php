@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\Tests\ApiResources;
 
-use Igniter\Admin\Models\User;
-use Igniter\Main\Models\Customer;
+use Igniter\User\Models\Customer;
+use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('can not update customer aware column', function () {

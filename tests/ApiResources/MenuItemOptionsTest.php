@@ -2,9 +2,9 @@
 
 namespace Igniter\Api\Tests\ApiResources;
 
-use Igniter\Admin\Models\MenuItemOption;
-use Igniter\Admin\Models\MenuOption;
-use Igniter\Admin\Models\User;
+use Igniter\Cart\Models\MenuItemOption;
+use Igniter\Cart\Models\MenuOption;
+use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
