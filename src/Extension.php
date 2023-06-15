@@ -186,9 +186,9 @@ class Extension extends BaseExtension
                 ],
             ],
             'tables' => [
-                'controller' => \Igniter\Api\ApiResources\Tables::class,
+                'controller' => \Igniter\Api\ApiResources\DiningTables::class,
                 'name' => 'Tables',
-                'description' => 'An API resource for tables',
+                'description' => 'An API resource for dining tables',
                 'actions' => [
                     'index:admin', 'show:admin',
                     'store:admin', 'update:admin',

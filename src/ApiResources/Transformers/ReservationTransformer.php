@@ -28,7 +28,7 @@ class ReservationTransformer extends TransformerAbstract
 
     public function includeTables(Reservation $reservation)
     {
-        return $this->collection($reservation->tables, new TableTransformer, 'tables');
+        return $this->collection($reservation->tables, new DiningTableTransformer, 'tables');
     }
 
     public function includeStatus(Reservation $reservation)
