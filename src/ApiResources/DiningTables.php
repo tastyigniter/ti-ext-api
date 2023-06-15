@@ -7,7 +7,7 @@ use Igniter\Api\Classes\ApiController;
 /**
  * Tables API Controller
  */
-class Tables extends ApiController
+class DiningTables extends ApiController
 {
     public $implement = [\Igniter\Api\Http\Actions\RestController::class];
 
@@ -21,9 +21,9 @@ class Tables extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Reservation\Requests\TableRequest::class,
-        'repository' => Repositories\TableRepository::class,
-        'transformer' => Transformers\TableTransformer::class,
+        'request' => \Igniter\Reservation\Requests\DiningTableRequest::class,
+        'repository' => Repositories\DiningTableRepository::class,
+        'transformer' => Transformers\DiningTableTransformer::class,
     ];
 
     protected $requiredAbilities = ['tables:*'];
