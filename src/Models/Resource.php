@@ -2,13 +2,11 @@
 
 namespace Igniter\Api\Models;
 
-use Exception;
 use Igniter\Flame\Database\Model;
 use Igniter\Flame\Database\Traits\HasPermalink;
-use Igniter\Flame\Database\Traits\Validation;
 use Igniter\Flame\Mail\Markdown;
+use Igniter\Flame\Support\Facades\File;
 use Igniter\System\Classes\ExtensionManager;
-use Illuminate\Support\Facades\File;
 
 /**
  * Resource Model
@@ -16,7 +14,6 @@ use Illuminate\Support\Facades\File;
 class Resource extends Model
 {
     use HasPermalink;
-    use Validation;
 
     /**
      * @var array A cache of api resources.
@@ -58,16 +55,6 @@ class Resource extends Model
         ],
     ];
 
-    protected $rules = [
-        'name' => 'required|min:2|max:128|string',
-        'description' => 'required|min:2|max:255',
-        'endpoint' => 'max:255|regex:/^[a-z0-9\-_\/]+$/i|unique:igniter_api_resources,endpoint',
-        'controller' => 'required|min:2|max:255',
-        'meta' => 'array',
-        'meta.actions.*' => 'alpha',
-        'meta.authorization.*' => 'alpha',
-    ];
-
     public function getMetaOptions()
     {
         $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
@@ -75,36 +62,14 @@ class Resource extends Model
         return array_get($registeredResource, 'options.names', self::$defaultActionDefinition);
     }
 
-    public function listGlobalModels()
-    {
-        if (!is_null($this->modelListCache)) {
-            return $this->modelListCache;
-        }
-
-        $result = [];
-        $manager = resolve(ExtensionManager::class);
-        $extensions = $manager->getExtensions();
-        foreach ($extensions as $code => $extension) {
-            try {
-                $extensionPath = $manager->path($manager->getNamePath($code));
-                $modelNamespace = str_replace('.', '\\', $code).'\\Models\\';
-
-                $models = \File::files($extensionPath.'models');
-                foreach ($models as $model) {
-                    $fullClassName = $modelNamespace.$model->getBasename('.php');
-                    $result[$fullClassName] = $code.' - '.$model->getBasename('.php');
-                }
-            } catch (Exception $ex) {
-                // Ignore invalid extensions and models
-            }
-        }
-
-        return $this->modelListCache = $result;
-    }
-
     public function getBaseEndpointAttribute($value)
     {
         return sprintf('/%s/%s', config('igniter.api.prefix'), $this->endpoint);
+    }
+
+    public function getControllerAttribute()
+    {
+        return array_get($this->listRegisteredResources(), $this->endpoint.'.controller');
     }
 
     public function getAvailableActions()
@@ -157,13 +122,11 @@ class Resource extends Model
         }
 
         // Create new resources
-        foreach ($newResources as $endpoint => $definition) {
+        foreach ($newResources as $definition) {
             $model = self::make();
             $model->endpoint = array_get($definition, 'endpoint');
             $model->name = array_get($definition, 'name');
             $model->description = array_get($definition, 'description');
-            $model->controller = array_get($definition, 'controller');
-            /** @var TYPE_NAME $model */
             $model->meta = array_except(array_get($definition, 'options'), 'names');
             $model->is_custom = false;
             $model->save();
