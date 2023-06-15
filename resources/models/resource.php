@@ -81,12 +81,6 @@ return [
                     'span' => 'left',
                     'comment' => 'lang:igniter.api::default.label_base_endpoint_comment',
                 ],
-                'controller' => [
-                    'label' => 'lang:igniter.api::default.label_controller',
-                    'type' => 'text',
-                    'span' => 'right',
-                    'disabled' => true,
-                ],
                 'meta' => [
                     'label' => 'lang:igniter.api::default.label_actions',
                     'type' => 'partial',
