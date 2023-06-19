@@ -45,12 +45,18 @@ return [
     'form' => [
         'toolbar' => [
             'buttons' => [
-                'save' => ['label' => 'lang:admin::lang.button_save', 'class' => 'btn btn-primary', 'data-request' => 'onSave'],
-                'saveClose' => [
-                    'label' => 'lang:admin::lang.button_save_close',
-                    'class' => 'btn btn-default',
+                'back' => [
+                    'label' => 'lang:igniter::admin.button_icon_back',
+                    'class' => 'btn btn-outline-secondary',
+                    'href' => 'igniter/api/resources',
+                ],
+                'save' => [
+                    'label' => 'lang:igniter::admin.button_save',
+                    'context' => ['create', 'edit'],
+                    'partial' => 'form/toolbar_save_button',
+                    'class' => 'btn btn-primary',
                     'data-request' => 'onSave',
-                    'data-request-data' => 'close:1',
+                    'data-progress-indicator' => 'igniter::admin.text_saving',
                 ],
                 'delete' => [
                     'label' => 'lang:admin::lang.button_icon_delete', 'class' => 'btn btn-danger',
@@ -75,12 +81,6 @@ return [
                     'comment' => 'lang:igniter.api::default.label_description_comment',
                     'commentHtml' => true,
                 ],
-                'endpoint' => [
-                    'label' => 'lang:igniter.api::default.label_base_endpoint',
-                    'type' => 'text',
-                    'span' => 'left',
-                    'comment' => 'lang:igniter.api::default.label_base_endpoint_comment',
-                ],
                 'meta' => [
                     'label' => 'lang:igniter.api::default.label_actions',
                     'type' => 'partial',
@@ -93,6 +93,12 @@ return [
                         'guest' => 'lang:igniter.api::default.text_guest',
                         'all' => 'lang:igniter.api::default.text_all',
                     ],
+                ],
+                'endpoint' => [
+                    'label' => 'lang:igniter.api::default.label_base_endpoint',
+                    'type' => 'text',
+                    'span' => 'right',
+                    'comment' => 'lang:igniter.api::default.label_base_endpoint_comment',
                 ],
                 '_setup' => [
                     'tab' => 'lang:igniter.api::default.label_setup',
