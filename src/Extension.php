@@ -81,7 +81,7 @@ class Extension extends BaseExtension
         return [
             'Igniter.Api.Manage' => [
                 'description' => 'Create, modify and delete api resources',
-                'group' => 'module',
+                'group' => 'advanced',
             ],
         ];
     }
