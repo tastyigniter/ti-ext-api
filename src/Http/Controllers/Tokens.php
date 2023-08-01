@@ -23,6 +23,7 @@ class Tokens extends \Igniter\Admin\Classes\AdminController
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
             'defaultSort' => ['id', 'DESC'],
             'configFile' => 'token',
+            'back' => 'igniter/api/resources',
         ],
     ];
 

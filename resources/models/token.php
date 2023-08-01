@@ -8,11 +8,6 @@ return [
                 'mode' => 'all',
             ],
         ],
-        'toolbar' => [
-            'buttons' => [
-                'back' => ['label' => 'lang:admin::lang.button_icon_back', 'class' => 'btn btn-outline-secondary', 'href' => 'igniter/api/resources'],
-            ],
-        ],
         'bulkActions' => [
             'delete' => [
                 'label' => 'lang:admin::lang.button_delete',

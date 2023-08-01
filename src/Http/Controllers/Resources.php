@@ -35,7 +35,7 @@ class Resources extends \Igniter\Admin\Classes\AdminController
         ],
         'preview' => [
             'title' => 'lang:admin::lang.form.preview_title',
-            'redirect' => 'igniter/api/resources',
+            'back' => 'igniter/api/resources',
         ],
         'delete' => [
             'redirect' => 'igniter/api/resources',
