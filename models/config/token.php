@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Igniter\Api\Models\Config;
 
 use Igniter\Flame\Traits\EventEmitter;
@@ -8,7 +7,7 @@ use Igniter\Flame\Traits\EventEmitter;
 class TokenConfig
 {
     use EventEmitter;
-    
+
     public function configureTokenList()
     {
         $columns = [
@@ -71,7 +70,6 @@ class TokenConfig
                     ],
                 ],
                 'columns' => $columns,
-                
             ],
         ];
     }
@@ -79,4 +77,5 @@ class TokenConfig
 
 // Instantiate and use your TokenConfig class
 $config = new TokenConfig;
+
 return $config->configureTokenList();

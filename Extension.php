@@ -71,7 +71,7 @@ class Extension extends BaseExtension
 
         $this->sanctumConfigureAuthModels();
         $this->sanctumConfigureMiddleware();
-        
+
         // Event runs after all booting methods are called
         $this->fireSystemEvent('api.extension.afterBoot');
     }
@@ -92,7 +92,8 @@ class Extension extends BaseExtension
                     ],
                 ],
             ];
-        } 
+        }
+
         return $this->navigationConfig;
     }
 
