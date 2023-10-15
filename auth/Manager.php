@@ -3,6 +3,7 @@
 namespace Igniter\Api\Auth;
 
 use Igniter\Flame\Traits\Singleton;
+use Igniter\Flame\Traits\EventEmitter;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\Sanctum;
@@ -11,6 +12,7 @@ use Laravel\Sanctum\TransientToken;
 class Manager
 {
     use Singleton;
+    use EventEmitter;
 
     /**
      * The access token the user is using for the current request.
@@ -29,6 +31,15 @@ class Manager
 
     public function authenticate($token)
     {
+        // Event allowing overwrite of authenticate method - must return a token or false
+        $eventResult = $this->fireSystemEvent('api.auth.overwriteAuthenticate', [$token], null);
+        if ($eventResult !== null && $eventResult == false) {
+            return null;
+        } else if ($eventResult !== null) {
+            return $eventResult;
+        }
+
+
         if (($user = app('auth')->user()) && $user->is_activated && $this->supportsTokens($user)) {
             $this->setToken($token = (new TransientToken));
 
@@ -84,6 +95,14 @@ class Manager
 
     public function checkGroup(string $group, $token)
     {
+
+        // Event allowing overwrite of checkGroup method - can return any value but null
+        $eventResult = $this->fireSystemEvent('api.auth.overwriteCheckGroup', [$group, $token], null);
+        if ($eventResult !== null) {
+            // If an event listener returned a non-null value, use it as the eventResult
+            return $eventResult;
+        }
+
         if (!is_null($token)) {
             if ($group == 'guest')
                 return false;
@@ -144,7 +163,7 @@ class Manager
      * @param mixed $tokenable
      * @return bool
      */
-    protected function supportsTokens($tokenable = null)
+    public function supportsTokens($tokenable = null)
     {
         if (is_null($tokenable))
             return false;

@@ -7,6 +7,7 @@ use Admin\Models\Users_model;
 use Dingo\Api\Auth\Auth;
 use Igniter\Api\Classes\ScopeFactory;
 use Igniter\Flame\Database\Model;
+use Igniter\Flame\Traits\EventEmitter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
@@ -21,6 +22,27 @@ use System\Classes\BaseExtension;
  */
 class Extension extends BaseExtension
 {
+    use EventEmitter;
+    
+    /**
+     * @var array A config for navigation setup.
+     * Extendable within event: api.extension.beforeBoot
+     */
+    public $navigationConfig = null;
+
+    /**
+     * @var array A config of permissions.
+     * Extendable within event: api.extension.beforeBoot
+     */
+    public $permissionsConfig = null;
+
+    /**
+     * @var array A config of api resources.
+     * Extendable within event: api.extension.beforeBoot
+     */
+    public $apiResourceConfig = null;
+
+
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/config/api.php', 'api');
@@ -40,6 +62,9 @@ class Extension extends BaseExtension
 
     public function boot()
     {
+        // Event runs before any booting methods are called
+        $this->fireSystemEvent('api.extension.beforeBoot');
+
         $this->configureRateLimiting();
 
         // Register all the available API routes
@@ -47,145 +72,159 @@ class Extension extends BaseExtension
 
         $this->sanctumConfigureAuthModels();
         $this->sanctumConfigureMiddleware();
+        
+        // Event runs after all booting methods are called
+        $this->fireSystemEvent('api.extension.afterBoot');
     }
 
     public function registerNavigation()
     {
-        return [
-            'tools' => [
-                'child' => [
-                    'resources' => [
-                        'priority' => 2,
-                        'class' => 'api-resources',
-                        'href' => admin_url('igniter/api/resources'),
-                        'title' => 'APIs',
-                        'permission' => 'Igniter.Api',
+        if ($this->navigationConfig == null) {
+            return [
+                'tools' => [
+                    'child' => [
+                        'resources' => [
+                            'priority' => 2,
+                            'class' => 'api-resources',
+                            'href' => admin_url('igniter/api/resources'),
+                            'title' => 'APIs',
+                            'permission' => 'Igniter.Api',
+                        ],
                     ],
                 ],
-            ],
-        ];
+            ];
+        } 
+
+        return $this->navigationConfig;
     }
 
     public function registerPermissions()
-    {
-        return [
-            'Igniter.Api.Manage' => [
-                'description' => 'Create, modify and delete api resources',
-                'group' => 'module',
-            ],
-        ];
+    {   if ($this->permissionsConfig == null) {
+            return [
+                'Igniter.Api.Manage' => [
+                    'description' => 'Create, modify and delete api resources',
+                    'group' => 'module',
+                ],
+            ];
+        }
+
+        return $this->permissionsConfig;
     }
 
     public function registerApiResources()
     {
-        return [
-            'categories' => [
-                'controller' => \Igniter\Api\ApiResources\Categories::class,
-                'name' => 'Categories',
-                'description' => 'An API resource for categories',
-                'actions' => [
-                    'index', 'show', 'store:admin', 'update:admin', 'destroy:admin',
+        if ($this->apiResourceConfig == null) {
+            return [
+                'categories' => [
+                    'controller' => \Igniter\Api\ApiResources\Categories::class,
+                    'name' => 'Categories',
+                    'description' => 'An API resource for categories',
+                    'actions' => [
+                        'index', 'show', 'store:admin', 'update:admin', 'destroy:admin',
+                    ],
                 ],
-            ],
-            'currencies' => [
-                'controller' => \Igniter\Api\ApiResources\Currencies::class,
-                'name' => 'Currencies',
-                'description' => 'An API resource for currencies',
-                'actions' => [
-                    'index',
+                'currencies' => [
+                    'controller' => \Igniter\Api\ApiResources\Currencies::class,
+                    'name' => 'Currencies',
+                    'description' => 'An API resource for currencies',
+                    'actions' => [
+                        'index',
+                    ],
                 ],
-            ],
-            'customers' => [
-                'controller' => \Igniter\Api\ApiResources\Customers::class,
-                'name' => 'Customers',
-                'description' => 'An API resource for customers',
-                'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:users', 'update:users',
-                    'destroy:admin',
+                'customers' => [
+                    'controller' => \Igniter\Api\ApiResources\Customers::class,
+                    'name' => 'Customers',
+                    'description' => 'An API resource for customers',
+                    'actions' => [
+                        'index:admin', 'show:admin',
+                        'store:users', 'update:users',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-            'locations' => [
-                'controller' => \Igniter\Api\ApiResources\Locations::class,
-                'name' => 'Locations',
-                'description' => 'An API resource for locations',
-                'actions' => [
-                    'index:all', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                'locations' => [
+                    'controller' => \Igniter\Api\ApiResources\Locations::class,
+                    'name' => 'Locations',
+                    'description' => 'An API resource for locations',
+                    'actions' => [
+                        'index:all', 'show:admin',
+                        'store:admin', 'update:admin',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-            'menus' => [
-                'controller' => \Igniter\Api\ApiResources\Menus::class,
-                'name' => 'Menus',
-                'description' => 'An API resource for menus',
-                'actions' => [
-                    'index:all', 'show:all',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                'menus' => [
+                    'controller' => \Igniter\Api\ApiResources\Menus::class,
+                    'name' => 'Menus',
+                    'description' => 'An API resource for menus',
+                    'actions' => [
+                        'index:all', 'show:all',
+                        'store:admin', 'update:admin',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-            'menu_options' => [
-                'controller' => \Igniter\Api\ApiResources\MenuOptions::class,
-                'name' => 'MenuOptions',
-                'description' => 'An API resource for Menu options',
-                'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                'menu_options' => [
+                    'controller' => \Igniter\Api\ApiResources\MenuOptions::class,
+                    'name' => 'MenuOptions',
+                    'description' => 'An API resource for Menu options',
+                    'actions' => [
+                        'index:admin', 'show:admin',
+                        'store:admin', 'update:admin',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-            'menu_item_options' => [
-                'controller' => \Igniter\Api\ApiResources\MenuItemOptions::class,
-                'name' => 'MenuItemOptions',
-                'description' => 'An API resource for Menu item options',
-                'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                'menu_item_options' => [
+                    'controller' => \Igniter\Api\ApiResources\MenuItemOptions::class,
+                    'name' => 'MenuItemOptions',
+                    'description' => 'An API resource for Menu item options',
+                    'actions' => [
+                        'index:admin', 'show:admin',
+                        'store:admin', 'update:admin',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-            'orders' => [
-                'controller' => \Igniter\Api\ApiResources\Orders::class,
-                'name' => 'Orders',
-                'description' => 'An API resource for orders',
-                'actions' => [
-                    'index:users', 'show:users',
-                    'store:users', 'update:admin',
-                    'destroy:admin',
+                'orders' => [
+                    'controller' => \Igniter\Api\ApiResources\Orders::class,
+                    'name' => 'Orders',
+                    'description' => 'An API resource for orders',
+                    'actions' => [
+                        'index:users', 'show:users',
+                        'store:users', 'update:admin',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-            'reservations' => [
-                'controller' => \Igniter\Api\ApiResources\Reservations::class,
-                'name' => 'Reservations',
-                'description' => 'An API resource for reservations',
-                'actions' => [
-                    'index:users', 'show:users',
-                    'store:users', 'update:admin',
-                    'destroy:admin',
+                'reservations' => [
+                    'controller' => \Igniter\Api\ApiResources\Reservations::class,
+                    'name' => 'Reservations',
+                    'description' => 'An API resource for reservations',
+                    'actions' => [
+                        'index:users', 'show:users',
+                        'store:users', 'update:admin',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-            'reviews' => [
-                'controller' => \Igniter\Api\ApiResources\Reviews::class,
-                'name' => 'Reviews',
-                'description' => 'An API resource for reviews',
-                'actions' => [
-                    'index:users', 'show:users',
-                    'store:users', 'update:admin',
-                    'destroy:admin',
+                'reviews' => [
+                    'controller' => \Igniter\Api\ApiResources\Reviews::class,
+                    'name' => 'Reviews',
+                    'description' => 'An API resource for reviews',
+                    'actions' => [
+                        'index:users', 'show:users',
+                        'store:users', 'update:admin',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-            'tables' => [
-                'controller' => \Igniter\Api\ApiResources\Tables::class,
-                'name' => 'Tables',
-                'description' => 'An API resource for tables',
-                'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                'tables' => [
+                    'controller' => \Igniter\Api\ApiResources\Tables::class,
+                    'name' => 'Tables',
+                    'description' => 'An API resource for tables',
+                    'actions' => [
+                        'index:admin', 'show:admin',
+                        'store:admin', 'update:admin',
+                        'destroy:admin',
+                    ],
                 ],
-            ],
-        ];
+            ];
+        }
+
+        return $this->apiResourceConfig;
     }
 
     /**

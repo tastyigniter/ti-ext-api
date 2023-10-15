@@ -1,26 +1,17 @@
 <?php
 
-return [
-    'list' => [
-        'filter' => [
-            'search' => [
-                'prompt' => 'lang:igniter.api::default.search_tokens_prompt',
-                'mode' => 'all',
-            ],
-        ],
-        'toolbar' => [
-            'buttons' => [
-                'back' => ['label' => 'lang:admin::lang.button_icon_back', 'class' => 'btn btn-outline-secondary', 'href' => 'igniter/api/resources'],
-            ],
-        ],
-        'bulkActions' => [
-            'delete' => [
-                'label' => 'lang:admin::lang.button_delete',
-                'class' => 'btn btn-light text-danger',
-                'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm',
-            ],
-        ],
-        'columns' => [
+
+namespace Igniter\Api\Models\Config;
+
+use Igniter\Flame\Traits\EventEmitter;
+
+class TokenConfig
+{
+    use EventEmitter;
+    
+    public function configureTokenList()
+    {
+        $columns = [
             'tokenable_id' => [
                 'label' => 'lang:igniter.api::default.column_issued_to',
                 'searchable' => true,
@@ -50,6 +41,42 @@ return [
                 'label' => 'lang:igniter.api::default.column_lastused',
                 'type' => 'datetime',
             ],
-        ],
-    ],
-];
+        ];
+
+        // Allow extension/manipulation of columns array via event 
+        $eventResults = $this->fireSystemEvent('api.token.extendConfigColumns', [$columns]);
+
+        if (is_array($eventResults) && $eventResults !== null) {
+            $columns = array_merge($columns, $eventResults);
+        }
+
+        return [
+            'list' => [
+                'filter' => [
+                    'search' => [
+                        'prompt' => 'lang:igniter.api::default.search_tokens_prompt',
+                        'mode' => 'all',
+                    ],
+                ],
+                'toolbar' => [
+                    'buttons' => [
+                        'back' => ['label' => 'lang:admin::lang.button_icon_back', 'class' => 'btn btn-outline-secondary', 'href' => 'igniter/api/resources'],
+                    ],
+                ],
+                'bulkActions' => [
+                    'delete' => [
+                        'label' => 'lang:admin::lang.button_delete',
+                        'class' => 'btn btn-light text-danger',
+                        'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm',
+                    ],
+                ],
+                'columns' => $columns,
+                
+            ],
+        ];
+    }
+}
+
+// Instantiate and use your TokenConfig class
+$config = new TokenConfig;
+return $config->configureTokenList();
