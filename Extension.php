@@ -23,7 +23,7 @@ use System\Classes\BaseExtension;
 class Extension extends BaseExtension
 {
     use EventEmitter;
-    
+
     /**
      * @var array A config for navigation setup.
      * Extendable within event: api.extension.beforeBoot
@@ -41,7 +41,6 @@ class Extension extends BaseExtension
      * Extendable within event: api.extension.beforeBoot
      */
     public $apiResourceConfig = null;
-
 
     public function register()
     {
@@ -94,7 +93,6 @@ class Extension extends BaseExtension
                 ],
             ];
         } 
-
         return $this->navigationConfig;
     }
 

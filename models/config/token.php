@@ -43,7 +43,7 @@ class TokenConfig
             ],
         ];
 
-        // Allow extension/manipulation of columns array via event 
+        // Allow extension/manipulation of columns array via event
         $eventResults = $this->fireSystemEvent('api.token.extendConfigColumns', [$columns]);
 
         if (is_array($eventResults) && $eventResults !== null) {

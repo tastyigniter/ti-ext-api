@@ -2,8 +2,8 @@
 
 namespace Igniter\Api\Auth;
 
-use Igniter\Flame\Traits\Singleton;
 use Igniter\Flame\Traits\EventEmitter;
+use Igniter\Flame\Traits\Singleton;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\Sanctum;
@@ -35,10 +35,9 @@ class Manager
         $eventResult = $this->fireSystemEvent('api.auth.overwriteAuthenticate', [$token], null);
         if ($eventResult !== null && $eventResult == false) {
             return null;
-        } else if ($eventResult !== null) {
+        } elseif ($eventResult !== null) {
             return $eventResult;
         }
-
 
         if (($user = app('auth')->user()) && $user->is_activated && $this->supportsTokens($user)) {
             $this->setToken($token = (new TransientToken));
