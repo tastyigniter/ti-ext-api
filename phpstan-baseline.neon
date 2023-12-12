@@ -277,21 +277,11 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$endpoint\\.$#"
-			count: 5
+			count: 6
 			path: src/Models/Resource.php
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$meta\\.$#"
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$modelListCache\\.$#"
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$controller\\.$#"
 			count: 1
 			path: src/Models/Resource.php
 
@@ -306,18 +296,18 @@ parameters:
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$name\\.$#"
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$is_custom\\.$#"
 			count: 1
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Access to property \\$is_custom on an unknown class Igniter\\\\Api\\\\Models\\\\TYPE_NAME\\.$#"
-			count: 2
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$meta\\.$#"
+			count: 1
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Access to property \\$meta on an unknown class Igniter\\\\Api\\\\Models\\\\TYPE_NAME\\.$#"
-			count: 2
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$name\\.$#"
+			count: 1
 			path: src/Models/Resource.php
 
 		-
@@ -331,22 +321,7 @@ parameters:
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Call to an undefined static method Illuminate\\\\Support\\\\Facades\\\\File\\:\\:existsInsensitive\\(\\)\\.$#"
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: "#^Call to method save\\(\\) on an unknown class Igniter\\\\Api\\\\Models\\\\TYPE_NAME\\.$#"
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: "#^Call to static method files\\(\\) on an unknown class File\\.$#"
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: "#^PHPDoc tag @var for variable \\$model contains unknown class Igniter\\\\Api\\\\Models\\\\TYPE_NAME\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Flame\\\\Support\\\\Facades\\\\File\\:\\:existsInsensitive\\(\\)\\.$#"
 			count: 1
 			path: src/Models/Resource.php
 

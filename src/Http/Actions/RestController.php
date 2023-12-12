@@ -14,8 +14,8 @@ use Igniter\System\Classes\ControllerAction;
  */
 class RestController extends ControllerAction
 {
-    use RestExtendable;
     use FormModelWidget;
+    use RestExtendable;
 
     /**
      * @var \Igniter\Api\Classes\ApiController|self The child controller that implements the action.

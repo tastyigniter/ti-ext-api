@@ -214,7 +214,7 @@ class Resource extends Model
     /**
      * Registers the api resources.
      */
-    public function registerResources(array $definitions, string $owner = null)
+    public function registerResources(array $definitions, ?string $owner = null)
     {
         $defaultDefinitions = [
             'name' => null,
