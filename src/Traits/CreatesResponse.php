@@ -2,7 +2,6 @@
 
 namespace Igniter\Api\Traits;
 
-use Exception;
 use Igniter\Api\Classes\Fractal;
 
 trait CreatesResponse
@@ -14,7 +13,7 @@ trait CreatesResponse
      */
     public function response()
     {
-        throw new Exception('Deprecated, use Fractal::create() or response()->json() instead');
+        throw new \LogicException('Deprecated, use Fractal::create() or response()->json() instead');
     }
 
     public function fractal()
