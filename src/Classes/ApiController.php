@@ -5,24 +5,51 @@ namespace Igniter\Api\Classes;
 use Igniter\Admin\Traits\ValidatesForm;
 use Igniter\Api\Traits\AuthorizesRequest;
 use Igniter\Api\Traits\CreatesResponse;
+use Igniter\Flame\Support\Extendable;
+use Igniter\Flame\Traits\EventEmitter;
 use Igniter\System\Classes\BaseController;
 use Illuminate\Contracts\Support\Responsable;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-class ApiController extends BaseController
+class ApiController extends Extendable
 {
     use AuthorizesRequest;
     use CreatesResponse;
     use ValidatesForm;
+    use EventEmitter;
 
-    public $allowedActions = [];
+    public array $allowedActions = [];
+
+    /**
+     * @var array Default actions which cannot be called as actions.
+     */
+    public $hiddenActions = [
+        'checkAction',
+        'execPageAction',
+        'handleError',
+    ];
 
     /**
      * @var array Token abilities required to access methods on this controller.
      * ex. ['orders.*']
      */
     protected $requiredAbilities;
+
+    /**
+     * @var int Response status code
+     */
+    protected $statusCode = 200;
+
+    /**
+     * Class constructor
+     */
+    public function __construct()
+    {
+        $this->extendableConstruct();
+
+        $this->fireSystemEvent('api.controller.beforeConstructor', [$this]);
+    }
 
     public function getAbilities()
     {
@@ -65,6 +92,11 @@ class ApiController extends BaseController
         }
 
         return $methodExists;
+    }
+
+    public function setStatusCode($code)
+    {
+        $this->statusCode = $code;
     }
 
     protected function authorizeToken()
