@@ -7,7 +7,7 @@ use Igniter\Api\Classes\ApiController;
  */
 class {{studly_name}} extends ApiController
 {
-    public $implement = [
+    public array $implement = [
         \Igniter\Api\Http\Actions\RestController::class
     ];
 

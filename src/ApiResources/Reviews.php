@@ -9,7 +9,7 @@ use Igniter\Api\Classes\ApiController;
  */
 class Reviews extends ApiController
 {
-    public $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
 
     public $restConfig = [
         'actions' => [

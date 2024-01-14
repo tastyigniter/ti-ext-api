@@ -9,7 +9,7 @@ use Igniter\Api\Classes\ApiController;
  */
 class Categories extends ApiController
 {
-    public $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
 
     public $restConfig = [
         'actions' => [

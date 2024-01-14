@@ -30,7 +30,7 @@ class RestController extends ControllerAction
     /**
      * {@inheritdoc}
      */
-    protected $requiredProperties = ['restConfig'];
+    protected array $requiredProperties = ['restConfig'];
 
     /**
      * @var array Configuration values that must exist when applying the primary config file.

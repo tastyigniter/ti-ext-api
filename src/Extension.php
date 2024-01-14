@@ -59,7 +59,7 @@ class Extension extends BaseExtension
         $this->sanctumConfigureMiddleware();
     }
 
-    public function registerNavigation()
+    public function registerNavigation(): array
     {
         return [
             'tools' => [
@@ -76,7 +76,7 @@ class Extension extends BaseExtension
         ];
     }
 
-    public function registerPermissions()
+    public function registerPermissions(): array
     {
         return [
             'Igniter.Api.Manage' => [

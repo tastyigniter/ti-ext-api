@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Request;
  */
 class Customers extends ApiController
 {
-    public $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
 
     public $restConfig = [
         'actions' => [

@@ -9,12 +9,12 @@ use Igniter\Admin\Facades\AdminMenu;
  */
 class Resources extends \Igniter\Admin\Classes\AdminController
 {
-    public $implement = [
+    public array $implement = [
         \Igniter\Admin\Http\Actions\FormController::class,
         \Igniter\Admin\Http\Actions\ListController::class,
     ];
 
-    public $listConfig = [
+    public array $listConfig = [
         'list' => [
             'model' => \Igniter\Api\Models\Resource::class,
             'title' => 'APIs',
@@ -24,7 +24,7 @@ class Resources extends \Igniter\Admin\Classes\AdminController
         ],
     ];
 
-    public $formConfig = [
+    public array $formConfig = [
         'name' => 'APIs',
         'model' => \Igniter\Api\Models\Resource::class,
         'request' => \Igniter\Api\Requests\ResourceRequest::class,
@@ -43,7 +43,7 @@ class Resources extends \Igniter\Admin\Classes\AdminController
         'configFile' => 'resource',
     ];
 
-    protected $requiredPermissions = 'Igniter.Api.*';
+    protected null|string|array $requiredPermissions = 'Igniter.Api.*';
 
     public function __construct()
     {

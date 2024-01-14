@@ -12,11 +12,11 @@ use Illuminate\Validation\ValidationException;
  */
 class Tokens extends \Igniter\Admin\Classes\AdminController
 {
-    public $implement = [
+    public array $implement = [
         \Igniter\Admin\Http\Actions\ListController::class,
     ];
 
-    public $listConfig = [
+    public array $listConfig = [
         'list' => [
             'model' => \Igniter\Api\Models\Token::class,
             'title' => 'igniter.api::default.text_tokens_title',
@@ -27,7 +27,7 @@ class Tokens extends \Igniter\Admin\Classes\AdminController
         ],
     ];
 
-    protected $requiredPermissions = 'Igniter.Api.*';
+    protected null|string|array $requiredPermissions = 'Igniter.Api.*';
 
     public function __construct()
     {
