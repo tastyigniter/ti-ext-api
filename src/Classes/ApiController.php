@@ -7,7 +7,6 @@ use Igniter\Api\Traits\AuthorizesRequest;
 use Igniter\Api\Traits\CreatesResponse;
 use Igniter\Flame\Support\Extendable;
 use Igniter\Flame\Traits\EventEmitter;
-use Igniter\System\Classes\BaseController;
 use Illuminate\Contracts\Support\Responsable;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -16,8 +15,8 @@ class ApiController extends Extendable
 {
     use AuthorizesRequest;
     use CreatesResponse;
-    use ValidatesForm;
     use EventEmitter;
+    use ValidatesForm;
 
     public array $allowedActions = [];
 
