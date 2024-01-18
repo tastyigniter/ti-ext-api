@@ -76,10 +76,6 @@ class ErrorHandler
             $e = new ValidationHttpException($e->errors(), $e);
         }
 
-        if ($e instanceof \Igniter\Flame\Exception\ValidationException) {
-            $e = new ValidationHttpException($e->getErrors(), $e);
-        }
-
         return $this->genericResponse($e);
     }
 
