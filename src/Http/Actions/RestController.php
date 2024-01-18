@@ -6,8 +6,8 @@ use Igniter\Admin\Traits\FormModelWidget;
 use Igniter\Api\Classes\AbstractRepository;
 use Igniter\Api\Exceptions\ValidationHttpException;
 use Igniter\Api\Traits\RestExtendable;
-use Igniter\Flame\Exception\ValidationException;
 use Igniter\System\Classes\ControllerAction;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Rest Controller Action
@@ -205,7 +205,7 @@ class RestController extends ControllerAction
 
             return $this->controller->restValidate($requestData);
         } catch (ValidationException $ex) {
-            throw new ValidationHttpException($ex->getErrors(), $ex);
+            throw new ValidationHttpException($ex->errors(), $ex);
         }
     }
 
