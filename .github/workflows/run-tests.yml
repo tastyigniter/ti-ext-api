@@ -16,6 +16,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Create MySQL Database
+        run: |
+          sudo systemctl start mysql
+          mysql -u${{ env.DB_USERNAME }} -p${{ env.DB_PASSWORD }} -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' --port ${{ env.DB_PORT }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -32,3 +37,11 @@ jobs:
 
       - name: Execute tests
         run: composer test
+
+    env:
+      DB_PORT: 3306
+      DB_DATABASE: test
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_PREFIX: 'ti_'
+      IGNITER_LOCATION_MODE: multiple
