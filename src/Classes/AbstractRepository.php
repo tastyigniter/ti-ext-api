@@ -224,11 +224,11 @@ class AbstractRepository
             $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
 
             foreach ([
-                         'beforeCreate', 'afterCreate',
-                         'beforeUpdate', 'afterUpdate',
-                         'beforeSave', 'afterSave',
-                         'beforeDelete', 'afterDelete',
-                     ] as $method) {
+                'beforeCreate', 'afterCreate',
+                'beforeUpdate', 'afterUpdate',
+                'beforeSave', 'afterSave',
+                'beforeDelete', 'afterDelete',
+            ] as $method) {
                 $model->bindEvent('model.'.$method, function () use ($model, $method) {
                     if (method_exists($this, $method)) {
                         $this->$method($model);
@@ -282,9 +282,9 @@ class AbstractRepository
             }
 
             $isNested = ($attribute == 'pivot' || (
-                    $model->hasRelation($attribute) &&
-                    in_array($model->getRelationType($attribute), $singularTypes)
-                ));
+                $model->hasRelation($attribute) &&
+                in_array($model->getRelationType($attribute), $singularTypes)
+            ));
 
             if ($isNested && is_array($value) && $model->{$attribute}) {
                 $this->setModelAttributes($model->{$attribute}, $value);
