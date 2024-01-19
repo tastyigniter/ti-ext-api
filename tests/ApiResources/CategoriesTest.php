@@ -9,12 +9,9 @@ use Laravel\Sanctum\Sanctum;
 it('returns all categories', function () {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
 
-    $response = $this
-        ->get(route('igniter.api.categories.index'));
-
-    dump($response);
-
-    $response->assertOk()
+    $this
+        ->get(route('igniter.api.categories.index'))
+        ->assertOk()
         ->assertJsonPath('data.0.attributes', Category::first()->toArray());
 });
 
