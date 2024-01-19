@@ -26,5 +26,5 @@ class {{studly_name}} extends ApiController
         'transformer' => '{{studly_author}}\{{studly_extension}}\ApiResources\Transformers\{{studly_singular_name}}Transformer',
     ];
 
-    protected $requiredAbilities = ['{{lower_name}}:*'];
+    protected string|array $requiredAbilities = ['{{lower_name}}:*'];
 }

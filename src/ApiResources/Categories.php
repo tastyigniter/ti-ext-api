@@ -26,5 +26,5 @@ class Categories extends ApiController
         'transformer' => Transformers\CategoryTransformer::class,
     ];
 
-    protected $requiredAbilities = ['categories:*'];
+    protected string|array $requiredAbilities = ['categories:*'];
 }

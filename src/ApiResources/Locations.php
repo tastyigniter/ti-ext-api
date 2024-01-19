@@ -26,5 +26,5 @@ class Locations extends ApiController
         'transformer' => Transformers\LocationTransformer::class,
     ];
 
-    protected $requiredAbilities = ['locations:*'];
+    protected string|array $requiredAbilities = ['locations:*'];
 }

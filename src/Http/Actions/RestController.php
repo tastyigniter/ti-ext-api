@@ -4,10 +4,14 @@ namespace Igniter\Api\Http\Actions;
 
 use Igniter\Admin\Traits\FormModelWidget;
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Api\Classes\ApiController;
 use Igniter\Api\Exceptions\ValidationHttpException;
 use Igniter\Api\Traits\RestExtendable;
+use Igniter\Flame\Database\Model;
 use Igniter\System\Classes\ControllerAction;
 use Illuminate\Validation\ValidationException;
+use League\Fractal\TransformerAbstract;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Rest Controller Action
@@ -17,35 +21,17 @@ class RestController extends ControllerAction
     use FormModelWidget;
     use RestExtendable;
 
-    /**
-     * @var \Igniter\Api\Classes\ApiController|self The child controller that implements the action.
-     */
-    protected $controller;
+    protected ?Model $model;
 
-    /**
-     * @var \Igniter\Flame\Database\Model The initialized model used by the rest controller.
-     */
-    protected $model;
-
-    /**
-     * {@inheritdoc}
-     */
     protected array $requiredProperties = ['restConfig'];
 
-    /**
-     * @var array Configuration values that must exist when applying the primary config file.
-     * - model: Class name for the model
-     */
-    protected $requiredConfig = ['actions', 'repository', 'transformer'];
+    /** Configuration values that must exist when applying the primary config file. - model: Class name for the model */
+    protected array $requiredConfig = ['actions', 'repository', 'transformer'];
 
-    /**
-     * RestController constructor
-     * @param \Igniter\Api\Classes\ApiController $controller
-     */
-    public function __construct($controller)
+    /** @param ApiController $controller */
+    public function __construct(protected $controller)
     {
         parent::__construct($controller);
-        $this->controller = $controller;
 
         $this->setConfig($controller->restConfig, $this->requiredConfig);
 
@@ -54,10 +40,8 @@ class RestController extends ControllerAction
 
     /**
      * Display the records.
-     *
-     * @return mixed
      */
-    public function index()
+    public function index(): Response
     {
         $requestQuery = $this->validateRequest('query');
 
@@ -65,19 +49,19 @@ class RestController extends ControllerAction
 
         $records = $this->makeRepository('query')->findAll($options);
 
-        return $this->controller->fractal()
+        $response = $this->controller->fractal()
             ->collection($records)
             ->transformWith($this->createTransformer())
             ->withResourceName($this->getResourceKey())
             ->toArray();
+
+        return response()->json($response);
     }
 
     /**
      * Store a newly created record using post data.
-     *
-     * @return mixed
      */
-    public function store()
+    public function store(): Response
     {
         $repository = $this->makeRepository('create');
 
@@ -98,30 +82,26 @@ class RestController extends ControllerAction
 
     /**
      * Display the specified record.
-     *
-     * @param int $recordId
-     * @return mixed
      */
-    public function show($recordId)
+    public function show(int $recordId): Response
     {
         $this->validateRequest('query');
 
         $result = $this->makeRepository('query')->find($recordId);
 
-        return $this->controller->fractal()
+        $response = $this->controller->fractal()
             ->item($result)
             ->transformWith($this->createTransformer())
             ->withResourceName($this->getResourceKey())
             ->toArray();
+
+        return response()->json($response);
     }
 
     /**
      * Update the specified record in using post data.
-     *
-     * @param int $recordId
-     * @return mixed
      */
-    public function update($recordId)
+    public function update(int $recordId): Response
     {
         $repository = $this->makeRepository('update');
 
@@ -131,30 +111,28 @@ class RestController extends ControllerAction
 
         $result = $this->makeRepository('update')->update($this->model, $request);
 
-        return $this->controller->fractal()
+        $response = $this->controller->fractal()
             ->item($result)
             ->transformWith($this->createTransformer())
             ->withResourceName($this->getResourceKey())
             ->toArray();
+
+        return response()->json($response);
     }
 
     /**
      * Remove the specified record.
-     *
-     * @param int $recordId
-     * @return mixed
-     * @throws \Exception
      */
-    public function destroy($recordId)
+    public function destroy(int $recordId): Response
     {
         $this->makeRepository('delete')->delete($recordId);
 
         return response()->json()->setStatusCode(204);
     }
 
-    public function getActionOptions()
+    public function getActionOptions(): array
     {
-        return array_get($this->getConfig('actions'), $this->controller->getAction(), []);
+        return array_get($this->getConfig('actions'), $this->controller->action, []);
     }
 
     //
@@ -170,19 +148,14 @@ class RestController extends ControllerAction
         );
     }
 
-    protected function createTransformer()
+    protected function createTransformer(): TransformerAbstract
     {
         $transformerClass = $this->getConfig('transformer');
 
         return new $transformerClass;
     }
 
-    /**
-     * @param string $requestMethod query or all
-     * @return array
-     * @throws \Igniter\Api\Exceptions\ValidationHttpException
-     */
-    protected function validateRequest($requestMethod)
+    protected function validateRequest(string $requestMethod): array
     {
         $requestData = request()->$requestMethod();
 
@@ -209,12 +182,7 @@ class RestController extends ControllerAction
         }
     }
 
-    /**
-     * @param string|null $context
-     * @return \Igniter\Api\Classes\AbstractRepository
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    protected function makeRepository($context)
+    protected function makeRepository(string $context): AbstractRepository
     {
         $repository = app()->make($this->getConfig('repository'));
 

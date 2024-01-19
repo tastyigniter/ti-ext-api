@@ -26,5 +26,5 @@ class Reservations extends ApiController
         'transformer' => Transformers\ReservationTransformer::class,
     ];
 
-    protected $requiredAbilities = ['reservations:*'];
+    protected string|array $requiredAbilities = ['reservations:*'];
 }

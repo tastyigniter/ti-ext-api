@@ -26,5 +26,5 @@ class Reviews extends ApiController
         'transformer' => Transformers\ReviewTransformer::class,
     ];
 
-    protected $requiredAbilities = ['reviews:*'];
+    protected string|array $requiredAbilities = ['reviews:*'];
 }

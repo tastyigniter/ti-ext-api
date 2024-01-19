@@ -1,6 +1,6 @@
 name: "Static Analysis"
 
-on: [push, pull_request]
+on: [ push, pull_request, workflow_dispatch ]
 
 jobs:
   types:
@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ["8.1", "8.2"]
+        php: [ 8.2, 8.3 ]
     name: PHP ${{ matrix.php }} - Static Analysis
     steps:
       - name: Checkout code

@@ -22,5 +22,5 @@ class Currencies extends ApiController
         'transformer' => Transformers\CurrencyTransformer::class,
     ];
 
-    protected $requiredAbilities = ['currencies:*'];
+    protected string|array $requiredAbilities = ['currencies:*'];
 }
