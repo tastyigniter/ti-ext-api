@@ -26,5 +26,5 @@ class DiningTables extends ApiController
         'transformer' => Transformers\DiningTableTransformer::class,
     ];
 
-    protected $requiredAbilities = ['tables:*'];
+    protected string|array $requiredAbilities = ['tables:*'];
 }

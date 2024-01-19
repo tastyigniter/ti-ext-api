@@ -27,7 +27,7 @@ class Customers extends ApiController
         'transformer' => Transformers\CustomerTransformer::class,
     ];
 
-    protected $requiredAbilities = ['customers:*'];
+    protected string|array $requiredAbilities = ['customers:*'];
 
     public function store()
     {

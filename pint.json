@@ -12,7 +12,7 @@
     "braces": false,
     "self_accessor": false,
     "phpdoc_separation": false,
-    "Laravel/laravel_phpdoc_alignment": false,
+    "phpdoc_align": false,
     "no_trailing_comma_in_singleline": false,
     "phpdoc_trim_consecutive_blank_line_separation": true,
     "blank_line_before_statement": {

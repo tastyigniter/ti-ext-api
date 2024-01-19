@@ -26,7 +26,7 @@ class Orders extends ApiController
         'transformer' => Transformers\OrderTransformer::class,
     ];
 
-    protected $requiredAbilities = ['orders:*'];
+    protected string|array $requiredAbilities = ['orders:*'];
 
     public function restAfterSave($model)
     {
