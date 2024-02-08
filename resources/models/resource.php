@@ -69,10 +69,16 @@ return [
                     'span' => 'left',
                     'comment' => 'lang:igniter.api::default.label_api_name_comment',
                 ],
+                'endpoint' => [
+                    'label' => 'lang:igniter.api::default.label_base_endpoint',
+                    'type' => 'text',
+                    'span' => 'right',
+                    'comment' => 'lang:igniter.api::default.label_base_endpoint_comment',
+                    'disabled' => true,
+                ],
                 'description' => [
                     'label' => 'lang:igniter.api::default.label_description',
                     'type' => 'text',
-                    'span' => 'right',
                     'comment' => 'lang:igniter.api::default.label_description_comment',
                     'commentHtml' => true,
                 ],
@@ -88,12 +94,6 @@ return [
                         'guest' => 'lang:igniter.api::default.text_guest',
                         'all' => 'lang:igniter.api::default.text_all',
                     ],
-                ],
-                'endpoint' => [
-                    'label' => 'lang:igniter.api::default.label_base_endpoint',
-                    'type' => 'text',
-                    'span' => 'right',
-                    'comment' => 'lang:igniter.api::default.label_base_endpoint_comment',
                 ],
                 '_setup' => [
                     'tab' => 'lang:igniter.api::default.label_setup',
