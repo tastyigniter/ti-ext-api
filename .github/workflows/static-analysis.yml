@@ -6,7 +6,6 @@ jobs:
   types:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
       matrix:
         php: [ 8.2, 8.3 ]
     name: PHP ${{ matrix.php }} - Static Analysis
