@@ -231,11 +231,6 @@ parameters:
 			path: src/Classes/Fractal.php
 
 		-
-			message: "#^Method Igniter\\\\Api\\\\Console\\\\CreateApiResource\\:\\:handle\\(\\) should return bool\\|null but return statement is missing\\.$#"
-			count: 1
-			path: src/Console/CreateApiResource.php
-
-		-
 			message: "#^Result of method Illuminate\\\\Console\\\\Command\\:\\:error\\(\\) \\(void\\) is used\\.$#"
 			count: 2
 			path: src/Console/IssueApiToken.php
