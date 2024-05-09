@@ -44,7 +44,6 @@ class Extension extends BaseExtension
 
         $this->registerErrorHandler();
 
-        $this->registerConsoleCommand('create.apiresource', Console\CreateApiResource::class);
         $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
     }
 
