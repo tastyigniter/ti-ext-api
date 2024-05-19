@@ -96,7 +96,7 @@ class AbstractRepository
 
         $this->setCustomerAwareAttributes($model);
 
-        DB::transaction(function () {
+        DB::transaction(function() {
             foreach ($this->modelsToSave as $modelToSave) {
                 $modelToSave->save();
             }
@@ -124,7 +124,7 @@ class AbstractRepository
         $this->modelsToSave = [];
         $this->setModelAttributes($model, $attributes);
 
-        DB::transaction(function () {
+        DB::transaction(function() {
             foreach ($this->modelsToSave as $modelToSave) {
                 $modelToSave->save();
             }
@@ -197,7 +197,7 @@ class AbstractRepository
 
     protected function prepareModel(string $modelClass): void
     {
-        $modelClass::extend(function (Model $model) {
+        $modelClass::extend(function(Model $model) {
             if ($fillable = $this->getFillable()) {
                 $model->mergeFillable($fillable);
             }
@@ -229,7 +229,7 @@ class AbstractRepository
                 'beforeSave', 'afterSave',
                 'beforeDelete', 'afterDelete',
             ] as $method) {
-                $model->bindEvent('model.'.$method, function () use ($model, $method) {
+                $model->bindEvent('model.'.$method, function() use ($model, $method) {
                     if (method_exists($this, $method)) {
                         $this->$method($model);
                     }

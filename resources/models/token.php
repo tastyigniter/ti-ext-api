@@ -19,7 +19,7 @@ return [
             'tokenable_id' => [
                 'label' => 'lang:igniter.api::default.column_issued_to',
                 'searchable' => true,
-                'formatter' => function ($record, $column, $value) {
+                'formatter' => function($record, $column, $value) {
                     $value = $record->tokenable_type == 'users'
                         ? $record->tokenable->username : $record->tokenable->email;
 
@@ -29,7 +29,7 @@ return [
             'tokenable_type' => [
                 'label' => 'lang:igniter.api::default.column_token_type',
                 'searchable' => true,
-                'formatter' => function ($record, $column, $value) {
+                'formatter' => function($record, $column, $value) {
                     return $value == 'users' ? lang('igniter.api::default.text_token_type_staff') : lang('igniter.api::default.text_token_type_customer');
                 },
             ],

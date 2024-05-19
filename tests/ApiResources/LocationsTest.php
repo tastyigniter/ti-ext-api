@@ -7,7 +7,7 @@ use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all locations', function () {
+it('returns all locations', function() {
     Sanctum::actingAs(User::factory()->create(), ['locations:*']);
     Location::factory()->count(4)->create();
 
@@ -18,15 +18,15 @@ it('returns all locations', function () {
         ->assertJsonCount(5, 'data');
 });
 
-it('shows a location', function () {
+it('shows a location', function() {
     Sanctum::actingAs(User::factory()->create(), ['locations:*']);
     $location = Location::first();
 
     $this
         ->get(route('igniter.api.locations.show', [$location->getKey()]))
         ->assertOk()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('location_name', $location->location_name)
                 ->where('location_email', $location->location_email)
                 ->where('location_address_1', $location->location_address_1)
@@ -34,7 +34,7 @@ it('shows a location', function () {
             ));
 });
 
-it('creates a location', function () {
+it('creates a location', function() {
     Sanctum::actingAs(User::factory()->create(), ['locations:*']);
 
     $this
@@ -47,8 +47,8 @@ it('creates a location', function () {
             'location_lng' => '0',
         ])
         ->assertCreated()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('location_name', 'Test Location')
                 ->where('location_email', 'test@location.tld')
                 ->where('location_address_1', '123 Test Address')
@@ -56,7 +56,7 @@ it('creates a location', function () {
             ));
 });
 
-it('updates a location', function () {
+it('updates a location', function() {
     Sanctum::actingAs(User::factory()->create(), ['locations:*']);
     $location = Location::factory()->create();
 
@@ -70,8 +70,8 @@ it('updates a location', function () {
             'location_lng' => '0',
         ])
         ->assertOk()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('location_name', 'Test Location')
                 ->where('location_email', 'test@location.tld')
                 ->where('location_address_1', '123 Test Address')
@@ -79,7 +79,7 @@ it('updates a location', function () {
             ));
 });
 
-it('deletes a location', function () {
+it('deletes a location', function() {
     Sanctum::actingAs(User::factory()->create(), ['locations:*']);
     $location = Location::factory()->create();
 

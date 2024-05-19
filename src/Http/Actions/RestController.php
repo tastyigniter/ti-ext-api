@@ -165,7 +165,7 @@ class RestController extends ControllerAction
             }
 
             if ($requestClass = $this->getConfig('request')) {
-                app()->resolving($requestClass, function ($request, $app) {
+                app()->resolving($requestClass, function($request, $app) {
                     if (method_exists($request, 'setController')) {
                         $request->setController($this->controller);
                     }
@@ -198,19 +198,19 @@ class RestController extends ControllerAction
 
     protected function bindQueryEvents(AbstractRepository $repository): void
     {
-        $repository->bindEvent('repository.extendQuery', function ($query) {
+        $repository->bindEvent('repository.extendQuery', function($query) {
             $this->controller->restExtendQuery($query);
         });
     }
 
     protected function bindCreateEvents(AbstractRepository $repository): void
     {
-        $repository->bindEvent('repository.beforeCreate', function ($model) {
+        $repository->bindEvent('repository.beforeCreate', function($model) {
             $this->controller->restBeforeSave($model);
             $this->controller->restBeforeCreate($model);
         });
 
-        $repository->bindEvent('repository.afterCreate', function ($model) {
+        $repository->bindEvent('repository.afterCreate', function($model) {
             $this->controller->restAfterSave($model);
             $this->controller->restAfterCreate($model);
         });
@@ -218,12 +218,12 @@ class RestController extends ControllerAction
 
     protected function bindUpdateEvents(AbstractRepository $repository): void
     {
-        $repository->bindEvent('repository.beforeUpdate', function ($model) {
+        $repository->bindEvent('repository.beforeUpdate', function($model) {
             $this->controller->restBeforeSave($model);
             $this->controller->restAfterUpdate($model);
         });
 
-        $repository->bindEvent('repository.afterUpdate', function ($model) {
+        $repository->bindEvent('repository.afterUpdate', function($model) {
             $this->controller->restAfterSave($model);
             $this->controller->restAfterUpdate($model);
         });
@@ -231,7 +231,7 @@ class RestController extends ControllerAction
 
     protected function bindDeleteEvents(AbstractRepository $repository): void
     {
-        $repository->bindEvent('repository.afterDelete', function ($model) {
+        $repository->bindEvent('repository.afterDelete', function($model) {
             $this->controller->restAfterDelete($model);
         });
     }

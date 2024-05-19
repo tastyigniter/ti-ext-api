@@ -199,7 +199,7 @@ class Extension extends BaseExtension
 
     protected function registerErrorHandler()
     {
-        $this->callAfterResolving(ExceptionHandler::class, function ($handler) {
+        $this->callAfterResolving(ExceptionHandler::class, function($handler) {
             new ErrorHandler($handler, config('igniter.api.errorFormat', []), config('igniter.api.debug', []));
         });
     }
@@ -223,7 +223,7 @@ class Extension extends BaseExtension
 
     protected function configureRateLimiting()
     {
-        RateLimiter::for('api', function (Request $request) {
+        RateLimiter::for('api', function(Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
     }

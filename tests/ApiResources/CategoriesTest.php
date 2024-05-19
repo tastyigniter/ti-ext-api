@@ -6,7 +6,7 @@ use Igniter\Cart\Models\Category;
 use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all categories', function () {
+it('returns all categories', function() {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
 
     $this
@@ -15,7 +15,7 @@ it('returns all categories', function () {
         ->assertJsonPath('data.0.attributes', Category::first()->toArray());
 });
 
-it('shows a category', function () {
+it('shows a category', function() {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
 
@@ -25,7 +25,7 @@ it('shows a category', function () {
         ->assertJsonPath('data.attributes', $category->toArray());
 });
 
-it('creates a category', function () {
+it('creates a category', function() {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
 
     $this
@@ -36,7 +36,7 @@ it('creates a category', function () {
         ->assertJsonPath('data.attributes.name', 'Test Category');
 });
 
-it('updates a category', function () {
+it('updates a category', function() {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
 
@@ -48,7 +48,7 @@ it('updates a category', function () {
         ->assertJsonPath('data.attributes.name', 'Test Category');
 });
 
-it('deletes a category', function () {
+it('deletes a category', function() {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
 
