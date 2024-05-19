@@ -6,7 +6,7 @@ use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-it('can not update customer aware column', function () {
+it('can not update customer aware column', function() {
     Sanctum::actingAs($customer = Customer::factory()->create(), ['customers:*']);
 
     $this
@@ -23,7 +23,7 @@ it('can not update customer aware column', function () {
         ->assertJsonMissing(['customer_id' => 9999]);
 });
 
-it('returns only authenticated customer', function () {
+it('returns only authenticated customer', function() {
     Customer::factory()->count(5)->create();
     Sanctum::actingAs($customer = Customer::factory()->create(), ['customers:*']);
 
@@ -34,7 +34,7 @@ it('returns only authenticated customer', function () {
         ->assertJsonCount(1, 'data');
 });
 
-it('can not show unauthenticated customer', function () {
+it('can not show unauthenticated customer', function() {
     $anotherCustomer = Customer::factory()->create();
     Sanctum::actingAs(Customer::factory()->create(), ['customers:*']);
 
@@ -43,7 +43,7 @@ it('can not show unauthenticated customer', function () {
         ->assertStatus(404);
 });
 
-it('returns all customers', function () {
+it('returns all customers', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     Customer::factory()->count(5)->create();
 
@@ -54,7 +54,7 @@ it('returns all customers', function () {
         ->assertJsonCount(5, 'data');
 });
 
-it('shows a customer', function () {
+it('shows a customer', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 
@@ -64,7 +64,7 @@ it('shows a customer', function () {
         ->assertJsonPath('data.attributes.full_name', $customer->full_name);
 });
 
-it('creates a customer', function () {
+it('creates a customer', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
 
     $this
@@ -79,7 +79,7 @@ it('creates a customer', function () {
         ->assertJsonPath('data.attributes.full_name', 'Test Customer');
 });
 
-it('updates a customer', function () {
+it('updates a customer', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 
@@ -95,7 +95,7 @@ it('updates a customer', function () {
         ->assertJsonPath('data.attributes.full_name', 'Test Customer');
 });
 
-it('deletes a customer', function () {
+it('deletes a customer', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 

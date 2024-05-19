@@ -49,7 +49,7 @@ class ErrorHandler
         $this->debug = $debug;
 
         if (method_exists($handler, 'renderable')) {
-            $handler->renderable(function (Throwable $ex) {
+            $handler->renderable(function(Throwable $ex) {
                 return $this->render(request(), $ex);
             });
         }
@@ -91,7 +91,7 @@ class ErrorHandler
 
         $response = $this->format;
 
-        array_walk_recursive($response, function (&$value, $key) use ($replacements) {
+        array_walk_recursive($response, function(&$value, $key) use ($replacements) {
             if (Str::startsWith($value, ':') && isset($replacements[$value])) {
                 $value = $replacements[$value];
             }
@@ -202,7 +202,7 @@ class ErrorHandler
             }
         }
 
-        return array_filter($input, function ($value) {
+        return array_filter($input, function($value) {
             if (is_string($value)) {
                 return !Str::startsWith($value, ':');
             }

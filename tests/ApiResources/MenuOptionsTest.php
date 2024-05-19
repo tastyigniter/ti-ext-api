@@ -7,7 +7,7 @@ use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all menu options', function () {
+it('returns all menu options', function() {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
 
     $this
@@ -16,15 +16,15 @@ it('returns all menu options', function () {
         ->assertJsonPath('data.0.attributes.option_name', MenuOption::first()->option_name);
 });
 
-it('shows a menu option', function () {
+it('shows a menu option', function() {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
     $this
         ->get(route('igniter.api.menu_options.show', [$menuOption->getKey()]))
         ->assertOk()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_name', $menuOption->option_name)
                 ->where('display_type', $menuOption->display_type)
                 ->etc()
@@ -32,7 +32,7 @@ it('shows a menu option', function () {
         );
 });
 
-it('creates a menu option', function () {
+it('creates a menu option', function() {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
@@ -42,15 +42,15 @@ it('creates a menu option', function () {
             'display_type' => 'radio',
         ])
         ->assertCreated()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
                 ->etc()
             ));
 });
 
-it('updates a menu option', function () {
+it('updates a menu option', function() {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
@@ -60,15 +60,15 @@ it('updates a menu option', function () {
             'display_type' => 'radio',
         ])
         ->assertOk()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
                 ->etc()
             )->etc());
 });
 
-it('deletes a menu option', function () {
+it('deletes a menu option', function() {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 

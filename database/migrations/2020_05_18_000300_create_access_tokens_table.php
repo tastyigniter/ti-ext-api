@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('igniter_api_access_tokens', function (Blueprint $table) {
+        Schema::create('igniter_api_access_tokens', function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->morphs('tokenable');
             $table->string('name');

@@ -70,7 +70,7 @@ class ApiManager
     {
         Resource::syncAll();
 
-        $resources = Resource::all()->mapWithKeys(function ($resource) {
+        $resources = Resource::all()->mapWithKeys(function($resource) {
             $resourceObj = (object)[
                 'endpoint' => $resource->endpoint,
                 'controller' => $resource->controller,
@@ -94,7 +94,7 @@ class ApiManager
         Route::middleware(config('igniter.api.middleware'))
             ->as('igniter.api.')
             ->prefix(config('igniter.api.prefix'))
-            ->group(function ($router) {
+            ->group(function($router) {
                 foreach (resolve(static::class)->getResources() as $endpoint => $resourceObj) {
                     if (!class_exists($resourceObj->controller)) {
                         continue;

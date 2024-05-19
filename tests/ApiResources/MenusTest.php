@@ -7,7 +7,7 @@ use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all menu items', function () {
+it('returns all menu items', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
 
     $this
@@ -16,15 +16,15 @@ it('returns all menu items', function () {
         ->assertJsonPath('data.0.attributes.menu_name', Menu::first()->menu_name);
 });
 
-it('shows a menu item', function () {
+it('shows a menu item', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 
     $this
         ->get(route('igniter.api.menus.show', [$menu->getKey()]))
         ->assertOk()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('menu_name', $menu->menu_name)
                 ->where('menu_price', $menu->menu_price)
                 ->etc()
@@ -32,7 +32,7 @@ it('shows a menu item', function () {
         );
 });
 
-it('creates a menu item', function () {
+it('creates a menu item', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 
@@ -42,15 +42,15 @@ it('creates a menu item', function () {
             'menu_price' => 99.999,
         ])
         ->assertCreated()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('menu_name', 'Test menu item')
                 ->where('menu_price', 99.999)
                 ->etc()
             ));
 });
 
-it('updates a menu item', function () {
+it('updates a menu item', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 
@@ -60,15 +60,15 @@ it('updates a menu item', function () {
             'menu_price' => 99.999,
         ])
         ->assertOk()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.attributes', fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('menu_name', 'Test menu item')
                 ->where('menu_price', 99.999)
                 ->etc()
             )->etc());
 });
 
-it('deletes a menu item', function () {
+it('deletes a menu item', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 
