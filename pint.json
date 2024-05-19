@@ -23,6 +23,11 @@
         "try"
       ]
     },
-    "single_blank_line_at_eof": false
+    "single_blank_line_at_eof": false,
+    "single_space_around_construct": false,
+    "function_declaration": {
+      "closure_function_spacing": "none",
+      "closure_fn_spacing": "none"
+    }
   }
 }
