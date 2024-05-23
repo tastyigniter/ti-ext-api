@@ -35,13 +35,12 @@ php artisan igniter:up
 
 If you are using an Apache server, you need to modify your .htaccess file to ensure tokens are passed correctly. Add the following lines to your .htaccess file:
 
-```
+```apache
 RewriteCond %{HTTP:Authorization} ^(.*)
 RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 ```
 
 These lines instruct Apache to capture the `Authorization` HTTP header and pass it as an environment variable `HTTP_AUTHORIZATION`, allowing Laravel Sanctum to access the token and authenticate the request.
-
 
 ## Usage
 
@@ -100,10 +99,10 @@ curl -i -X GET -H "Accept: application/json" -H "Content-Type: application/json"
 
 You can extend the API by adding new endpoints in your own extensions. Each resource should have a corresponding:
 
-  - **controller** - handles the request and response
-  - **transformer** - transforms the response data
-  - **repository** - handles the data retrieval and manipulation
-  - **request** - validates the request data
+- **controller** - handles the request and response
+- **transformer** - transforms the response data
+- **repository** - handles the data retrieval and manipulation
+- **request** - validates the request data
 
 A resource controller class is typically stored in the `src/ApiResources` directory of an extension. The resource controller class should extends the `Igniter\Api\Classes\ApiController` class, implements the `Igniter\Api\Http\Actions\RestController` class and define the `$restConfig` property with the configuration for the resource.
 
@@ -145,9 +144,9 @@ class Menus extends ApiController
 
 ### Defining resource transformers
 
-Response are transformed using [Fractal](http://fractal.thephpleague.com/). 
+Response are transformed using [Fractal](http://fractal.thephpleague.com/).
 
-A resource transformer class is typically stored in the `src/ApiResources/Transformers` directory of an extension. The transformer class is a simple class that extends `League\Fractal\TransformerAbstract` and contains a `transform` method that returns the transformed data. 
+A resource transformer class is typically stored in the `src/ApiResources/Transformers` directory of an extension. The transformer class is a simple class that extends `League\Fractal\TransformerAbstract` and contains a `transform` method that returns the transformed data.
 
 Here is an example of a Resource Transformer:
 
@@ -158,19 +157,19 @@ use League\Fractal\TransformerAbstract;
 
 class MenuTransformer extends TransformerAbstract
 {
-	public function transform(Menu $menu): array
-	{
-	    return [
-	        'id'      => (int) $menu->menu_id,
-	        'name'    => $menu->menu_name,
+ public function transform(Menu $menu): array
+ {
+     return [
+         'id'      => (int) $menu->menu_id,
+         'name'    => $menu->menu_name,
             'links'   => [
                 [
                     'rel' => 'self',
                     'uri' => '/api/menus/'.$menu->menu_id,
                 ]
             ],
-	    ];
-	}
+     ];
+ }
 }
 ```
 
