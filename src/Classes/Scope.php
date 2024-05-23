@@ -20,6 +20,7 @@ class Scope extends FractalScope
 
         if (!array_key_exists('id', $transformedData) && $data instanceof Model) {
             $transformedData['id'] = $data->getKey();
+            unset($transformedData[$data->getKeyName()]);
         }
 
         return [$transformedData, $includedData];

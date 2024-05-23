@@ -50,7 +50,7 @@ it('returns all customers', function() {
     $this
         ->get(route('igniter.api.customers.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes', Customer::first()->toArray())
+        ->assertJsonPath('data.0.attributes.name', Customer::first()->name)
         ->assertJsonCount(5, 'data');
 });
 

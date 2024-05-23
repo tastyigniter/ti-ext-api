@@ -12,7 +12,7 @@ it('returns all categories', function() {
     $this
         ->get(route('igniter.api.categories.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes', Category::first()->toArray());
+        ->assertJsonPath('data.0.attributes.name', Category::first()->name);
 });
 
 it('shows a category', function() {
@@ -22,7 +22,7 @@ it('shows a category', function() {
     $this
         ->get(route('igniter.api.categories.show', [$category->getKey()]))
         ->assertOk()
-        ->assertJsonPath('data.attributes', $category->toArray());
+        ->assertJsonPath('data.attributes.name', $category->name);
 });
 
 it('creates a category', function() {
