@@ -36,9 +36,15 @@ class OrderRequest extends FormRequest
             'first_name' => ['between:1,48'],
             'last_name' => ['between:1,48'],
             'email' => ['sometimes', 'required', 'email:filter', 'max:96'],
+            'telephone' => ['string'],
             'comment' => ['max:500'],
+            'order_type' => ['alpha_dash'],
             'payment' => ['sometimes', 'required', 'alpha_dash'],
             'customer_id' => ['integer'],
+            'order_menus' => ['array'],
+            'order_totals' => ['array'],
+            'status_id' => ['integer'],
+            'is_processed' => ['integer'],
         ];
 
         if ($method == 'post') {
@@ -49,7 +55,7 @@ class OrderRequest extends FormRequest
         }
 
         if (Request::input('order_type', 'collection') == 'delivery') {
-            $rules['address_id'] = ['required', 'integer'];
+            $rules['address_id'] = ['integer'];
             $rules['address.address_1'] = ['required', 'min:3', 'max:128'];
             $rules['address.address_2'] = ['sometimes', 'min:3', 'max:128'];
             $rules['address.city'] = ['sometimes', 'min:2', 'max:128'];

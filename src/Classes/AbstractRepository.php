@@ -282,9 +282,9 @@ class AbstractRepository
             }
 
             $isNested = ($attribute == 'pivot' || (
-                $model->hasRelation($attribute) &&
-                in_array($model->getRelationType($attribute), $singularTypes)
-            ));
+                    $model->hasRelation($attribute) &&
+                    in_array($model->getRelationType($attribute), $singularTypes)
+                ));
 
             if ($isNested && is_array($value) && $model->{$attribute}) {
                 $this->setModelAttributes($model->{$attribute}, $value);
@@ -305,12 +305,12 @@ class AbstractRepository
         }
 
         $user = request()->user();
-        if (!$user instanceof User || $user->isSuperUser()) {
+        if (!$user instanceof User) {
             return;
         }
 
         $ids = $user->locations->where('location_status', true)->pluck('location_id')->all();
-        if (is_null($ids)) {
+        if (empty($ids)) {
             return;
         }
 

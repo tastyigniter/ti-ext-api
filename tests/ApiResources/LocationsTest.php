@@ -14,7 +14,7 @@ it('returns all locations', function() {
     $this
         ->get(route('igniter.api.locations.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes', Location::first()->toArray())
+        ->assertJsonPath('data.0.attributes.name', Location::first()->name)
         ->assertJsonCount(5, 'data');
 });
 

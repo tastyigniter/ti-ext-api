@@ -25,7 +25,7 @@ class ReservationRequest extends FormRequest
     public function rules()
     {
         return [
-            'table_id' => ['required', 'integer'],
+            'table_id' => ['sometimes', 'required', 'integer'],
             'location_id' => ['required', 'integer'],
             'guest_num' => ['required', 'integer'],
             'reserve_date' => ['required', 'date_format:Y-m-d'],
