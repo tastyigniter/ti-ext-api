@@ -30,6 +30,7 @@ class IssueApiToken extends Command
     {
         $name = $this->option('name');
         $email = $this->option('email');
+        $abilities = $this->option('abilities');
 
         if (!strlen($isForAdmin = $this->option('admin'))) {
             return $this->error('Missing --admin option');
@@ -43,7 +44,7 @@ class IssueApiToken extends Command
             return $this->error('User does not exist!');
         }
 
-        $accessToken = Token::createToken($user, $name, ['*']);
+        $accessToken = Token::createToken($user, $name, $abilities ?: ['*']);
         $this->info(sprintf('Access Token: %s', $accessToken->plainTextToken));
     }
 
@@ -56,6 +57,7 @@ class IssueApiToken extends Command
             ['name', null, InputOption::VALUE_REQUIRED, 'The name to identify the token.'],
             ['email', null, InputOption::VALUE_REQUIRED, 'The email of the user you want to issue a token.'],
             ['admin', null, InputOption::VALUE_NONE, 'Specify to issue token for admin users'],
+            ['abilities', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'The abilities of the token.'],
         ];
     }
 }

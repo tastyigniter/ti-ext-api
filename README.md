@@ -70,13 +70,13 @@ curl -X POST --data "username=my_user&password=my_password&device_name=my_device
 
 The post data should contain the following fields:
 
-| field  | value  |
-|:----------|:----------|
-| username    | The username of the admin user, required when generating for admin   |
-| email    | The email of the customer, required when generating for customer   |
-| password   | The admin user's password   |
-| device_name   | A unique identifier for the device making the request    |
-| abilities   | An optional array of abilities to restrict the token to (e.g. Orders.*)   |
+| field       | value                                                                     |
+|:------------|:--------------------------------------------------------------------------|
+| is_admin    | Set to 1 to generate an admin token, 0 for a customer token               |
+| email       | The email of the customer, required when generating for customer          |
+| password    | The admin user's password                                                 |
+| device_name | A unique identifier for the device making the request                     |
+| abilities   | An optional array of abilities to restrict the token to (e.g. `orders.*`) |
 
 If token generation is successful, you will receive a JSON payload in the format:
 
@@ -157,19 +157,10 @@ use League\Fractal\TransformerAbstract;
 
 class MenuTransformer extends TransformerAbstract
 {
- public function transform(Menu $menu): array
- {
-     return [
-         'id'      => (int) $menu->menu_id,
-         'name'    => $menu->menu_name,
-            'links'   => [
-                [
-                    'rel' => 'self',
-                    'uri' => '/api/menus/'.$menu->menu_id,
-                ]
-            ],
-     ];
- }
+  public function transform(Menu $menu): array
+  {
+    return $menu->toArray();
+  }
 }
 ```
 
