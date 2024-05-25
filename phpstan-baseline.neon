@@ -291,24 +291,24 @@ parameters:
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\:\\:setContext\\(\\)\\.$#"
-			count: 1
-			path: src/Http/Controllers/Resources.php
-
-		-
 			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$device_name\\.$#"
 			count: 1
-			path: src/Http/Controllers/Tokens.php
+			path: src/Http/Controllers/CreateToken.php
 
 		-
 			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$email\\.$#"
 			count: 1
-			path: src/Http/Controllers/Tokens.php
+			path: src/Http/Controllers/CreateToken.php
 
 		-
 			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$password\\.$#"
 			count: 1
-			path: src/Http/Controllers/Tokens.php
+			path: src/Http/Controllers/CreateToken.php
+
+		-
+			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\:\\:setContext\\(\\)\\.$#"
+			count: 1
+			path: src/Http/Controllers/Resources.php
 
 		-
 			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\:\\:setContext\\(\\)\\.$#"
