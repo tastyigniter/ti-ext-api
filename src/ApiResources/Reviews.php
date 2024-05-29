@@ -21,7 +21,7 @@ class Reviews extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Local\Requests\Review::class,
+        'request' => \Igniter\Local\Http\Requests\ReviewRequest::class,
         'repository' => Repositories\ReviewRepository::class,
         'transformer' => Transformers\ReviewTransformer::class,
     ];

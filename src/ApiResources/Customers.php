@@ -22,7 +22,7 @@ class Customers extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\User\Requests\CustomerRequest::class,
+        'request' => \Igniter\User\Http\Requests\CustomerRequest::class,
         'repository' => Repositories\CustomerRepository::class,
         'transformer' => Transformers\CustomerTransformer::class,
     ];
