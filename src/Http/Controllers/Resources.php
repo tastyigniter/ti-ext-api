@@ -27,7 +27,7 @@ class Resources extends \Igniter\Admin\Classes\AdminController
     public array $formConfig = [
         'name' => 'APIs',
         'model' => \Igniter\Api\Models\Resource::class,
-        'request' => \Igniter\Api\Requests\ResourceRequest::class,
+        'request' => \Igniter\Api\Http\Requests\ResourceRequest::class,
         'edit' => [
             'title' => 'lang:admin::lang.form.edit_title',
             'redirect' => 'igniter/api/resources/edit/{id}',

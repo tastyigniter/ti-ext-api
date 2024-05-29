@@ -21,7 +21,7 @@ class DiningTables extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Reservation\Requests\DiningTableRequest::class,
+        'request' => \Igniter\Reservation\Http\Requests\DiningTableRequest::class,
         'repository' => Repositories\DiningTableRepository::class,
         'transformer' => Transformers\DiningTableTransformer::class,
     ];
