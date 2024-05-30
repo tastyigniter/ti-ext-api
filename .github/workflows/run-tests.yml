@@ -4,17 +4,16 @@ on: [ push, pull_request, workflow_dispatch ]
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
         php: [ 8.2, 8.3 ]
     env:
       DB_DATABASE: testbench
       DB_USERNAME: root
       DB_PASSWORD: root
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }}
+    name: PHP ${{ matrix.php }} - Pest Tests
 
     services:
       mysql:
