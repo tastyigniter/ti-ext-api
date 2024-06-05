@@ -10,8 +10,8 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `sale_id`           | `int`  | **Required**. The ID of the sale or reservation the review references        |
-| `sale_type `           | `string`  | **Required**. The type of review, one of orders or reservations        |
+| `reviewable_id`           | `int`  | **Required**. The ID of the sale or reservation the review references        |
+| `reviewable_type `           | `string`  | **Required**. The type of review, one of orders or reservations        |
 | `author`           | `integer` or `null`  | The ID of the admin user writing the review or null         |
 | `quality `           | `integer`  | Score from 0 to 5 for the quality of the food received        |
 | `delivery `           | `integer`  | Score from 0 to 5 for the quality of the delivery service received        |
@@ -27,8 +27,8 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 {
   "review_id": 1,
   "customer_id": 1,
-  "sale_id": 1,
-  "sale_type": "orders",
+  "reviewable_id": 1,
+  "reviewable_type": "orders",
   "author": 1,
   "location_id": 1,
   "quality": 5,
@@ -81,8 +81,8 @@ Status: 200 OK
       "attributes": {
         "review_id": 1,
         "customer_id": 1,
-        "sale_id": 1,
-        "sale_type": "orders",
+        "reviewable_id": 1,
+        "reviewable_type": "orders",
         "author": 1,
         "location_id": 1,
         "quality": 4,
@@ -139,8 +139,8 @@ POST /api/reviews
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `sale_id`           | `int`  | **Required**. The ID of the sale or reservation the review references        |
-| `sale_type `           | `string`  | **Required**. The type of review, one of orders or reservations        |
+| `reviewable_id`           | `int`  | **Required**. The ID of the sale or reservation the review references        |
+| `reviewable_type `           | `string`  | **Required**. The type of review, one of orders or reservations        |
 | `author`           | `integer` or `null`  | The ID of the admin user writing the review or null         |
 | `quality `           | `integer`  | Score from 0 to 5 for the quality of the food received        |
 | `delivery `           | `integer`  | Score from 0 to 5 for the quality of the delivery service received        |
@@ -154,8 +154,8 @@ POST /api/reviews
 
 ```json
 {
-  "sale_id": 1,
-  "sale_type": "orders",
+  "reviewable_id": 1,
+  "reviewable_type": "orders",
   "quality": 4,
   "delivery": 5,
   "service": 5,
@@ -180,8 +180,8 @@ Status: 201 Created
       "id": "1",
       "attributes": {
         "customer_id": 1,
-        "sale_id": 1,
-        "sale_type": "orders",
+        "reviewable_id": 1,
+        "reviewable_type": "orders",
         "author": 1,
         "location_id": 1,
         "quality": 4,
@@ -230,8 +230,8 @@ Status: 200 OK
       "attributes": {
         "review_id": 1,
         "customer_id": 1,
-        "sale_id": 1,
-        "sale_type": "orders",
+        "reviewable_id": 1,
+        "reviewable_type": "orders",
         "author": 1,
         "location_id": 1,
         "quality": 4,
@@ -274,8 +274,8 @@ PATCH /api/reviews/:review_id
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `sale_id`           | `int`  | **Required**. The ID of the sale or reservation the review references        |
-| `sale_type `           | `string`  | **Required**. The type of review, one of orders or reservations        |
+| `reviewable_id`           | `int`  | **Required**. The ID of the sale or reservation the review references        |
+| `reviewable_type `           | `string`  | **Required**. The type of review, one of orders or reservations        |
 | `author`           | `integer` or `null`  | The ID of the admin user writing the review or null         |
 | `quality `           | `integer`  | Score from 0 to 5 for the quality of the food received        |
 | `delivery `           | `integer`  | Score from 0 to 5 for the quality of the delivery service received        |
@@ -308,8 +308,8 @@ Status: 200 OK
       "id": "1",
       "attributes": {
         "customer_id": 1,
-        "sale_id": 1,
-        "sale_type": "orders",
+        "reviewable_id": 1,
+        "reviewable_type": "orders",
         "author": 1,
         "location_id": 1,
         "quality": 5,
