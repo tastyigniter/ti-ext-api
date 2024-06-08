@@ -4,7 +4,7 @@
          bootstrap="vendor/autoload.php" colors="true" processIsolation="false" stopOnFailure="false"
          cacheDirectory=".phpunit.cache" backupStaticProperties="false">
     <testsuites>
-        <testsuite name="Api Test Suite">
+        <testsuite name=":package_name Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
@@ -12,7 +12,9 @@
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:YzE5YjR2b3hrem1ucmdmc2Fkbm92NW1veHBkMWdpa3k="/>
+        <env name="DB_CONNECTION" value="mysql"/>
         <env name="DB_DATABASE" value="testbench"/>
+        <env name="DB_USERNAME" value="forge"/>
     </php>
     <source>
         <include>
