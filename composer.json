@@ -15,7 +15,7 @@
     "api"
   ],
   "require": {
-    "laravel/sanctum": "^2.15|^3.2",
+    "laravel/sanctum": "^4.0",
     "spatie/laravel-fractal": "^6.0",
     "tastyigniter/core": "dev-master",
     "tastyigniter/ti-ext-reservation": "v4.x-dev as 4.0"
