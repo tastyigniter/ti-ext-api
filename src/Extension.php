@@ -31,7 +31,6 @@ class Extension extends BaseExtension
             $this->publishes([__DIR__.'/../config/api.php' => config_path('igniter-api.php')], 'igniter-config');
         }
 
-        Sanctum::ignoreMigrations();
         Sanctum::usePersonalAccessTokenModel(Models\Token::class);
 
         $this->app->register(FractalServiceProvider::class);
