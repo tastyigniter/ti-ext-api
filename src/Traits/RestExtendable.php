@@ -15,9 +15,7 @@ trait RestExtendable
      * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
-    public function restBeforeSave($model)
-    {
-    }
+    public function restBeforeSave($model) {}
 
     /**
      * Run logic before the store resource operation
@@ -25,9 +23,7 @@ trait RestExtendable
      * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
-    public function restBeforeCreate($model)
-    {
-    }
+    public function restBeforeCreate($model) {}
 
     /**
      * Run logic before the update resource operation
@@ -35,9 +31,7 @@ trait RestExtendable
      * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
-    public function restBeforeUpdate($model)
-    {
-    }
+    public function restBeforeUpdate($model) {}
 
     /**
      * Run logic after the store or update resource operation
@@ -45,9 +39,7 @@ trait RestExtendable
      * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
-    public function restAfterSave($model)
-    {
-    }
+    public function restAfterSave($model) {}
 
     /**
      * Run logic after the store resource operation
@@ -55,9 +47,7 @@ trait RestExtendable
      * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
-    public function restAfterCreate($model)
-    {
-    }
+    public function restAfterCreate($model) {}
 
     /**
      * Run logic after the update resource operation
@@ -65,9 +55,7 @@ trait RestExtendable
      * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
-    public function restAfterUpdate($model)
-    {
-    }
+    public function restAfterUpdate($model) {}
 
     /**
      * Run logic after the delete resource operation
@@ -75,9 +63,7 @@ trait RestExtendable
      * @param \Igniter\Flame\Database\Model $model
      * @return void
      */
-    public function restAfterDelete($model)
-    {
-    }
+    public function restAfterDelete($model) {}
 
     /**
      * Extend supplied model query, the model query can
@@ -85,9 +71,7 @@ trait RestExtendable
      * @param \Igniter\Flame\Database\Builder $query
      * @return void
      */
-    public function restExtendQuery($query)
-    {
-    }
+    public function restExtendQuery($query) {}
 
     /**
      * Called to validate index or show action request.
