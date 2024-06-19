@@ -20,7 +20,6 @@ it('replaces fractal.fractal_class config item', function() {
 it('creates access token using http', function($email, $isAdmin, $deviceName, $abilities) {
     $attributes = [
         'email' => $email,
-        'password' => 'password',
         'status' => 1,
         'is_activated' => 1,
     ];
@@ -47,7 +46,6 @@ it('creates access token using http', function($email, $isAdmin, $deviceName, $a
 it('creates access token using console command', function($email, $isAdmin, $deviceName, $abilities) {
     $attributes = [
         'email' => $email,
-        'password' => 'password',
         'status' => 1,
         'is_activated' => 1,
     ];
