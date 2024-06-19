@@ -38,6 +38,7 @@
   },
   "extra": {
     "tastyigniter-extension": {
+      "code": "igniter.api",
       "name": "APIs for TastyIgniter",
       "icon": {
         "class": "fa fa-cloud",
