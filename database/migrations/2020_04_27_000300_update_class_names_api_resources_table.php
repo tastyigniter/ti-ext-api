@@ -38,7 +38,5 @@ return new class extends Migration
             ->update(['transformer' => \Igniter\Api\ApiResources\Transformers\LocationTransformer::class]);
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 };

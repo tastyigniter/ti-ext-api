@@ -255,13 +255,9 @@ class AbstractRepository
         return $query;
     }
 
-    protected function extendQuery($query)
-    {
-    }
+    protected function extendQuery($query) {}
 
-    protected function extendModel($model)
-    {
-    }
+    protected function extendModel($model) {}
 
     protected function setModelAttributes($model, $saveData)
     {
