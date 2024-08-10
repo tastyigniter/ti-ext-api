@@ -17,8 +17,7 @@
   "require": {
     "laravel/sanctum": "^4.0",
     "spatie/laravel-fractal": "^6.0",
-    "tastyigniter/core": "^v4.0@beta",
-    "tastyigniter/ti-ext-reservation": "^v4.0@beta"
+    "tastyigniter/core": "^v4.0@beta"
   },
   "require-dev": {
     "laravel/pint": "^1.2",
