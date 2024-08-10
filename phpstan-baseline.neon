@@ -241,6 +241,11 @@ parameters:
 			path: src/Exceptions/ResourceException.php
 
 		-
+			message: "#^Access to an undefined property Illuminate\\\\Support\\\\Optional\\:\\:\\$id\\.$#"
+			count: 1
+			path: src/Extension.php
+
+		-
 			message: "#^Access to an undefined property Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:\\$restConfig\\.$#"
 			count: 1
 			path: src/Http/Actions/RestController.php
@@ -314,6 +319,11 @@ parameters:
 			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\:\\:setContext\\(\\)\\.$#"
 			count: 1
 			path: src/Http/Controllers/Tokens.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Support\\\\Optional\\:\\:\\$tokenable\\.$#"
+			count: 1
+			path: src/Listeners/TokenEventSubscriber.php
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$endpoint\\.$#"
