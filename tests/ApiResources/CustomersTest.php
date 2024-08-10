@@ -16,6 +16,7 @@ it('can not update customer aware column', function() {
             'last_name' => 'Customer',
             'email' => 'test@example.tld',
             'customer_group_id' => 1,
+            'newsletter' => false,
             'status' => false,
         ])
         ->assertOk()
@@ -73,6 +74,7 @@ it('creates a customer', function() {
             'last_name' => 'Customer',
             'email' => 'test@example.tld',
             'customer_group_id' => 1,
+            'newsletter' => false,
             'status' => false,
         ])
         ->assertCreated()
@@ -89,6 +91,7 @@ it('updates a customer', function() {
             'last_name' => 'Customer',
             'email' => 'test@example.tld',
             'customer_group_id' => 1,
+            'newsletter' => false,
             'status' => false,
         ])
         ->assertOk()
