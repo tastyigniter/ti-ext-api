@@ -8,10 +8,11 @@ on:
       - release/*
       - hotfix/*
   pull_request:
-    - master
-    - v4
-    - release/*
-    - hotfix/*
+    branches:
+      - master
+      - v4
+      - release/*
+      - hotfix/*
   workflow_dispatch:
 
 jobs:
