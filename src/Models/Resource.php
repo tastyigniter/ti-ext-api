@@ -83,7 +83,7 @@ class Resource extends Model
 
     public function renderSetupPartial()
     {
-        $registeredResources = (new static())->listRegisteredResources();
+        $registeredResources = (new static)->listRegisteredResources();
         $resources = collect($registeredResources)->keyBy('endpoint')->toArray();
         $extensionCode = array_get($resources, $this->endpoint.'.owner');
 
@@ -105,7 +105,7 @@ class Resource extends Model
      */
     public static function syncAll()
     {
-        $registeredResources = (new static())->listRegisteredResources();
+        $registeredResources = (new static)->listRegisteredResources();
         $resources = collect($registeredResources)->keyBy('endpoint')->toArray();
         $dbResources = self::lists('is_custom', 'endpoint')->toArray();
         $newResources = array_diff_key($resources, $dbResources);

@@ -51,6 +51,6 @@ class Fractal extends \Spatie\Fractal\Fractal
             return $fractal->serializeWith(new $serializer($baseUrl));
         }
 
-        return $fractal->serializeWith(new $serializer());
+        return $fractal->serializeWith(new $serializer);
     }
 }
