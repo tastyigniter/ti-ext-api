@@ -1,6 +1,18 @@
 name: Pest Tests
 
-on: [ push, pull_request, workflow_dispatch ]
+on:
+  push:
+    branches:
+      - master
+      - v4
+      - release/*
+      - hotfix/*
+  pull_request:
+    - master
+    - v4
+    - release/*
+    - hotfix/*
+  workflow_dispatch:
 
 jobs:
   test:
