@@ -4,7 +4,7 @@
          bootstrap="vendor/autoload.php" colors="true" processIsolation="false" stopOnFailure="false"
          cacheDirectory=".phpunit.cache" backupStaticProperties="false">
     <testsuites>
-        <testsuite name=":package_name Test Suite">
+        <testsuite name="API Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
