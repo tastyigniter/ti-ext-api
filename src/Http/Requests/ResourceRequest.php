@@ -6,7 +6,18 @@ use Igniter\System\Classes\FormRequest;
 
 class ResourceRequest extends FormRequest
 {
-    public function rules()
+    public function attributes(): array
+    {
+        return [
+            'name' => lang('igniter.api::default.label_name'),
+            'description' => lang('igniter.api::default.label_description'),
+            'endpoint' => lang('igniter.api::default.label_endpoint'),
+            'meta.actions' => lang('igniter.api::default.label_actions'),
+            'meta.authorization' => lang('igniter.api::default.label_authorization'),
+        ];
+    }
+
+    public function rules(): array
     {
         return [
             'name' => ['required', 'min:2', 'max:128', 'string'],

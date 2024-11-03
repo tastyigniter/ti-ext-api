@@ -3,7 +3,6 @@
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
-use Illuminate\Support\Facades\Request;
 
 class OrderRequest extends FormRequest
 {
@@ -30,8 +29,6 @@ class OrderRequest extends FormRequest
 
     public function rules()
     {
-        $method = Request::method();
-
         $rules = [
             'first_name' => ['between:1,48'],
             'last_name' => ['between:1,48'],
@@ -47,14 +44,14 @@ class OrderRequest extends FormRequest
             'is_processed' => ['integer'],
         ];
 
-        if ($method == 'post') {
+        if ($this->method() == 'post') {
             $rules['first_name'][] = 'required';
             $rules['last_name'][] = 'required';
             $rules['order_type'][] = 'required';
             $rules['customer_id'][] = 'required';
         }
 
-        if (Request::input('order_type', 'collection') == 'delivery') {
+        if ($this->input('order_type', 'collection') == 'delivery') {
             $rules['address_id'] = ['integer'];
             $rules['address.address_1'] = ['required', 'min:3', 'max:128'];
             $rules['address.address_2'] = ['sometimes', 'min:3', 'max:128'];

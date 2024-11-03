@@ -2,6 +2,7 @@
 
 namespace Igniter\Api\Models;
 
+use Igniter\Flame\Database\Factories\HasFactory;
 use Igniter\Flame\Database\Model;
 use Igniter\Flame\Database\Traits\HasPermalink;
 use Igniter\Flame\Mail\Markdown;
@@ -13,6 +14,7 @@ use Igniter\System\Classes\ExtensionManager;
  */
 class Resource extends Model
 {
+    use HasFactory;
     use HasPermalink;
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Igniter\Api\Models;
 
+use Igniter\Flame\Database\Factories\HasFactory;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Illuminate\Support\Str;
@@ -13,6 +14,8 @@ use Laravel\Sanctum\PersonalAccessToken;
  */
 class Token extends PersonalAccessToken
 {
+    use HasFactory;
+
     /**
      * @var string The database table used by the model.
      */

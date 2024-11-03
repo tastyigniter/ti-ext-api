@@ -10,7 +10,18 @@ use Igniter\User\Models\User;
 it('loads registered api resources', function() {
     $resources = Resource::listRegisteredResources();
 
-    expect($resources)->toHaveKey('categories');
+    expect($resources)
+        ->toHaveKey('categories')
+        ->toHaveKey('currencies')
+        ->toHaveKey('customers')
+        ->toHaveKey('locations')
+        ->toHaveKey('menus')
+        ->toHaveKey('menu_options')
+        ->toHaveKey('menu_item_options')
+        ->toHaveKey('orders')
+        ->toHaveKey('reservations')
+        ->toHaveKey('reviews')
+        ->toHaveKey('tables');
 });
 
 it('replaces fractal.fractal_class config item', function() {

@@ -4,7 +4,6 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Igniter;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -44,26 +43,6 @@ class ApiManager
     public function getCurrentAction()
     {
         return Str::afterLast(Route::currentRouteAction(), '@');
-    }
-
-    public function buildResource($name, $model, $meta = [])
-    {
-        $controller = $this->parseName($name);
-        $singularController = str_singular($controller);
-        $namespace = '\\Igniter\\Api\\ApiResources';
-
-        Artisan::call('create:apiresource', [
-            'extension' => 'Igniter.Api',
-            'controller' => $controller,
-            '--model' => $model,
-            '--meta' => $meta,
-        ]);
-
-        if (!class_exists($controllerName = $namespace."\\{$controller}")) {
-            return [null, null];
-        }
-
-        return [$controllerName, $namespace."\\Transformers\\{$singularController}Transformer"];
     }
 
     protected function loadResources()
