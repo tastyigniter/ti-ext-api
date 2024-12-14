@@ -25,11 +25,7 @@ class MenuTransformer extends TransformerAbstract
 
     public function includeMedia(Menu $menuItem)
     {
-        if (!$thumb = $menuItem->getFirstMedia()) {
-            return null;
-        }
-
-        return $this->item($thumb, new MediaTransformer, 'media');
+        return ($thumb = $menuItem->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
     public function includeCategories(Menu $menuItem)
@@ -37,7 +33,7 @@ class MenuTransformer extends TransformerAbstract
         return $this->collection(
             $menuItem->categories,
             new CategoryTransformer,
-            'categories'
+            'categories',
         );
     }
 
@@ -46,7 +42,7 @@ class MenuTransformer extends TransformerAbstract
         return $this->collection(
             $menuItem->menu_options,
             new MenuItemOptionTransformer,
-            'menu_options'
+            'menu_options',
         );
     }
 
@@ -55,7 +51,7 @@ class MenuTransformer extends TransformerAbstract
         return $this->collection(
             $menuItem->ingredients,
             new IngredientTransformer,
-            'ingredients'
+            'ingredients',
         );
     }
 
@@ -64,7 +60,7 @@ class MenuTransformer extends TransformerAbstract
         return $this->collection(
             $menuItem->mealtimes,
             new MealtimeTransformer,
-            'mealtimes'
+            'mealtimes',
         );
     }
 
@@ -73,7 +69,7 @@ class MenuTransformer extends TransformerAbstract
         return $this->collection(
             $menuItem->stocks,
             new StockTransformer,
-            'stocks'
+            'stocks',
         );
     }
 }

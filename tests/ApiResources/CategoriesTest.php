@@ -25,6 +25,48 @@ it('shows a category', function() {
         ->assertJsonPath('data.attributes.name', $category->name);
 });
 
+it('shows a category with media relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    $category = Category::first();
+    $category->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
+
+    $this
+        ->get(route('igniter.api.categories.show', [$category->getKey()]).'?'.http_build_query([
+                'include' => 'media',
+            ]))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.media.data.type', 'media')
+        ->assertJsonPath('included.0.attributes.file_name', 'test.jpg');
+});
+
+it('shows a category with menus relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    $category = Category::first();
+    $category->menus()->create(['menu_name' => 'Test Menu']);
+
+    $this
+        ->get(route('igniter.api.categories.show', [$category->getKey()]).'?'.http_build_query([
+                'include' => 'menus',
+            ]))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.menus.data.0.type', 'menus')
+        ->assertJsonPath('included.0.attributes.menu_name', 'Test Menu');
+});
+
+it('shows a category with locations relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    $category = Category::first();
+    $category->locations()->create(['location_name' => 'Test Location']);
+
+    $this
+        ->get(route('igniter.api.categories.show', [$category->getKey()]).'?'.http_build_query([
+                'include' => 'locations',
+            ]))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.locations.data.0.type', 'locations')
+        ->assertJsonPath('included.0.attributes.location_name', 'Test Location');
+});
+
 it('creates a category', function() {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
 

@@ -65,8 +65,68 @@ it('shows a customer', function() {
         ->assertJsonPath('data.attributes.full_name', $customer->full_name);
 });
 
+it('shows a customer with addresses relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    $customer = Customer::factory()->create();
+    $customer->addresses()->create(['address_1' => '123 Test Address', 'country_id' => 1]);
+
+    $this
+        ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
+                'include' => 'addresses',
+            ]))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.addresses.data.0.type', 'addresses')
+        ->assertJsonPath('included.0.attributes.address_1', '123 Test Address');
+});
+
+it('shows a customer with orders relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    $customer = Customer::factory()->create();
+    $customer->orders()->create(['order_type' => 'collection']);
+
+    $this
+        ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
+                'include' => 'orders',
+            ]))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.orders.data.0.type', 'orders')
+        ->assertJsonPath('included.0.attributes.order_type', 'collection');
+});
+
+it('shows a customer with reservations relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    $customer = Customer::factory()->create();
+    $customer->reservations()->create(['email' => 'user-reservation@example.com']);
+
+    $this
+        ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
+                'include' => 'reservations',
+            ]))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.reservations.data.0.type', 'reservations')
+        ->assertJsonPath('included.0.attributes.email', 'user-reservation@example.com');
+});
+
 it('creates a customer', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+
+    $this
+        ->post(route('igniter.api.customers.store'), [
+            'first_name' => 'Test',
+            'last_name' => 'Customer',
+            'email' => 'test@example.tld',
+            'customer_group_id' => 1,
+            'newsletter' => false,
+            'status' => false,
+        ])
+        ->assertCreated()
+        ->assertJsonPath('data.attributes.full_name', 'Test Customer');
+});
+
+it('creates a customer as customer', function() {
+    $customer = Sanctum::actingAs(Customer::factory()->create(), ['customers:*']);
+
+    $customer->currentAccessToken()->shouldReceive('isForCustomer')->andReturnTrue();
 
     $this
         ->post(route('igniter.api.customers.store'), [

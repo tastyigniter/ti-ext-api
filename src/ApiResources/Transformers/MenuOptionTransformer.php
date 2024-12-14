@@ -20,19 +20,10 @@ class MenuOptionTransformer extends TransformerAbstract
 
     public function includeOptionValues(MenuOption $menuOption)
     {
-        //When Post/Patch and inside body comes with an json array option_values the deserialized object is a collection of array
-        if (is_array($menuOption->option_values)) {
-            return $this->collection(
-                $menuOption->option_values,
-                new MenuOptionValueArrayTransformer,
-                'option_values'
-            );
-        }
-
         return $this->collection(
             $menuOption->option_values,
             new MenuOptionValueTransformer,
-            'option_values'
+            'option_values',
         );
     }
 }

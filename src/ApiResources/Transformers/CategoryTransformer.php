@@ -20,11 +20,7 @@ class CategoryTransformer extends TransformerAbstract
 
     public function includeMedia(Category $category)
     {
-        if (!$thumb = $category->getFirstMedia()) {
-            return null;
-        }
-
-        return $this->item($thumb, new MediaTransformer, 'media');
+        return ($thumb = $category->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
     public function includeMenus(Category $category)

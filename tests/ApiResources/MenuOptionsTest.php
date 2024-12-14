@@ -27,9 +27,23 @@ it('shows a menu option', function() {
             ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_name', $menuOption->option_name)
                 ->where('display_type', $menuOption->display_type)
-                ->etc()
-            )->etc()
+                ->etc(),
+            )->etc(),
         );
+});
+
+it('shows a menu option with option_values relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    $menuOption = MenuOption::first();
+    $menuOption->option_values()->create(['name' => 'Test Value']);
+
+    $this
+        ->get(route('igniter.api.menu_options.show', [$menuOption->getKey()]).'?'.http_build_query([
+                'include' => 'option_values',
+            ]))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.option_values.data.0.type', 'option_values')
+        ->assertJsonPath('included.3.attributes.name', 'Test Value');
 });
 
 it('creates a menu option', function() {
@@ -46,7 +60,7 @@ it('creates a menu option', function() {
             ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
-                ->etc()
+                ->etc(),
             ));
 });
 
@@ -64,7 +78,7 @@ it('updates a menu option', function() {
             ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
-                ->etc()
+                ->etc(),
             )->etc());
 });
 

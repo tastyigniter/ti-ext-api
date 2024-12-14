@@ -62,5 +62,5 @@
     },
     "sort-packages": true
   },
-  "minimum-stability": "beta"
+  "minimum-stability": "dev"
 }

@@ -28,9 +28,22 @@ it('shows a menu item option', function() {
             ->has('data.attributes.option')
             ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_id', $menuItemOption->option->getKey())
-                ->etc()
-            )->etc()
+                ->etc(),
+            )->etc(),
         );
+});
+
+it('shows a menu item option with menu_option_values relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
+    $menuItemOption = MenuItemOption::first();
+    $menuItemOption->menu_option_values()->create(['option_value_id' => 1]);
+
+    $this
+        ->get(route('igniter.api.menu_item_options.show', [$menuItemOption->getKey()]).'?'.http_build_query([
+                'include' => 'menu_option_values',
+            ]))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.menu_option_values.data.0.type', 'menu_option_values');
 });
 
 it('creates a menu item option', function() {
@@ -39,13 +52,17 @@ it('creates a menu item option', function() {
 
     $this
         ->post(route('igniter.api.menu_item_options.store'), [
+            'menu_id' => 1,
             'option_id' => $menuOption->getKey(),
+            'menu_option_values' => [
+                ['menu_id' => 1, 'option_id' => 1],
+            ],
         ])
         ->assertCreated()
         ->assertJson(fn(AssertableJson $json) => $json
             ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_id', $menuOption->getKey())
-                ->etc()
+                ->etc(),
             ));
 });
 
@@ -61,7 +78,7 @@ it('updates a menu item option', function() {
         ->assertJson(fn(AssertableJson $json) => $json
             ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_id', $menuItemOption->option->getKey())
-                ->etc()
+                ->etc(),
             )->etc());
 });
 

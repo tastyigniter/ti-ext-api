@@ -9,7 +9,7 @@ class MenuItemOptionRequest extends FormRequest
     public function attributes()
     {
         return [
-            'menu_id' => lang('igniter.cart::default.menus.label_option'),
+            'menu_id' => lang('igniter.cart::default.menus.label_menu_id'),
             'option_id' => lang('igniter.cart::default.menus.label_option_id'),
             'priority' => lang('igniter.cart::default.menus.label_option'),
             'required' => lang('igniter.cart::default.menus.label_option_required'),

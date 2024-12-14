@@ -27,7 +27,7 @@ it('returns correct attribute labels', function() {
 
 it('returns correct validation rules', function() {
     $request = new OrderRequest();
-    $request->setMethod('post');
+    $request->setMethod('POST');
     $request->merge([
         'order_type' => 'delivery',
     ]);
@@ -53,12 +53,12 @@ it('returns correct validation rules', function() {
         ->and($rules)->toHaveKey('order_totals')
         ->and($rules)->toHaveKey('status_id')
         ->and($rules)->toHaveKey('is_processed')
-        ->and($rules['first_name'])->toContain('between:1,48')
-        ->and($rules['last_name'])->toContain('between:1,48')
+        ->and($rules['first_name'])->toContain('required', 'between:1,48')
+        ->and($rules['last_name'])->toContain('required', 'between:1,48')
         ->and($rules['email'])->toContain('sometimes', 'required', 'email:filter', 'max:96')
         ->and($rules['telephone'])->toContain('string')
         ->and($rules['comment'])->toContain('max:500')
-        ->and($rules['order_type'])->toContain('alpha_dash')
+        ->and($rules['order_type'])->toContain('required', 'alpha_dash')
         ->and($rules['payment'])->toContain('sometimes', 'required', 'alpha_dash')
         ->and($rules['customer_id'])->toContain('integer')
         ->and($rules['order_menus'])->toContain('array')

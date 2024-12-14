@@ -9,7 +9,7 @@ it('returns correct attribute labels', function() {
 
     $attributes = $request->attributes();
 
-    expect($attributes)->toHaveKey('menu_id', lang('igniter.cart::default.menus.label_option'))
+    expect($attributes)->toHaveKey('menu_id', lang('igniter.cart::default.menus.label_menu_id'))
         ->and($attributes)->toHaveKey('option_id', lang('igniter.cart::default.menus.label_option_id'))
         ->and($attributes)->toHaveKey('priority', lang('igniter.cart::default.menus.label_option'))
         ->and($attributes)->toHaveKey('required', lang('igniter.cart::default.menus.label_option_required'))

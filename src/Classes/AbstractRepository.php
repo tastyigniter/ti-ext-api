@@ -8,8 +8,6 @@ use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
 use Igniter\User\Models\Customer;
-use Igniter\User\Models\User;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -18,13 +16,6 @@ class AbstractRepository
     use EventEmitter;
     use GuardsAttributes;
     use HasGlobalScopes;
-
-    /**
-     * The IoC container instance.
-     *
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    protected $container;
 
     /**
      * The repository model.
@@ -49,7 +40,7 @@ class AbstractRepository
 
         throw_unless(
             $record = $query->find($id, $attributes),
-            new NotFoundHttpException(sprintf('Record with identifier [%s] not found.', $id))
+            new NotFoundHttpException(sprintf('Record with identifier [%s] not found.', $id)),
         );
 
         return $record;
@@ -159,7 +150,7 @@ class AbstractRepository
         return $modelClass;
     }
 
-    public function createModel(): Model
+    public function createModel(): \Illuminate\Database\Eloquent\Model
     {
         $modelClass = $this->getModelClass();
 
@@ -169,30 +160,7 @@ class AbstractRepository
 
         $this->prepareModel($modelClass);
 
-        $model = new $modelClass;
-        if (!$model instanceof Model) {
-            throw new SystemException("Class $model must be an instance of \\Igniter\\Flame\\Database\\Model");
-        }
-
-        return $model;
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Container\Container
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
-     * @return \Igniter\Api\Classes\AbstractRepository
-     */
-    public function setContainer(Container $container)
-    {
-        $this->container = $container;
-
-        return $this;
+        return new $modelClass;
     }
 
     protected function prepareModel(string $modelClass): void
@@ -261,10 +229,6 @@ class AbstractRepository
 
     protected function setModelAttributes($model, $saveData)
     {
-        if (!is_array($saveData) || !$model) {
-            return;
-        }
-
         $this->modelsToSave[] = $model;
 
         $singularTypes = ['belongsTo', 'hasOne', 'morphOne'];
@@ -278,9 +242,9 @@ class AbstractRepository
             }
 
             $isNested = ($attribute == 'pivot' || (
-                $model->hasRelation($attribute) &&
-                in_array($model->getRelationType($attribute), $singularTypes)
-            ));
+                    $model->hasRelation($attribute) &&
+                    in_array($model->getRelationType($attribute), $singularTypes)
+                ));
 
             if ($isNested && is_array($value) && $model->{$attribute}) {
                 $this->setModelAttributes($model->{$attribute}, $value);
@@ -300,12 +264,7 @@ class AbstractRepository
             return;
         }
 
-        $user = request()->user();
-        if (!$user instanceof User) {
-            return;
-        }
-
-        $ids = $user->locations->where('location_status', true)->pluck('location_id')->all();
+        $ids = request()->user()?->locations->where('location_status', true)->pluck('location_id')->all();
         if (empty($ids)) {
             return;
         }

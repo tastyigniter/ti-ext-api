@@ -5,10 +5,10 @@ namespace Igniter\Api\ApiResources\Transformers;
 use Igniter\User\Models\UserGroup;
 use League\Fractal\TransformerAbstract;
 
-class StaffGroupTransformer extends TransformerAbstract
+class UserGroupTransformer extends TransformerAbstract
 {
-    public function transform(UserGroup $staffGroup)
+    public function transform(UserGroup $userGroup)
     {
-        return $staffGroup->toArray();
+        return $userGroup->toArray();
     }
 }

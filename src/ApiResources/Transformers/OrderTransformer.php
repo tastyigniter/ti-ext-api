@@ -29,11 +29,7 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeCustomer(Order $order)
     {
-        if (!$order->customer) {
-            return;
-        }
-
-        return $this->item($order->customer, new CustomerTransformer, 'customers');
+        return $order->customer ? $this->item($order->customer, new CustomerTransformer, 'customers') : null;
     }
 
     public function includeLocation(Order $order)
@@ -43,20 +39,12 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeAddress(Order $order)
     {
-        if (!$order->address) {
-            return;
-        }
-
-        return $this->item($order->address, new AddressTransformer, 'addresses');
+        return $order->address ? $this->item($order->address, new AddressTransformer, 'addresses') : null;
     }
 
     public function includePaymentMethod(Order $order)
     {
-        if (!$order->payment_method) {
-            return;
-        }
-
-        return $this->item($order->payment_method, new PaymentMethodTransformer, 'payment_methods');
+        return $order->payment_method ? $this->item($order->payment_method, new PaymentMethodTransformer, 'payment_methods') : null;
     }
 
     public function includeStatus(Order $order)
@@ -71,19 +59,11 @@ class OrderTransformer extends TransformerAbstract
 
     public function includeAssignee(Order $order)
     {
-        if (!$order->assignee) {
-            return;
-        }
-
-        return $this->item($order->assignee, new StaffTransformer, 'staff');
+        return $order->assignee ? $this->item($order->assignee, new UserTransformer, 'assignee') : null;
     }
 
     public function includeAssigneeGroup(Order $order)
     {
-        if (!$order->assignee_group) {
-            return;
-        }
-
-        return $this->item($order->assignee_group, new StaffGroupTransformer, 'staff_group');
+        return $order->assignee_group ? $this->item($order->assignee_group, new UserGroupTransformer, 'assignee_group') : null;
     }
 }

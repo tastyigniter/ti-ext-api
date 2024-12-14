@@ -5,7 +5,10 @@ namespace Igniter\Api\Tests\ApiResources;
 use Igniter\Admin\Models\Status;
 use Igniter\Cart\Models\Order;
 use Igniter\Local\Models\Location;
+use Igniter\User\Models\Address;
+use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
+use Igniter\User\Models\UserGroup;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\Sanctum;
 
@@ -29,6 +32,112 @@ it('shows an order', function() {
         ->assertJsonPath('data.attributes.email', $order->email);
 });
 
+it('shows an order with customer relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $order->customer()->associate(Customer::factory()->create(['first_name' => 'Test', 'last_name' => 'User']))->save();
+
+    $this
+        ->get(route('igniter.api.orders.show', [$order->getKey()]).'?'.
+            http_build_query(['include' => 'customer']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.customer.data.type', 'customers')
+        ->assertJsonPath('included.0.attributes.full_name', 'Test User');
+});
+
+it('shows an order with location relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $order->location()->associate(Location::factory()->create())->save();
+
+    $this
+        ->get(route('igniter.api.orders.show', [$order->getKey()]).'?'.
+            http_build_query(['include' => 'location']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.location.data.type', 'locations')
+        ->assertJsonPath('included.0.attributes.location_name', $order->location->location_name);
+});
+
+it('shows an order with address relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $order->address()->associate(Address::factory()->create(['address_1' => '123 Test St', 'country_id' => 123]))->save();
+
+    $this
+        ->get(route('igniter.api.orders.show', [$order->getKey()]).'?'.
+            http_build_query(['include' => 'address']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.address.data.type', 'addresses')
+        ->assertJsonPath('included.0.attributes.address_1', '123 Test St');
+});
+
+it('shows an order with payment_method relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create([
+        'payment' => 'cod',
+    ]);
+
+    $this
+        ->get(route('igniter.api.orders.show', [$order->getKey()]).'?'.
+            http_build_query(['include' => 'payment_method']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.payment_method.data.type', 'payment_methods')
+        ->assertJsonPath('included.0.attributes.code', 'cod');
+});
+
+it('shows an order with status relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $order->status()->associate(Status::isForOrder()->first())->save();
+
+    $this
+        ->get(route('igniter.api.orders.show', [$order->getKey()]).'?'.
+            http_build_query(['include' => 'status']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.status.data.type', 'statuses')
+        ->assertJsonPath('included.0.attributes.name', $order->status->name);
+});
+
+it('shows an order with status_history relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $order->status_history()->create(['status_id' => Status::isForOrder()->first()->getKey()]);
+
+    $this
+        ->get(route('igniter.api.orders.show', [$order->getKey()]).'?'.
+            http_build_query(['include' => 'status_history']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.status_history.data.0.type', 'status_history')
+        ->assertJsonPath('included.0.attributes.status_id', $order->status_history->first()->status_id);
+});
+
+it('shows an order with assignee relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $assignee = User::factory()->create();
+    $order->assignee()->associate($assignee)->save();
+
+    $this
+        ->get(route('igniter.api.orders.show', [$order->getKey()]).'?'.
+            http_build_query(['include' => 'assignee']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.assignee.data.type', 'assignee')
+        ->assertJsonPath('included.0.attributes.name', $assignee->name);
+});
+
+it('shows an order with assignee_group relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $order->assignee_group()->associate(UserGroup::factory()->create(['user_group_name' => 'Test Group']))->save();
+
+    $this
+        ->get(route('igniter.api.orders.show', [$order->getKey()]).'?'.
+            http_build_query(['include' => 'assignee_group']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.assignee_group.data.type', 'assignee_group')
+        ->assertJsonPath('included.0.attributes.user_group_name', 'Test Group');
+});
+
 it('creates an order', function() {
     Mail::fake();
 
@@ -44,6 +153,7 @@ it('creates an order', function() {
             'payment' => 'cod',
             'status_id' => Status::isForOrder()->first()->getKey(),
             'order_type' => Location::DELIVERY,
+            'processed' => true,
             'address' => [
                 'address_1' => '123 Test St',
                 'city' => 'Test City',
@@ -51,8 +161,21 @@ it('creates an order', function() {
                 'state' => 'Test State',
                 'country_id' => '123',
             ],
-            'order_menus' => [],
-            'order_totals' => [],
+            'order_menus' => [
+                [
+                    'id' => 123,
+                    'name' => 'foo',
+                    'qty' => 1,
+                    'price' => '12.23',
+                    'subtotal' => '12.23',
+                    'comment' => '',
+                    'options' => [],
+                ],
+            ],
+            'order_totals' => [
+                ['code' => 'subtotal', 'title' => 'Subtotal', 'value' => '12.23'],
+                ['code' => 'total', 'title' => 'Total', 'value' => '12.23'],
+            ],
         ])
         ->assertCreated()
         ->assertJsonPath('data.attributes.email', 'test-user@domain.tld');

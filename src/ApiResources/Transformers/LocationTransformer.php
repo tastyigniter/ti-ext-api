@@ -21,11 +21,7 @@ class LocationTransformer extends TransformerAbstract
 
     public function includeMedia(Location $location)
     {
-        if (!$thumb = $location->getFirstMedia()) {
-            return null;
-        }
-
-        return $this->item($thumb, new MediaTransformer, 'media');
+        return ($thumb = $location->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
     public function includeWorkingHours(Location $location)
@@ -33,7 +29,7 @@ class LocationTransformer extends TransformerAbstract
         return $this->collection(
             $location->working_hours,
             new WorkingHourTransformer,
-            'working_hours'
+            'working_hours',
         );
     }
 
@@ -42,7 +38,7 @@ class LocationTransformer extends TransformerAbstract
         return $this->collection(
             $location->delivery_areas,
             new DeliveryAreaTransformer,
-            'delivery_areas'
+            'delivery_areas',
         );
     }
 
@@ -51,7 +47,7 @@ class LocationTransformer extends TransformerAbstract
         return $this->collection(
             $location->reviews,
             new ReviewTransformer,
-            'reviews'
+            'reviews',
         );
     }
 }

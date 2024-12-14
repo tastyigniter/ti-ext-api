@@ -144,7 +144,7 @@ class RestController extends ControllerAction
         $actions = array_get($this->config, 'actions', []);
 
         $this->controller->allowedActions = array_merge(
-            $this->controller->allowedActions, $actions
+            $this->controller->allowedActions, $actions,
         );
     }
 
@@ -185,8 +185,6 @@ class RestController extends ControllerAction
     protected function makeRepository(string $context): AbstractRepository
     {
         $repository = app()->make($this->getConfig('repository'));
-
-        $repository->setContainer(app());
 
         $methodName = studly_case('bind_'.$context.'_events');
         if (method_exists($this, $methodName)) {

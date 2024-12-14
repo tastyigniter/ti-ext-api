@@ -2,8 +2,11 @@
 
 namespace Igniter\Api\Tests\ApiResources;
 
+use Igniter\Admin\Models\Status;
+use Igniter\Local\Models\Location;
 use Igniter\Reservation\Models\Reservation;
 use Igniter\User\Models\User;
+use Igniter\User\Models\UserGroup;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all reservations', function() {
@@ -24,6 +27,85 @@ it('shows a reservation', function() {
         ->get(route('igniter.api.reservations.show', [$reservation->getKey()]))
         ->assertOk()
         ->assertJsonPath('data.attributes.email', $reservation->email);
+});
+
+it('shows a reservation with location relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+    $reservation->location()->associate(Location::factory()->create())->save();
+
+    $this
+        ->get(route('igniter.api.reservations.show', [$reservation->getKey()]).'?'.
+            http_build_query(['include' => 'location']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.location.data.type', 'locations')
+        ->assertJsonPath('included.0.attributes.location_name', $reservation->location->location_name);
+});
+
+it('shows a reservation with tables relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+    $reservation->tables()->create(['name' => 'Table 1']);
+    $reservation->refresh();
+
+    $this
+        ->get(route('igniter.api.reservations.show', [$reservation->getKey()]).'?'.
+            http_build_query(['include' => 'tables']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.tables.data.0.type', 'tables')
+        ->assertJsonPath('included.0.attributes.name', 'Table 1');
+});
+
+it('shows a reservation with status relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+    $reservation->status()->associate(Status::factory()->create())->save();
+
+    $this
+        ->get(route('igniter.api.reservations.show', [$reservation->getKey()]).'?'.
+            http_build_query(['include' => 'status']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.status.data.type', 'statuses')
+        ->assertJsonPath('included.0.attributes.status_name', $reservation->status->status_name);
+});
+
+it('shows a reservation with status_history relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+    $reservation->status_history()->create(['status_id' => 1]);
+
+    $this
+        ->get(route('igniter.api.reservations.show', [$reservation->getKey()]).'?'.
+            http_build_query(['include' => 'status_history']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.status_history.data.0.type', 'status_history')
+        ->assertJsonPath('included.0.attributes.status_id', 1);
+});
+
+it('shows a reservation with assignee relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+    $reservation->assignee()->associate(User::factory()->create())->save();
+
+    $this
+        ->get(route('igniter.api.reservations.show', [$reservation->getKey()]).'?'.
+            http_build_query(['include' => 'assignee']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.assignee.data.type', 'assignee')
+        ->assertJsonPath('included.0.attributes.first_name', $reservation->assignee->first_name);
+});
+
+it('shows a reservation with assignee_group relationship', function() {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+    $reservation->assignee_group()->associate(UserGroup::factory()->create())->save();
+
+    $this
+        ->get(route('igniter.api.reservations.show', [$reservation->getKey()]).'?'.
+            http_build_query(['include' => 'assignee_group']))
+        ->assertOk()
+        ->assertJsonPath('data.relationships.assignee_group.data.type', 'assignee_group')
+        ->assertJsonPath('included.0.attributes.first_name', $reservation->assignee_group->first_name);
 });
 
 it('creates a reservation', function() {

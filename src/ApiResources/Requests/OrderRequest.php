@@ -44,11 +44,10 @@ class OrderRequest extends FormRequest
             'is_processed' => ['integer'],
         ];
 
-        if ($this->method() == 'post') {
+        if (strtolower($this->method()) == 'post') {
             $rules['first_name'][] = 'required';
             $rules['last_name'][] = 'required';
             $rules['order_type'][] = 'required';
-            $rules['customer_id'][] = 'required';
         }
 
         if ($this->input('order_type', 'collection') == 'delivery') {
