@@ -49,8 +49,8 @@
     }
   },
   "scripts": {
-    "test": "vendor/bin/pest",
-    "test-coverage": "vendor/bin/pest --coverage",
+    "test": "vendor/bin/pest --coverage --exactly=100",
+    "type-coverage": "vendor/bin/pest --type-coverage --min=100",
     "format": "vendor/bin/pint",
     "static": "vendor/bin/phpstan analyse --ansi --memory-limit 1056M"
   },
