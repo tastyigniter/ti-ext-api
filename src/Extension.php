@@ -3,7 +3,6 @@
 namespace Igniter\Api;
 
 use Igniter\Api\Classes\ApiManager;
-use Igniter\Api\Classes\Fractal;
 use Igniter\Api\Exceptions\ErrorHandler;
 use Igniter\Api\Listeners\TokenEventSubscriber;
 use Igniter\System\Classes\BaseExtension;
@@ -36,7 +35,6 @@ class Extension extends BaseExtension
         $this->app->register(FractalServiceProvider::class);
         $this->app->register(SanctumServiceProvider::class);
 
-        $this->app['config']->set('fractal.fractal_class', Fractal::class);
         $this->app['config']->set('fractal.default_serializer', $this->app['config']->get('igniter.api.serializer'));
 
         $this->app->singleton(ApiManager::class);

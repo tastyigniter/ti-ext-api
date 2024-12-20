@@ -37,13 +37,14 @@ it('shows a location', function() {
 it('shows a location with media relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['locations:*']);
     $location = Location::first();
-    $location->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
+    $locationMedia = $location->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
 
     $this
         ->get(route('igniter.api.locations.show', [$location->getKey()]).'?'.
             http_build_query(['include' => 'media']))
         ->assertOk()
         ->assertJsonPath('data.relationships.media.data.type', 'media')
+        ->assertJsonPath('included.0.id', (string)$locationMedia->getKey())
         ->assertJsonPath('included.0.attributes.file_name', 'test.jpg');
 });
 
@@ -65,24 +66,26 @@ it('shows a location with working_hours relationship', function() {
 it('shows a location with delivery_areas relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['locations:*']);
     $location = Location::first();
-    $location->delivery_areas()->create(['name' => 'Test Area']);
+    $locationDeliveryArea = $location->delivery_areas()->create(['name' => 'Test Area']);
 
     $this
         ->get(route('igniter.api.locations.show', [$location->getKey()]).'?'.http_build_query(['include' => 'delivery_areas']))
         ->assertOk()
         ->assertJsonPath('data.relationships.delivery_areas.data.0.type', 'delivery_areas')
+        ->assertJsonPath('included.0.id', (string)$locationDeliveryArea->getKey())
         ->assertJsonPath('included.0.attributes.name', 'Test Area');
 });
 
 it('shows a location with reviews relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['locations:*']);
     $location = Location::first();
-    $location->reviews()->create(['review_text' => 'Test Review']);
+    $locationReview = $location->reviews()->create(['review_text' => 'Test Review']);
 
     $this
         ->get(route('igniter.api.locations.show', [$location->getKey()]).'?'.http_build_query(['include' => 'reviews']))
         ->assertOk()
         ->assertJsonPath('data.relationships.reviews.data.0.type', 'reviews')
+        ->assertJsonPath('included.0.id', (string)$locationReview->getKey())
         ->assertJsonPath('included.0.attributes.review_text', 'Test Review');
 });
 

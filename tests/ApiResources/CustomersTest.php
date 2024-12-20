@@ -47,11 +47,13 @@ it('can not show unauthenticated customer', function() {
 it('returns all customers', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     Customer::factory()->count(5)->create();
+    $customer = Customer::first();
 
     $this
         ->get(route('igniter.api.customers.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes.name', Customer::first()->name)
+        ->assertJsonPath('data.0.id', (string)$customer->getKey())
+        ->assertJsonPath('data.0.attributes.name', $customer->name)
         ->assertJsonCount(5, 'data');
 });
 
@@ -62,13 +64,14 @@ it('shows a customer', function() {
     $this
         ->get(route('igniter.api.customers.show', [$customer->getKey()]))
         ->assertOk()
+        ->assertJsonPath('data.id', (string)$customer->getKey())
         ->assertJsonPath('data.attributes.full_name', $customer->full_name);
 });
 
 it('shows a customer with addresses relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
-    $customer->addresses()->create(['address_1' => '123 Test Address', 'country_id' => 1]);
+    $customerAddress = $customer->addresses()->create(['address_1' => '123 Test Address', 'country_id' => 1]);
 
     $this
         ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
@@ -76,13 +79,14 @@ it('shows a customer with addresses relationship', function() {
             ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.addresses.data.0.type', 'addresses')
+        ->assertJsonPath('included.0.id', (string)$customerAddress->getKey())
         ->assertJsonPath('included.0.attributes.address_1', '123 Test Address');
 });
 
 it('shows a customer with orders relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
-    $customer->orders()->create(['order_type' => 'collection']);
+    $customerOrder = $customer->orders()->create(['order_type' => 'collection']);
 
     $this
         ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
@@ -90,13 +94,14 @@ it('shows a customer with orders relationship', function() {
             ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.orders.data.0.type', 'orders')
+        ->assertJsonPath('included.0.id', (string)$customerOrder->getKey())
         ->assertJsonPath('included.0.attributes.order_type', 'collection');
 });
 
 it('shows a customer with reservations relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
-    $customer->reservations()->create(['email' => 'user-reservation@example.com']);
+    $customerReservation = $customer->reservations()->create(['email' => 'user-reservation@example.com']);
 
     $this
         ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
@@ -104,6 +109,7 @@ it('shows a customer with reservations relationship', function() {
             ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.reservations.data.0.type', 'reservations')
+        ->assertJsonPath('included.0.id', (string)$customerReservation->getKey())
         ->assertJsonPath('included.0.attributes.email', 'user-reservation@example.com');
 });
 

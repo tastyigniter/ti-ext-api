@@ -9,11 +9,13 @@ use Laravel\Sanctum\Sanctum;
 
 it('returns all menu items', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    $menu = Menu::first();
 
     $this
         ->get(route('igniter.api.menus.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes.menu_name', Menu::first()->menu_name);
+        ->assertJsonPath('data.0.id', (string)$menu->getKey())
+        ->assertJsonPath('data.0.attributes.menu_name', $menu->menu_name);
 });
 
 it('shows a menu item', function() {
@@ -23,6 +25,7 @@ it('shows a menu item', function() {
     $this
         ->get(route('igniter.api.menus.show', [$menu->getKey()]))
         ->assertOk()
+        ->assertJsonPath('data.id', (string)$menu->getKey())
         ->assertJson(fn(AssertableJson $json) => $json
             ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('menu_name', $menu->menu_name)
@@ -35,39 +38,42 @@ it('shows a menu item', function() {
 it('shows a menu item with media relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
-    $menu->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
+    $menuMedia = $menu->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
 
     $this
         ->get(route('igniter.api.menus.show', [$menu->getKey()]).'?'.
             http_build_query(['include' => 'media']))
         ->assertOk()
         ->assertJsonPath('data.relationships.media.data.type', 'media')
+        ->assertJsonPath('included.0.id', (string)$menuMedia->getKey())
         ->assertJsonPath('included.0.attributes.file_name', 'test.jpg');
 });
 
 it('shows a menu item with categories relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
-    $menu->categories()->create(['name' => 'Test Category']);
+    $menuCategory = $menu->categories()->create(['name' => 'Test Category']);
 
     $this
         ->get(route('igniter.api.menus.show', [$menu->getKey()]).'?'.
             http_build_query(['include' => 'categories']))
         ->assertOk()
         ->assertJsonPath('data.relationships.categories.data.0.type', 'categories')
+        ->assertJsonPath('included.0.id', (string)$menuCategory->getKey())
         ->assertJsonPath('included.0.attributes.name', 'Test Category');
 });
 
 it('shows a menu item with menu_options relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
-    $menu->menu_options()->create(['min_selected' => 2, 'max_selected' => 4, 'option_id' => 1]);
+    $menuOption = $menu->menu_options()->create(['min_selected' => 2, 'max_selected' => 4, 'option_id' => 1]);
 
     $this
         ->get(route('igniter.api.menus.show', [$menu->getKey()]).'?'.
             http_build_query(['include' => 'menu_options']))
         ->assertOk()
         ->assertJsonPath('data.relationships.menu_options.data.0.type', 'menu_options')
+        ->assertJsonPath('included.3.id', (string)$menuOption->getKey())
         ->assertJsonPath('included.3.attributes.min_selected', 2)
         ->assertJsonPath('included.3.attributes.max_selected', 4);
 });
@@ -75,26 +81,28 @@ it('shows a menu item with menu_options relationship', function() {
 it('shows a menu item with ingredients relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
-    $menu->ingredients()->create(['name' => 'Test Ingredient']);
+    $menuIngredient = $menu->ingredients()->create(['name' => 'Test Ingredient']);
 
     $this
         ->get(route('igniter.api.menus.show', [$menu->getKey()]).'?'.
             http_build_query(['include' => 'ingredients']))
         ->assertOk()
         ->assertJsonPath('data.relationships.ingredients.data.0.type', 'ingredients')
+        ->assertJsonPath('included.0.id', (string)$menuIngredient->getKey())
         ->assertJsonPath('included.0.attributes.name', 'Test Ingredient');
 });
 
 it('shows a menu item with mealtimes relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
-    $menu->mealtimes()->create(['start_time' => '09:00', 'end_time' => '17:00']);
+    $menuMealtime = $menu->mealtimes()->create(['start_time' => '09:00', 'end_time' => '17:00']);
 
     $this
         ->get(route('igniter.api.menus.show', [$menu->getKey()]).'?'.
             http_build_query(['include' => 'mealtimes']))
         ->assertOk()
         ->assertJsonPath('data.relationships.mealtimes.data.0.type', 'mealtimes')
+        ->assertJsonPath('included.0.id', (string)$menuMealtime->getKey())
         ->assertJsonPath('included.0.attributes.start_time', '09:00:00')
         ->assertJsonPath('included.0.attributes.end_time', '17:00:00');
 });

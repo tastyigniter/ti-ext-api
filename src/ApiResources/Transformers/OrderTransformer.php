@@ -2,11 +2,14 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
+use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Cart\Models\Order;
 use League\Fractal\TransformerAbstract;
 
 class OrderTransformer extends TransformerAbstract
 {
+    use MergesIdAttribute;
+
     protected array $availableIncludes = [
         'customer',
         'location',
@@ -20,7 +23,7 @@ class OrderTransformer extends TransformerAbstract
 
     public function transform(Order $order)
     {
-        return array_merge($order->toArray(), [
+        return $this->mergesIdAttribute($order, [
             'currency' => app('currency')->getDefault()->currency_code,
             'order_totals' => $order->getOrderTotals(),
             'order_menus' => $order->getOrderMenusWithOptions(),

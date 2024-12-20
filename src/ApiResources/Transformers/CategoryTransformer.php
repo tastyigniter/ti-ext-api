@@ -2,11 +2,14 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
+use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Cart\Models\Category;
 use League\Fractal\TransformerAbstract;
 
 class CategoryTransformer extends TransformerAbstract
 {
+    use MergesIdAttribute;
+
     protected array $availableIncludes = [
         'media',
         'menus',
@@ -15,7 +18,7 @@ class CategoryTransformer extends TransformerAbstract
 
     public function transform(Category $category)
     {
-        return $category->toArray();
+        return $this->mergesIdAttribute($category);
     }
 
     public function includeMedia(Category $category)

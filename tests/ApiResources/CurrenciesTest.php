@@ -8,8 +8,10 @@ use Laravel\Sanctum\Sanctum;
 
 it('returns all currencies', function() {
     Sanctum::actingAs(User::factory()->create(), ['currencies:*']);
+    $currency = Currency::listFrontEnd()->first();
 
     $this->get(route('igniter.api.currencies.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes.currency_name', Currency::listFrontEnd()->first()->currency_name);
+        ->assertJsonPath('data.0.id', (string)$currency->getKey())
+        ->assertJsonPath('data.0.attributes.currency_name', $currency->currency_name);
 });

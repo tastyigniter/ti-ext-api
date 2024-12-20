@@ -2,11 +2,14 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
+use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Cart\Models\Menu;
 use League\Fractal\TransformerAbstract;
 
 class MenuTransformer extends TransformerAbstract
 {
+    use MergesIdAttribute;
+
     protected array $availableIncludes = [
         'media',
         'categories',
@@ -18,7 +21,7 @@ class MenuTransformer extends TransformerAbstract
 
     public function transform(Menu $menuItem)
     {
-        return array_merge($menuItem->toArray(), [
+        return $this->mergesIdAttribute($menuItem, [
             'currency' => app('currency')->getDefault()->currency_code,
         ]);
     }

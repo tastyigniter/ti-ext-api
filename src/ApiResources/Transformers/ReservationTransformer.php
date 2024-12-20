@@ -2,11 +2,14 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
+use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Reservation\Models\Reservation;
 use League\Fractal\TransformerAbstract;
 
 class ReservationTransformer extends TransformerAbstract
 {
+    use MergesIdAttribute;
+
     protected array $availableIncludes = [
         'location',
         'tables',
@@ -18,7 +21,7 @@ class ReservationTransformer extends TransformerAbstract
 
     public function transform(Reservation $reservation)
     {
-        return $reservation->toArray();
+        return $this->mergesIdAttribute($reservation);
     }
 
     public function includeLocation(Reservation $reservation)

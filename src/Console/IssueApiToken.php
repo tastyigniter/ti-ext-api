@@ -31,10 +31,7 @@ class IssueApiToken extends Command
         $name = $this->option('name');
         $email = $this->option('email');
         $abilities = $this->option('abilities');
-
-        if (!strlen($isForAdmin = $this->option('admin'))) {
-            return $this->error('Missing --admin option');
-        }
+        $isForAdmin = (bool)$this->option('admin');
 
         $query = $isForAdmin ? User::query() : Customer::query();
 

@@ -2,11 +2,14 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
+use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Local\Models\Review;
 use League\Fractal\TransformerAbstract;
 
 class ReviewTransformer extends TransformerAbstract
 {
+    use MergesIdAttribute;
+
     protected array $availableIncludes = [
         'location',
         'customer',
@@ -14,7 +17,7 @@ class ReviewTransformer extends TransformerAbstract
 
     public function transform(Review $review)
     {
-        return $review->toArray();
+        return $this->mergesIdAttribute($review);
     }
 
     public function includeCustomer(Review $review)

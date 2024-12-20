@@ -14,6 +14,7 @@ class MenuOptionValueTransformer extends TransformerAbstract
         }
 
         return array_merge($menuOptionValue, [
+            'id' => $menuOptionValue['option_value_id'],
             'currency' => app('currency')->getDefault()->currency_code,
         ]);
     }

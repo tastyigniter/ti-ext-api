@@ -40,34 +40,28 @@ class TokenEventSubscriber
     {
         $events->listen(
             TokenAuthenticated::class,
-            [$this, 'handleTokenAuthenticated']
+            [$this, 'handleTokenAuthenticated'],
         );
     }
 
-    public function checkGroup(mixed $group, mixed $token)
+    protected function checkGroup(mixed $group, mixed $token)
     {
-        if (!is_null($token)) {
-            if ($group == 'guest') {
-                return false;
-            }
+        if ($group == 'guest') {
+            return false;
+        }
 
-            if ($group == 'admin' && !$token->isForAdmin()) {
-                return false;
-            }
+        if ($group == 'admin' && !$token->isForAdmin()) {
+            return false;
+        }
 
-            if ($group == 'customer' && $token->isForAdmin()) {
-                return false;
-            }
-        } else {
-            if (in_array($group, ['admin', 'customer', 'users'])) {
-                return false;
-            }
+        if ($group == 'customer' && $token->isForAdmin()) {
+            return false;
         }
 
         return true;
     }
 
-    public function getAllowedGroup(Route $route)
+    protected function getAllowedGroup(Route $route)
     {
         $resourceOptions = optional(resolve(ApiManager::class)->getCurrentResource())->options ?? [];
 

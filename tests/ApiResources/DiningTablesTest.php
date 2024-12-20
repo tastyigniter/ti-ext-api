@@ -10,20 +10,22 @@ use Laravel\Sanctum\Sanctum;
 it('returns all dining tables', function() {
     Sanctum::actingAs(User::factory()->create(), ['tables:*']);
 
+    $diningTable = DiningTable::first();
     $this
         ->get(route('igniter.api.tables.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes.name', DiningTable::first()->name);
+        ->assertJsonPath('data.0.id', (string)$diningTable->getKey())
+        ->assertJsonPath('data.0.attributes.name', $diningTable->name);
 });
 
 it('shows a dining table', function() {
     Sanctum::actingAs(User::factory()->create(), ['tables:*']);
-
     $diningTable = DiningTable::first();
 
     $this
         ->get(route('igniter.api.tables.show', [$diningTable->getKey()]))
         ->assertOk()
+        ->assertJsonPath('data.id', (string)$diningTable->getKey())
         ->assertJsonPath('data.attributes.name', $diningTable->name);
 });
 

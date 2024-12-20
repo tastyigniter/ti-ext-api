@@ -255,6 +255,13 @@ class Resource extends Model
      */
     public function registerCallback(callable $callback)
     {
-        $this->callbacks[] = $callback;
+        static::$callbacks[] = $callback;
+    }
+
+    public static function clearInternalCache()
+    {
+        self::$registeredResources = null;
+        static::$callbacks = [];
+        static::$resourceCache = [];
     }
 }

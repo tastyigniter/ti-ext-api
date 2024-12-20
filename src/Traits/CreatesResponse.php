@@ -2,7 +2,7 @@
 
 namespace Igniter\Api\Traits;
 
-use Igniter\Api\Classes\Fractal;
+use Spatie\Fractal\Fractal;
 
 trait CreatesResponse
 {

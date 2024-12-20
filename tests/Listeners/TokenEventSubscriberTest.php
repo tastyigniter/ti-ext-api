@@ -40,7 +40,7 @@ it('throws unauthorized exception for missing access token', function() {
     $this->event->token = null;
 
     $this->expectException(UnauthorizedHttpException::class);
-    $this->expectExceptionMessage('No valid API token provided.');
+    $this->expectExceptionMessage(lang('igniter.api::default.alert_auth_failed'));
 
     $this->subscriber->handleTokenAuthenticated($this->event);
 });
@@ -53,9 +53,30 @@ it('throws access denied exception for restricted group', function() {
     $this->event->token->tokenable_type = 'customers';
 
     $this->expectException(AccessDeniedHttpException::class);
-    $this->expectExceptionMessage('The API token doesn\'t have permissions to perform the request.');
+    $this->expectExceptionMessage(lang('igniter.api::default.alert_auth_restricted'));
 
     $this->subscriber->handleTokenAuthenticated($this->event);
+});
+
+it('throws access denied exception for guest group', function() {
+    $subscriber = Mockery::mock(TokenEventSubscriber::class)->makePartial()->shouldAllowMockingProtectedMethods();
+    $subscriber->shouldReceive('getAllowedGroup')->andReturn('guest');
+
+    $this->expectException(AccessDeniedHttpException::class);
+    $this->expectExceptionMessage(lang('igniter.api::default.alert_auth_restricted'));
+
+    $subscriber->handleTokenAuthenticated($this->event);
+});
+
+it('throws access denied exception for customer group', function() {
+    $subscriber = Mockery::mock(TokenEventSubscriber::class)->makePartial()->shouldAllowMockingProtectedMethods();
+    $subscriber->shouldReceive('getAllowedGroup')->andReturn('customer');
+    $this->event->token->tokenable_type = 'users';
+
+    $this->expectException(AccessDeniedHttpException::class);
+    $this->expectExceptionMessage(lang('igniter.api::default.alert_auth_restricted'));
+
+    $subscriber->handleTokenAuthenticated($this->event);
 });
 
 it('returns tokenable for valid access token', function() {

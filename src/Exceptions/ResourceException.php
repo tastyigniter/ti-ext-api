@@ -46,6 +46,11 @@ class ResourceException extends HttpException
         return $this->errors;
     }
 
+    public function errors()
+    {
+        return $this->errors->messages();
+    }
+
     /**
      * Determine if message bag has any errors.
      *

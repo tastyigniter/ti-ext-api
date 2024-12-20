@@ -109,13 +109,10 @@ class ErrorHandler
      */
     protected function getStatusCode(Throwable $exception)
     {
-        if ($exception instanceof ValidationException) {
-            $statusCode = $exception->status;
-        } elseif ($exception instanceof HttpExceptionInterface) {
+        // By default throw 500
+        $statusCode = $exception->getCode() ?: 500;
+        if ($exception instanceof HttpExceptionInterface) {
             $statusCode = $exception->getStatusCode();
-        } else {
-            // By default throw 500
-            $statusCode = 500;
         }
 
         // Be extra defensive
@@ -155,12 +152,7 @@ class ErrorHandler
         ];
 
         if ($exception instanceof ResourceException && $exception->hasErrors()) {
-            $replacements[':errors'] = $exception->getErrors();
-        }
-
-        if ($exception instanceof ValidationException) {
             $replacements[':errors'] = $exception->errors();
-            $replacements[':status_code'] = $exception->status;
         }
 
         if ($code = $exception->getCode()) {

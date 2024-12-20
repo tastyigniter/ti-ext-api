@@ -83,9 +83,4 @@ class ApiManager
                 }
             });
     }
-
-    protected function parseName($name)
-    {
-        return studly_case(preg_replace('/[0-9]+/', '', $name));
-    }
 }

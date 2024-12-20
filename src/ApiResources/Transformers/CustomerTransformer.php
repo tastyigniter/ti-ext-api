@@ -2,11 +2,14 @@
 
 namespace Igniter\Api\ApiResources\Transformers;
 
+use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\User\Models\Customer;
 use League\Fractal\TransformerAbstract;
 
 class CustomerTransformer extends TransformerAbstract
 {
+    use MergesIdAttribute;
+
     protected array $availableIncludes = [
         'addresses',
         'orders',
@@ -15,7 +18,7 @@ class CustomerTransformer extends TransformerAbstract
 
     public function transform(Customer $customer)
     {
-        return $customer->toArray();
+        return $this->mergesIdAttribute($customer);
     }
 
     public function includeAddresses(Customer $customer)

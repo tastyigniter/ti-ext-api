@@ -10,11 +10,13 @@ use Laravel\Sanctum\Sanctum;
 
 it('returns all menu item options', function() {
     Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
+    $menuItemOption = MenuItemOption::first();
 
     $this
         ->get(route('igniter.api.menu_item_options.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes.option_name', MenuItemOption::first()->option_name);
+        ->assertJsonPath('data.0.id', (string)$menuItemOption->getKey())
+        ->assertJsonPath('data.0.attributes.option_name', $menuItemOption->option_name);
 });
 
 it('shows a menu item option', function() {
@@ -24,6 +26,7 @@ it('shows a menu item option', function() {
     $this
         ->get(route('igniter.api.menu_item_options.show', [$menuItemOption->getKey()]))
         ->assertOk()
+        ->assertJsonPath('data.id', (string)$menuItemOption->getKey())
         ->assertJson(fn(AssertableJson $json) => $json
             ->has('data.attributes.option')
             ->has('data.attributes', fn(AssertableJson $json) => $json

@@ -69,7 +69,7 @@ trait GuardsAttributes
         $mutatorMethod = 'set'.Str::studly($key).'Attribute';
 
         if (method_exists($this, $mutatorMethod)) {
-            return $this->{$mutatorMethod}($value);
+            $this->{$mutatorMethod}($value);
         }
 
         return $this;

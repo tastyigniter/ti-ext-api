@@ -45,7 +45,7 @@ class ApiController extends Extendable
         $this->action = $action;
 
         if (!$this->checkAction($action)) {
-            $this->response()->errorNotFound();
+            return response()->json()->setStatusCode(404);
         }
 
         if ($this->token()) {
@@ -65,22 +65,15 @@ class ApiController extends Extendable
             return false;
         }
 
-        if (!$this->methodExists($action)) {
+        if (!method_exists($this, $action) && $this->methodExists($action)) {
+            return true;
+        }
+
+        if (!method_exists($this, $action)) {
             return false;
         }
 
-        if (method_exists($this, $action)) {
-            $methodInfo = new \ReflectionMethod($this, $action);
-
-            return $methodInfo->isPublic();
-        }
-
-        return true;
-    }
-
-    public function setStatusCode(int $code)
-    {
-        $this->statusCode = $code;
+        return (new \ReflectionMethod($this, $action))->isPublic();
     }
 
     protected function authorizeToken()

@@ -9,11 +9,13 @@ use Laravel\Sanctum\Sanctum;
 
 it('returns all menu options', function() {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    $menuOption = MenuOption::first();
 
     $this
         ->get(route('igniter.api.menu_options.index'))
         ->assertOk()
-        ->assertJsonPath('data.0.attributes.option_name', MenuOption::first()->option_name);
+        ->assertJsonPath('data.0.id', (string)$menuOption->getKey())
+        ->assertJsonPath('data.0.attributes.option_name', $menuOption->option_name);
 });
 
 it('shows a menu option', function() {
@@ -23,6 +25,7 @@ it('shows a menu option', function() {
     $this
         ->get(route('igniter.api.menu_options.show', [$menuOption->getKey()]))
         ->assertOk()
+        ->assertJsonPath('data.id', (string)$menuOption->getKey())
         ->assertJson(fn(AssertableJson $json) => $json
             ->has('data.attributes', fn(AssertableJson $json) => $json
                 ->where('option_name', $menuOption->option_name)
@@ -35,7 +38,7 @@ it('shows a menu option', function() {
 it('shows a menu option with option_values relationship', function() {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
-    $menuOption->option_values()->create(['name' => 'Test Value']);
+    $menuOptionValue = $menuOption->option_values()->create(['name' => 'Test Value']);
 
     $this
         ->get(route('igniter.api.menu_options.show', [$menuOption->getKey()]).'?'.http_build_query([
@@ -43,6 +46,7 @@ it('shows a menu option with option_values relationship', function() {
             ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.option_values.data.0.type', 'option_values')
+        ->assertJsonPath('included.3.id', (string)$menuOptionValue->getKey())
         ->assertJsonPath('included.3.attributes.name', 'Test Value');
 });
 

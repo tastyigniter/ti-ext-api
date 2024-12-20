@@ -165,12 +165,6 @@ class RestController extends ControllerAction
             }
 
             if ($requestClass = $this->getConfig('request')) {
-                app()->resolving($requestClass, function($request, $app) {
-                    if (method_exists($request, 'setController')) {
-                        $request->setController($this->controller);
-                    }
-                });
-
                 $request = app()->make($requestClass);
 
                 return $request->$requestMethod();

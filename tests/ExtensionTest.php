@@ -2,10 +2,14 @@
 
 namespace Igniter\Api\Tests;
 
-use Igniter\Api\Classes\Fractal;
+use Igniter\Api\Extension;
 use Igniter\Api\Models\Resource;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use League\Fractal\Serializer\JsonApiSerializer;
+use Mockery;
 
 it('loads registered api resources', function() {
     $resources = Resource::listRegisteredResources();
@@ -24,8 +28,19 @@ it('loads registered api resources', function() {
         ->toHaveKey('tables');
 });
 
-it('replaces fractal.fractal_class config item', function() {
-    expect(config('fractal.fractal_class'))->toBe(Fractal::class);
+it('returns an array with the correct permission structure', function() {
+    $result = (new Extension(app()))->registerPermissions();
+
+    expect($result)->toBe([
+        'Igniter.Api.Manage' => [
+            'description' => 'Create, modify and delete api resources',
+            'group' => 'igniter::system.permissions.name',
+        ],
+    ]);
+});
+
+it('returns the correct default serializer', function() {
+    expect(config('fractal.default_serializer'))->toBe(JsonApiSerializer::class);
 });
 
 it('creates access token using http', function($email, $isAdmin, $deviceName, $abilities) {
@@ -76,3 +91,15 @@ it('creates access token using console command', function($email, $isAdmin, $dev
     ['customer@domain.tld', false, 'Test Device', ['*']],
 ]);
 
+it('configures rate limiting with user id', function() {
+    $request = Mockery::mock(Request::class);
+    $request->shouldReceive('user')->andReturn((object)['id' => 1]);
+    $request->shouldReceive('ip')->andReturn('127.0.0.1');
+
+    RateLimiter::shouldReceive('for')->with('api', Mockery::on(function($callback) use ($request) {
+        $callback($request);
+        return true;
+    }))->andReturnSelf()->once();
+
+    (new Extension(app()))->boot();
+});
