@@ -186,11 +186,6 @@ parameters:
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: "#^Call to an undefined method Spatie\\\\Fractal\\\\Fractal\\:\\:errorNotFound\\(\\)\\.$#"
-			count: 1
-			path: src/Classes/ApiController.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$controller\\.$#"
 			count: 1
 			path: src/Classes/ApiManager.php
@@ -206,13 +201,8 @@ parameters:
 			path: src/Classes/ApiManager.php
 
 		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 1
-			path: src/Classes/Fractal.php
-
-		-
 			message: "#^Result of method Illuminate\\\\Console\\\\Command\\:\\:error\\(\\) \\(void\\) is used\\.$#"
-			count: 2
+			count: 1
 			path: src/Console/IssueApiToken.php
 
 		-
