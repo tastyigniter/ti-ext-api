@@ -68,14 +68,7 @@ it('registers routes when database and table exist', function() {
 });
 
 it('does not register routes when database does not exist', function() {
-    $igniter = new class extends Igniter
-    {
-        public static function clear()
-        {
-            static::$hasDatabase = null;
-        }
-    };
-    $igniter::clear();
+    Igniter::shouldReceive('hasDatabase')->andReturnFalse();
     $schema = $this->createMock(Builder::class);
     $connection = $this->createMock(Connection::class);
     $connection->expects($this->once())->method('getSchemaBuilder')->willReturn($schema);
@@ -88,22 +81,7 @@ it('does not register routes when database does not exist', function() {
 });
 
 it('does not register routes when table does not exist', function() {
-    $igniter = new class extends Igniter
-    {
-        public static function clear()
-        {
-            static::$hasDatabase = null;
-        }
-    };
-    $igniter::clear();
-    $schema = $this->createMock(Builder::class);
-    $connection = $this->createMock(Connection::class);
-    $connection->expects($this->once())->method('getSchemaBuilder')->willReturn($schema);
-    $schema->expects($this->exactly(2))->method('hasTable')->willReturnMap([
-        ['settings', true],
-        ['extension_settings', true],
-    ]);
-    app()->instance('db.connection', $connection);
+    Igniter::shouldReceive('hasDatabase')->andReturnTrue();
     Schema::shouldReceive('hasTable')->with('igniter_api_resources')->andReturn(false);
     Route::shouldReceive('middleware')->never();
 
