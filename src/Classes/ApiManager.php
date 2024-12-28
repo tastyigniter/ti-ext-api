@@ -3,7 +3,7 @@
 namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
-use Igniter\Flame\Igniter;
+use Igniter\Flame\Support\Facades\Igniter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;

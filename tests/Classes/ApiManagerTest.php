@@ -4,7 +4,7 @@ namespace Igniter\Api\Tests\Classes;
 
 use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Tests\Fixtures\TestResource;
-use Igniter\Flame\Igniter;
+use Igniter\Flame\Support\Facades\Igniter;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Routing\Router;
