@@ -201,6 +201,11 @@ parameters:
 			path: src/Classes/ApiManager.php
 
 		-
+			message: "#^Call to an undefined static method Igniter\\\\Flame\\\\Support\\\\Facades\\\\Igniter\\:\\:hasDatabase\\(\\)\\.$#"
+			count: 1
+			path: src/Classes/ApiManager.php
+
+		-
 			message: "#^Result of method Illuminate\\\\Console\\\\Command\\:\\:error\\(\\) \\(void\\) is used\\.$#"
 			count: 1
 			path: src/Console/IssueApiToken.php
