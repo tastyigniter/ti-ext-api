@@ -5,8 +5,6 @@ namespace Igniter\Api\Tests\Classes;
 use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Tests\Fixtures\TestResource;
 use Igniter\Flame\Support\Facades\Igniter;
-use Illuminate\Database\Connection;
-use Illuminate\Database\Schema\Builder;
 use Illuminate\Routing\Router;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
@@ -69,11 +67,6 @@ it('registers routes when database and table exist', function() {
 
 it('does not register routes when database does not exist', function() {
     Igniter::shouldReceive('hasDatabase')->andReturnFalse();
-    $schema = $this->createMock(Builder::class);
-    $connection = $this->createMock(Connection::class);
-    $connection->expects($this->once())->method('getSchemaBuilder')->willReturn($schema);
-    $schema->expects($this->once())->method('hasTable')->with('settings')->willReturn(false);
-    app()->instance('db.connection', $connection);
     Schema::shouldReceive('hasTable')->with('igniter_api_resources')->never();
     Route::shouldReceive('middleware')->never();
 
