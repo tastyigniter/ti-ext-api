@@ -1,3 +1,10 @@
+<p align="center">
+    <a href="https://github.com/tastyigniter/ti-ext-api/actions"><img src="https://github.com/tastyigniter/ti-ext-api/actions/workflows/pipeline.yml/badge.svg" alt="Build Status"></a>
+    <a href="https://packagist.org/packages/tastyigniter/ti-ext-api"><img src="https://img.shields.io/packagist/dt/tastyigniter/ti-ext-api" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/tastyigniter/ti-ext-api"><img src="https://img.shields.io/packagist/v/tastyigniter/ti-ext-api" alt="Latest Stable Version"></a>
+    <a href="https://packagist.org/packages/tastyigniter/ti-ext-api"><img src="https://img.shields.io/packagist/l/tastyigniter/ti-ext-api" alt="License"></a>
+</p>
+
 ## Introduction
 
 The API for TastyIgniter extension provides a powerful and flexible way to interact with your TastyIgniter application programmatically. This extension leverages [Laravel's Sanctum](https://laravel.com/docs/sanctum) robust API capabilities, providing endpoints for all core TastyIgniter resources, and allowing you to build custom API resources in your application.
