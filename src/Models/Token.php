@@ -11,6 +11,30 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * Token Model
+ *
+ * @property int $id
+ * @property string $tokenable_type
+ * @property int $tokenable_id
+ * @property string $name
+ * @property string $token
+ * @property array|null $abilities
+ * @property \Illuminate\Support\Carbon|null $last_used_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $tokenable
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereAbilities($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereLastUsedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereTokenableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereTokenableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereUpdatedAt($value)
+ * @mixin \Igniter\Flame\Database\Model
  */
 class Token extends PersonalAccessToken
 {

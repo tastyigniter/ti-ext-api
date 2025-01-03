@@ -131,21 +131,6 @@ parameters:
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\PayRegister\\\\Models\\\\Payment\\:\\:\\$code\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\PayRegister\\\\Models\\\\Payment\\:\\:\\$description\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\PayRegister\\\\Models\\\\Payment\\:\\:\\$name\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/PaymentMethodTransformer.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$assignee\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
@@ -184,26 +169,6 @@ parameters:
 			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Review\\:\\:\\$location\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReviewTransformer.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$controller\\.$#"
-			count: 1
-			path: src/Classes/ApiManager.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$endpoint\\.$#"
-			count: 2
-			path: src/Classes/ApiManager.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$meta\\.$#"
-			count: 1
-			path: src/Classes/ApiManager.php
-
-		-
-			message: "#^Call to an undefined static method Igniter\\\\Flame\\\\Support\\\\Facades\\\\Igniter\\:\\:hasDatabase\\(\\)\\.$#"
-			count: 1
-			path: src/Classes/ApiManager.php
 
 		-
 			message: "#^Result of method Illuminate\\\\Console\\\\Command\\:\\:error\\(\\) \\(void\\) is used\\.$#"
@@ -286,29 +251,9 @@ parameters:
 			path: src/Http/Controllers/CreateToken.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\:\\:setContext\\(\\)\\.$#"
-			count: 1
-			path: src/Http/Controllers/Resources.php
-
-		-
-			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\:\\:setContext\\(\\)\\.$#"
-			count: 1
-			path: src/Http/Controllers/Tokens.php
-
-		-
 			message: "#^Access to an undefined property Illuminate\\\\Support\\\\Optional\\:\\:\\$tokenable\\.$#"
 			count: 1
 			path: src/Listeners/TokenEventSubscriber.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$endpoint\\.$#"
-			count: 6
-			path: src/Models/Resource.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Resource\\:\\:\\$meta\\.$#"
-			count: 1
-			path: src/Models/Resource.php
 
 		-
 			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$description\\.$#"
@@ -336,17 +281,7 @@ parameters:
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Api\\\\Models\\\\Resource\\:\\:lists\\(\\)\\.$#"
-			count: 1
-			path: src/Models/Resource.php
-
-		-
 			message: "#^Call to an undefined static method Igniter\\\\Api\\\\Models\\\\Resource\\:\\:where\\(\\)\\.$#"
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: "#^Call to an undefined static method Igniter\\\\Flame\\\\Support\\\\Facades\\\\File\\:\\:existsInsensitive\\(\\)\\.$#"
 			count: 1
 			path: src/Models/Resource.php
 
@@ -354,11 +289,6 @@ parameters:
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 3
 			path: src/Models/Resource.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Api\\\\Models\\\\Token\\:\\:\\$tokenable_type\\.$#"
-			count: 2
-			path: src/Models/Token.php
 
 		-
 			message: "#^Call to an undefined method Igniter\\\\Flame\\\\Database\\\\Model\\:\\:tokens\\(\\)\\.$#"

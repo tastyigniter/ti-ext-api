@@ -11,6 +11,37 @@ use Igniter\System\Classes\ExtensionManager;
 
 /**
  * Resource Model
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $endpoint
+ * @property string|null $description
+ * @property array|null $meta
+ * @property bool $is_custom
+ * @property-read mixed $base_endpoint
+ * @property-read mixed $controller
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource applyFilters(array $options = [])
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource applySorts(array $sorts = [])
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource dropdown(string $column, string $key = null)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource findSimilarSlugs($attribute, array $config, $slug)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource like(string $column, string $value, string $side = 'both', string $boolean = 'and')
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource listFrontEnd(array $options = [])
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource lists(string $column, string $key = null)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource newModelQuery()
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource newQuery()
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource orLike(string $column, string $value, string $side = 'both')
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource orSearch(string $term, string $columns = [], string $mode = 'all')
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource pluckDates(string $column, string $keyFormat = 'Y-m', string $valueFormat = 'F Y')
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource query()
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource search(string $term, string $columns = [], string $mode = 'all')
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource whereDescription($value)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource whereEndpoint($value)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource whereId($value)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource whereIsCustom($value)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource whereMeta($value)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource whereName($value)
+ * @method static \Igniter\Flame\Database\Builder<static>|Resource whereSlug(string $slug)
+ * @mixin \Igniter\Flame\Database\Model
  */
 class Resource extends Model
 {
@@ -49,6 +80,7 @@ class Resource extends Model
 
     protected $casts = [
         'meta' => 'array',
+        'is_custom' => 'boolean',
     ];
 
     protected $permalinkable = [
