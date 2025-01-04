@@ -41,11 +41,6 @@ parameters:
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_id\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_values\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
@@ -54,11 +49,6 @@ parameters:
 			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$option\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuOption\\:\\:\\$option_id\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/MenuOptionTransformer.php
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuOption\\:\\:\\$option_values\\.$#"
