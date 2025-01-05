@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Models;
 
 use Igniter\Flame\Database\Factories\HasFactory;
@@ -20,27 +22,11 @@ use Igniter\System\Classes\ExtensionManager;
  * @property bool $is_custom
  * @property-read mixed $base_endpoint
  * @property-read mixed $controller
- * @method static \Igniter\Flame\Database\Builder<static>|Resource applyFilters(array $options = [])
- * @method static \Igniter\Flame\Database\Builder<static>|Resource applySorts(array $sorts = [])
  * @method static \Igniter\Flame\Database\Builder<static>|Resource dropdown(string $column, string $key = null)
  * @method static \Igniter\Flame\Database\Builder<static>|Resource findSimilarSlugs($attribute, array $config, $slug)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource like(string $column, string $value, string $side = 'both', string $boolean = 'and')
- * @method static \Igniter\Flame\Database\Builder<static>|Resource listFrontEnd(array $options = [])
  * @method static \Igniter\Flame\Database\Builder<static>|Resource lists(string $column, string $key = null)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource newModelQuery()
- * @method static \Igniter\Flame\Database\Builder<static>|Resource newQuery()
- * @method static \Igniter\Flame\Database\Builder<static>|Resource orLike(string $column, string $value, string $side = 'both')
- * @method static \Igniter\Flame\Database\Builder<static>|Resource orSearch(string $term, string $columns = [], string $mode = 'all')
- * @method static array pluckDates(string $column, string $keyFormat = 'Y-m', string $valueFormat = 'F Y')
  * @method static \Igniter\Flame\Database\Builder<static>|Resource query()
  * @method static \Igniter\Flame\Database\Builder<static>|Resource search(string $term, string $columns = [], string $mode = 'all')
- * @method static \Igniter\Flame\Database\Builder<static>|Resource whereDescription($value)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource whereEndpoint($value)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource whereId($value)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource whereIsCustom($value)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource whereMeta($value)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource whereName($value)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource whereSlug(string $slug)
  * @mixin \Igniter\Flame\Database\Model
  */
 class Resource extends Model
@@ -74,7 +60,7 @@ class Resource extends Model
     public $table = 'igniter_api_resources';
 
     /**
-     * @var array fillable fields
+     * @var array<int, string> fillable fields
      */
     protected $fillable = ['name', 'description', 'endpoint', 'model', 'meta'];
 
@@ -91,24 +77,24 @@ class Resource extends Model
 
     public function getMetaOptions()
     {
-        $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
+        $registeredResource = array_get(static::listRegisteredResources(), $this->endpoint, []);
 
-        return array_get($registeredResource, 'options.names', self::$defaultActionDefinition);
+        return array_get($registeredResource, 'options.names', static::$defaultActionDefinition);
     }
 
-    public function getBaseEndpointAttribute($value)
+    public function getBaseEndpointAttribute($value): string
     {
         return sprintf('/%s/%s', config('igniter.api.prefix'), $this->endpoint);
     }
 
     public function getControllerAttribute()
     {
-        return array_get($this->listRegisteredResources(), $this->endpoint.'.controller');
+        return array_get(static::listRegisteredResources(), $this->endpoint.'.controller');
     }
 
-    public function getAvailableActions()
+    public function getAvailableActions(): array
     {
-        $registeredResource = array_get(self::listRegisteredResources(), $this->endpoint, []);
+        $registeredResource = array_get(static::listRegisteredResources(), $this->endpoint, []);
         $registeredActions = array_get($registeredResource, 'options.actions', []);
         $dbActions = (array)array_get($this->meta, 'actions', []);
 
@@ -132,16 +118,14 @@ class Resource extends Model
     //
     // Manager
     //
-
     /**
      * Synchronise all resources to the database.
-     * @return void
      */
-    public static function syncAll()
+    public static function syncAll(): void
     {
         $registeredResources = (new static)->listRegisteredResources();
         $resources = collect($registeredResources)->keyBy('endpoint')->toArray();
-        $dbResources = self::lists('is_custom', 'endpoint')->toArray();
+        $dbResources = static::lists('is_custom', 'endpoint')->toArray();
         $newResources = array_diff_key($resources, $dbResources);
 
         // Clean up non-customized api resources
@@ -151,13 +135,13 @@ class Resource extends Model
             }
 
             if (!array_key_exists($endpoint, $resources)) {
-                self::where('endpoint', $endpoint)->delete();
+                static::where('endpoint', $endpoint)->delete();
             }
         }
 
         // Create new resources
         foreach ($newResources as $definition) {
-            $model = self::make();
+            $model = static::make();
             $model->endpoint = array_get($definition, 'endpoint');
             $model->name = array_get($definition, 'name');
             $model->description = array_get($definition, 'description');
@@ -169,7 +153,7 @@ class Resource extends Model
 
     public static function getResources()
     {
-        return self::all()->keyBy('endpoint')->all();
+        return static::all()->keyBy('endpoint')->all();
     }
 
     /**
@@ -178,15 +162,15 @@ class Resource extends Model
      */
     public static function listResources()
     {
-        $registeredResources = self::listRegisteredResources();
-        $dbResources = self::all()->keyBy('endpoint')->all();
+        $registeredResources = static::listRegisteredResources();
+        $dbResources = static::all()->keyBy('endpoint')->all();
         $resources = $registeredResources + $dbResources;
         ksort($resources);
 
         return $resources;
     }
 
-    protected function processOptions($definition)
+    protected function processOptions($definition): array
     {
         $actions = array_get($definition, 'actions', []);
 
@@ -196,9 +180,9 @@ class Resource extends Model
                 $action = $name;
             }
 
-            $action = explode(':', $action, 2);
+            $action = explode(':', (string)$action, 2);
             $result[$action[0]] = $action[1] ?? 'all';
-            $names[$action[0]] = array_get(self::$defaultActionDefinition, $action[0], $name);
+            $names[$action[0]] = array_get(static::$defaultActionDefinition, $action[0], $name);
         }
 
         return [
@@ -218,18 +202,17 @@ class Resource extends Model
      */
     public static function listRegisteredResources()
     {
-        if (self::$registeredResources === null) {
+        if (static::$registeredResources === null) {
             (new static)->loadRegisteredResources();
         }
 
-        return self::$registeredResources;
+        return static::$registeredResources;
     }
 
     /**
      * Loads registered resources from extensions
-     * @return void
      */
-    public function loadRegisteredResources()
+    public function loadRegisteredResources(): void
     {
         if (!static::$registeredResources) {
             static::$registeredResources = [];
@@ -248,7 +231,7 @@ class Resource extends Model
     /**
      * Registers the api resources.
      */
-    public function registerResources(array $definitions, ?string $owner = null)
+    public function registerResources(array $definitions, ?string $owner = null): void
     {
         $defaultDefinitions = [
             'name' => null,
@@ -285,14 +268,14 @@ class Resource extends Model
      *
      * @param callable $callback A callable function.
      */
-    public function registerCallback(callable $callback)
+    public function registerCallback(callable $callback): void
     {
         static::$callbacks[] = $callback;
     }
 
-    public static function clearInternalCache()
+    public static function clearInternalCache(): void
     {
-        self::$registeredResources = null;
+        static::$registeredResources = null;
         static::$callbacks = [];
         static::$resourceCache = [];
     }

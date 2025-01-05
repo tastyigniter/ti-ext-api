@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
@@ -22,7 +24,7 @@ class MenuOptionRequest extends FormRequest
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'option_name' => ['required', 'min:2', 'max:32'],

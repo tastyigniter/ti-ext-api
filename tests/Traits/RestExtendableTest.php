@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Traits;
 
 use Igniter\Api\Traits\RestExtendable;
@@ -7,7 +9,7 @@ use Igniter\Flame\Database\Model;
 use Igniter\Tests\Fixtures\Models\TestModel;
 use Mockery;
 
-it('returns the rest model instance', function() {
+it('returns the rest model instance', function(): void {
     $traitObject = new class
     {
         use RestExtendable;
@@ -20,7 +22,7 @@ it('returns the rest model instance', function() {
     expect($result)->toBe(TestModel::class);
 });
 
-it('executes restBeforeUpdate without errors', function() {
+it('executes restBeforeUpdate without errors', function(): void {
     $traitObject = new class
     {
         use RestExtendable;
@@ -32,7 +34,7 @@ it('executes restBeforeUpdate without errors', function() {
     expect($result)->toBeNull();
 });
 
-it('executes restValidate without errors', function() {
+it('executes restValidate without errors', function(): void {
     $traitObject = new class
     {
         use RestExtendable;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Exceptions;
 
 use Illuminate\Auth\AuthenticationException as Exception;

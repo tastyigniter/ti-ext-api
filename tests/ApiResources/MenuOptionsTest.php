@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Cart\Models\MenuOption;
@@ -7,7 +9,7 @@ use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all menu options', function() {
+it('returns all menu options', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
@@ -18,7 +20,7 @@ it('returns all menu options', function() {
         ->assertJsonPath('data.0.attributes.option_name', $menuOption->option_name);
 });
 
-it('shows a menu option', function() {
+it('shows a menu option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
@@ -26,8 +28,8 @@ it('shows a menu option', function() {
         ->get(route('igniter.api.menu_options.show', [$menuOption->getKey()]))
         ->assertOk()
         ->assertJsonPath('data.id', (string)$menuOption->getKey())
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('option_name', $menuOption->option_name)
                 ->where('display_type', $menuOption->display_type)
                 ->etc(),
@@ -35,7 +37,7 @@ it('shows a menu option', function() {
         );
 });
 
-it('shows a menu option with option_values relationship', function() {
+it('shows a menu option with option_values relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
     $menuOptionValue = $menuOption->option_values()->create(['name' => 'Test Value']);
@@ -50,7 +52,7 @@ it('shows a menu option with option_values relationship', function() {
         ->assertJsonPath('included.3.attributes.name', 'Test Value');
 });
 
-it('creates a menu option', function() {
+it('creates a menu option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
@@ -60,15 +62,15 @@ it('creates a menu option', function() {
             'display_type' => 'radio',
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
                 ->etc(),
             ));
 });
 
-it('updates a menu option', function() {
+it('updates a menu option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
@@ -78,15 +80,15 @@ it('updates a menu option', function() {
             'display_type' => 'radio',
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
                 ->etc(),
             )->etc());
 });
 
-it('deletes a menu option', function() {
+it('deletes a menu option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 

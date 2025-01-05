@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Traits;
 
 trait RestExtendable
@@ -75,18 +77,16 @@ trait RestExtendable
 
     /**
      * Called to validate index or show action request.
-     * @return array
      */
-    public function restValidateQuery(array $requestQuery)
+    public function restValidateQuery(array $requestQuery): array
     {
         return $requestQuery;
     }
 
     /**
      * Called to validate store, update or delete action request.
-     * @return array
      */
-    public function restValidate(array $requestData)
+    public function restValidate(array $requestData): array
     {
         return $requestData;
     }

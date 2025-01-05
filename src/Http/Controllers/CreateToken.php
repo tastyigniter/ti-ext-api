@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Http\Controllers;
 
 use Igniter\Api\Models\Token;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class CreateToken extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $request->validate([
             'email' => ['required', 'email:filter'],

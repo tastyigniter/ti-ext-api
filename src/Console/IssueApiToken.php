@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Console;
 
 use Igniter\Api\Models\Token;
@@ -24,9 +26,8 @@ class IssueApiToken extends Command
 
     /**
      * Execute the console command.
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $name = $this->option('name');
         $email = $this->option('email');
@@ -38,7 +39,9 @@ class IssueApiToken extends Command
         $query->where('email', $email);
 
         if (!$user = $query->first()) {
-            return $this->error('User does not exist!');
+            $this->error('User does not exist!');
+
+            return;
         }
 
         $accessToken = Token::createToken($user, $name, $abilities ?: ['*']);

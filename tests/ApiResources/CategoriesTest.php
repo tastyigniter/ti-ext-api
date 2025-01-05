@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
@@ -8,7 +10,7 @@ use Igniter\Cart\Models\Category;
 use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all categories', function() {
+it('returns all categories', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
 
@@ -19,7 +21,7 @@ it('returns all categories', function() {
         ->assertJsonPath('data.0.attributes.name', $category->name);
 });
 
-it('shows a category', function() {
+it('shows a category', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
 
@@ -30,7 +32,7 @@ it('shows a category', function() {
         ->assertJsonPath('data.attributes.name', $category->name);
 });
 
-it('shows a category with media relationship', function() {
+it('shows a category with media relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
     $categoryMedia = $category->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
@@ -45,7 +47,7 @@ it('shows a category with media relationship', function() {
         ->assertJsonPath('included.0.attributes.file_name', 'test.jpg');
 });
 
-it('shows a category with menus relationship', function() {
+it('shows a category with menus relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
     $categoryMenu = $category->menus()->create(['menu_name' => 'Test Menu']);
@@ -60,7 +62,7 @@ it('shows a category with menus relationship', function() {
         ->assertJsonPath('included.0.attributes.menu_name', 'Test Menu');
 });
 
-it('shows a category with locations relationship', function() {
+it('shows a category with locations relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
     $categoryLocation = $category->locations()->create(['location_name' => 'Test Location']);
@@ -75,7 +77,7 @@ it('shows a category with locations relationship', function() {
         ->assertJsonPath('included.0.attributes.location_name', 'Test Location');
 });
 
-it('creates a category', function() {
+it('creates a category', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
 
     $this
@@ -86,7 +88,7 @@ it('creates a category', function() {
         ->assertJsonPath('data.attributes.name', 'Test Category');
 });
 
-it('creates a category fails on validation', function() {
+it('creates a category fails on validation', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
 
     $this
@@ -94,7 +96,7 @@ it('creates a category fails on validation', function() {
         ->assertStatus(422);
 });
 
-it('validates request data successfully', function() {
+it('validates request data successfully', function(): void {
     $controller = new class extends ApiController
     {
         public array $restConfig = [
@@ -104,7 +106,7 @@ it('validates request data successfully', function() {
             'request' => null,
         ];
 
-        public function restValidate()
+        public function restValidate(): array
         {
             return ['validated' => 'data'];
         }
@@ -116,7 +118,7 @@ it('validates request data successfully', function() {
     expect($result)->toBe(['validated' => 'data']);
 });
 
-it('updates a category', function() {
+it('updates a category', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
 
@@ -128,7 +130,7 @@ it('updates a category', function() {
         ->assertJsonPath('data.attributes.name', 'Test Category');
 });
 
-it('deletes a category', function() {
+it('deletes a category', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['categories:*']);
     $category = Category::first();
 

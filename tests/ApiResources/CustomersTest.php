@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-it('can not update customer aware column', function() {
+it('can not update customer aware column', function(): void {
     Sanctum::actingAs($customer = Customer::factory()->create(), ['customers:*']);
 
     $this
@@ -24,7 +26,7 @@ it('can not update customer aware column', function() {
         ->assertJsonMissing(['customer_id' => 9999]);
 });
 
-it('returns only authenticated customer', function() {
+it('returns only authenticated customer', function(): void {
     Customer::factory()->count(5)->create();
     Sanctum::actingAs($customer = Customer::factory()->create(), ['customers:*']);
 
@@ -35,7 +37,7 @@ it('returns only authenticated customer', function() {
         ->assertJsonCount(1, 'data');
 });
 
-it('can not show unauthenticated customer', function() {
+it('can not show unauthenticated customer', function(): void {
     $anotherCustomer = Customer::factory()->create();
     Sanctum::actingAs(Customer::factory()->create(), ['customers:*']);
 
@@ -44,7 +46,7 @@ it('can not show unauthenticated customer', function() {
         ->assertStatus(404);
 });
 
-it('returns all customers', function() {
+it('returns all customers', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     Customer::factory()->count(5)->create();
     $customer = Customer::first();
@@ -57,7 +59,7 @@ it('returns all customers', function() {
         ->assertJsonCount(5, 'data');
 });
 
-it('shows a customer', function() {
+it('shows a customer', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 
@@ -68,7 +70,7 @@ it('shows a customer', function() {
         ->assertJsonPath('data.attributes.full_name', $customer->full_name);
 });
 
-it('shows a customer with addresses relationship', function() {
+it('shows a customer with addresses relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
     $customerAddress = $customer->addresses()->create(['address_1' => '123 Test Address', 'country_id' => 1]);
@@ -83,7 +85,7 @@ it('shows a customer with addresses relationship', function() {
         ->assertJsonPath('included.0.attributes.address_1', '123 Test Address');
 });
 
-it('shows a customer with orders relationship', function() {
+it('shows a customer with orders relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
     $customerOrder = $customer->orders()->create(['order_type' => 'collection']);
@@ -98,7 +100,7 @@ it('shows a customer with orders relationship', function() {
         ->assertJsonPath('included.0.attributes.order_type', 'collection');
 });
 
-it('shows a customer with reservations relationship', function() {
+it('shows a customer with reservations relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
     $customerReservation = $customer->reservations()->create(['email' => 'user-reservation@example.com']);
@@ -113,7 +115,7 @@ it('shows a customer with reservations relationship', function() {
         ->assertJsonPath('included.0.attributes.email', 'user-reservation@example.com');
 });
 
-it('creates a customer', function() {
+it('creates a customer', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
 
     $this
@@ -129,7 +131,7 @@ it('creates a customer', function() {
         ->assertJsonPath('data.attributes.full_name', 'Test Customer');
 });
 
-it('creates a customer as customer', function() {
+it('creates a customer as customer', function(): void {
     $customer = Sanctum::actingAs(Customer::factory()->create(), ['customers:*']);
 
     $customer->currentAccessToken()->shouldReceive('isForCustomer')->andReturnTrue();
@@ -147,7 +149,7 @@ it('creates a customer as customer', function() {
         ->assertJsonPath('data.attributes.full_name', 'Test Customer');
 });
 
-it('updates a customer', function() {
+it('updates a customer', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 
@@ -164,7 +166,7 @@ it('updates a customer', function() {
         ->assertJsonPath('data.attributes.full_name', 'Test Customer');
 });
 
-it('deletes a customer', function() {
+it('deletes a customer', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 

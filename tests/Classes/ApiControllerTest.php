@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Classes;
 
 use Igniter\Api\Classes\ApiController;
@@ -7,7 +9,7 @@ use Illuminate\Contracts\Support\Responsable;
 use Mockery;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-it('calls action and returns json response if not Responsable', function() {
+it('calls action and returns json response if not Responsable', function(): void {
     $controller = Mockery::mock(ApiController::class)->makePartial()->shouldAllowMockingProtectedMethods();
     $controller->allowedActions = ['testAction' => true];
     $controller->shouldReceive('checkAction')->andReturnTrue();
@@ -21,7 +23,7 @@ it('calls action and returns json response if not Responsable', function() {
     expect($response->getContent())->toBe(json_encode(['key' => 'value']));
 });
 
-it('calls action and returns Responsable response', function() {
+it('calls action and returns Responsable response', function(): void {
     $controller = Mockery::mock(ApiController::class)->makePartial()->shouldAllowMockingProtectedMethods();
     $controller->allowedActions = ['testAction' => true];
     $controller->shouldReceive('checkAction')->andReturnTrue();
@@ -33,7 +35,7 @@ it('calls action and returns Responsable response', function() {
     expect($controller->callAction('testAction'))->toBe($responseMock);
 });
 
-it('calls action returns 404 response when checkAction fails', function() {
+it('calls action returns 404 response when checkAction fails', function(): void {
     $controller = Mockery::mock(ApiController::class)->makePartial()->shouldAllowMockingProtectedMethods();
     $controller->allowedActions = ['testAction' => true];
     $controller->shouldReceive('checkAction')->andReturnFalse();
@@ -42,7 +44,7 @@ it('calls action returns 404 response when checkAction fails', function() {
     expect($controller->callAction('testAction')->getStatusCode())->toBe(404);
 });
 
-it('calls action throws exception when authorization fails', function() {
+it('calls action throws exception when authorization fails', function(): void {
     $controller = Mockery::mock(ApiController::class)->makePartial()->shouldAllowMockingProtectedMethods();
     $controller->allowedActions = ['testAction' => true];
     $controller->shouldReceive('checkAction')->andReturnTrue();
@@ -55,14 +57,14 @@ it('calls action throws exception when authorization fails', function() {
     expect(fn() => $controller->callAction('testAction'))->toThrow(AccessDeniedHttpException::class);
 });
 
-it('returns false if action is not in allowedActions', function() {
+it('returns false if action is not in allowedActions', function(): void {
     $controller = Mockery::mock(ApiController::class)->makePartial();
     $controller->allowedActions = [];
 
     expect($controller->checkAction('testAction'))->toBeFalse();
 });
 
-it('returns false if method does not exist', function() {
+it('returns false if method does not exist', function(): void {
     $controller = Mockery::mock(ApiController::class)->makePartial();
     $controller->allowedActions = ['testAction' => true];
     $controller->shouldReceive('methodExists')->andReturnFalse();
@@ -70,7 +72,7 @@ it('returns false if method does not exist', function() {
     expect($controller->checkAction('testAction'))->toBeFalse();
 });
 
-it('returns false if method is not found', function() {
+it('returns false if method is not found', function(): void {
     $controller = new class extends ApiController
     {
         public array $allowedActions = ['testAction' => true];
@@ -81,12 +83,12 @@ it('returns false if method is not found', function() {
     expect($result)->toBeFalse();
 });
 
-it('returns false if method is not public', function() {
+it('returns false if method is not public', function(): void {
     $controller = new class extends ApiController
     {
         public array $allowedActions = ['testAction' => true];
 
-        protected function testAction()
+        protected function testAction(): array
         {
             return ['key' => 'value'];
         }
@@ -97,12 +99,12 @@ it('returns false if method is not public', function() {
     expect($result)->toBeFalse();
 });
 
-it('returns true if method is public', function() {
+it('returns true if method is public', function(): void {
     $controller = new class extends ApiController
     {
         public array $allowedActions = ['testAction' => true];
 
-        public function testAction()
+        public function testAction(): array
         {
             return ['key' => 'value'];
         }

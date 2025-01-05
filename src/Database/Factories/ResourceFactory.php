@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Database\Factories;
 
 use Igniter\Flame\Database\Factories\Factory;

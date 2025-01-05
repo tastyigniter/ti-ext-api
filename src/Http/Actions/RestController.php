@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Http\Actions;
 
 use Igniter\Admin\Traits\FormModelWidget;
@@ -21,7 +23,7 @@ class RestController extends ControllerAction
     use FormModelWidget;
     use RestExtendable;
 
-    protected ?Model $model;
+    protected ?Model $model = null;
 
     protected array $requiredProperties = ['restConfig'];
 
@@ -190,19 +192,19 @@ class RestController extends ControllerAction
 
     protected function bindQueryEvents(AbstractRepository $repository): void
     {
-        $repository->bindEvent('repository.extendQuery', function($query) {
+        $repository->bindEvent('repository.extendQuery', function($query): void {
             $this->controller->restExtendQuery($query);
         });
     }
 
     protected function bindCreateEvents(AbstractRepository $repository): void
     {
-        $repository->bindEvent('repository.beforeCreate', function($model) {
+        $repository->bindEvent('repository.beforeCreate', function($model): void {
             $this->controller->restBeforeSave($model);
             $this->controller->restBeforeCreate($model);
         });
 
-        $repository->bindEvent('repository.afterCreate', function($model) {
+        $repository->bindEvent('repository.afterCreate', function($model): void {
             $this->controller->restAfterSave($model);
             $this->controller->restAfterCreate($model);
         });
@@ -210,12 +212,12 @@ class RestController extends ControllerAction
 
     protected function bindUpdateEvents(AbstractRepository $repository): void
     {
-        $repository->bindEvent('repository.beforeUpdate', function($model) {
+        $repository->bindEvent('repository.beforeUpdate', function($model): void {
             $this->controller->restBeforeSave($model);
             $this->controller->restAfterUpdate($model);
         });
 
-        $repository->bindEvent('repository.afterUpdate', function($model) {
+        $repository->bindEvent('repository.afterUpdate', function($model): void {
             $this->controller->restAfterSave($model);
             $this->controller->restAfterUpdate($model);
         });
@@ -223,7 +225,7 @@ class RestController extends ControllerAction
 
     protected function bindDeleteEvents(AbstractRepository $repository): void
     {
-        $repository->bindEvent('repository.afterDelete', function($model) {
+        $repository->bindEvent('repository.afterDelete', function($model): void {
             $this->controller->restAfterDelete($model);
         });
     }

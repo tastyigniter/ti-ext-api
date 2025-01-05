@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Http\Requests;
 
 use Igniter\Api\Http\Requests\ResourceRequest;
 
-it('returns correct attribute labels', function() {
+it('returns correct attribute labels', function(): void {
     $request = new ResourceRequest();
 
     $attributes = $request->attributes();
@@ -16,7 +18,7 @@ it('returns correct attribute labels', function() {
         ->and($attributes)->toHaveKey('meta.authorization', lang('igniter.api::default.label_authorization'));
 });
 
-it('returns correct validation rules', function() {
+it('returns correct validation rules', function(): void {
     $request = new ResourceRequest();
 
     $rules = $request->rules();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Reservation\Models\DiningTable;

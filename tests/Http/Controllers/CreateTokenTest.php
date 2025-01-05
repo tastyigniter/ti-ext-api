@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Http\Controllers;
 
 use Igniter\Api\Http\Controllers\CreateToken;
@@ -8,11 +10,11 @@ use Igniter\Flame\Database\Model;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 
-beforeEach(function() {
+beforeEach(function(): void {
     $this->controller = new CreateToken();
 });
 
-it('creates token for valid credentials', function(bool $isAdmin, Model $model) {
+it('creates token for valid credentials', function(bool $isAdmin, Model $model): void {
     $this->post(route('igniter.api.token.create'), [
         'email' => $model->email,
         'password' => 'password',
@@ -31,7 +33,7 @@ it('creates token for valid credentials', function(bool $isAdmin, Model $model) 
     ])]
 ]);
 
-it('throws validation exception for invalid admin credentials', function(bool $isAdmin, Model $model) {
+it('throws validation exception for invalid admin credentials', function(bool $isAdmin, Model $model): void {
     $response = $this->post(route('igniter.api.token.create'), [
         'email' => $model->email,
         'password' => 'wrongpassword',
@@ -50,7 +52,7 @@ it('throws validation exception for invalid admin credentials', function(bool $i
     ])]
 ]);
 
-it('throws validation exception for inactive user', function(bool $isAdmin, Model $model) {
+it('throws validation exception for inactive user', function(bool $isAdmin, Model $model): void {
     $response = $this->post(route('igniter.api.token.create'), [
         'email' => $model->email,
         'password' => 'password',

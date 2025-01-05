@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
@@ -28,7 +30,7 @@ class Orders extends ApiController
 
     protected string|array $requiredAbilities = ['orders:*'];
 
-    public function restAfterSave($model)
+    public function restAfterSave($model): void
     {
         if ($orderMenus = (array)request()->input('order_menus', [])) {
             $model->addOrderMenus(json_decode(json_encode($orderMenus)));

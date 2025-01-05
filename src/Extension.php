@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api;
 
 use Igniter\Api\Classes\ApiManager;
@@ -22,7 +24,7 @@ use Spatie\Fractal\FractalServiceProvider;
  */
 class Extension extends BaseExtension
 {
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/api.php', 'igniter.api');
 
@@ -44,7 +46,7 @@ class Extension extends BaseExtension
         $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
@@ -82,7 +84,7 @@ class Extension extends BaseExtension
         ];
     }
 
-    public function registerApiResources()
+    public function registerApiResources(): array
     {
         return [
             'categories' => [
@@ -196,7 +198,7 @@ class Extension extends BaseExtension
 
     protected function registerErrorHandler()
     {
-        $this->callAfterResolving(ExceptionHandler::class, function($handler) {
+        $this->callAfterResolving(ExceptionHandler::class, function($handler): void {
             new ErrorHandler($handler, config('igniter.api.errorFormat', []), config('igniter.api.debug', []));
         });
     }
@@ -220,8 +222,6 @@ class Extension extends BaseExtension
 
     protected function configureRateLimiting()
     {
-        RateLimiter::for('api', function(Request $request) {
-            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
-        });
+        RateLimiter::for('api', fn(Request $request) => Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip()));
     }
 }

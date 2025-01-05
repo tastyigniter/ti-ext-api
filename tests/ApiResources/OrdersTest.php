@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Admin\Models\Status;
@@ -12,7 +14,7 @@ use Igniter\User\Models\UserGroup;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all orders', function() {
+it('returns all orders', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     Order::factory()->count(3)->create();
     $order = Order::first();
@@ -24,7 +26,7 @@ it('returns all orders', function() {
         ->assertJsonPath('data.0.attributes.email', $order->email);
 });
 
-it('shows an order', function() {
+it('shows an order', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
 
@@ -35,7 +37,7 @@ it('shows an order', function() {
         ->assertJsonPath('data.attributes.email', $order->email);
 });
 
-it('shows an order with customer relationship', function() {
+it('shows an order with customer relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->customer()->associate($orderCustomer = Customer::factory()->create(['first_name' => 'Test', 'last_name' => 'User']))->save();
@@ -49,7 +51,7 @@ it('shows an order with customer relationship', function() {
         ->assertJsonPath('included.0.attributes.full_name', 'Test User');
 });
 
-it('shows an order with location relationship', function() {
+it('shows an order with location relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->location()->associate($orderLocation = Location::factory()->create())->save();
@@ -63,7 +65,7 @@ it('shows an order with location relationship', function() {
         ->assertJsonPath('included.0.attributes.location_name', $order->location->location_name);
 });
 
-it('shows an order with address relationship', function() {
+it('shows an order with address relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->address()->associate(
@@ -79,7 +81,7 @@ it('shows an order with address relationship', function() {
         ->assertJsonPath('included.0.attributes.address_1', '123 Test St');
 });
 
-it('shows an order with payment_method relationship', function() {
+it('shows an order with payment_method relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create([
         'payment' => 'cod',
@@ -93,7 +95,7 @@ it('shows an order with payment_method relationship', function() {
         ->assertJsonPath('included.0.attributes.code', 'cod');
 });
 
-it('shows an order with status relationship', function() {
+it('shows an order with status relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->status()->associate($orderStatus = Status::isForOrder()->first())->save();
@@ -107,7 +109,7 @@ it('shows an order with status relationship', function() {
         ->assertJsonPath('included.0.attributes.name', $order->status->name);
 });
 
-it('shows an order with status_history relationship', function() {
+it('shows an order with status_history relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $orderStatusHistory = $order->status_history()->create(['status_id' => Status::isForOrder()->first()->getKey()]);
@@ -121,7 +123,7 @@ it('shows an order with status_history relationship', function() {
         ->assertJsonPath('included.0.attributes.status_id', $orderStatusHistory->status_id);
 });
 
-it('shows an order with assignee relationship', function() {
+it('shows an order with assignee relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $assignee = User::factory()->create();
@@ -136,7 +138,7 @@ it('shows an order with assignee relationship', function() {
         ->assertJsonPath('included.0.attributes.name', $assignee->name);
 });
 
-it('shows an order with assignee_group relationship', function() {
+it('shows an order with assignee_group relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->assignee_group()->associate(
@@ -152,7 +154,7 @@ it('shows an order with assignee_group relationship', function() {
         ->assertJsonPath('included.0.attributes.user_group_name', 'Test Group');
 });
 
-it('creates an order', function() {
+it('creates an order', function(): void {
     Mail::fake();
 
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
@@ -195,7 +197,7 @@ it('creates an order', function() {
         ->assertJsonPath('data.attributes.email', 'test-user@domain.tld');
 });
 
-it('updates an order', function() {
+it('updates an order', function(): void {
     Mail::fake();
 
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
@@ -211,7 +213,7 @@ it('updates an order', function() {
         ->assertJsonPath('data.attributes.order_type', Location::COLLECTION);
 });
 
-it('deletes an order', function() {
+it('deletes an order', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -15,17 +17,17 @@ class ReviewTransformer extends TransformerAbstract
         'customer',
     ];
 
-    public function transform(Review $review)
+    public function transform(Review $review): array
     {
         return $this->mergesIdAttribute($review);
     }
 
-    public function includeCustomer(Review $review)
+    public function includeCustomer(Review $review): \League\Fractal\Resource\Item
     {
         return $this->item($review->customer, new CustomerTransformer, 'customers');
     }
 
-    public function includeLocation(Review $review)
+    public function includeLocation(Review $review): \League\Fractal\Resource\Item
     {
         return $this->item($review->location, new LocationTransformer, 'locations');
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -10,7 +12,7 @@ class AddressTransformer extends TransformerAbstract
 {
     use MergesIdAttribute;
 
-    public function transform(Address $address)
+    public function transform(Address $address): array
     {
         return $this->mergesIdAttribute($address);
     }

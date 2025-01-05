@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Classes;
 
 use Igniter\Api\Traits\GuardsAttributes;
@@ -78,7 +80,7 @@ class AbstractRepository
         return $query->paginate($perPage, $page, $columns, $pageName);
     }
 
-    public function create(Model $model, array $attributes)
+    public function create(Model $model, array $attributes): Model
     {
         $this->fireSystemEvent('api.repository.beforeCreate', [$model, $attributes]);
 
@@ -87,7 +89,7 @@ class AbstractRepository
 
         $this->setCustomerAwareAttributes($model);
 
-        DB::transaction(function() {
+        DB::transaction(function(): void {
             foreach ($this->modelsToSave as $modelToSave) {
                 $modelToSave->save();
             }
@@ -115,7 +117,7 @@ class AbstractRepository
         $this->modelsToSave = [];
         $this->setModelAttributes($model, $attributes);
 
-        DB::transaction(function() {
+        DB::transaction(function(): void {
             foreach ($this->modelsToSave as $modelToSave) {
                 $modelToSave->save();
             }
@@ -144,17 +146,17 @@ class AbstractRepository
     public function getModelClass()
     {
         if (!strlen($modelClass = $this->modelClass)) {
-            throw new SystemException('Missing model on '.get_class($this));
+            throw new SystemException('Missing model on '.static::class);
         }
 
         return $modelClass;
     }
 
-    public function createModel(): \Illuminate\Database\Eloquent\Model
+    public function createModel(): Model
     {
         $modelClass = $this->getModelClass();
 
-        if (!class_exists('\\'.ltrim($modelClass, '\\'))) {
+        if (!class_exists('\\'.ltrim((string)$modelClass, '\\'))) {
             throw new SystemException("Class $modelClass does NOT exist!");
         }
 
@@ -165,7 +167,7 @@ class AbstractRepository
 
     protected function prepareModel(string $modelClass): void
     {
-        $modelClass::extend(function(Model $model) {
+        $modelClass::extend(function(Model $model): void {
             if ($fillable = $this->getFillable()) {
                 $model->mergeFillable($fillable);
             }
@@ -182,14 +184,15 @@ class AbstractRepository
                 $model->setVisible($visible);
             }
 
-            if ($relationKeys = collect($model->getRelationDefinitions())->collapse()->keys()) {
+            $relationKeys = collect($model->getRelationDefinitions())->collapse()->keys();
+            if ($relationKeys->isNotEmpty()) {
                 $model->makeHidden($relationKeys->toArray());
             }
 
             $this->extendModel($model);
 
-            $model->bindEvent('model.getAttribute', [$this, 'getModelAttribute']);
-            $model->bindEvent('model.setAttribute', [$this, 'setModelAttribute']);
+            $model->bindEvent('model.getAttribute', $this->getModelAttribute(...));
+            $model->bindEvent('model.setAttribute', $this->setModelAttribute(...));
 
             foreach ([
                 'beforeCreate', 'afterCreate',
@@ -197,7 +200,7 @@ class AbstractRepository
                 'beforeSave', 'afterSave',
                 'beforeDelete', 'afterDelete',
             ] as $method) {
-                $model->bindEvent('model.'.$method, function() use ($model, $method) {
+                $model->bindEvent('model.'.$method, function() use ($model, $method): void {
                     if (method_exists($this, $method)) {
                         $this->$method($model);
                     }
@@ -299,7 +302,7 @@ class AbstractRepository
         return array_get(static::$customerAwareConfig, 'column', 'customer_id');
     }
 
-    protected function getCustomerAwareUser()
+    protected function getCustomerAwareUser(): ?Customer
     {
         return ($customer = request()->user()) instanceof Customer ? $customer : null;
     }

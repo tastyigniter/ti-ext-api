@@ -131,22 +131,7 @@ parameters:
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$location\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/ReservationTransformer.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$status\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/ReservationTransformer.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$status_history\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/ReservationTransformer.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$tables\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
@@ -159,16 +144,6 @@ parameters:
 			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Review\\:\\:\\$location\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/ReviewTransformer.php
-
-		-
-			message: "#^Result of method Illuminate\\\\Console\\\\Command\\:\\:error\\(\\) \\(void\\) is used\\.$#"
-			count: 1
-			path: src/Console/IssueApiToken.php
-
-		-
-			message: "#^Default value of the parameter \\#2 \\$errors \\(string\\) of method Igniter\\\\Api\\\\Exceptions\\\\ResourceException\\:\\:__construct\\(\\) is incompatible with type array\\|Illuminate\\\\Support\\\\MessageBag\\.$#"
-			count: 1
-			path: src/Exceptions/ResourceException.php
 
 		-
 			message: "#^Access to an undefined property Illuminate\\\\Support\\\\Optional\\:\\:\\$id\\.$#"

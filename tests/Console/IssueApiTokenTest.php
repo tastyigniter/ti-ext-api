@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Console;
 
 use Igniter\Api\Console\IssueApiToken;
@@ -7,7 +9,7 @@ use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Mockery;
 
-it('issues token for admin user with valid email', function() {
+it('issues token for admin user with valid email', function(): void {
     User::factory()->create(['email' => 'admin@example.com']);
     $command = Mockery::mock(IssueApiToken::class)->makePartial();
     $command->shouldReceive('option')->with('name')->andReturn('Test Token');
@@ -19,7 +21,7 @@ it('issues token for admin user with valid email', function() {
     $command->handle();
 });
 
-it('issues token for customer user with valid email', function() {
+it('issues token for customer user with valid email', function(): void {
     Customer::factory()->create(['email' => 'customer@example.com']);
     $command = Mockery::mock(IssueApiToken::class)->makePartial();
     $command->shouldReceive('option')->with('name')->andReturn('Test Token');
@@ -31,7 +33,7 @@ it('issues token for customer user with valid email', function() {
     $command->handle();
 });
 
-it('returns error when user does not exist', function() {
+it('returns error when user does not exist', function(): void {
     $command = Mockery::mock(IssueApiToken::class)->makePartial();
     $command->shouldReceive('option')->with('name')->andReturn('Test Token');
     $command->shouldReceive('option')->with('email')->andReturn('nonexistent@example.com');

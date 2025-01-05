@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Listeners;
 
 use Igniter\Api\Listeners\TokenEventSubscriber;
@@ -12,17 +14,15 @@ use Mockery;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
-beforeEach(function() {
+beforeEach(function(): void {
     $this->subscriber = new TokenEventSubscriber();
     $this->token = Token::factory()->create();
     $this->event = new TokenAuthenticated($this->token);
     $this->route = Mockery::mock(Route::class);
-    request()->setRouteResolver(function() {
-        return $this->route;
-    });
+    request()->setRouteResolver(fn() => $this->route);
 });
 
-it('returns access token for allowed group all', function() {
+it('returns access token for allowed group all', function(): void {
     RouteFacade::shouldReceive('currentRouteName')->andReturn('api.categories.index');
     $this->route->shouldReceive('currentRouteName')->andReturn('api.categories.index');
     $this->route->shouldReceive('getActionMethod')->andReturn('index');
@@ -32,7 +32,7 @@ it('returns access token for allowed group all', function() {
     expect($result)->token->toBe($this->token->token);
 });
 
-it('throws unauthorized exception for missing access token', function() {
+it('throws unauthorized exception for missing access token', function(): void {
     RouteFacade::shouldReceive('currentRouteName')->andReturn('api.categories.store');
     $this->route->shouldReceive('currentRouteName')->andReturn('api.categories.store');
     $this->route->shouldReceive('getActionMethod')->andReturn('store');
@@ -45,7 +45,7 @@ it('throws unauthorized exception for missing access token', function() {
     $this->subscriber->handleTokenAuthenticated($this->event);
 });
 
-it('throws access denied exception for restricted group', function() {
+it('throws access denied exception for restricted group', function(): void {
     RouteFacade::shouldReceive('currentRouteName')->andReturn('api.categories.store');
     $this->route->shouldReceive('currentRouteName')->andReturn('api.categories.store');
     $this->route->shouldReceive('getActionMethod')->andReturn('store');
@@ -58,7 +58,7 @@ it('throws access denied exception for restricted group', function() {
     $this->subscriber->handleTokenAuthenticated($this->event);
 });
 
-it('throws access denied exception for guest group', function() {
+it('throws access denied exception for guest group', function(): void {
     $subscriber = Mockery::mock(TokenEventSubscriber::class)->makePartial()->shouldAllowMockingProtectedMethods();
     $subscriber->shouldReceive('getAllowedGroup')->andReturn('guest');
 
@@ -68,7 +68,7 @@ it('throws access denied exception for guest group', function() {
     $subscriber->handleTokenAuthenticated($this->event);
 });
 
-it('throws access denied exception for customer group', function() {
+it('throws access denied exception for customer group', function(): void {
     $subscriber = Mockery::mock(TokenEventSubscriber::class)->makePartial()->shouldAllowMockingProtectedMethods();
     $subscriber->shouldReceive('getAllowedGroup')->andReturn('customer');
     $this->event->token->tokenable_type = 'users';
@@ -79,7 +79,7 @@ it('throws access denied exception for customer group', function() {
     $subscriber->handleTokenAuthenticated($this->event);
 });
 
-it('returns tokenable for valid access token', function() {
+it('returns tokenable for valid access token', function(): void {
     RouteFacade::shouldReceive('currentRouteName')->andReturn('api.categories.store');
     $this->route->shouldReceive('currentRouteName')->andReturn('api.categories.store');
     $this->route->shouldReceive('getActionMethod')->andReturn('store');

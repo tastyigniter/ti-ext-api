@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Traits;
 
 use Igniter\Api\Traits\AuthorizesRequest;
@@ -7,7 +9,7 @@ use Igniter\User\Models\User;
 use Illuminate\Auth\AuthManager;
 use Mockery;
 
-it('returns the current access token of the authenticated user', function() {
+it('returns the current access token of the authenticated user', function(): void {
     $traitObject = new class
     {
         use AuthorizesRequest;
@@ -26,7 +28,7 @@ it('returns the current access token of the authenticated user', function() {
     expect($result)->toBe('accessToken');
 });
 
-it('returns the authenticated user', function() {
+it('returns the authenticated user', function(): void {
     $traitObject = new class
     {
         use AuthorizesRequest;
@@ -44,7 +46,7 @@ it('returns the authenticated user', function() {
     expect($result)->toBe($user);
 });
 
-it('returns the auth instance', function() {
+it('returns the auth instance', function(): void {
     $traitObject = new class
     {
         use AuthorizesRequest;
@@ -62,7 +64,7 @@ it('returns the auth instance', function() {
     expect($result)->toBe($auth);
 });
 
-it('returns the token using getToken method', function() {
+it('returns the token using getToken method', function(): void {
     $traitObject = new class
     {
         use AuthorizesRequest;
@@ -81,7 +83,7 @@ it('returns the token using getToken method', function() {
     expect($result)->toBe('accessToken');
 });
 
-it('checks if the token has the given ability', function() {
+it('checks if the token has the given ability', function(): void {
     $traitObject = new class
     {
         use AuthorizesRequest;
@@ -95,7 +97,7 @@ it('checks if the token has the given ability', function() {
     $user->shouldReceive('tokenCan')->with('*')->andReturn(true);
     request()->setUserResolver(fn() => $user);
 
-    $result = $traitObject->testTokenCan('*');
+    $result = $traitObject->testTokenCan();
 
     expect($result)->toBeTrue();
 });

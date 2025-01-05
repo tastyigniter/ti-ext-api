@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Http\Controllers;
 
 use Igniter\Api\Models\Resource;
 
-it('loads resources page', function() {
+it('loads resources page', function(): void {
     actingAsSuperUser()
         ->get(route('igniter.api.resources'))
         ->assertOk();
 });
 
-it('fails to load create resource page', function() {
+it('fails to load create resource page', function(): void {
     actingAsSuperUser()
         ->get(route('igniter.api.resources', ['slug' => 'create']))
         ->assertStatus(500);
@@ -23,7 +25,7 @@ it('fails to load create resource page', function() {
         ->assertStatus(500);
 });
 
-it('loads edit resource page', function() {
+it('loads edit resource page', function(): void {
     $resource = Resource::factory()->create([
         'endpoint' => 'categories',
     ]);
@@ -33,7 +35,7 @@ it('loads edit resource page', function() {
         ->assertOk();
 });
 
-it('loads resource preview page', function() {
+it('loads resource preview page', function(): void {
     $resource = Resource::factory()->create([
         'endpoint' => 'categories',
     ]);
@@ -43,7 +45,7 @@ it('loads resource preview page', function() {
         ->assertOk();
 });
 
-it('updates resource', function() {
+it('updates resource', function(): void {
     $resource = Resource::factory()->create();
 
     actingAsSuperUser()
@@ -63,7 +65,7 @@ it('updates resource', function() {
         ->endpoint->toBe($resource->endpoint);
 });
 
-it('deletes resource', function() {
+it('deletes resource', function(): void {
     $resource = Resource::factory()->create();
 
     actingAsSuperUser()

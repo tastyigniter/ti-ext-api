@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -10,7 +12,7 @@ class MealtimeTransformer extends TransformerAbstract
 {
     use MergesIdAttribute;
 
-    public function transform(Mealtime $mealTime)
+    public function transform(Mealtime $mealTime): array
     {
         return $this->mergesIdAttribute($mealTime);
     }

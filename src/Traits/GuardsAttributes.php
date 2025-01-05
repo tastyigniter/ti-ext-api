@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Traits;
 
 use Illuminate\Support\Str;
@@ -86,9 +88,8 @@ trait GuardsAttributes
      * Determine if a get mutator exists for an attribute.
      *
      * @param string $key
-     * @return bool
      */
-    public function hasGetMutator($key)
+    public function hasGetMutator($key): bool
     {
         return method_exists($this, 'get'.Str::studly($key).'Attribute');
     }

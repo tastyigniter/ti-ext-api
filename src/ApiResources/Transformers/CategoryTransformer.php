@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -16,22 +18,22 @@ class CategoryTransformer extends TransformerAbstract
         'locations',
     ];
 
-    public function transform(Category $category)
+    public function transform(Category $category): array
     {
         return $this->mergesIdAttribute($category);
     }
 
-    public function includeMedia(Category $category)
+    public function includeMedia(Category $category): ?\League\Fractal\Resource\Item
     {
         return ($thumb = $category->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
-    public function includeMenus(Category $category)
+    public function includeMenus(Category $category): ?\League\Fractal\Resource\Collection
     {
         return $this->collection($category->menus, new MenuTransformer, 'menus');
     }
 
-    public function includeLocations(Category $category)
+    public function includeLocations(Category $category): ?\League\Fractal\Resource\Collection
     {
         return $this->collection($category->locations, new LocationTransformer, 'locations');
     }

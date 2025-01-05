@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -19,19 +21,19 @@ class MenuTransformer extends TransformerAbstract
         'stocks',
     ];
 
-    public function transform(Menu $menuItem)
+    public function transform(Menu $menuItem): array
     {
         return $this->mergesIdAttribute($menuItem, [
             'currency' => app('currency')->getDefault()->currency_code,
         ]);
     }
 
-    public function includeMedia(Menu $menuItem)
+    public function includeMedia(Menu $menuItem): ?\League\Fractal\Resource\Item
     {
         return ($thumb = $menuItem->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
-    public function includeCategories(Menu $menuItem)
+    public function includeCategories(Menu $menuItem): ?\League\Fractal\Resource\Collection
     {
         return $this->collection(
             $menuItem->categories,
@@ -40,7 +42,7 @@ class MenuTransformer extends TransformerAbstract
         );
     }
 
-    public function includeMenuOptions(Menu $menuItem)
+    public function includeMenuOptions(Menu $menuItem): ?\League\Fractal\Resource\Collection
     {
         return $this->collection(
             $menuItem->menu_options,
@@ -49,7 +51,7 @@ class MenuTransformer extends TransformerAbstract
         );
     }
 
-    public function includeIngredients(Menu $menuItem)
+    public function includeIngredients(Menu $menuItem): ?\League\Fractal\Resource\Collection
     {
         return $this->collection(
             $menuItem->ingredients,
@@ -58,7 +60,7 @@ class MenuTransformer extends TransformerAbstract
         );
     }
 
-    public function includeMealtimes(Menu $menuItem)
+    public function includeMealtimes(Menu $menuItem): ?\League\Fractal\Resource\Collection
     {
         return $this->collection(
             $menuItem->mealtimes,
@@ -67,7 +69,7 @@ class MenuTransformer extends TransformerAbstract
         );
     }
 
-    public function includeStocks(Menu $menuItem)
+    public function includeStocks(Menu $menuItem): ?\League\Fractal\Resource\Collection
     {
         return $this->collection(
             $menuItem->stocks,

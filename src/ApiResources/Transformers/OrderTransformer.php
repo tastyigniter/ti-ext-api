@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -21,7 +23,7 @@ class OrderTransformer extends TransformerAbstract
         'assignee_group',
     ];
 
-    public function transform(Order $order)
+    public function transform(Order $order): array
     {
         return $this->mergesIdAttribute($order, [
             'currency' => app('currency')->getDefault()->currency_code,
@@ -30,42 +32,42 @@ class OrderTransformer extends TransformerAbstract
         ]);
     }
 
-    public function includeCustomer(Order $order)
+    public function includeCustomer(Order $order): ?\League\Fractal\Resource\Item
     {
         return $order->customer ? $this->item($order->customer, new CustomerTransformer, 'customers') : null;
     }
 
-    public function includeLocation(Order $order)
+    public function includeLocation(Order $order): \League\Fractal\Resource\Item
     {
         return $this->item($order->location, new LocationTransformer, 'locations');
     }
 
-    public function includeAddress(Order $order)
+    public function includeAddress(Order $order): ?\League\Fractal\Resource\Item
     {
         return $order->address ? $this->item($order->address, new AddressTransformer, 'addresses') : null;
     }
 
-    public function includePaymentMethod(Order $order)
+    public function includePaymentMethod(Order $order): ?\League\Fractal\Resource\Item
     {
         return $order->payment_method ? $this->item($order->payment_method, new PaymentMethodTransformer, 'payment_methods') : null;
     }
 
-    public function includeStatus(Order $order)
+    public function includeStatus(Order $order): \League\Fractal\Resource\Item
     {
         return $this->item($order->status, new StatusTransformer, 'statuses');
     }
 
-    public function includeStatusHistory(Order $order)
+    public function includeStatusHistory(Order $order): \League\Fractal\Resource\Collection
     {
         return $this->collection($order->status_history, new StatusHistoryTransformer, 'status_history');
     }
 
-    public function includeAssignee(Order $order)
+    public function includeAssignee(Order $order): ?\League\Fractal\Resource\Item
     {
         return $order->assignee ? $this->item($order->assignee, new UserTransformer, 'assignee') : null;
     }
 
-    public function includeAssigneeGroup(Order $order)
+    public function includeAssigneeGroup(Order $order): ?\League\Fractal\Resource\Item
     {
         return $order->assignee_group ? $this->item($order->assignee_group, new UserGroupTransformer, 'assignee_group') : null;
     }

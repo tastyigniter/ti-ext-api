@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Admin\Models\Status;
@@ -9,7 +11,7 @@ use Igniter\User\Models\User;
 use Igniter\User\Models\UserGroup;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all reservations', function() {
+it('returns all reservations', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     Reservation::factory()->count(3)->create();
     $reservation = Reservation::first();
@@ -21,7 +23,7 @@ it('returns all reservations', function() {
         ->assertJsonPath('data.0.attributes.email', $reservation->email);
 });
 
-it('shows a reservation', function() {
+it('shows a reservation', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
 
@@ -32,7 +34,7 @@ it('shows a reservation', function() {
         ->assertJsonPath('data.attributes.email', $reservation->email);
 });
 
-it('shows a reservation with location relationship', function() {
+it('shows a reservation with location relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservation->location()->associate($reservationLocation = Location::factory()->create())->save();
@@ -46,7 +48,7 @@ it('shows a reservation with location relationship', function() {
         ->assertJsonPath('included.0.attributes.location_name', $reservation->location->location_name);
 });
 
-it('shows a reservation with tables relationship', function() {
+it('shows a reservation with tables relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservationTable = $reservation->tables()->create(['name' => 'Table 1']);
@@ -61,7 +63,7 @@ it('shows a reservation with tables relationship', function() {
         ->assertJsonPath('included.0.attributes.name', 'Table 1');
 });
 
-it('shows a reservation with status relationship', function() {
+it('shows a reservation with status relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservation->status()->associate($reservationStatus = Status::factory()->create())->save();
@@ -75,7 +77,7 @@ it('shows a reservation with status relationship', function() {
         ->assertJsonPath('included.0.attributes.status_name', $reservationStatus->status_name);
 });
 
-it('shows a reservation with status_history relationship', function() {
+it('shows a reservation with status_history relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservationStatusHistory = $reservation->status_history()->create(['status_id' => 1]);
@@ -89,7 +91,7 @@ it('shows a reservation with status_history relationship', function() {
         ->assertJsonPath('included.0.attributes.status_id', 1);
 });
 
-it('shows a reservation with assignee relationship', function() {
+it('shows a reservation with assignee relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservation->assignee()->associate($reservationAssignee = User::factory()->create())->save();
@@ -103,7 +105,7 @@ it('shows a reservation with assignee relationship', function() {
         ->assertJsonPath('included.0.attributes.first_name', $reservationAssignee->first_name);
 });
 
-it('shows a reservation with assignee_group relationship', function() {
+it('shows a reservation with assignee_group relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservation->assignee_group()->associate($reservationAssigneeGroup = UserGroup::factory()->create())->save();
@@ -117,7 +119,7 @@ it('shows a reservation with assignee_group relationship', function() {
         ->assertJsonPath('included.0.attributes.first_name', $reservation->assignee_group->first_name);
 });
 
-it('creates a reservation', function() {
+it('creates a reservation', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
 
     $this
@@ -137,7 +139,7 @@ it('creates a reservation', function() {
         ->assertJsonPath('data.attributes.email', 'test-user@domain.tld');
 });
 
-it('updates a reservation', function() {
+it('updates a reservation', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
 
@@ -157,7 +159,7 @@ it('updates a reservation', function() {
         ->assertJsonPath('data.attributes.reserve_time', '23:00');
 });
 
-it('deletes a reservation', function() {
+it('deletes a reservation', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
 

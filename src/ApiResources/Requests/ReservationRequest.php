@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
@@ -22,7 +24,7 @@ class ReservationRequest extends FormRequest
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'table_id' => ['sometimes', 'required', 'integer'],

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Models;
 
 use Igniter\Flame\Database\Factories\HasFactory;
@@ -21,19 +23,8 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property \Illuminate\Support\Carbon|null $last_used_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $tokenable
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token newQuery()
+ * @property-read \Illuminate\Database\Eloquent\Model|\Igniter\Flame\Database\Model $tokenable
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Token query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereAbilities($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereLastUsedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereTokenableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereTokenableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token whereUpdatedAt($value)
  * @mixin \Igniter\Flame\Database\Model
  */
 class Token extends PersonalAccessToken
@@ -49,9 +40,8 @@ class Token extends PersonalAccessToken
      * Create a new personal access token for the user.
      *
      * @param \Igniter\Flame\Database\Model $tokenable
-     * @return \Laravel\Sanctum\NewAccessToken
      */
-    public static function createToken($tokenable, string $name, array $abilities = ['*'])
+    public static function createToken($tokenable, string $name, array $abilities = ['*']): NewAccessToken
     {
         $token = $tokenable->tokens()->create([
             'name' => $name,
@@ -64,20 +54,16 @@ class Token extends PersonalAccessToken
 
     /**
      * Determine if the token belongs to a admin
-     *
-     * @return bool
      */
-    public function isForAdmin()
+    public function isForAdmin(): bool
     {
         return $this->tokenable_type == User::make()->getMorphClass();
     }
 
     /**
      * Determine if the token belongs to a customer
-     *
-     * @return bool
      */
-    public function isForCustomer()
+    public function isForCustomer(): bool
     {
         return $this->tokenable_type == Customer::make()->getMorphClass();
     }

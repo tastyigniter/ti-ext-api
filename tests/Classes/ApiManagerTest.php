@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Classes;
 
 use Igniter\Api\Classes\ApiManager;
@@ -11,21 +13,21 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Mockery;
 
-beforeEach(function() {
+beforeEach(function(): void {
     $this->apiManager = new ApiManager();
 });
 
-it('returns resources when they are loaded', function() {
+it('returns resources when they are loaded', function(): void {
     expect($this->apiManager->getResources())->toHaveCount(12);
 });
 
-it('returns empty array when resource is not found', function() {
+it('returns empty array when resource is not found', function(): void {
     $resource = $this->apiManager->getResource('non-existent-endpoint');
 
     expect($resource)->toBe([]);
 });
 
-it('returns current resource based on route name', function() {
+it('returns current resource based on route name', function(): void {
     Route::shouldReceive('currentRouteName')->andReturn('api.categories.index');
 
     $currentResource = $this->apiManager->getCurrentResource();
@@ -33,7 +35,7 @@ it('returns current resource based on route name', function() {
     expect($currentResource->endpoint)->toBe('categories');
 });
 
-it('returns current action based on route action', function() {
+it('returns current action based on route action', function(): void {
     Route::shouldReceive('currentRouteAction')->andReturn('TestController@index');
 
     $currentAction = $this->apiManager->getCurrentAction();
@@ -41,13 +43,13 @@ it('returns current action based on route action', function() {
     expect($currentAction)->toBe('index');
 });
 
-it('registers routes when database and table exist', function() {
+it('registers routes when database and table exist', function(): void {
     $router = Mockery::mock(Router::class);
     $routerRegister = Mockery::mock(RouteRegistrar::class);
     Route::shouldReceive('middleware')->andReturn($routerRegister);
     $routerRegister->shouldReceive('as')->andReturnSelf();
     $routerRegister->shouldReceive('prefix')->with('api')->andReturnSelf();
-    $routerRegister->shouldReceive('group')->andReturnUsing(function($callback) use ($router) {
+    $routerRegister->shouldReceive('group')->andReturnUsing(function($callback) use ($router): true {
         $callback($router);
 
         return true;
@@ -65,7 +67,7 @@ it('registers routes when database and table exist', function() {
     ApiManager::registerRoutes();
 });
 
-it('does not register routes when database does not exist', function() {
+it('does not register routes when database does not exist', function(): void {
     Igniter::shouldReceive('hasDatabase')->andReturnFalse();
     Schema::shouldReceive('hasTable')->with('igniter_api_resources')->never();
     Route::shouldReceive('middleware')->never();
@@ -73,7 +75,7 @@ it('does not register routes when database does not exist', function() {
     ApiManager::registerRoutes();
 });
 
-it('does not register routes when table does not exist', function() {
+it('does not register routes when table does not exist', function(): void {
     Igniter::shouldReceive('hasDatabase')->andReturnTrue();
     Schema::shouldReceive('hasTable')->with('igniter_api_resources')->andReturn(false);
     Route::shouldReceive('middleware')->never();
@@ -81,13 +83,13 @@ it('does not register routes when table does not exist', function() {
     ApiManager::registerRoutes();
 });
 
-it('skips invalid controllers when registering routes', function() {
+it('skips invalid controllers when registering routes', function(): void {
     $router = Mockery::mock(Router::class);
     $routerRegister = Mockery::mock(RouteRegistrar::class);
     Route::shouldReceive('middleware')->andReturn($routerRegister);
     $routerRegister->shouldReceive('as')->andReturnSelf();
     $routerRegister->shouldReceive('prefix')->with('api')->andReturnSelf();
-    $routerRegister->shouldReceive('group')->andReturnUsing(function($callback) use ($router) {
+    $routerRegister->shouldReceive('group')->andReturnUsing(function($callback) use ($router): true {
         $callback($router);
 
         return true;

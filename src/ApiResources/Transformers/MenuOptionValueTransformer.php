@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Cart\Models\MenuOptionValue;
@@ -7,7 +9,7 @@ use League\Fractal\TransformerAbstract;
 
 class MenuOptionValueTransformer extends TransformerAbstract
 {
-    public function transform(array|MenuOptionValue $menuOptionValue)
+    public function transform(array|MenuOptionValue $menuOptionValue): array
     {
         if (!is_array($menuOptionValue)) {
             $menuOptionValue = $menuOptionValue->toArray();

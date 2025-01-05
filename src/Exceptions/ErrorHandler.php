@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Exceptions;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
@@ -15,43 +16,22 @@ use Throwable;
 class ErrorHandler
 {
     /**
-     * Generic response format.
-     *
-     * @var array
-     */
-    protected $format;
-
-    /**
-     * Indicates if we are in debug mode.
-     *
-     * @var bool
-     */
-    protected $debug = false;
-
-    /**
-     * The parent Illuminate exception handler instance.
-     *
-     * @var IlluminateExceptionHandler
-     */
-    protected $parentHandler;
-
-    /**
      * User defined replacements to merge with defaults.
      *
      * @var array
      */
     protected $replacements = [];
 
-    public function __construct(ExceptionHandler $handler, array $format, $debug)
-    {
-        $this->parentHandler = $handler;
-        $this->format = $format;
-        $this->debug = $debug;
-
-        if (method_exists($handler, 'renderable')) {
-            $handler->renderable(function(Throwable $ex) {
-                return $this->render(request(), $ex);
-            });
+    /**
+     * @param bool $debug
+     */
+    public function __construct(
+        protected ExceptionHandler $parentHandler,
+        protected array $format,
+        protected $debug,
+    ) {
+        if (method_exists($this->parentHandler, 'renderable')) {
+            $this->parentHandler->renderable(fn(Throwable $ex) => $this->render(request(), $ex));
         }
     }
 
@@ -82,16 +62,15 @@ class ErrorHandler
     /**
      * Handle a generic error response if there is no handler available.
      *
-     * @return \Illuminate\Http\Response
      * @throws Throwable
      */
-    protected function genericResponse(Throwable $exception)
+    protected function genericResponse(Throwable $exception): Response
     {
         $replacements = $this->prepareReplacements($exception);
 
         $response = $this->format;
 
-        array_walk_recursive($response, function(&$value, $key) use ($replacements) {
+        array_walk_recursive($response, function(&$value, $key) use ($replacements): void {
             if (Str::startsWith($value, ':') && isset($replacements[$value])) {
                 $value = $replacements[$value];
             }
@@ -125,20 +104,16 @@ class ErrorHandler
 
     /**
      * Get the headers from the exception.
-     *
-     * @return array
      */
-    protected function getHeaders(Throwable $exception)
+    protected function getHeaders(Throwable $exception): array
     {
         return $exception instanceof HttpExceptionInterface ? $exception->getHeaders() : [];
     }
 
     /**
      * Prepare the replacements array by gathering the keys and values.
-     *
-     * @return array
      */
-    protected function prepareReplacements(Throwable $exception)
+    protected function prepareReplacements(Throwable $exception): array
     {
         $statusCode = $this->getStatusCode($exception);
 
@@ -163,7 +138,7 @@ class ErrorHandler
             $replacements[':debug'] = [
                 'line' => $exception->getLine(),
                 'file' => $exception->getFile(),
-                'class' => get_class($exception),
+                'class' => $exception::class,
                 'trace' => explode("\n", $exception->getTraceAsString()),
             ];
 
@@ -183,10 +158,8 @@ class ErrorHandler
 
     /**
      * Recursively remove any empty replacement values in the response array.
-     *
-     * @return array
      */
-    protected function recursivelyRemoveEmptyReplacements(array $input)
+    protected function recursivelyRemoveEmptyReplacements(array $input): array
     {
         foreach ($input as &$value) {
             if (is_array($value)) {
@@ -194,7 +167,7 @@ class ErrorHandler
             }
         }
 
-        return array_filter($input, function($value) {
+        return array_filter($input, function($value): bool {
             if (is_string($value)) {
                 return !Str::startsWith($value, ':');
             }

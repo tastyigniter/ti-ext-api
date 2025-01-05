@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Admin\Models\Status;
@@ -10,7 +12,7 @@ class StatusTransformer extends TransformerAbstract
 {
     use MergesIdAttribute;
 
-    public function transform(Status $status)
+    public function transform(Status $status): array
     {
         return $this->mergesIdAttribute($status);
     }

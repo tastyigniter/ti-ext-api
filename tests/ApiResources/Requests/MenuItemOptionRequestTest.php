@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources\Requests;
 
 use Igniter\Api\ApiResources\Requests\MenuItemOptionRequest;
 
-it('returns correct attribute labels', function() {
+it('returns correct attribute labels', function(): void {
     $request = new MenuItemOptionRequest();
 
     $attributes = $request->attributes();
@@ -18,7 +20,7 @@ it('returns correct attribute labels', function() {
         ->and($attributes)->toHaveKey('menu_option_values.*', lang('admin::lang.label_option_value_id'));
 });
 
-it('returns correct validation rules', function() {
+it('returns correct validation rules', function(): void {
     $request = new MenuItemOptionRequest();
 
     $rules = $request->rules();

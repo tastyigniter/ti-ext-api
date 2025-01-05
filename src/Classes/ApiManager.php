@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
@@ -64,7 +66,7 @@ class ApiManager
         $this->resources = $resources;
     }
 
-    public static function registerRoutes()
+    public static function registerRoutes(): void
     {
         if (!Igniter::hasDatabase() || !Schema::hasTable('igniter_api_resources')) {
             return;
@@ -73,7 +75,7 @@ class ApiManager
         Route::middleware(config('igniter.api.middleware'))
             ->as('igniter.api.')
             ->prefix(config('igniter.api.prefix'))
-            ->group(function($router) {
+            ->group(function($router): void {
                 foreach (resolve(static::class)->getResources() as $endpoint => $resourceObj) {
                     if (!class_exists($resourceObj->controller)) {
                         continue;

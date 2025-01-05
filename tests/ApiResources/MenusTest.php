@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Cart\Models\Menu;
@@ -7,7 +9,7 @@ use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all menu items', function() {
+it('returns all menu items', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 
@@ -18,7 +20,7 @@ it('returns all menu items', function() {
         ->assertJsonPath('data.0.attributes.menu_name', $menu->menu_name);
 });
 
-it('shows a menu item', function() {
+it('shows a menu item', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 
@@ -26,8 +28,8 @@ it('shows a menu item', function() {
         ->get(route('igniter.api.menus.show', [$menu->getKey()]))
         ->assertOk()
         ->assertJsonPath('data.id', (string)$menu->getKey())
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('menu_name', $menu->menu_name)
                 ->where('menu_price', $menu->menu_price)
                 ->etc(),
@@ -35,7 +37,7 @@ it('shows a menu item', function() {
         );
 });
 
-it('shows a menu item with media relationship', function() {
+it('shows a menu item with media relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuMedia = $menu->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
@@ -49,7 +51,7 @@ it('shows a menu item with media relationship', function() {
         ->assertJsonPath('included.0.attributes.file_name', 'test.jpg');
 });
 
-it('shows a menu item with categories relationship', function() {
+it('shows a menu item with categories relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuCategory = $menu->categories()->create(['name' => 'Test Category']);
@@ -63,7 +65,7 @@ it('shows a menu item with categories relationship', function() {
         ->assertJsonPath('included.0.attributes.name', 'Test Category');
 });
 
-it('shows a menu item with menu_options relationship', function() {
+it('shows a menu item with menu_options relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuOption = $menu->menu_options()->create(['min_selected' => 2, 'max_selected' => 4, 'option_id' => 1]);
@@ -78,7 +80,7 @@ it('shows a menu item with menu_options relationship', function() {
         ->assertJsonPath('included.3.attributes.max_selected', 4);
 });
 
-it('shows a menu item with ingredients relationship', function() {
+it('shows a menu item with ingredients relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuIngredient = $menu->ingredients()->create(['name' => 'Test Ingredient']);
@@ -92,7 +94,7 @@ it('shows a menu item with ingredients relationship', function() {
         ->assertJsonPath('included.0.attributes.name', 'Test Ingredient');
 });
 
-it('shows a menu item with mealtimes relationship', function() {
+it('shows a menu item with mealtimes relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuMealtime = $menu->mealtimes()->create(['start_time' => '09:00', 'end_time' => '17:00']);
@@ -107,7 +109,7 @@ it('shows a menu item with mealtimes relationship', function() {
         ->assertJsonPath('included.0.attributes.end_time', '17:00:00');
 });
 
-it('shows a menu item with stocks relationship', function() {
+it('shows a menu item with stocks relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
     $menu->stocks()->create(['quantity' => 10]);
@@ -119,7 +121,7 @@ it('shows a menu item with stocks relationship', function() {
         ->assertJsonPath('data.relationships.stocks.data.0.type', 'stocks');
 });
 
-it('creates a menu item', function() {
+it('creates a menu item', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 
@@ -129,15 +131,15 @@ it('creates a menu item', function() {
             'menu_price' => 99.999,
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('menu_name', 'Test menu item')
                 ->where('menu_price', 99.999)
                 ->etc(),
             ));
 });
 
-it('updates a menu item', function() {
+it('updates a menu item', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 
@@ -147,15 +149,15 @@ it('updates a menu item', function() {
             'menu_price' => 99.999,
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('menu_name', 'Test menu item')
                 ->where('menu_price', 99.999)
                 ->etc(),
             )->etc());
 });
 
-it('deletes a menu item', function() {
+it('deletes a menu item', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menus:*']);
     $menu = Menu::first();
 

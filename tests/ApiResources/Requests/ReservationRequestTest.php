@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources\Requests;
 
 use Igniter\Api\ApiResources\Requests\ReservationRequest;
 
-it('returns correct attribute labels', function() {
+it('returns correct attribute labels', function(): void {
     $request = new ReservationRequest();
 
     $attributes = $request->attributes();
@@ -21,7 +23,7 @@ it('returns correct attribute labels', function() {
         ->and($attributes)->toHaveKey('comment', lang('igniter.reservation::default.label_comment'));
 });
 
-it('returns correct validation rules', function() {
+it('returns correct validation rules', function(): void {
     $request = new ReservationRequest();
 
     $rules = $request->rules();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Classes;
 
 use Igniter\Api\Classes\AbstractRepository;
@@ -13,12 +15,12 @@ use Illuminate\Support\Facades\DB;
 use Mockery;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-beforeEach(function() {
+beforeEach(function(): void {
     $this->repository = Mockery::mock(AbstractRepository::class)->makePartial()->shouldAllowMockingProtectedMethods();
     $this->model = Mockery::mock(Model::class)->makePartial();
 });
 
-it('finds a record by id', function() {
+it('finds a record by id', function(): void {
     $this->repository->shouldReceive('createModel')->andReturn($this->model);
     $this->repository->shouldReceive('prepareQuery')->andReturn($this->model);
     $this->model->shouldReceive('find')->with(1, ['*'])->andReturn($this->model);
@@ -28,7 +30,7 @@ it('finds a record by id', function() {
     expect($result)->toBe($this->model);
 });
 
-it('finds a record by id and applies location aware scope', function() {
+it('finds a record by id and applies location aware scope', function(): void {
     $model = Mockery::mock(Order::class)->makePartial();
     $this->repository->shouldReceive('createModel')->andReturn($model);
     $this->repository->shouldReceive('prepareQuery')->andReturn($model);
@@ -39,7 +41,7 @@ it('finds a record by id and applies location aware scope', function() {
     expect($result)->toBe($model);
 });
 
-it('throws exception when record not found by id', function() {
+it('throws exception when record not found by id', function(): void {
     $this->repository->shouldReceive('createModel')->andReturn($this->model);
     $this->repository->shouldReceive('prepareQuery')->andReturn($this->model);
     $this->model->shouldReceive('find')->with(1, ['*'])->andReturn(null);
@@ -49,7 +51,7 @@ it('throws exception when record not found by id', function() {
     $this->repository->find(1);
 });
 
-it('finds a record by attribute', function() {
+it('finds a record by attribute', function(): void {
     $this->repository->shouldReceive('createModel')->andReturn($this->model);
     $this->repository->shouldReceive('prepareQuery')->andReturn($this->model);
     $this->model->shouldReceive('where')->with('name', 'test')->andReturnSelf();
@@ -60,7 +62,7 @@ it('finds a record by attribute', function() {
     expect($result)->toBe($this->model);
 });
 
-it('returns paginated results when model does not have scopeListFrontEnd', function() {
+it('returns paginated results when model does not have scopeListFrontEnd', function(): void {
     $noScopeListFrontEndModel = Mockery::mock(\Illuminate\Database\Eloquent\Model::class)->makePartial();
     $this->repository->shouldReceive('createModel')->andReturn($noScopeListFrontEndModel);
     $this->repository->shouldReceive('paginate')->with(15, null)->andReturn('paginated_result');
@@ -70,7 +72,7 @@ it('returns paginated results when model does not have scopeListFrontEnd', funct
     expect($result)->toBe('paginated_result');
 });
 
-it('returns frontend list results when model has scopeListFrontEnd', function() {
+it('returns frontend list results when model has scopeListFrontEnd', function(): void {
     $builder = Mockery::mock(Builder::class);
     $builder->shouldReceive('listFrontEnd')->with(['option' => 'value'])->andReturn('frontend_list_result');
     $this->repository->shouldReceive('createModel')->andReturn($this->model);
@@ -81,7 +83,7 @@ it('returns frontend list results when model has scopeListFrontEnd', function() 
     expect($result)->toBe('frontend_list_result');
 });
 
-it('paginates results with default parameters', function() {
+it('paginates results with default parameters', function(): void {
     $model = Mockery::mock(Model::class);
     $builder = Mockery::mock(Builder::class);
     $this->repository->shouldReceive('createModel')->andReturn($this->model);
@@ -93,7 +95,7 @@ it('paginates results with default parameters', function() {
     expect($result)->toBe('paginated_result');
 });
 
-it('paginates results with custom parameters', function() {
+it('paginates results with custom parameters', function(): void {
     $model = Mockery::mock(Model::class);
     $query = Mockery::mock(Builder::class);
     $repository = Mockery::mock(AbstractRepository::class)->makePartial()->shouldAllowMockingProtectedMethods();
@@ -107,7 +109,7 @@ it('paginates results with custom parameters', function() {
     expect($result)->toBe('paginated_result');
 });
 
-it('creates a new record', function() {
+it('creates a new record', function(): void {
     $attributes = ['name' => 'test'];
     $customer = Mockery::mock(Customer::class)->makePartial();
     $customer->shouldReceive('getKey')->andReturn(1);
@@ -119,7 +121,7 @@ it('creates a new record', function() {
     $this->repository->shouldReceive('fireSystemEvent')->with('api.repository.afterCreate', [$this->model, true]);
     $this->model->shouldReceive('reload');
 
-    DB::shouldReceive('transaction')->andReturnUsing(function($callback) {
+    DB::shouldReceive('transaction')->andReturnUsing(function($callback): void {
         $callback();
     });
 
@@ -128,14 +130,14 @@ it('creates a new record', function() {
     expect($result)->toBe($this->model);
 });
 
-it('updates an existing record', function() {
+it('updates an existing record', function(): void {
     $attributes = ['name' => 'updated'];
     $this->repository->shouldReceive('find')->with(1)->andReturn($this->model);
     $this->repository->shouldReceive('setModelAttributes')->with($this->model, $attributes);
     $this->repository->shouldReceive('fireSystemEvent')->with('api.repository.beforeUpdate', [$this->model, $attributes]);
     $this->repository->shouldReceive('fireSystemEvent')->with('api.repository.afterUpdate', [$this->model, true]);
 
-    DB::shouldReceive('transaction')->andReturnUsing(function($callback) {
+    DB::shouldReceive('transaction')->andReturnUsing(function($callback): void {
         $callback();
     });
 
@@ -144,7 +146,7 @@ it('updates an existing record', function() {
     expect($result)->toBe($this->model);
 });
 
-it('returns null when model not found for update', function() {
+it('returns null when model not found for update', function(): void {
     $attributes = ['name' => 'updated'];
     $this->repository->shouldReceive('find')->with(1)->andReturn(null);
 
@@ -153,7 +155,7 @@ it('returns null when model not found for update', function() {
     expect($result)->toBeNull();
 });
 
-it('deletes a record by id', function() {
+it('deletes a record by id', function(): void {
     $this->repository->shouldReceive('find')->with(1)->andReturn($this->model);
     $this->model->shouldReceive('delete')->andReturn(true);
     $this->repository->shouldReceive('fireSystemEvent')->with('api.repository.afterDelete', [$this->model, true]);
@@ -163,7 +165,7 @@ it('deletes a record by id', function() {
     expect($result)->toBe($this->model);
 });
 
-it('returns null when model not found for deletion', function() {
+it('returns null when model not found for deletion', function(): void {
     $this->repository->shouldReceive('find')->with(1)->andReturn(null);
 
     $result = $this->repository->delete(1);
@@ -171,24 +173,24 @@ it('returns null when model not found for deletion', function() {
     expect($result)->toBeNull();
 });
 
-it('throws exception when model class is missing', function() {
-    expect(function() {
+it('throws exception when model class is missing', function(): void {
+    expect(function(): void {
         $this->repository->getModelClass();
     })->toThrow(SystemException::class, 'Missing model on');
 });
 
-it('throws exception when model class does not exist', function() {
+it('throws exception when model class does not exist', function(): void {
     $repository = new class extends AbstractRepository
     {
         public $modelClass = 'NonExistentModel';
     };
 
-    expect(function() use ($repository) {
+    expect(function() use ($repository): void {
         $repository->createModel();
     })->toThrow(SystemException::class, 'Class NonExistentModel does NOT exist!');
 });
 
-it('creates model instance when model class exists', function() {
+it('creates model instance when model class exists', function(): void {
     $repository = new class extends AbstractRepository
     {
         public $modelClass = TestModel::class;
@@ -197,7 +199,7 @@ it('creates model instance when model class exists', function() {
         protected $hidden = ['hidden'];
         protected $visible = ['visible'];
 
-        protected function afterCreate() {}
+        protected function afterCreate(): void {}
     };
 
     $result = $repository->createModel();
@@ -211,7 +213,7 @@ it('creates model instance when model class exists', function() {
     $result->fireEvent('model.afterCreate');
 });
 
-it('sets nested model attributes when attribute is nested', function() {
+it('sets nested model attributes when attribute is nested', function(): void {
     $nestedModel = Mockery::mock(\Igniter\Flame\Database\Model::class)->makePartial();
     $nestedModel->shouldReceive('isFillable')->andReturn(true);
     $nestedModel->shouldReceive('hasRelation')->andReturn(false);
@@ -226,9 +228,7 @@ it('sets nested model attributes when attribute is nested', function() {
     $this->model->shouldReceive('extendableGet')->andReturn($nestedModel);
     $this->model->shouldReceive('getKeyName')->andReturn('id');
 
-    request()->setUserResolver(function() {
-        return Mockery::mock(Customer::class);
-    });
+    request()->setUserResolver(fn() => Mockery::mock(Customer::class));
     $this->repository->shouldReceive('getCustomerAwareColumn')->andReturn('customer_id');
     $this->repository->shouldReceive('setModelAttributes')->passthru();
 
@@ -239,7 +239,7 @@ it('sets nested model attributes when attribute is nested', function() {
     callProtectedMethod($this->repository, 'setModelAttributes', [$this->model, $saveData]);
 });
 
-it('applies location aware scope with absense constraint', function() {
+it('applies location aware scope with absense constraint', function(): void {
     $repository = new class extends AbstractRepository
     {
         protected $modelClass = Order::class;
@@ -259,7 +259,7 @@ it('applies location aware scope with absense constraint', function() {
     callProtectedMethod($repository, 'applyLocationAwareScope', [$query]);
 });
 
-it('applies location aware scope without absense constraint', function() {
+it('applies location aware scope without absense constraint', function(): void {
     $repository = new class extends AbstractRepository
     {
         protected $modelClass = Order::class;
@@ -280,11 +280,11 @@ it('applies location aware scope without absense constraint', function() {
     callProtectedMethod($repository, 'applyLocationAwareScope', [$query]);
 });
 
-it('does not apply location aware scope if config is not an array', function() {
+it('does not apply location aware scope if config is not an array', function(): void {
     $repository = new class extends AbstractRepository
     {
         protected $modelClass = Order::class;
-        protected static $locationAwareConfig = null;
+        protected static $locationAwareConfig;
     };
     $query = Mockery::mock(Builder::class);
     $query->shouldReceive('whereHasOrDoesntHaveLocation')->never();
@@ -293,7 +293,7 @@ it('does not apply location aware scope if config is not an array', function() {
     callProtectedMethod($repository, 'applyLocationAwareScope', [$query]);
 });
 
-it('does not apply location aware scope if model is not locationable', function() {
+it('does not apply location aware scope if model is not locationable', function(): void {
     $repository = new class extends AbstractRepository
     {
         protected $modelClass = Order::class;
@@ -308,7 +308,7 @@ it('does not apply location aware scope if model is not locationable', function(
     callProtectedMethod($repository, 'applyLocationAwareScope', [$query]);
 });
 
-it('does not apply location aware scope if user has no active locations', function() {
+it('does not apply location aware scope if user has no active locations', function(): void {
     $repository = new class extends AbstractRepository
     {
         protected $modelClass = Order::class;

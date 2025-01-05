@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -17,17 +19,17 @@ class LocationTransformer extends TransformerAbstract
         'reviews',
     ];
 
-    public function transform(Location $location)
+    public function transform(Location $location): array
     {
         return $this->mergesIdAttribute($location);
     }
 
-    public function includeMedia(Location $location)
+    public function includeMedia(Location $location): ?\League\Fractal\Resource\Item
     {
         return ($thumb = $location->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
-    public function includeWorkingHours(Location $location)
+    public function includeWorkingHours(Location $location): ?\League\Fractal\Resource\Collection
     {
         return $this->collection(
             $location->working_hours,
@@ -36,7 +38,7 @@ class LocationTransformer extends TransformerAbstract
         );
     }
 
-    public function includeDeliveryAreas(Location $location)
+    public function includeDeliveryAreas(Location $location): ?\League\Fractal\Resource\Collection
     {
         return $this->collection(
             $location->delivery_areas,
@@ -45,7 +47,7 @@ class LocationTransformer extends TransformerAbstract
         );
     }
 
-    public function includeReviews(Location $location)
+    public function includeReviews(Location $location): ?\League\Fractal\Resource\Collection
     {
         return $this->collection(
             $location->reviews,

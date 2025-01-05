@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\Models;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Database\Traits\HasPermalink;
 use Mockery;
 
-it('returns default action definition when no meta options are set', function() {
+it('returns default action definition when no meta options are set', function(): void {
     $resource = new class(['endpoint' => 'test-endpoint']) extends Resource
     {
         public function testGet()
@@ -19,14 +21,14 @@ it('returns default action definition when no meta options are set', function() 
     expect($result)->toBe($resource->testGet());
 });
 
-it('returns base endpoint attribute correctly', function() {
+it('returns base endpoint attribute correctly', function(): void {
     $resource = new Resource(['endpoint' => 'test-endpoint']);
     $result = $resource->getBaseEndpointAttribute(null);
 
     expect($result)->toBe('/api/test-endpoint');
 });
 
-it('returns controller attribute correctly', function() {
+it('returns controller attribute correctly', function(): void {
     $resource = Mockery::mock(Resource::class)->makePartial();
     $resource->shouldReceive('listRegisteredResources')->andReturn([
         'test-endpoint' => ['controller' => 'TestController'],
@@ -38,7 +40,7 @@ it('returns controller attribute correctly', function() {
     expect($result)->toBe('TestController');
 });
 
-it('syncs all resources correctly', function() {
+it('syncs all resources correctly', function(): void {
     Resource::factory()->create(['endpoint' => 'endpoint1', 'is_custom' => true]);
     Resource::factory()->create(['endpoint' => 'endpoint2']);
     Resource::clearInternalCache();
@@ -48,13 +50,13 @@ it('syncs all resources correctly', function() {
     expect(Resource::where('endpoint', 'endpoint2')->exists())->toBeFalse();
 });
 
-it('returns all resources keyed by endpoint', function() {
+it('returns all resources keyed by endpoint', function(): void {
     expect(Resource::getResources())->not->toBeEmpty();
 });
 
-it('lists all resources correctly', function() {
+it('lists all resources correctly', function(): void {
     Resource::clearInternalCache();
-    (new Resource)->registerCallback(function(Resource $resource) {
+    (new Resource)->registerCallback(function(Resource $resource): void {
         $resource->registerResources([
             'endpoint1' => ['controller' => 'TestController'],
             'endpoint2' => 'TestController',
@@ -65,7 +67,7 @@ it('lists all resources correctly', function() {
     Resource::clearInternalCache();
 });
 
-it('configures resource model correctly', function() {
+it('configures resource model correctly', function(): void {
     $resource = new Resource;
 
     expect(class_uses_recursive($resource))->toContain(HasPermalink::class)

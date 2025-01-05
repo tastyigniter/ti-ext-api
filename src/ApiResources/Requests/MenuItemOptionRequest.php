@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
@@ -19,7 +21,7 @@ class MenuItemOptionRequest extends FormRequest
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'menu_id' => ['nullable', 'integer'],

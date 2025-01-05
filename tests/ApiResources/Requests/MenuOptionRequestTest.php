@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources\Requests;
 
 use Igniter\Api\ApiResources\Requests\MenuOptionRequest;
 
-it('returns correct attribute labels', function() {
+it('returns correct attribute labels', function(): void {
     $request = new MenuOptionRequest();
 
     $attributes = $request->attributes();
@@ -21,7 +23,7 @@ it('returns correct attribute labels', function() {
         ->and($attributes)->toHaveKey('option_values.*.allergens.*', lang('igniter.cart::default.menus.label_allergens'));
 });
 
-it('returns correct validation rules', function() {
+it('returns correct validation rules', function(): void {
     $request = new MenuOptionRequest();
 
     $rules = $request->rules();

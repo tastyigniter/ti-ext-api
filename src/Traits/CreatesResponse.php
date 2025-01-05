@@ -1,17 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Traits;
 
 use Spatie\Fractal\Fractal;
 
 trait CreatesResponse
 {
-    /**
-     * Get the response factory instance.
-     *
-     * @return \Spatie\Fractal\Fractal
-     */
-    public function response()
+    public function response(): never
     {
         throw new \LogicException('Deprecated, use Fractal::create() or response()->json() instead');
     }

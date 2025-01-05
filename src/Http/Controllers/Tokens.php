@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Http\Controllers;
 
 use Igniter\Admin\Facades\AdminMenu;

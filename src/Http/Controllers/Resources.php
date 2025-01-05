@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Http\Controllers;
 
 use Igniter\Admin\Facades\AdminMenu;
@@ -52,7 +54,7 @@ class Resources extends \Igniter\Admin\Classes\AdminController
         AdminMenu::setContext('resources', 'tools');
     }
 
-    public function index()
+    public function index(): void
     {
         \Igniter\Api\Models\Resource::syncAll();
 

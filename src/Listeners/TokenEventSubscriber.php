@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Listeners;
 
 use Igniter\Api\Classes\ApiManager;
@@ -34,17 +36,16 @@ class TokenEventSubscriber
      * Register the listeners for the subscriber.
      *
      * @param \Illuminate\Events\Dispatcher $events
-     * @return void
      */
-    public function subscribe($events)
+    public function subscribe($events): void
     {
         $events->listen(
             TokenAuthenticated::class,
-            [$this, 'handleTokenAuthenticated'],
+            $this->handleTokenAuthenticated(...),
         );
     }
 
-    protected function checkGroup(mixed $group, mixed $token)
+    protected function checkGroup(mixed $group, mixed $token): bool
     {
         if ($group == 'guest') {
             return false;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Reservation\Models\DiningArea;
@@ -7,7 +9,7 @@ use Igniter\Reservation\Models\DiningTable;
 use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all dining tables', function() {
+it('returns all dining tables', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['tables:*']);
 
     $diningTable = DiningTable::first();
@@ -18,7 +20,7 @@ it('returns all dining tables', function() {
         ->assertJsonPath('data.0.attributes.name', $diningTable->name);
 });
 
-it('shows a dining table', function() {
+it('shows a dining table', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['tables:*']);
     $diningTable = DiningTable::first();
 
@@ -29,7 +31,7 @@ it('shows a dining table', function() {
         ->assertJsonPath('data.attributes.name', $diningTable->name);
 });
 
-it('creates a dining table', function() {
+it('creates a dining table', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['tables:*']);
 
     $this
@@ -45,7 +47,7 @@ it('creates a dining table', function() {
         ->assertJsonPath('data.attributes.name', 'Test Table');
 });
 
-it('updates a dining table', function() {
+it('updates a dining table', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['tables:*']);
     $diningTable = DiningTable::first();
 
@@ -61,7 +63,7 @@ it('updates a dining table', function() {
         ->assertJsonPath('data.attributes.name', 'Test Table updated');
 });
 
-it('deletes a dining table', function() {
+it('deletes a dining table', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['tables:*']);
     $diningTable = DiningTable::first();
 
@@ -71,4 +73,3 @@ it('deletes a dining table', function() {
 
     expect(DiningTable::find($diningTable->getKey()))->toBeNull();
 });
-

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Cart\Models\MenuItemOption;
@@ -8,7 +10,7 @@ use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all menu item options', function() {
+it('returns all menu item options', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
 
@@ -19,7 +21,7 @@ it('returns all menu item options', function() {
         ->assertJsonPath('data.0.attributes.option_name', $menuItemOption->option_name);
 });
 
-it('shows a menu item option', function() {
+it('shows a menu item option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
 
@@ -27,16 +29,16 @@ it('shows a menu item option', function() {
         ->get(route('igniter.api.menu_item_options.show', [$menuItemOption->getKey()]))
         ->assertOk()
         ->assertJsonPath('data.id', (string)$menuItemOption->getKey())
-        ->assertJson(fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
             ->has('data.attributes.option')
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('option_id', $menuItemOption->option->getKey())
                 ->etc(),
             )->etc(),
         );
 });
 
-it('shows a menu item option with menu_option_values relationship', function() {
+it('shows a menu item option with menu_option_values relationship', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
     $menuItemOption->menu_option_values()->create(['option_value_id' => 1]);
@@ -49,7 +51,7 @@ it('shows a menu item option with menu_option_values relationship', function() {
         ->assertJsonPath('data.relationships.menu_option_values.data.0.type', 'menu_option_values');
 });
 
-it('creates a menu item option', function() {
+it('creates a menu item option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
     $menuOption = MenuOption::first();
 
@@ -62,14 +64,14 @@ it('creates a menu item option', function() {
             ],
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('option_id', $menuOption->getKey())
                 ->etc(),
             ));
 });
 
-it('updates a menu item option', function() {
+it('updates a menu item option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
 
@@ -78,14 +80,14 @@ it('updates a menu item option', function() {
             'option_id' => $menuItemOption->option->getKey(),
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
                 ->where('option_id', $menuItemOption->option->getKey())
                 ->etc(),
             )->etc());
 });
 
-it('deletes a menu item option', function() {
+it('deletes a menu item option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
 

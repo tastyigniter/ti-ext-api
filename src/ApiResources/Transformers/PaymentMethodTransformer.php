@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -10,7 +12,7 @@ class PaymentMethodTransformer extends TransformerAbstract
 {
     use MergesIdAttribute;
 
-    public function transform(Payment $payment)
+    public function transform(Payment $payment): array
     {
         return [
             'id' => $payment->getKey(),

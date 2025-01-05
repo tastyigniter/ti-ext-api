@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\System\Models\Currency;
 use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all currencies', function() {
+it('returns all currencies', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['currencies:*']);
     $currency = Currency::listFrontEnd()->first();
 

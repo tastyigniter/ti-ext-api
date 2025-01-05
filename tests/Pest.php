@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Igniter\User\Models\User;
 
 uses(SamPoyigi\Testbench\TestCase::class)->in(__DIR__);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Api\Tests;
 
 use Igniter\Api\Extension;
@@ -11,7 +13,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use League\Fractal\Serializer\JsonApiSerializer;
 use Mockery;
 
-it('loads registered api resources', function() {
+it('loads registered api resources', function(): void {
     $resources = Resource::listRegisteredResources();
 
     expect($resources)
@@ -28,7 +30,7 @@ it('loads registered api resources', function() {
         ->toHaveKey('tables');
 });
 
-it('returns an array with the correct permission structure', function() {
+it('returns an array with the correct permission structure', function(): void {
     $result = (new Extension(app()))->registerPermissions();
 
     expect($result)->toBe([
@@ -39,11 +41,11 @@ it('returns an array with the correct permission structure', function() {
     ]);
 });
 
-it('returns the correct default serializer', function() {
+it('returns the correct default serializer', function(): void {
     expect(config('fractal.default_serializer'))->toBe(JsonApiSerializer::class);
 });
 
-it('creates access token using http', function($email, $isAdmin, $deviceName, $abilities) {
+it('creates access token using http', function($email, $isAdmin, $deviceName, $abilities): void {
     $attributes = [
         'email' => $email,
         'status' => 1,
@@ -69,7 +71,7 @@ it('creates access token using http', function($email, $isAdmin, $deviceName, $a
     ['customer@domain.tld', false, 'Test Device', ['*']],
 ]);
 
-it('creates access token using console command', function($email, $isAdmin, $deviceName, $abilities) {
+it('creates access token using console command', function($email, $isAdmin, $deviceName, $abilities): void {
     $attributes = [
         'email' => $email,
         'status' => 1,
@@ -91,12 +93,12 @@ it('creates access token using console command', function($email, $isAdmin, $dev
     ['customer@domain.tld', false, 'Test Device', ['*']],
 ]);
 
-it('configures rate limiting with user id', function() {
+it('configures rate limiting with user id', function(): void {
     $request = Mockery::mock(Request::class);
     $request->shouldReceive('user')->andReturn((object)['id' => 1]);
     $request->shouldReceive('ip')->andReturn('127.0.0.1');
 
-    RateLimiter::shouldReceive('for')->with('api', Mockery::on(function($callback) use ($request) {
+    RateLimiter::shouldReceive('for')->with('api', Mockery::on(function($callback) use ($request): true {
         $callback($request);
         return true;
     }))->andReturnSelf()->once();
