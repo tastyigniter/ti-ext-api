@@ -182,7 +182,7 @@ it('throws exception when model class is missing', function(): void {
 it('throws exception when model class does not exist', function(): void {
     $repository = new class extends AbstractRepository
     {
-        public $modelClass = 'NonExistentModel';
+        public ?string $modelClass = 'NonExistentModel';
     };
 
     expect(function() use ($repository): void {
@@ -193,7 +193,7 @@ it('throws exception when model class does not exist', function(): void {
 it('creates model instance when model class exists', function(): void {
     $repository = new class extends AbstractRepository
     {
-        public $modelClass = TestModel::class;
+        public ?string $modelClass = TestModel::class;
         protected $fillable = ['id', 'name'];
         protected $guarded = ['guarded'];
         protected $hidden = ['hidden'];
@@ -242,7 +242,7 @@ it('sets nested model attributes when attribute is nested', function(): void {
 it('applies location aware scope with absense constraint', function(): void {
     $repository = new class extends AbstractRepository
     {
-        protected $modelClass = Order::class;
+        protected ?string $modelClass = Order::class;
         protected static $locationAwareConfig = ['addAbsenceConstraint' => true];
     };
     $query = Mockery::mock(Builder::class);
@@ -262,7 +262,7 @@ it('applies location aware scope with absense constraint', function(): void {
 it('applies location aware scope without absense constraint', function(): void {
     $repository = new class extends AbstractRepository
     {
-        protected $modelClass = Order::class;
+        protected ?string $modelClass = Order::class;
         protected static $locationAwareConfig = ['addAbsenceConstraint' => false];
     };
     $query = Mockery::mock(Builder::class);
@@ -283,7 +283,7 @@ it('applies location aware scope without absense constraint', function(): void {
 it('does not apply location aware scope if config is not an array', function(): void {
     $repository = new class extends AbstractRepository
     {
-        protected $modelClass = Order::class;
+        protected ?string $modelClass = Order::class;
         protected static $locationAwareConfig;
     };
     $query = Mockery::mock(Builder::class);
@@ -296,7 +296,7 @@ it('does not apply location aware scope if config is not an array', function(): 
 it('does not apply location aware scope if model is not locationable', function(): void {
     $repository = new class extends AbstractRepository
     {
-        protected $modelClass = Order::class;
+        protected ?string $modelClass = Order::class;
         protected static $locationAwareConfig = ['addAbsenceConstraint' => true];
     };
     $query = Mockery::mock(Builder::class);
@@ -311,7 +311,7 @@ it('does not apply location aware scope if model is not locationable', function(
 it('does not apply location aware scope if user has no active locations', function(): void {
     $repository = new class extends AbstractRepository
     {
-        protected $modelClass = Order::class;
+        protected ?string $modelClass = Order::class;
         protected static $locationAwareConfig = ['addAbsenceConstraint' => true];
     };
     $query = Mockery::mock(Builder::class);

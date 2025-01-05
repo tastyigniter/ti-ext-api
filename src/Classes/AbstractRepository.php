@@ -10,6 +10,8 @@ use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
 use Igniter\User\Models\Customer;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model as IlluminateModel;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -19,12 +21,7 @@ class AbstractRepository
     use GuardsAttributes;
     use HasGlobalScopes;
 
-    /**
-     * The repository model.
-     *
-     * @var string
-     */
-    protected $modelClass;
+    protected ?string $modelClass = null;
 
     /**
      * @var array List of prepared models that require saving.
@@ -80,7 +77,7 @@ class AbstractRepository
         return $query->paginate($perPage, $page, $columns, $pageName);
     }
 
-    public function create(Model $model, array $attributes): Model
+    public function create(Model|IlluminateModel $model, array $attributes): Model|IlluminateModel
     {
         $this->fireSystemEvent('api.repository.beforeCreate', [$model, $attributes]);
 
@@ -96,7 +93,7 @@ class AbstractRepository
         });
 
         // Reload attributes
-        $model->reload();
+        $model->refresh();
 
         $this->fireSystemEvent('api.repository.afterCreate', [$model, true]);
 
@@ -143,20 +140,20 @@ class AbstractRepository
         return $model;
     }
 
-    public function getModelClass()
+    public function getModelClass(): string
     {
-        if (!strlen($modelClass = $this->modelClass)) {
+        if (is_null($this->modelClass)) {
             throw new SystemException('Missing model on '.static::class);
         }
 
-        return $modelClass;
+        return $this->modelClass;
     }
 
-    public function createModel(): Model
+    public function createModel(): Model|IlluminateModel
     {
         $modelClass = $this->getModelClass();
 
-        if (!class_exists('\\'.ltrim((string)$modelClass, '\\'))) {
+        if (!class_exists('\\'.ltrim($modelClass, '\\'))) {
             throw new SystemException("Class $modelClass does NOT exist!");
         }
 
@@ -209,8 +206,9 @@ class AbstractRepository
         });
     }
 
-    protected function prepareQuery($model)
+    protected function prepareQuery(Model|IlluminateModel $model)
     {
+        /** @var Builder $query */
         $query = $model->newQuery();
 
         $this->applyScopes($query);
@@ -226,9 +224,9 @@ class AbstractRepository
         return $query;
     }
 
-    protected function extendQuery($query) {}
+    protected function extendQuery(Builder $query) {}
 
-    protected function extendModel($model) {}
+    protected function extendModel(Model $model) {}
 
     protected function setModelAttributes($model, $saveData)
     {

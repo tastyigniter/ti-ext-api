@@ -9,7 +9,7 @@ use Igniter\Cart\Models\Order;
 
 class OrderRepository extends AbstractRepository
 {
-    protected $modelClass = Order::class;
+    protected ?string $modelClass = Order::class;
 
     protected static $locationAwareConfig = [];
 

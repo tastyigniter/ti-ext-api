@@ -20,7 +20,7 @@ class ResourceException extends HttpException
      */
     public function __construct(
         ?string $message = null,
-        null|string|array $errors = '',
+        null|array|MessageBag $errors = null,
         ?Throwable $previous = null,
         array $headers = [],
         int $code = 0,

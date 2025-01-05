@@ -22,11 +22,11 @@ use Igniter\System\Classes\ExtensionManager;
  * @property bool $is_custom
  * @property-read mixed $base_endpoint
  * @property-read mixed $controller
- * @method static \Igniter\Flame\Database\Builder<static>|Resource dropdown(string $column, string $key = null)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource findSimilarSlugs($attribute, array $config, $slug)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource lists(string $column, string $key = null)
- * @method static \Igniter\Flame\Database\Builder<static>|Resource query()
- * @method static \Igniter\Flame\Database\Builder<static>|Resource search(string $term, string $columns = [], string $mode = 'all')
+ * @method static \Igniter\Flame\Database\Builder|Resource dropdown(string $column, string $key = null)
+ * @method static \Igniter\Flame\Database\Builder|Resource findSimilarSlugs($attribute, array $config, $slug)
+ * @method static \Igniter\Flame\Database\Builder|Resource lists(string $column, string $key = null)
+ * @method static \Igniter\Flame\Database\Builder|Resource query()
+ * @method static \Igniter\Flame\Database\Builder|Resource search(string $term, string $columns = [], string $mode = 'all')
  * @mixin \Igniter\Flame\Database\Model
  */
 class Resource extends Model

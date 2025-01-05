@@ -21,11 +21,12 @@
     "tastyigniter/ti-ext-user": "^v4.0@beta || ^v4.0@dev"
   },
   "require-dev": {
-    "laravel/pint": "^1.2",
     "larastan/larastan": "^3.0",
+    "laravel/pint": "^1.2",
+    "pestphp/pest-plugin-laravel": "^3.0",
+    "pestphp/pest-plugin-type-coverage": "3.x-dev",
     "rector/rector": "^2.0",
-    "sampoyigi/testbench": "dev-main as 1.0",
-    "pestphp/pest-plugin-laravel": "^3.0"
+    "sampoyigi/testbench": "dev-main as 1.0"
   },
   "autoload": {
     "psr-4": {

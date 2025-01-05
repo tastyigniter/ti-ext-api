@@ -46,7 +46,7 @@ class OrderRequest extends FormRequest
             'is_processed' => ['integer'],
         ];
 
-        if (strtolower($this->method()) == 'post') {
+        if (strtolower($this->method()) === 'post') {
             $rules['first_name'][] = 'required';
             $rules['last_name'][] = 'required';
             $rules['order_type'][] = 'required';

@@ -1,261 +1,319 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Category\\:\\:\\$locations\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Category\:\:\$locations\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/CategoryTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Category\\:\\:\\$menus\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Category\:\:\$menus\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/CategoryTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\User\\\\Models\\\\Customer\\:\\:\\$addresses\\.$#"
+			message: '#^Access to an undefined property Igniter\\User\\Models\\Customer\:\:\$addresses\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/CustomerTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\User\\\\Models\\\\Customer\\:\\:\\$orders\\.$#"
+			message: '#^Access to an undefined property Igniter\\User\\Models\\Customer\:\:\$orders\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/CustomerTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\User\\\\Models\\\\Customer\\:\\:\\$reservations\\.$#"
+			message: '#^Access to an undefined property Igniter\\User\\Models\\Customer\:\:\$reservations\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/CustomerTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Location\\:\\:\\$delivery_areas\\.$#"
+			message: '#^Access to an undefined property Igniter\\Local\\Models\\Location\:\:\$delivery_areas\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Location\\:\\:\\$reviews\\.$#"
+			message: '#^Access to an undefined property Igniter\\Local\\Models\\Location\:\:\$reviews\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Location\\:\\:\\$working_hours\\.$#"
+			message: '#^Access to an undefined property Igniter\\Local\\Models\\Location\:\:\$working_hours\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$menu_option_values\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\MenuItemOption\:\:\$menu_option_values\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuItemOption\\:\\:\\$option\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\MenuItemOption\:\:\$option\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\MenuOption\\:\\:\\$option_values\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\MenuOption\:\:\$option_values\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuOptionTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$categories\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$categories\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$ingredients\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$ingredients\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$mealtimes\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$mealtimes\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$menu_options\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$menu_options\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:\\$stocks\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$stocks\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$address\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$address\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$assignee\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$assignee\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$assignee_group\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$assignee_group\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$customer\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$customer\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$location\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$location\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$payment_method\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$payment_method\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$status\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$status\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$status_history\\.$#"
+			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$status_history\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$assignee\\.$#"
+			message: '#^Access to an undefined property Igniter\\Reservation\\Models\\Reservation\:\:\$assignee\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$assignee_group\\.$#"
+			message: '#^Access to an undefined property Igniter\\Reservation\\Models\\Reservation\:\:\$assignee_group\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Reservation\\\\Models\\\\Reservation\\:\\:\\$status_history\\.$#"
+			message: '#^Access to an undefined property Igniter\\Reservation\\Models\\Reservation\:\:\$status_history\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Review\\:\\:\\$customer\\.$#"
+			message: '#^Access to an undefined property Igniter\\Local\\Models\\Review\:\:\$customer\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Local\\\\Models\\\\Review\\:\\:\\$location\\.$#"
+			message: '#^Access to an undefined property Igniter\\Local\\Models\\Review\:\:\$location\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Support\\\\Optional\\:\\:\\$id\\.$#"
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Igniter\\Api\\Models\\Resource\>\:\:mapWithKeys\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: src/Classes/ApiManager.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Optional\:\:\$id\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Extension.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:\\$restConfig\\.$#"
+			message: '#^Access to an undefined property Igniter\\Api\\Classes\\ApiController\:\:\$restConfig\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restAfterCreate\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restAfterCreate\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restAfterDelete\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restAfterDelete\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restAfterSave\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restAfterSave\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restAfterUpdate\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restAfterUpdate\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restBeforeCreate\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restBeforeCreate\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restBeforeSave\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restBeforeSave\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restExtendQuery\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restExtendQuery\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restValidate\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restValidate\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Api\\\\Classes\\\\ApiController\\:\\:restValidateQuery\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Api\\Classes\\ApiController\:\:restValidateQuery\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$device_name\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$device_name\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Http/Controllers/CreateToken.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$email\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$email\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Http/Controllers/CreateToken.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Http\\\\Request\\:\\:\\$password\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$password\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Http/Controllers/CreateToken.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Support\\\\Optional\\:\\:\\$tokenable\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Support\\Optional\:\:\$tokenable\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Listeners/TokenEventSubscriber.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$description\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$endpoint\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$endpoint\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$is_custom\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_custom\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$meta\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$name\\.$#"
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Api\\\\Models\\\\Resource\\:\\:where\\(\\)\\.$#"
+			message: '#^Call to an undefined static method Igniter\\Api\\Models\\Resource\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
 			count: 3
 			path: src/Models/Resource.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Flame\\\\Database\\\\Model\\:\\:tokens\\(\\)\\.$#"
+			message: '#^Call to an undefined method Igniter\\Flame\\Database\\Model\:\:tokens\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Models/Token.php

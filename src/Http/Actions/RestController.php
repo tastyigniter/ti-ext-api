@@ -11,6 +11,7 @@ use Igniter\Api\Exceptions\ValidationHttpException;
 use Igniter\Api\Traits\RestExtendable;
 use Igniter\Flame\Database\Model;
 use Igniter\System\Classes\ControllerAction;
+use Illuminate\Database\Eloquent\Model as IlluminateModel;
 use Illuminate\Validation\ValidationException;
 use League\Fractal\TransformerAbstract;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class RestController extends ControllerAction
     use FormModelWidget;
     use RestExtendable;
 
-    protected ?Model $model = null;
+    protected null|Model|IlluminateModel $model = null;
 
     protected array $requiredProperties = ['restConfig'];
 
@@ -162,7 +163,7 @@ class RestController extends ControllerAction
         $requestData = request()->$requestMethod();
 
         try {
-            if ($requestMethod == 'query') {
+            if ($requestMethod === 'query') {
                 return $this->controller->restValidateQuery($requestData);
             }
 

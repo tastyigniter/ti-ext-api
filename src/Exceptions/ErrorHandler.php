@@ -31,7 +31,7 @@ class ErrorHandler
         protected $debug,
     ) {
         if (method_exists($this->parentHandler, 'renderable')) {
-            $this->parentHandler->renderable(fn(Throwable $ex) => $this->render(request(), $ex));
+            $this->parentHandler->renderable(fn(Throwable $ex): ?Response => $this->render(request(), $ex));
         }
     }
 
@@ -39,12 +39,11 @@ class ErrorHandler
      * Render an exception into an HTTP response.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response|void
      */
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $e): ?Response
     {
         if (!$request->routeIs('igniter.api.*')) {
-            return;
+            return null;
         }
 
         // Convert Eloquent's 500 ModelNotFoundException into a 404 NotFoundHttpException
@@ -116,8 +115,9 @@ class ErrorHandler
     protected function prepareReplacements(Throwable $exception): array
     {
         $statusCode = $this->getStatusCode($exception);
+        $message = $exception->getMessage();
 
-        if (!$message = $exception->getMessage()) {
+        if ($message === '' || $message === '0') {
             $message = sprintf('%d %s', $statusCode, Response::$statusTexts[$statusCode]);
         }
 

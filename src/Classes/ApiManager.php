@@ -6,6 +6,7 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Support\Facades\Igniter;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -51,7 +52,7 @@ class ApiManager
     {
         Resource::syncAll();
 
-        $resources = Resource::all()->mapWithKeys(function($resource) {
+        $resources = Resource::all()->mapWithKeys(function(Resource $resource) {
             $resourceObj = (object)[
                 'endpoint' => $resource->endpoint,
                 'controller' => $resource->controller,
@@ -75,7 +76,7 @@ class ApiManager
         Route::middleware(config('igniter.api.middleware'))
             ->as('igniter.api.')
             ->prefix(config('igniter.api.prefix'))
-            ->group(function($router): void {
+            ->group(function(Router $router): void {
                 foreach (resolve(static::class)->getResources() as $endpoint => $resourceObj) {
                     if (!class_exists($resourceObj->controller)) {
                         continue;

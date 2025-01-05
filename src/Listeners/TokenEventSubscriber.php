@@ -54,12 +54,7 @@ class TokenEventSubscriber
         if ($group == 'admin' && !$token->isForAdmin()) {
             return false;
         }
-
-        if ($group == 'customer' && $token->isForAdmin()) {
-            return false;
-        }
-
-        return true;
+        return !($group == 'customer' && $token->isForAdmin());
     }
 
     protected function getAllowedGroup(Route $route)

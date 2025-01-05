@@ -6,6 +6,9 @@ namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Cart\Models\Category;
+use Igniter\Flame\Database\Attach\Media;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
 
 class CategoryTransformer extends TransformerAbstract
@@ -23,17 +26,18 @@ class CategoryTransformer extends TransformerAbstract
         return $this->mergesIdAttribute($category);
     }
 
-    public function includeMedia(Category $category): ?\League\Fractal\Resource\Item
+    public function includeMedia(Category $category): ?Item
     {
-        return ($thumb = $category->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
+        $thumb = $category->getFirstMedia();
+        return ($thumb instanceof Media) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
-    public function includeMenus(Category $category): ?\League\Fractal\Resource\Collection
+    public function includeMenus(Category $category): ?Collection
     {
         return $this->collection($category->menus, new MenuTransformer, 'menus');
     }
 
-    public function includeLocations(Category $category): ?\League\Fractal\Resource\Collection
+    public function includeLocations(Category $category): ?Collection
     {
         return $this->collection($category->locations, new LocationTransformer, 'locations');
     }

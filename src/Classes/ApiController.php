@@ -78,7 +78,7 @@ class ApiController extends Extendable
         return (new \ReflectionMethod($this, $action))->isPublic();
     }
 
-    protected function authorizeToken()
+    protected function authorizeToken(): void
     {
         if (!$ability = $this->getAbilities()) {
             return;

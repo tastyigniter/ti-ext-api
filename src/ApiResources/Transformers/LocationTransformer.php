@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
+use Igniter\Flame\Database\Attach\Media;
 use Igniter\Local\Models\Location;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
 
 class LocationTransformer extends TransformerAbstract
@@ -24,12 +27,13 @@ class LocationTransformer extends TransformerAbstract
         return $this->mergesIdAttribute($location);
     }
 
-    public function includeMedia(Location $location): ?\League\Fractal\Resource\Item
+    public function includeMedia(Location $location): ?Item
     {
-        return ($thumb = $location->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
+        $thumb = $location->getFirstMedia();
+        return ($thumb instanceof Media) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
-    public function includeWorkingHours(Location $location): ?\League\Fractal\Resource\Collection
+    public function includeWorkingHours(Location $location): ?Collection
     {
         return $this->collection(
             $location->working_hours,
@@ -38,7 +42,7 @@ class LocationTransformer extends TransformerAbstract
         );
     }
 
-    public function includeDeliveryAreas(Location $location): ?\League\Fractal\Resource\Collection
+    public function includeDeliveryAreas(Location $location): ?Collection
     {
         return $this->collection(
             $location->delivery_areas,
@@ -47,7 +51,7 @@ class LocationTransformer extends TransformerAbstract
         );
     }
 
-    public function includeReviews(Location $location): ?\League\Fractal\Resource\Collection
+    public function includeReviews(Location $location): ?Collection
     {
         return $this->collection(
             $location->reviews,

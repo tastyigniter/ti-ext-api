@@ -9,7 +9,7 @@ use Igniter\User\Models\Customer;
 
 class CustomerRepository extends AbstractRepository
 {
-    protected $modelClass = Customer::class;
+    protected ?string $modelClass = Customer::class;
 
     protected static $customerAwareConfig = [];
 }

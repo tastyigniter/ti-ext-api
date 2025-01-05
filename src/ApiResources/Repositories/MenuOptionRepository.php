@@ -9,7 +9,7 @@ use Igniter\Cart\Models\MenuOption;
 
 class MenuOptionRepository extends AbstractRepository
 {
-    protected $modelClass = MenuOption::class;
+    protected ?string $modelClass = MenuOption::class;
 
     protected static $locationAwareConfig = [];
 }

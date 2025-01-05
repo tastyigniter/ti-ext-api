@@ -9,7 +9,7 @@ use Igniter\Cart\Models\Category;
 
 class CategoryRepository extends AbstractRepository
 {
-    protected $modelClass = Category::class;
+    protected ?string $modelClass = Category::class;
 
     protected static $locationAwareConfig = [];
 }

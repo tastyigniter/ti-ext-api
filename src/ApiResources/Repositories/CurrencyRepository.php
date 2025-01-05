@@ -9,5 +9,5 @@ use Igniter\System\Models\Currency;
 
 class CurrencyRepository extends AbstractRepository
 {
-    protected $modelClass = Currency::class;
+    protected ?string $modelClass = Currency::class;
 }

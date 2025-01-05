@@ -9,7 +9,7 @@ use Igniter\Reservation\Models\Reservation;
 
 class ReservationRepository extends AbstractRepository
 {
-    protected $modelClass = Reservation::class;
+    protected ?string $modelClass = Reservation::class;
 
     protected static $locationAwareConfig = [];
 

@@ -6,6 +6,9 @@ namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Cart\Models\Menu;
+use Igniter\Flame\Database\Attach\Media;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
 
 class MenuTransformer extends TransformerAbstract
@@ -28,12 +31,13 @@ class MenuTransformer extends TransformerAbstract
         ]);
     }
 
-    public function includeMedia(Menu $menuItem): ?\League\Fractal\Resource\Item
+    public function includeMedia(Menu $menuItem): ?Item
     {
-        return ($thumb = $menuItem->getFirstMedia()) ? $this->item($thumb, new MediaTransformer, 'media') : null;
+        $thumb = $menuItem->getFirstMedia();
+        return ($thumb instanceof Media) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 
-    public function includeCategories(Menu $menuItem): ?\League\Fractal\Resource\Collection
+    public function includeCategories(Menu $menuItem): ?Collection
     {
         return $this->collection(
             $menuItem->categories,
@@ -42,7 +46,7 @@ class MenuTransformer extends TransformerAbstract
         );
     }
 
-    public function includeMenuOptions(Menu $menuItem): ?\League\Fractal\Resource\Collection
+    public function includeMenuOptions(Menu $menuItem): ?Collection
     {
         return $this->collection(
             $menuItem->menu_options,
@@ -51,7 +55,7 @@ class MenuTransformer extends TransformerAbstract
         );
     }
 
-    public function includeIngredients(Menu $menuItem): ?\League\Fractal\Resource\Collection
+    public function includeIngredients(Menu $menuItem): ?Collection
     {
         return $this->collection(
             $menuItem->ingredients,
@@ -60,7 +64,7 @@ class MenuTransformer extends TransformerAbstract
         );
     }
 
-    public function includeMealtimes(Menu $menuItem): ?\League\Fractal\Resource\Collection
+    public function includeMealtimes(Menu $menuItem): ?Collection
     {
         return $this->collection(
             $menuItem->mealtimes,
@@ -69,7 +73,7 @@ class MenuTransformer extends TransformerAbstract
         );
     }
 
-    public function includeStocks(Menu $menuItem): ?\League\Fractal\Resource\Collection
+    public function includeStocks(Menu $menuItem): ?Collection
     {
         return $this->collection(
             $menuItem->stocks,

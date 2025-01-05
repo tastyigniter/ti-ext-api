@@ -9,7 +9,7 @@ use Igniter\Reservation\Models\DiningTable;
 
 class DiningTableRepository extends AbstractRepository
 {
-    protected $modelClass = DiningTable::class;
+    protected ?string $modelClass = DiningTable::class;
 
     protected static $locationAwareConfig = [];
 }

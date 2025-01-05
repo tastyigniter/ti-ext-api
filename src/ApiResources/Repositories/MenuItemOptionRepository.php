@@ -9,7 +9,7 @@ use Igniter\Cart\Models\MenuItemOption;
 
 class MenuItemOptionRepository extends AbstractRepository
 {
-    protected $modelClass = MenuItemOption::class;
+    protected ?string $modelClass = MenuItemOption::class;
 
     protected $fillable = ['menu_option_values'];
 }

@@ -185,7 +185,7 @@ use Author\Extension\Models\Menu;
 
 class MenuRepository extends AbstractRepository
 {
-    protected string $modelClass = Menu::class;
+    protected ?string $modelClass = Menu::class;
 }
 ```
 

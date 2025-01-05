@@ -82,6 +82,7 @@ trait GuardsAttributes
         if ($this->hasGetMutator($key)) {
             return $this->mutateAttribute($key, $value);
         }
+        return null;
     }
 
     /**
