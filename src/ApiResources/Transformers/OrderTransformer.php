@@ -6,6 +6,7 @@ namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Cart\Models\Order;
+use Igniter\Flame\Currency\Facades\Currency;
 use League\Fractal\TransformerAbstract;
 
 class OrderTransformer extends TransformerAbstract
@@ -26,7 +27,7 @@ class OrderTransformer extends TransformerAbstract
     public function transform(Order $order): array
     {
         return $this->mergesIdAttribute($order, [
-            'currency' => app('currency')->getDefault()->currency_code,
+            'currency' => Currency::getDefault()->currency_code,
             'order_totals' => $order->getOrderTotals(),
             'order_menus' => $order->getOrderMenusWithOptions(),
         ]);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Cart\Models\MenuItemOptionValue;
+use Igniter\Flame\Currency\Facades\Currency;
 use League\Fractal\TransformerAbstract;
 
 class MenuItemOptionValueTransformer extends TransformerAbstract
@@ -17,7 +18,7 @@ class MenuItemOptionValueTransformer extends TransformerAbstract
 
         return array_merge($menuItemOptionValue, [
             'id' => $menuItemOptionValue['menu_option_value_id'],
-            'currency' => app('currency')->getDefault()->currency_code,
+            'currency' => Currency::getDefault()->currency_code,
         ]);
     }
 }

@@ -6,6 +6,7 @@ namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Cart\Models\Menu;
+use Igniter\Flame\Currency\Facades\Currency;
 use Igniter\Flame\Database\Attach\Media;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
@@ -27,7 +28,7 @@ class MenuTransformer extends TransformerAbstract
     public function transform(Menu $menuItem): array
     {
         return $this->mergesIdAttribute($menuItem, [
-            'currency' => app('currency')->getDefault()->currency_code,
+            'currency' => Currency::getDefault()->currency_code,
         ]);
     }
 
