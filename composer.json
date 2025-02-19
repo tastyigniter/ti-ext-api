@@ -55,7 +55,13 @@
     "test-coverage": "vendor/bin/pest --coverage --exactly=100 --compact",
     "type-coverage": "vendor/bin/pest --type-coverage --min=100",
     "format": "vendor/bin/pint",
-    "static": "vendor/bin/phpstan analyse --ansi --memory-limit 1056M"
+    "refactor": "vendor/bin/rector process --dry-run",
+    "static": "vendor/bin/phpstan analyse --ansi --memory-limit 1056M",
+    "test-suite": [
+      "@refactor",
+      "@static",
+      "@test-coverage"
+    ]
   },
   "config": {
     "allow-plugins": {
