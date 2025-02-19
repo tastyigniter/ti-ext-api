@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         php: [ '8.2', '8.3' ]
-    uses: tastyigniter/workflows/.github/workflows/php-tests.yml@main
+    uses: tastyigniter/workflows/.github/workflows/php-tests-rector.yml@main
     with:
       php-version: ${{ matrix.target }}
       composer: update --no-interaction --no-progress

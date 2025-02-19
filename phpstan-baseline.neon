@@ -61,8 +61,8 @@ parameters:
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
 
 		-
-			message: '#^Call to an undefined static method Igniter\\Flame\\Currency\\Facades\\Currency\:\:getDefault\(\)\.$#'
-			identifier: staticMethod.notFound
+			message: '#^Access to an undefined property Igniter\\Flame\\Currency\\Contracts\\CurrencyInterface\:\:\$currency_code\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionValueTransformer.php
 
@@ -73,8 +73,8 @@ parameters:
 			path: src/ApiResources/Transformers/MenuOptionTransformer.php
 
 		-
-			message: '#^Call to an undefined static method Igniter\\Flame\\Currency\\Facades\\Currency\:\:getDefault\(\)\.$#'
-			identifier: staticMethod.notFound
+			message: '#^Access to an undefined property Igniter\\Flame\\Currency\\Contracts\\CurrencyInterface\:\:\$currency_code\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuOptionValueTransformer.php
 
@@ -109,8 +109,8 @@ parameters:
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: '#^Call to an undefined static method Igniter\\Flame\\Currency\\Facades\\Currency\:\:getDefault\(\)\.$#'
-			identifier: staticMethod.notFound
+			message: '#^Access to an undefined property Igniter\\Flame\\Currency\\Contracts\\CurrencyInterface\:\:\$currency_code\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
@@ -163,8 +163,8 @@ parameters:
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
-			message: '#^Call to an undefined static method Igniter\\Flame\\Currency\\Facades\\Currency\:\:getDefault\(\)\.$#'
-			identifier: staticMethod.notFound
+			message: '#^Access to an undefined property Igniter\\Flame\\Currency\\Contracts\\CurrencyInterface\:\:\$currency_code\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
