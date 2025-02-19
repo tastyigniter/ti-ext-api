@@ -74,7 +74,7 @@ class AbstractRepository
         $model = $this->createModel();
         $query = $this->prepareQuery($model);
 
-        return $query->paginate($perPage, $page, $columns, $pageName);
+        return $query->paginate($perPage, $columns, $pageName, $page);
     }
 
     public function create(Model|IlluminateModel $model, array $attributes): Model|IlluminateModel

@@ -61,10 +61,22 @@ parameters:
 			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
 
 		-
+			message: '#^Call to an undefined static method Igniter\\Flame\\Currency\\Facades\\Currency\:\:getDefault\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/ApiResources/Transformers/MenuItemOptionValueTransformer.php
+
+		-
 			message: '#^Access to an undefined property Igniter\\Cart\\Models\\MenuOption\:\:\$option_values\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuOptionTransformer.php
+
+		-
+			message: '#^Call to an undefined static method Igniter\\Flame\\Currency\\Facades\\Currency\:\:getDefault\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/ApiResources/Transformers/MenuOptionValueTransformer.php
 
 		-
 			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$categories\.$#'
@@ -93,6 +105,12 @@ parameters:
 		-
 			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$stocks\.$#'
 			identifier: property.notFound
+			count: 1
+			path: src/ApiResources/Transformers/MenuTransformer.php
+
+		-
+			message: '#^Call to an undefined static method Igniter\\Flame\\Currency\\Facades\\Currency\:\:getDefault\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
@@ -145,6 +163,12 @@ parameters:
 			path: src/ApiResources/Transformers/OrderTransformer.php
 
 		-
+			message: '#^Call to an undefined static method Igniter\\Flame\\Currency\\Facades\\Currency\:\:getDefault\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/ApiResources/Transformers/OrderTransformer.php
+
+		-
 			message: '#^Access to an undefined property Igniter\\Reservation\\Models\\Reservation\:\:\$assignee\.$#'
 			identifier: property.notFound
 			count: 1
@@ -183,6 +207,12 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Support\\Optional\:\:\$id\.$#'
 			identifier: property.notFound
+			count: 1
+			path: src/Extension.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Http\\Kernel\:\:prependToMiddlewarePriority\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Extension.php
 

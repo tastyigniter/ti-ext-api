@@ -11,6 +11,7 @@ use Igniter\Flame\Database\Builder;
 use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\User\Models\Customer;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Mockery;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -88,11 +89,11 @@ it('paginates results with default parameters', function(): void {
     $builder = Mockery::mock(Builder::class);
     $this->repository->shouldReceive('createModel')->andReturn($this->model);
     $this->repository->shouldReceive('prepareQuery')->andReturn($builder);
-    $builder->shouldReceive('paginate')->with(null, null, ['*'], 'page')->andReturn('paginated_result');
+    $builder->shouldReceive('paginate')->with(null, ['*'], 'page', null);
 
     $result = $this->repository->paginate();
 
-    expect($result)->toBe('paginated_result');
+    expect($result)->toBeInstanceOf(LengthAwarePaginator::class);
 });
 
 it('paginates results with custom parameters', function(): void {
@@ -102,11 +103,11 @@ it('paginates results with custom parameters', function(): void {
 
     $repository->shouldReceive('createModel')->andReturn($model);
     $repository->shouldReceive('prepareQuery')->with($model)->andReturn($query);
-    $query->shouldReceive('paginate')->with(10, 2, ['id', 'name'], 'custom_page')->andReturn('paginated_result');
+    $query->shouldReceive('paginate')->with(10, ['id', 'name'], 'custom_page', 2);
 
     $result = $repository->paginate(10, 2, 'custom_page', ['id', 'name']);
 
-    expect($result)->toBe('paginated_result');
+    expect($result)->toBeInstanceOf(LengthAwarePaginator::class);
 });
 
 it('creates a new record', function(): void {
