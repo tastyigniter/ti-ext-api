@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNewArrayRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
@@ -12,6 +13,7 @@ return RectorConfig::configure()
         DeclareStrictTypesRector::class,
     ])
     ->withSkip([
+        CatchExceptionNameMatchingTypeRector::class,
         ReturnTypeFromStrictNewArrayRector::class,
     ])
     ->withPreparedSets(
