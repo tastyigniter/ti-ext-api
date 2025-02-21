@@ -195,9 +195,13 @@ it('creates model instance when model class exists', function(): void {
     $repository = new class extends AbstractRepository
     {
         public ?string $modelClass = TestModel::class;
+
         protected $fillable = ['id', 'name'];
+
         protected $guarded = ['guarded'];
+
         protected $hidden = ['hidden'];
+
         protected $visible = ['visible'];
 
         protected function afterCreate(): void {}
@@ -244,6 +248,7 @@ it('applies location aware scope with absense constraint', function(): void {
     $repository = new class extends AbstractRepository
     {
         protected ?string $modelClass = Order::class;
+
         protected static $locationAwareConfig = ['addAbsenceConstraint' => true];
     };
     $query = Mockery::mock(Builder::class);
@@ -264,6 +269,7 @@ it('applies location aware scope without absense constraint', function(): void {
     $repository = new class extends AbstractRepository
     {
         protected ?string $modelClass = Order::class;
+
         protected static $locationAwareConfig = ['addAbsenceConstraint' => false];
     };
     $query = Mockery::mock(Builder::class);
@@ -285,6 +291,7 @@ it('does not apply location aware scope if config is not an array', function(): 
     $repository = new class extends AbstractRepository
     {
         protected ?string $modelClass = Order::class;
+
         protected static $locationAwareConfig;
     };
     $query = Mockery::mock(Builder::class);
@@ -298,6 +305,7 @@ it('does not apply location aware scope if model is not locationable', function(
     $repository = new class extends AbstractRepository
     {
         protected ?string $modelClass = Order::class;
+
         protected static $locationAwareConfig = ['addAbsenceConstraint' => true];
     };
     $query = Mockery::mock(Builder::class);
@@ -313,6 +321,7 @@ it('does not apply location aware scope if user has no active locations', functi
     $repository = new class extends AbstractRepository
     {
         protected ?string $modelClass = Order::class;
+
         protected static $locationAwareConfig = ['addAbsenceConstraint' => true];
     };
     $query = Mockery::mock(Builder::class);

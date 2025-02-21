@@ -11,6 +11,7 @@ function callProtectedMethod(object $condition, string $methodName, array $args 
     $reflection = new ReflectionClass($condition);
     $method = $reflection->getMethod($methodName);
     $method->setAccessible(true);
+
     return $method->invokeArgs($condition, $args);
 }
 

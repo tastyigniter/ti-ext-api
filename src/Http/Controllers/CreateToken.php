@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Igniter\Api\Http\Controllers;
 
 use Igniter\Api\Models\Token;
+use Igniter\User\Auth\CustomerGuard;
+use Igniter\User\Auth\UserGuard;
+use Igniter\User\Models\Customer;
+use Igniter\User\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
@@ -29,7 +33,9 @@ class CreateToken extends Controller
             'password' => $request->password,
         ];
 
+        /** @var CustomerGuard|UserGuard $auth */
         $auth = app($forAdmin ? 'admin.auth' : 'main.auth');
+        /** @var null|Customer|User $user */
         $user = $auth->getByCredentials($credentials);
 
         if (!$user || !$auth->validateCredentials($user, $credentials)) {

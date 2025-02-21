@@ -35,7 +35,7 @@ it('renders generic response for non-API route', function(): void {
 
 it('renders 404 response for ModelNotFoundException', function(): void {
     $this->request->shouldReceive('routeIs')->with('igniter.api.*')->andReturn(true);
-    $exception = new ModelNotFoundException();
+    $exception = new ModelNotFoundException;
 
     $response = $this->errorHandler->render($this->request, $exception);
 

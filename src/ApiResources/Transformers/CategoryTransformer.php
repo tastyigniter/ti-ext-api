@@ -29,6 +29,7 @@ class CategoryTransformer extends TransformerAbstract
     public function includeMedia(Category $category): ?Item
     {
         $thumb = $category->getFirstMedia();
+
         return ($thumb instanceof Media) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 

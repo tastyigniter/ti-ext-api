@@ -44,8 +44,8 @@ it('shows a menu option with option_values relationship', function(): void {
 
     $this
         ->get(route('igniter.api.menu_options.show', [$menuOption->getKey()]).'?'.http_build_query([
-                'include' => 'option_values',
-            ]))
+            'include' => 'option_values',
+        ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.option_values.data.0.type', 'option_values')
         ->assertJsonPath('included.3.id', (string)$menuOptionValue->getKey())

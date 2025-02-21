@@ -30,6 +30,7 @@ class ErrorHandler
         protected array $format,
         protected $debug,
     ) {
+        // @phpstan-ignore-next-line function.alreadyNarrowedType
         if (method_exists($this->parentHandler, 'renderable')) {
             $this->parentHandler->renderable(fn(Throwable $ex): ?Response => $this->render(request(), $ex));
         }

@@ -23,7 +23,7 @@ it('creates a new personal access token for the user', function(): void {
 });
 
 it('determines if the token belongs to an admin', function(): void {
-    $token = new Token();
+    $token = new Token;
     $token->tokenable_type = User::make()->getMorphClass();
 
     $result = $token->isForAdmin();
@@ -32,7 +32,7 @@ it('determines if the token belongs to an admin', function(): void {
 });
 
 it('determines if the token belongs to a customer', function(): void {
-    $token = new Token();
+    $token = new Token;
     $token->tokenable_type = Customer::make()->getMorphClass();
 
     $result = $token->isForCustomer();
@@ -41,7 +41,7 @@ it('determines if the token belongs to a customer', function(): void {
 });
 
 it('configures token model correctly', function(): void {
-    $token = new Token();
+    $token = new Token;
 
     expect($token->getTable())->toBe('igniter_api_access_tokens');
 });

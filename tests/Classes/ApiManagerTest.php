@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Schema;
 use Mockery;
 
 beforeEach(function(): void {
-    $this->apiManager = new ApiManager();
+    $this->apiManager = new ApiManager;
 });
 
 it('returns resources when they are loaded', function(): void {

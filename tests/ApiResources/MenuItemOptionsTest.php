@@ -45,8 +45,8 @@ it('shows a menu item option with menu_option_values relationship', function(): 
 
     $this
         ->get(route('igniter.api.menu_item_options.show', [$menuItemOption->getKey()]).'?'.http_build_query([
-                'include' => 'menu_option_values',
-            ]))
+            'include' => 'menu_option_values',
+        ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.menu_option_values.data.0.type', 'menu_option_values');
 });

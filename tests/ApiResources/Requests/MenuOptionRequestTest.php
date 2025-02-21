@@ -7,7 +7,7 @@ namespace Igniter\Api\Tests\ApiResources\Requests;
 use Igniter\Api\ApiResources\Requests\MenuOptionRequest;
 
 it('returns correct attribute labels', function(): void {
-    $request = new MenuOptionRequest();
+    $request = new MenuOptionRequest;
 
     $attributes = $request->attributes();
 
@@ -24,7 +24,7 @@ it('returns correct attribute labels', function(): void {
 });
 
 it('returns correct validation rules', function(): void {
-    $request = new MenuOptionRequest();
+    $request = new MenuOptionRequest;
 
     $rules = $request->rules();
 

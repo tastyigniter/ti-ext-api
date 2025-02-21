@@ -7,7 +7,7 @@ namespace Igniter\Api\Tests\ApiResources\Requests;
 use Igniter\Api\ApiResources\Requests\OrderRequest;
 
 it('returns correct attribute labels', function(): void {
-    $request = new OrderRequest();
+    $request = new OrderRequest;
 
     $attributes = $request->attributes();
 
@@ -28,7 +28,7 @@ it('returns correct attribute labels', function(): void {
 });
 
 it('returns correct validation rules', function(): void {
-    $request = new OrderRequest();
+    $request = new OrderRequest;
     $request->setMethod('POST');
     $request->merge([
         'order_type' => 'delivery',

@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 beforeEach(function(): void {
-    $this->subscriber = new TokenEventSubscriber();
+    $this->subscriber = new TokenEventSubscriber;
     $this->token = Token::factory()->create();
     $this->event = new TokenAuthenticated($this->token);
     $this->route = Mockery::mock(Route::class);

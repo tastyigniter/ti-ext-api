@@ -205,18 +205,6 @@ parameters:
 			path: src/Classes/ApiManager.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Support\\Optional\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Contracts\\Http\\Kernel\:\:prependToMiddlewarePriority\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Extension.php
-
-		-
 			message: '#^Access to an undefined property Igniter\\Api\\Classes\\ApiController\:\:\$restConfig\.$#'
 			identifier: property.notFound
 			count: 1
@@ -277,30 +265,6 @@ parameters:
 			path: src/Http/Actions/RestController.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$device_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Http/Controllers/CreateToken.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Http/Controllers/CreateToken.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$password\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Http/Controllers/CreateToken.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Support\\Optional\:\:\$tokenable\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Listeners/TokenEventSubscriber.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
 			identifier: property.notFound
 			count: 1
@@ -327,12 +291,6 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
 			identifier: property.notFound
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: '#^Call to an undefined static method Igniter\\Api\\Models\\Resource\:\:where\(\)\.$#'
-			identifier: staticMethod.notFound
 			count: 1
 			path: src/Models/Resource.php
 

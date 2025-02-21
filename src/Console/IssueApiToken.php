@@ -35,10 +35,11 @@ class IssueApiToken extends Command
         $isForAdmin = (bool)$this->option('admin');
 
         $query = $isForAdmin ? User::query() : Customer::query();
-
         $query->where('email', $email);
 
-        if (!$user = $query->first()) {
+        /** @var null|Customer|User $user */
+        $user = $query->first();
+        if (!$user) {
             $this->error('User does not exist!');
 
             return;

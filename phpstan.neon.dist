@@ -9,5 +9,5 @@ parameters:
         - config/
         - database/
         - resources/
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
+    ignoreErrors:
+        - "#Called 'env' outside of the config directory which returns null when the config is cached, use 'config'#"

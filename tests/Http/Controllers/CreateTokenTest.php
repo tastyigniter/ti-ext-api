@@ -11,7 +11,7 @@ use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 
 beforeEach(function(): void {
-    $this->controller = new CreateToken();
+    $this->controller = new CreateToken;
 });
 
 it('creates token for valid credentials', function(bool $isAdmin, Model $model): void {
@@ -30,7 +30,7 @@ it('creates token for valid credentials', function(bool $isAdmin, Model $model):
     [true, fn() => User::factory()->superUser()->create()],
     [false, fn() => Customer::factory()->create([
         'is_activated' => true,
-    ])]
+    ])],
 ]);
 
 it('throws validation exception for invalid admin credentials', function(bool $isAdmin, Model $model): void {
@@ -49,7 +49,7 @@ it('throws validation exception for invalid admin credentials', function(bool $i
     [true, fn() => User::factory()->superUser()->create()],
     [false, fn() => Customer::factory()->create([
         'is_activated' => true,
-    ])]
+    ])],
 ]);
 
 it('throws validation exception for inactive user', function(bool $isAdmin, Model $model): void {
@@ -70,5 +70,5 @@ it('throws validation exception for inactive user', function(bool $isAdmin, Mode
     ])],
     [false, fn() => Customer::factory()->create([
         'is_activated' => false,
-    ])]
+    ])],
 ]);

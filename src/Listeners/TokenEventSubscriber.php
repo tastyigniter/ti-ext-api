@@ -54,6 +54,7 @@ class TokenEventSubscriber
         if ($group == 'admin' && !$token->isForAdmin()) {
             return false;
         }
+
         return !($group == 'customer' && $token->isForAdmin());
     }
 

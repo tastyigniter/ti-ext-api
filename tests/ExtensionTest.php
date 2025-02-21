@@ -100,6 +100,7 @@ it('configures rate limiting with user id', function(): void {
 
     RateLimiter::shouldReceive('for')->with('api', Mockery::on(function($callback) use ($request): true {
         $callback($request);
+
         return true;
     }))->andReturnSelf()->once();
 

@@ -7,7 +7,7 @@ namespace Igniter\Api\Tests\ApiResources\Requests;
 use Igniter\Api\ApiResources\Requests\ReservationRequest;
 
 it('returns correct attribute labels', function(): void {
-    $request = new ReservationRequest();
+    $request = new ReservationRequest;
 
     $attributes = $request->attributes();
 
@@ -24,7 +24,7 @@ it('returns correct attribute labels', function(): void {
 });
 
 it('returns correct validation rules', function(): void {
-    $request = new ReservationRequest();
+    $request = new ReservationRequest;
 
     $rules = $request->rules();
 

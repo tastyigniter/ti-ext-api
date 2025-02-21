@@ -57,7 +57,7 @@ class Token extends PersonalAccessToken
      */
     public function isForAdmin(): bool
     {
-        return $this->tokenable_type == User::make()->getMorphClass();
+        return $this->tokenable_type == (new User)->getMorphClass();
     }
 
     /**
@@ -65,6 +65,6 @@ class Token extends PersonalAccessToken
      */
     public function isForCustomer(): bool
     {
-        return $this->tokenable_type == Customer::make()->getMorphClass();
+        return $this->tokenable_type == (new Customer)->getMorphClass();
     }
 }

@@ -35,6 +35,7 @@ class MenuTransformer extends TransformerAbstract
     public function includeMedia(Menu $menuItem): ?Item
     {
         $thumb = $menuItem->getFirstMedia();
+
         return ($thumb instanceof Media) ? $this->item($thumb, new MediaTransformer, 'media') : null;
     }
 

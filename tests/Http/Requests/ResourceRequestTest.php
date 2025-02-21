@@ -7,7 +7,7 @@ namespace Igniter\Api\Tests\Http\Requests;
 use Igniter\Api\Http\Requests\ResourceRequest;
 
 it('returns correct attribute labels', function(): void {
-    $request = new ResourceRequest();
+    $request = new ResourceRequest;
 
     $attributes = $request->attributes();
 
@@ -19,7 +19,7 @@ it('returns correct attribute labels', function(): void {
 });
 
 it('returns correct validation rules', function(): void {
-    $request = new ResourceRequest();
+    $request = new ResourceRequest;
 
     $rules = $request->rules();
 

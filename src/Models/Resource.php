@@ -22,12 +22,7 @@ use Igniter\System\Classes\ExtensionManager;
  * @property bool $is_custom
  * @property-read mixed $base_endpoint
  * @property-read mixed $controller
- * @method static \Igniter\Flame\Database\Builder|Resource dropdown(string $column, string $key = null)
- * @method static \Igniter\Flame\Database\Builder|Resource findSimilarSlugs($attribute, array $config, $slug)
- * @method static \Igniter\Flame\Database\Builder|Resource lists(string $column, string $key = null)
- * @method static \Igniter\Flame\Database\Builder|Resource query()
- * @method static \Igniter\Flame\Database\Builder|Resource search(string $term, string $columns = [], string $mode = 'all')
- * @mixin \Igniter\Flame\Database\Model
+ * @mixin Model
  */
 class Resource extends Model
 {
@@ -60,7 +55,7 @@ class Resource extends Model
     public $table = 'igniter_api_resources';
 
     /**
-     * @var array<int, string> fillable fields
+     * @var list<string> fillable fields
      */
     protected $fillable = ['name', 'description', 'endpoint', 'model', 'meta'];
 
@@ -173,8 +168,8 @@ class Resource extends Model
     protected function processOptions($definition): array
     {
         $actions = array_get($definition, 'actions', []);
-
-        $result = $names = [];
+        $result = [];
+        $names = [];
         foreach ($actions as $action => $name) {
             if (!is_string($action)) {
                 $action = $name;

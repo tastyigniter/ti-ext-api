@@ -77,8 +77,8 @@ it('shows a customer with addresses relationship', function(): void {
 
     $this
         ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
-                'include' => 'addresses',
-            ]))
+            'include' => 'addresses',
+        ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.addresses.data.0.type', 'addresses')
         ->assertJsonPath('included.0.id', (string)$customerAddress->getKey())
@@ -92,8 +92,8 @@ it('shows a customer with orders relationship', function(): void {
 
     $this
         ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
-                'include' => 'orders',
-            ]))
+            'include' => 'orders',
+        ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.orders.data.0.type', 'orders')
         ->assertJsonPath('included.0.id', (string)$customerOrder->getKey())
@@ -107,8 +107,8 @@ it('shows a customer with reservations relationship', function(): void {
 
     $this
         ->get(route('igniter.api.customers.show', [$customer->getKey()]).'?'.http_build_query([
-                'include' => 'reservations',
-            ]))
+            'include' => 'reservations',
+        ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.reservations.data.0.type', 'reservations')
         ->assertJsonPath('included.0.id', (string)$customerReservation->getKey())

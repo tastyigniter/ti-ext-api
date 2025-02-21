@@ -13,6 +13,6 @@ class TestResource extends ApiController
     public array $restConfig = [
         'actions' => [],
         'repository' => TestRepository::class,
-        'transformer' => TestTransformer::class
+        'transformer' => TestTransformer::class,
     ];
 }
