@@ -8,7 +8,12 @@ use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNewArrayRector
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 
 return RectorConfig::configure()
-    ->withPaths([__DIR__.'/src', __DIR__.'/tests'])
+    ->withPaths([
+        __DIR__.'/config',
+        __DIR__.'/database',
+        __DIR__.'/src',
+        __DIR__.'/tests',
+    ])
     ->withRules([
         DeclareStrictTypesRector::class,
     ])
@@ -16,6 +21,7 @@ return RectorConfig::configure()
         CatchExceptionNameMatchingTypeRector::class,
         ReturnTypeFromStrictNewArrayRector::class,
     ])
+    ->withPhpSets(php83: true)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,

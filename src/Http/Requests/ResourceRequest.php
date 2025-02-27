@@ -8,6 +8,7 @@ use Igniter\System\Classes\FormRequest;
 
 class ResourceRequest extends FormRequest
 {
+    #[\Override]
     public function attributes(): array
     {
         return [

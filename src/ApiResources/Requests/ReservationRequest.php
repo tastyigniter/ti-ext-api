@@ -8,6 +8,7 @@ use Igniter\System\Classes\FormRequest;
 
 class ReservationRequest extends FormRequest
 {
+    #[\Override]
     public function attributes()
     {
         return [

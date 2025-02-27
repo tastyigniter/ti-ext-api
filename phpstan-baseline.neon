@@ -13,12 +13,6 @@ parameters:
 			path: src/ApiResources/Transformers/CategoryTransformer.php
 
 		-
-			message: '#^Access to an undefined property Igniter\\User\\Models\\Customer\:\:\$addresses\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/CustomerTransformer.php
-
-		-
 			message: '#^Access to an undefined property Igniter\\User\\Models\\Customer\:\:\$orders\.$#'
 			identifier: property.notFound
 			count: 1
@@ -47,12 +41,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/LocationTransformer.php
-
-		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\MenuItemOption\:\:\$menu_option_values\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
 
 		-
 			message: '#^Access to an undefined property Igniter\\Cart\\Models\\MenuItemOption\:\:\$option\.$#'
@@ -85,19 +73,7 @@ parameters:
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$ingredients\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/MenuTransformer.php
-
-		-
 			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$mealtimes\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/MenuTransformer.php
-
-		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Menu\:\:\$menu_options\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuTransformer.php
@@ -185,12 +161,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/ReservationTransformer.php
-
-		-
-			message: '#^Access to an undefined property Igniter\\Local\\Models\\Review\:\:\$customer\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
 			message: '#^Access to an undefined property Igniter\\Local\\Models\\Review\:\:\$location\.$#'

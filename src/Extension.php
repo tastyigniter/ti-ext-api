@@ -24,6 +24,7 @@ use Spatie\Fractal\FractalServiceProvider;
  */
 class Extension extends BaseExtension
 {
+    #[\Override]
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/api.php', 'igniter.api');
@@ -46,6 +47,7 @@ class Extension extends BaseExtension
         $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
     }
 
+    #[\Override]
     public function boot(): void
     {
         $this->configureRateLimiting();
@@ -57,6 +59,7 @@ class Extension extends BaseExtension
         $this->sanctumConfigureMiddleware();
     }
 
+    #[\Override]
     public function registerNavigation(): array
     {
         return [
@@ -74,6 +77,7 @@ class Extension extends BaseExtension
         ];
     }
 
+    #[\Override]
     public function registerPermissions(): array
     {
         return [

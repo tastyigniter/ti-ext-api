@@ -8,6 +8,7 @@ use Igniter\System\Classes\FormRequest;
 
 class OrderRequest extends FormRequest
 {
+    #[\Override]
     public function attributes()
     {
         return [

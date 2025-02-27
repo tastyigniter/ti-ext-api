@@ -20,6 +20,7 @@ class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
      *
      * @throws \Igniter\Api\Exceptions\AuthenticationException
      */
+    #[\Override]
     public function handle($request, Closure $next, ...$guards)
     {
         try {
