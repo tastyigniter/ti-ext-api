@@ -91,12 +91,6 @@ parameters:
 			path: src/ApiResources/Transformers/MenuTransformer.php
 
 		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$address\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/OrderTransformer.php
-
-		-
 			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$assignee\.$#'
 			identifier: property.notFound
 			count: 1
@@ -104,24 +98,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$assignee_group\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/OrderTransformer.php
-
-		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$customer\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/OrderTransformer.php
-
-		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$location\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/OrderTransformer.php
-
-		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Order\:\:\$payment_method\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/OrderTransformer.php
