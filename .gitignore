@@ -3,11 +3,14 @@
 .php_cs
 .php_cs.cache
 .phpunit.result.cache
-build
+.phpunit.cache
+/build
 composer.lock
 coverage
-docs
 phpunit.xml
 psalm.xml
-vendor
+/vendor
 .php-cs-fixer.cache
+node_modules/
+npm-debug.log
+yarn-error.log

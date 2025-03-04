@@ -1,16 +1,16 @@
 <?php
 
-namespace Igniter\Api\Database\Migrations;
+declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateResourcesTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('igniter_api_resources', function (Blueprint $table) {
+        Schema::create('igniter_api_resources', function(Blueprint $table): void {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
@@ -24,8 +24,8 @@ class CreateResourcesTable extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('igniter_api_resources');
     }
-}
+};

@@ -1,22 +1,20 @@
 <?php
 
-namespace Igniter\Api\Database\Migrations;
+declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterResourcesTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('igniter_api_resources', function (Blueprint $table) {
+        Schema::table('igniter_api_resources', function(Blueprint $table): void {
             $table->dropColumn('model');
             $table->dropColumn('transformer');
         });
     }
 
-    public function down()
-    {
-    }
-}
+    public function down(): void {}
+};

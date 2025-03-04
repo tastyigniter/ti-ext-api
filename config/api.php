@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     'debug' => env('API_DEBUG', true),
@@ -46,9 +48,7 @@ return [
     |
     */
 
-    'auth' => [
-        'sanctum' => \Igniter\Api\Auth\SanctumProvider::class,
-    ],
+    'guard' => 'sanctum',
 
     /*
     |--------------------------------------------------------------------------
@@ -62,7 +62,10 @@ return [
     |
     */
 
-    'transformer' => \Igniter\Api\Classes\FractalAdapter::class,
+    'serializer' => \League\Fractal\Serializer\JsonApiSerializer::class,
 
-    'serializer' => \Igniter\Api\Serializer\JsonApiSerializer::class,
+    'middleware' => [
+        'api',
+        \Igniter\Api\Http\Middleware\Authenticate::class,
+    ],
 ];
