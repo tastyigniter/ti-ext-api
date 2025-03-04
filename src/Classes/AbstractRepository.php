@@ -243,9 +243,9 @@ class AbstractRepository
             }
 
             $isNested = ($attribute == 'pivot' || (
-                    $model->hasRelation($attribute) &&
-                    in_array($model->getRelationType($attribute), $singularTypes)
-                ));
+                $model->hasRelation($attribute) &&
+                in_array($model->getRelationType($attribute), $singularTypes)
+            ));
 
             if ($isNested && is_array($value) && $model->{$attribute}) {
                 $this->setModelAttributes($model->{$attribute}, $value);
