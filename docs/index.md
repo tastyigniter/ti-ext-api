@@ -1,3 +1,9 @@
+---
+title: "API"
+section: "extensions"
+sortOrder: 10
+---
+
 ## Installation
 
 You can install the extension via composer by running this command:
