@@ -145,54 +145,6 @@ parameters:
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: '#^Call to an undefined method Igniter\\Api\\Classes\\AbstractRepository\:\:afterCreate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: '#^Call to an undefined method Igniter\\Api\\Classes\\AbstractRepository\:\:afterDelete\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: '#^Call to an undefined method Igniter\\Api\\Classes\\AbstractRepository\:\:afterSave\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: '#^Call to an undefined method Igniter\\Api\\Classes\\AbstractRepository\:\:afterUpdate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: '#^Call to an undefined method Igniter\\Api\\Classes\\AbstractRepository\:\:beforeCreate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: '#^Call to an undefined method Igniter\\Api\\Classes\\AbstractRepository\:\:beforeDelete\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: '#^Call to an undefined method Igniter\\Api\\Classes\\AbstractRepository\:\:beforeSave\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: '#^Call to an undefined method Igniter\\Api\\Classes\\AbstractRepository\:\:beforeUpdate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
 			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Igniter\\Api\\Models\\Resource\>\:\:mapWithKeys\(\) contains unresolvable type\.$#'
 			identifier: argument.unresolvableType
 			count: 1
