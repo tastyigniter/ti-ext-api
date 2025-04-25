@@ -9,7 +9,7 @@ sortOrder: 10
 You can install the extension via composer by running this command:
 
 ```bash
-composer require tastyigniter/ti-ext-api:"^4.0" -W
+composer require tastyigniter/ti-ext-api -W
 ```
 
 You **may** install Laravel Sanctum via the `install:api` Artisan command to set up the necessary database tables and create a personal access client:

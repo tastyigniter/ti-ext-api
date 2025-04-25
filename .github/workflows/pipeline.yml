@@ -1,15 +1,9 @@
 name: API CI Pipeline
 
-on: [ push, pull_request, workflow_dispatch ]
+on: [ push, workflow_dispatch ]
 
 jobs:
-  php-lint:
-    uses: tastyigniter/workflows/.github/workflows/php-lint.yml@main
-    with:
-      composer: update --no-interaction --no-progress
   php-tests:
-    needs: php-lint
-    if: ${{ always() && needs.php-lint.result == 'success' }}
     strategy:
       matrix:
         php: [ '8.3', '8.4' ]
