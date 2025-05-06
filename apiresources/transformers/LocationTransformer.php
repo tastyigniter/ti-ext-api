@@ -16,6 +16,7 @@ class LocationTransformer extends TransformerAbstract
 
     public function transform(Locations_model $location)
     {
+        $options = $location->options;
         return $location->toArray();
     }
 

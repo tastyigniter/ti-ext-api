@@ -2,6 +2,8 @@
 
 namespace Igniter\Api\ApiResources\Requests;
 
+use Illuminate\Support\Facades\Request;
+
 use System\Classes\FormRequest;
 
 class ReservationRequest extends FormRequest
@@ -24,17 +26,33 @@ class ReservationRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'table_id' => ['required', 'integer'],
-            'location_id' => ['required', 'integer'],
-            'guest_num' => ['required', 'integer'],
-            'reserve_date' => ['required', 'date_format:Y-m-d'],
-            'reserve_time' => ['required', 'date_format:H:i'],
-            'first_name' => ['required', 'between:1,48'],
-            'last_name' => ['required', 'between:1,48'],
-            'email' => ['required', 'email:filter', 'max:96'],
-            'telephone' => ['required'],
+        $method = Request::method();
+
+        $rules = [
+            'table_id' => ['integer'],
+            'location_id' => ['integer'],
+            'guest_num' => ['integer'],
+            'reserve_date' => ['date_format:Y-m-d'],
+            'reserve_time' => ['date_format:H:i'],
+            'first_name' => ['between:1,48'],
+            'last_name' => ['between:1,48'],
+            'email' => ['email:filter', 'max:96'],
+            'telephone' => [],
             'comment' => ['max:520'],
         ];
+        
+        if ($method == 'post') {
+            $rules['table_id'][] = 'required';
+            $rules['location_id'][] = 'required';
+            $rules['guest_num'][] = 'required';
+            $rules['reserve_date'][] = 'required';
+            $rules['reserve_time'][] = 'required';
+            $rules['first_name'][] = 'required';
+            $rules['last_name'][] = 'required';
+            $rules['email'][] = 'required';
+            $rules['telephone'][] = 'required';
+        }
+
+        return $rules;
     }
 }

@@ -1,14 +1,10 @@
-<?php
+<?php 
 
 namespace Igniter\Api\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
 
-/**
- * Locations API Controller
- */
-class Locations extends ApiController
-{
+class Staff extends ApiController {
     public $implement = ['Igniter.Api.Actions.RestController'];
 
     public $restConfig = [
@@ -21,10 +17,10 @@ class Locations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\LocationRequest::class,
-        'repository' => Repositories\LocationRepository::class,
-        'transformer' => Transformers\LocationTransformer::class,
+        'request' => \Admin\Requests\Staff::class,
+        'repository' => Repositories\StaffRepository::class,
+        'transformer' => Transformers\StaffTransformer::class,
     ];
 
-    protected $requiredAbilities = ['locations:*'];
+    protected $requiredAbilities = ['staff:*'];
 }
