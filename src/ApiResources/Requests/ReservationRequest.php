@@ -9,7 +9,7 @@ use Igniter\System\Classes\FormRequest;
 class ReservationRequest extends FormRequest
 {
     #[\Override]
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'table_id' => lang('igniter.reservation::default.column_table'),

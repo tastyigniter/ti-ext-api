@@ -9,7 +9,7 @@ use Igniter\System\Classes\FormRequest;
 class OrderRequest extends FormRequest
 {
     #[\Override]
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'first_name' => lang('igniter.cart::default.checkout.label_first_name'),

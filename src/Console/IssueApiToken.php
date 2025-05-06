@@ -52,7 +52,7 @@ class IssueApiToken extends Command
     /**
      * Get the console command options.
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['name', null, InputOption::VALUE_REQUIRED, 'The name to identify the token.'],

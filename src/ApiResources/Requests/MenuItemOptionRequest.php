@@ -9,7 +9,7 @@ use Igniter\System\Classes\FormRequest;
 class MenuItemOptionRequest extends FormRequest
 {
     #[\Override]
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'menu_id' => lang('igniter.cart::default.menus.label_menu_id'),

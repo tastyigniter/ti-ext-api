@@ -9,7 +9,7 @@ use Igniter\System\Classes\FormRequest;
 class MenuOptionRequest extends FormRequest
 {
     #[\Override]
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'option_name' => lang('admin::lang.menu_options.label_option_group_name'),
