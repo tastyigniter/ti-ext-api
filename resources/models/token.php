@@ -16,15 +16,9 @@ return [
             ],
         ],
         'columns' => [
-            'tokenable_id' => [
-                'label' => 'lang:igniter.api::default.column_issued_to',
+            'name' => [
+                'label' => 'lang:igniter.api::default.column_device_name',
                 'searchable' => true,
-                'formatter' => function($record, $column, $value) {
-                    $value = $record->tokenable_type == 'users'
-                        ? $record->tokenable->username : $record->tokenable->email;
-
-                    return $value;
-                },
             ],
             'tokenable_type' => [
                 'label' => 'lang:igniter.api::default.column_token_type',
@@ -33,9 +27,19 @@ return [
                     return $value == 'users' ? lang('igniter.api::default.text_token_type_staff') : lang('igniter.api::default.text_token_type_customer');
                 },
             ],
-            'name' => [
-                'label' => 'lang:igniter.api::default.column_device_name',
+            'tokenable_id' => [
+                'label' => 'lang:igniter.api::default.column_issued_to',
                 'searchable' => true,
+                'formatter' => function($record, $column, $value) {
+                    return $record->tokenable->email;
+                },
+            ],
+            '_abilities' => [
+                'label' => 'lang:igniter.api::default.column_abilities',
+                'sortable' => true,
+                'formatter' => function($record, $column, $value) {
+                    return implode(', ', $record->abilities);
+                },
             ],
             'created_at' => [
                 'label' => 'lang:igniter.api::default.column_created',

@@ -43,7 +43,7 @@ class ErrorHandler
      */
     public function render($request, Throwable $e): ?Response
     {
-        if (!$request->routeIs('igniter.api.*')) {
+        if (!$request->routeIs('igniter.api.*.*')) {
             return null;
         }
 
