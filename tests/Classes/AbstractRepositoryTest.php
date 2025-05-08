@@ -355,4 +355,4 @@ it('does not apply location aware scope if user has no locations', function(): v
     request()->setUserResolver(fn() => $user);
 
     callProtectedMethod($repository, 'applyLocationAwareScope', [$query]);
-})->only();
+});
