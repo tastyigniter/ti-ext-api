@@ -265,12 +265,7 @@ class AbstractRepository
             return;
         }
 
-        $user = request()->user();
-        if (!$user->locations) {
-            return;
-        }
-
-        $ids = $user->locations->where('location_status', true)->pluck('location_id')->all();
+        $ids = request()->user()?->locations?->where('location_status', true)->pluck('location_id')->all();
         if (empty($ids)) {
             return;
         }

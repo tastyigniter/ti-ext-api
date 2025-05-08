@@ -338,3 +338,21 @@ it('does not apply location aware scope if user has no active locations', functi
 
     callProtectedMethod($repository, 'applyLocationAwareScope', [$query]);
 });
+
+it('does not apply location aware scope if user has no locations', function(): void {
+    $repository = new class extends AbstractRepository
+    {
+        protected ?string $modelClass = Order::class;
+
+        protected static $locationAwareConfig = ['addAbsenceConstraint' => true];
+    };
+    $query = Mockery::mock(Builder::class);
+    $user = Mockery::mock(Customer::class);
+    $query->shouldReceive('getModel')->andReturn(new Order);
+    $user->shouldReceive('extendableGet')->with('locations')->andReturnNull();
+    $query->shouldReceive('whereHasOrDoesntHaveLocation')->never();
+    $query->shouldReceive('whereHasLocation')->never();
+    request()->setUserResolver(fn() => $user);
+
+    callProtectedMethod($repository, 'applyLocationAwareScope', [$query]);
+})->only();
