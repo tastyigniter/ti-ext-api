@@ -7,6 +7,7 @@ namespace Igniter\Api\Tests\Traits;
 use Igniter\Api\Traits\HasGlobalScopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Scope;
+use InvalidArgumentException;
 use Mockery;
 
 it('adds a global scope using a string and closure', function(): void {
@@ -50,7 +51,7 @@ it('throws an exception when adding an invalid global scope', function(): void {
 
     expect(function() use ($traitObject): void {
         $traitObject->addGlobalScope('invalidScope');
-    })->toThrow(\InvalidArgumentException::class, 'Global scope must be an instance of Closure or Scope.');
+    })->toThrow(InvalidArgumentException::class, 'Global scope must be an instance of Closure or Scope.');
 });
 
 it('applies all registered global scopes to the query', function(): void {

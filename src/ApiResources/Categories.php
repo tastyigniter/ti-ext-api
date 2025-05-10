@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Igniter\Api\ApiResources;
 
+use Igniter\Api\ApiResources\Repositories\CategoryRepository;
+use Igniter\Api\ApiResources\Transformers\CategoryTransformer;
 use Igniter\Api\Classes\ApiController;
+use Igniter\Api\Http\Actions\RestController;
+use Igniter\Cart\Http\Requests\CategoryRequest;
 
 /**
  * Categories API Controller
  */
 class Categories extends ApiController
 {
-    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [RestController::class];
 
     public $restConfig = [
         'actions' => [
@@ -23,9 +27,9 @@ class Categories extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Cart\Http\Requests\CategoryRequest::class,
-        'repository' => Repositories\CategoryRepository::class,
-        'transformer' => Transformers\CategoryTransformer::class,
+        'request' => CategoryRequest::class,
+        'repository' => CategoryRepository::class,
+        'transformer' => CategoryTransformer::class,
     ];
 
     protected string|array $requiredAbilities = ['categories:*'];

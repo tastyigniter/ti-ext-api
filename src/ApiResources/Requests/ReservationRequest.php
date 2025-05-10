@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
+use Override;
 
 class ReservationRequest extends FormRequest
 {
-    #[\Override]
+    #[Override]
     public function attributes(): array
     {
         return [

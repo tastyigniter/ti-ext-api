@@ -9,6 +9,7 @@ use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNewArrayRector
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 
 return RectorConfig::configure()
+    ->withImportNames(removeUnusedImports: true)
     ->withPaths([
         __DIR__.'/config',
         __DIR__.'/database',

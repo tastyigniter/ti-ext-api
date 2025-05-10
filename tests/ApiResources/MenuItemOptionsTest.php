@@ -29,9 +29,9 @@ it('shows a menu item option', function(): void {
         ->get(route('igniter.api.menu_item_options.show', [$menuItemOption->getKey()]))
         ->assertOk()
         ->assertJsonPath('data.id', (string)$menuItemOption->getKey())
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
             ->has('data.attributes.option')
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('option_id', $menuItemOption->option->getKey())
                 ->etc(),
             )->etc(),
@@ -64,8 +64,8 @@ it('creates a menu item option', function(): void {
             ],
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('option_id', $menuOption->getKey())
                 ->etc(),
             ));
@@ -80,8 +80,8 @@ it('updates a menu item option', function(): void {
             'option_id' => $menuItemOption->option->getKey(),
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('option_id', $menuItemOption->option->getKey())
                 ->etc(),
             )->etc());

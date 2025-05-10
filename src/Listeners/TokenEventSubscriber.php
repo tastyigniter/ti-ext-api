@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Api\Listeners;
 
 use Igniter\Api\Classes\ApiManager;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Routing\Route;
 use Laravel\Sanctum\Events\TokenAuthenticated;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -35,7 +36,7 @@ class TokenEventSubscriber
     /**
      * Register the listeners for the subscriber.
      *
-     * @param \Illuminate\Events\Dispatcher $events
+     * @param Dispatcher $events
      */
     public function subscribe($events): void
     {

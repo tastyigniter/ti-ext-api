@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Igniter\Api\ApiResources;
 
+use Igniter\Api\ApiResources\Repositories\MenuOptionRepository;
+use Igniter\Api\ApiResources\Requests\MenuOptionRequest;
+use Igniter\Api\ApiResources\Transformers\MenuOptionTransformer;
 use Igniter\Api\Classes\ApiController;
+use Igniter\Api\Http\Actions\RestController;
 
 /**
  * Options API Controller
  */
 class MenuOptions extends ApiController
 {
-    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [RestController::class];
 
     public $restConfig = [
         'actions' => [
@@ -23,9 +27,9 @@ class MenuOptions extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\MenuOptionRequest::class,
-        'repository' => Repositories\MenuOptionRepository::class,
-        'transformer' => Transformers\MenuOptionTransformer::class,
+        'request' => MenuOptionRequest::class,
+        'repository' => MenuOptionRepository::class,
+        'transformer' => MenuOptionTransformer::class,
     ];
 
     protected string|array $requiredAbilities = ['menu_options:*'];

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
+use Override;
 
 class MenuOptionRequest extends FormRequest
 {
-    #[\Override]
+    #[Override]
     public function attributes(): array
     {
         return [

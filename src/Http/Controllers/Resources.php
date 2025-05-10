@@ -4,21 +4,26 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Http\Controllers;
 
+use Igniter\Admin\Classes\AdminController;
 use Igniter\Admin\Facades\AdminMenu;
+use Igniter\Admin\Http\Actions\FormController;
+use Igniter\Admin\Http\Actions\ListController;
+use Igniter\Api\Http\Requests\ResourceRequest;
+use Igniter\Api\Models\Resource;
 
 /**
  * API Resources Admin Controller
  */
-class Resources extends \Igniter\Admin\Classes\AdminController
+class Resources extends AdminController
 {
     public array $implement = [
-        \Igniter\Admin\Http\Actions\FormController::class,
-        \Igniter\Admin\Http\Actions\ListController::class,
+        FormController::class,
+        ListController::class,
     ];
 
     public array $listConfig = [
         'list' => [
-            'model' => \Igniter\Api\Models\Resource::class,
+            'model' => Resource::class,
             'title' => 'APIs',
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
             'defaultSort' => ['id', 'DESC'],
@@ -28,8 +33,8 @@ class Resources extends \Igniter\Admin\Classes\AdminController
 
     public array $formConfig = [
         'name' => 'APIs',
-        'model' => \Igniter\Api\Models\Resource::class,
-        'request' => \Igniter\Api\Http\Requests\ResourceRequest::class,
+        'model' => Resource::class,
+        'request' => ResourceRequest::class,
         'edit' => [
             'title' => 'lang:admin::lang.form.edit_title',
             'redirect' => 'igniter/api/resources/edit/{id}',
@@ -56,7 +61,7 @@ class Resources extends \Igniter\Admin\Classes\AdminController
 
     public function index(): void
     {
-        \Igniter\Api\Models\Resource::syncAll();
+        Resource::syncAll();
 
         $this->asExtension('ListController')->index();
     }

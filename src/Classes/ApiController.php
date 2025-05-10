@@ -12,6 +12,8 @@ use Igniter\Flame\Traits\EventEmitter;
 use Igniter\Flame\Traits\ExtendableTrait;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Routing\Controller;
+use Override;
+use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -44,7 +46,7 @@ class ApiController extends Controller
         return $this->requiredAbilities;
     }
 
-    #[\Override]
+    #[Override]
     public function callAction($method, $parameters = []): mixed
     {
         $this->action = $method;
@@ -78,7 +80,7 @@ class ApiController extends Controller
             return false;
         }
 
-        return (new \ReflectionMethod($this, $action))->isPublic();
+        return (new ReflectionMethod($this, $action))->isPublic();
     }
 
     protected function authorizeToken(): void

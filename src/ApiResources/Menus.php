@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Igniter\Api\ApiResources;
 
+use Igniter\Api\ApiResources\Repositories\MenuRepository;
+use Igniter\Api\ApiResources\Transformers\MenuTransformer;
 use Igniter\Api\Classes\ApiController;
+use Igniter\Api\Http\Actions\RestController;
+use Igniter\Cart\Http\Requests\MenuRequest;
 
 /**
  * Menus API Controller
  */
 class Menus extends ApiController
 {
-    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [RestController::class];
 
     public $restConfig = [
         'actions' => [
@@ -23,9 +27,9 @@ class Menus extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Cart\Http\Requests\MenuRequest::class,
-        'repository' => Repositories\MenuRepository::class,
-        'transformer' => Transformers\MenuTransformer::class,
+        'request' => MenuRequest::class,
+        'repository' => MenuRepository::class,
+        'transformer' => MenuTransformer::class,
     ];
 
     protected string|array $requiredAbilities = ['menus:*'];

@@ -9,6 +9,7 @@ use Igniter\Api\Traits\HasGlobalScopes;
 use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
+use Igniter\Local\Models\Concerns\Locationable;
 use Igniter\User\Models\Customer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as IlluminateModel;
@@ -261,7 +262,7 @@ class AbstractRepository
             return;
         }
 
-        if (!in_array(\Igniter\Local\Models\Concerns\Locationable::class, class_uses($query->getModel()))) {
+        if (!in_array(Locationable::class, class_uses($query->getModel()))) {
             return;
         }
 

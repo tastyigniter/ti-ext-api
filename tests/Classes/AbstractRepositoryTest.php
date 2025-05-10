@@ -219,7 +219,7 @@ it('creates model instance when model class exists', function(): void {
 });
 
 it('sets nested model attributes when attribute is nested', function(): void {
-    $nestedModel = Mockery::mock(\Igniter\Flame\Database\Model::class)->makePartial();
+    $nestedModel = Mockery::mock(Model::class)->makePartial();
     $nestedModel->shouldReceive('isFillable')->andReturn(true);
     $nestedModel->shouldReceive('hasRelation')->andReturn(false);
     $nestedModel->shouldReceive('getKeyName')->andReturn('id');
