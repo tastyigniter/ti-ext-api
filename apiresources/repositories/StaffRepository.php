@@ -1,6 +1,6 @@
 <?php
 
-namespace DineAByte\MoreAPI\ApiResources\Repositories;
+namespace Igniter\Api\ApiResources\Repositories;
 
 use Admin\Models\Staffs_model;
 use Igniter\Api\Classes\AbstractRepository;
