@@ -27,8 +27,8 @@ it('shows a location', function(): void {
     $this
         ->get(route('igniter.api.locations.show', [$location->getKey()]))
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('location_name', $location->location_name)
                 ->where('location_email', $location->location_email)
                 ->where('location_address_1', $location->location_address_1)
@@ -104,8 +104,8 @@ it('creates a location', function(): void {
             'location_lng' => '0',
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('location_name', 'Test Location')
                 ->where('location_email', 'test@location.tld')
                 ->where('location_address_1', '123 Test Address')
@@ -127,8 +127,8 @@ it('updates a location', function(): void {
             'location_lng' => '0',
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('location_name', 'Test Location')
                 ->where('location_email', 'test@location.tld')
                 ->where('location_address_1', '123 Test Address')

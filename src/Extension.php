@@ -4,9 +4,22 @@ declare(strict_types=1);
 
 namespace Igniter\Api;
 
+use Igniter\Api\ApiResources\Categories;
+use Igniter\Api\ApiResources\Currencies;
+use Igniter\Api\ApiResources\Customers;
+use Igniter\Api\ApiResources\DiningTables;
+use Igniter\Api\ApiResources\Locations;
+use Igniter\Api\ApiResources\MenuItemOptions;
+use Igniter\Api\ApiResources\MenuOptions;
+use Igniter\Api\ApiResources\Menus;
+use Igniter\Api\ApiResources\Orders;
+use Igniter\Api\ApiResources\Reservations;
+use Igniter\Api\ApiResources\Reviews;
 use Igniter\Api\Classes\ApiManager;
+use Igniter\Api\Console\IssueApiToken;
 use Igniter\Api\Exceptions\ErrorHandler;
 use Igniter\Api\Listeners\TokenEventSubscriber;
+use Igniter\Api\Models\Token;
 use Igniter\System\Classes\BaseExtension;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Http\Kernel;
@@ -17,6 +30,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\SanctumServiceProvider;
+use Override;
 use Spatie\Fractal\FractalServiceProvider;
 
 /**
@@ -24,7 +38,7 @@ use Spatie\Fractal\FractalServiceProvider;
  */
 class Extension extends BaseExtension
 {
-    #[\Override]
+    #[Override]
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/api.php', 'igniter.api');
@@ -33,7 +47,7 @@ class Extension extends BaseExtension
             $this->publishes([__DIR__.'/../config/api.php' => config_path('igniter-api.php')], 'igniter-config');
         }
 
-        Sanctum::usePersonalAccessTokenModel(Models\Token::class);
+        Sanctum::usePersonalAccessTokenModel(Token::class);
 
         $this->app->register(FractalServiceProvider::class);
         $this->app->register(SanctumServiceProvider::class);
@@ -44,22 +58,22 @@ class Extension extends BaseExtension
 
         $this->registerErrorHandler();
 
-        $this->registerConsoleCommand('api.token', Console\IssueApiToken::class);
+        $this->registerConsoleCommand('api.token', IssueApiToken::class);
     }
 
-    #[\Override]
+    #[Override]
     public function boot(): void
     {
         $this->configureRateLimiting();
 
         // Register all the available API routes
-        Classes\ApiManager::registerRoutes();
+        ApiManager::registerRoutes();
 
         $this->sanctumConfigureAuth();
         $this->sanctumConfigureMiddleware();
     }
 
-    #[\Override]
+    #[Override]
     public function registerNavigation(): array
     {
         return [
@@ -77,7 +91,7 @@ class Extension extends BaseExtension
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function registerPermissions(): array
     {
         return [
@@ -92,7 +106,7 @@ class Extension extends BaseExtension
     {
         return [
             'categories' => [
-                'controller' => \Igniter\Api\ApiResources\Categories::class,
+                'controller' => Categories::class,
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
                 'actions' => [
@@ -100,7 +114,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'currencies' => [
-                'controller' => \Igniter\Api\ApiResources\Currencies::class,
+                'controller' => Currencies::class,
                 'name' => 'Currencies',
                 'description' => 'An API resource for currencies',
                 'actions' => [
@@ -108,7 +122,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'customers' => [
-                'controller' => \Igniter\Api\ApiResources\Customers::class,
+                'controller' => Customers::class,
                 'name' => 'Customers',
                 'description' => 'An API resource for customers',
                 'actions' => [
@@ -118,7 +132,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'locations' => [
-                'controller' => \Igniter\Api\ApiResources\Locations::class,
+                'controller' => Locations::class,
                 'name' => 'Locations',
                 'description' => 'An API resource for locations',
                 'actions' => [
@@ -128,7 +142,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'menus' => [
-                'controller' => \Igniter\Api\ApiResources\Menus::class,
+                'controller' => Menus::class,
                 'name' => 'Menus',
                 'description' => 'An API resource for menus',
                 'actions' => [
@@ -138,7 +152,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'menu_options' => [
-                'controller' => \Igniter\Api\ApiResources\MenuOptions::class,
+                'controller' => MenuOptions::class,
                 'name' => 'MenuOptions',
                 'description' => 'An API resource for Menu options',
                 'actions' => [
@@ -148,7 +162,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'menu_item_options' => [
-                'controller' => \Igniter\Api\ApiResources\MenuItemOptions::class,
+                'controller' => MenuItemOptions::class,
                 'name' => 'MenuItemOptions',
                 'description' => 'An API resource for Menu item options',
                 'actions' => [
@@ -158,7 +172,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'orders' => [
-                'controller' => \Igniter\Api\ApiResources\Orders::class,
+                'controller' => Orders::class,
                 'name' => 'Orders',
                 'description' => 'An API resource for orders',
                 'actions' => [
@@ -168,7 +182,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'reservations' => [
-                'controller' => \Igniter\Api\ApiResources\Reservations::class,
+                'controller' => Reservations::class,
                 'name' => 'Reservations',
                 'description' => 'An API resource for reservations',
                 'actions' => [
@@ -178,7 +192,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'reviews' => [
-                'controller' => \Igniter\Api\ApiResources\Reviews::class,
+                'controller' => Reviews::class,
                 'name' => 'Reviews',
                 'description' => 'An API resource for reviews',
                 'actions' => [
@@ -188,7 +202,7 @@ class Extension extends BaseExtension
                 ],
             ],
             'tables' => [
-                'controller' => \Igniter\Api\ApiResources\DiningTables::class,
+                'controller' => DiningTables::class,
                 'name' => 'Tables',
                 'description' => 'An API resource for dining tables',
                 'actions' => [

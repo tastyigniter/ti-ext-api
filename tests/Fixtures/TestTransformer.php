@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\Fixtures;
 
-class TestTransformer extends \League\Fractal\TransformerAbstract {}
+use League\Fractal\TransformerAbstract;
+
+class TestTransformer extends TransformerAbstract {}

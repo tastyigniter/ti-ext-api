@@ -16,7 +16,7 @@ class IssueApiToken extends Command
      * The console command name.
      * @var string
      */
-    protected $name = 'api:token';
+    protected $name = 'igniter:api-token';
 
     /**
      * The console command description.
@@ -40,7 +40,10 @@ class IssueApiToken extends Command
         /** @var null|Customer|User $user */
         $user = $query->first();
         if (!$user) {
-            $this->error('User does not exist!');
+            $this->error($isForAdmin
+                ? 'Admin user does not exist! Remove --admin option to issue token for customer.'
+                : 'Customer does not exist! Maybe you forgot to add the --admin option?'
+            );
 
             return;
         }
@@ -52,7 +55,7 @@ class IssueApiToken extends Command
     /**
      * Get the console command options.
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['name', null, InputOption::VALUE_REQUIRED, 'The name to identify the token.'],

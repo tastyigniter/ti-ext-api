@@ -219,7 +219,7 @@ it('creates model instance when model class exists', function(): void {
 });
 
 it('sets nested model attributes when attribute is nested', function(): void {
-    $nestedModel = Mockery::mock(\Igniter\Flame\Database\Model::class)->makePartial();
+    $nestedModel = Mockery::mock(Model::class)->makePartial();
     $nestedModel->shouldReceive('isFillable')->andReturn(true);
     $nestedModel->shouldReceive('hasRelation')->andReturn(false);
     $nestedModel->shouldReceive('getKeyName')->andReturn('id');
@@ -332,6 +332,24 @@ it('does not apply location aware scope if user has no active locations', functi
     ]);
     $query->shouldReceive('getModel')->andReturn(new Order);
     $user->shouldReceive('extendableGet')->with('locations')->andReturn($locations);
+    $query->shouldReceive('whereHasOrDoesntHaveLocation')->never();
+    $query->shouldReceive('whereHasLocation')->never();
+    request()->setUserResolver(fn() => $user);
+
+    callProtectedMethod($repository, 'applyLocationAwareScope', [$query]);
+});
+
+it('does not apply location aware scope if user has no locations', function(): void {
+    $repository = new class extends AbstractRepository
+    {
+        protected ?string $modelClass = Order::class;
+
+        protected static $locationAwareConfig = ['addAbsenceConstraint' => true];
+    };
+    $query = Mockery::mock(Builder::class);
+    $user = Mockery::mock(Customer::class);
+    $query->shouldReceive('getModel')->andReturn(new Order);
+    $user->shouldReceive('extendableGet')->with('locations')->andReturnNull();
     $query->shouldReceive('whereHasOrDoesntHaveLocation')->never();
     $query->shouldReceive('whereHasLocation')->never();
     request()->setUserResolver(fn() => $user);

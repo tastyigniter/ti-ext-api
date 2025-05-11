@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Igniter\Api\ApiResources;
 
+use Igniter\Api\ApiResources\Repositories\CustomerRepository;
+use Igniter\Api\ApiResources\Transformers\CustomerTransformer;
 use Igniter\Api\Classes\ApiController;
+use Igniter\Api\Http\Actions\RestController;
+use Igniter\User\Http\Requests\CustomerRequest;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -12,7 +16,7 @@ use Illuminate\Support\Facades\Request;
  */
 class Customers extends ApiController
 {
-    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [RestController::class];
 
     public $restConfig = [
         'actions' => [
@@ -24,9 +28,9 @@ class Customers extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\User\Http\Requests\CustomerRequest::class,
-        'repository' => Repositories\CustomerRepository::class,
-        'transformer' => Transformers\CustomerTransformer::class,
+        'request' => CustomerRequest::class,
+        'repository' => CustomerRepository::class,
+        'transformer' => CustomerTransformer::class,
     ];
 
     protected string|array $requiredAbilities = ['customers:*'];

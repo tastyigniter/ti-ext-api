@@ -82,7 +82,7 @@ it('creates access token using console command', function($email, $isAdmin, $dev
         ? User::factory()->create($attributes)
         : Customer::factory()->create($attributes);
 
-    $this->artisan('api:token', [
+    $this->artisan('igniter:api-token', [
         '--name' => $deviceName,
         '--email' => $email,
         '--admin' => $isAdmin,

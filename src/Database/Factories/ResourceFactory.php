@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Database\Factories;
 
+use Igniter\Api\Models\Resource;
 use Igniter\Flame\Database\Factories\Factory;
 
 class ResourceFactory extends Factory
 {
-    protected $model = \Igniter\Api\Models\Resource::class;
+    protected $model = Resource::class;
 
     public function definition(): array
     {

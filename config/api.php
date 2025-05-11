@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Igniter\Api\Http\Middleware\Authenticate;
+use League\Fractal\Serializer\JsonApiSerializer;
+
 return [
 
     'debug' => env('API_DEBUG', true),
@@ -62,10 +65,10 @@ return [
     |
     */
 
-    'serializer' => \League\Fractal\Serializer\JsonApiSerializer::class,
+    'serializer' => JsonApiSerializer::class,
 
     'middleware' => [
         'api',
-        \Igniter\Api\Http\Middleware\Authenticate::class,
+        Authenticate::class,
     ],
 ];

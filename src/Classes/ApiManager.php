@@ -10,6 +10,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\Contracts\HasAbilities;
 
 class ApiManager
 {
@@ -18,7 +19,7 @@ class ApiManager
     /**
      * The access token the user is using for the current request.
      *
-     * @var \Laravel\Sanctum\Contracts\HasAbilities
+     * @var HasAbilities
      */
     protected $accessToken;
 

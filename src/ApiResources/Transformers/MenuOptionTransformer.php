@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Cart\Models\MenuOption;
+use League\Fractal\Resource\Collection;
 use League\Fractal\TransformerAbstract;
 
 class MenuOptionTransformer extends TransformerAbstract
@@ -20,7 +21,7 @@ class MenuOptionTransformer extends TransformerAbstract
         ]);
     }
 
-    public function includeOptionValues(MenuOption $menuOption): \League\Fractal\Resource\Collection
+    public function includeOptionValues(MenuOption $menuOption): Collection
     {
         return $this->collection(
             $menuOption->option_values,
