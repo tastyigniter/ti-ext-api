@@ -22,4 +22,14 @@ class LocationRepository extends AbstractRepository
     {
         $query->select('*');
     }
+
+    protected function setModelAttributes($model, $saveData)
+    {
+        parent::setModelAttributes($model, $saveData);
+        if (array_key_exists("options",$saveData)) { 
+            foreach ($saveData['options'] as $key => $value) {
+                $model->setOption($key, $value);
+            }
+        }
+    }
 }

@@ -185,6 +185,22 @@ class Extension extends BaseExtension
                     'destroy:admin',
                 ],
             ],
+            'staff' => [
+                'controller' => \Igniter\Api\ApiResources\Staff::class,
+                'name' => 'Staff',
+                'description' => 'An API resource for staff',
+                'actions' => [
+                    'index:admin', 'show:admin', 'store:admin', 'update:admin', 'destroy:admin',
+                ],
+            ],
+            'status' => [
+                'controller' => \Igniter\Api\ApiResources\Status::class,
+                'name' => 'Status',
+                'description' => 'An API resource for statuses',
+                'actions' => [
+                    'index:admin', 'show:admin', 'store:admin', 'update:admin', 'destroy:admin',
+                ],
+            ]
         ];
     }
 
