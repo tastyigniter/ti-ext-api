@@ -79,7 +79,7 @@ class ApiManager
             ->prefix(config('igniter.api.prefix'))
             ->group(function(Router $router): void {
                 foreach (resolve(static::class)->getResources() as $endpoint => $resourceObj) {
-                    if (!class_exists($resourceObj->controller)) {
+                    if (!class_exists((string)$resourceObj->controller)) {
                         continue;
                     }
 
