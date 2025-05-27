@@ -205,7 +205,7 @@ class MenuRequest extends FormRequest
 }
 ```
 
-For more information on using Form Requests, see the [Form Requests](https://tastyigniter.com/docs/advanced/validation) documentation.
+For more information on using Form Requests, see the [Form Requests](https://tastyigniter.com/docs/extend/validation) documentation.
 
 ### Register API resources
 
