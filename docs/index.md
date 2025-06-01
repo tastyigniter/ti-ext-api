@@ -94,7 +94,7 @@ These lines instruct Apache to capture the `Authorization` HTTP header and pass 
 
 ## Usage
 
-This section explains how to integrate the API extension into your own extension if you're building an extension that provides API resources. The API extension provides a simple API for defining and managing resources, allowing you to create, read, update, and delete data in TastyIgniter.
+This section covers how to integrate the API extension into your own extension if you're building an extension that provides API resources. The API extension provides a simple API for defining and managing resources, allowing you to create, read, update, and delete data in TastyIgniter.
 
 ### Defining resource controllers
 
