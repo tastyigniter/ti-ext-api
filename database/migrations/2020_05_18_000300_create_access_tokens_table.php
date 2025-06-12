@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('igniter_api_access_tokens', function(Blueprint $table): void {
             $table->bigIncrements('id');
-            $table->morphs('tokenable');
+            $table->morphs('tokenable', 'igniter_api_access_tokens_tokenable');
             $table->string('name');
-            $table->string('token', 64)->unique();
+            $table->string('token', 64)->unique('igniter_api_access_tokens_token_unique');
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
             $table->timestamps();
