@@ -124,6 +124,7 @@ it('creates a customer', function(): void {
             'last_name' => 'Customer',
             'email' => 'test@example.tld',
             'customer_group_id' => 1,
+            'send_invite' => 1,
             'newsletter' => false,
             'status' => false,
         ])
@@ -142,6 +143,7 @@ it('creates a customer as customer', function(): void {
             'last_name' => 'Customer',
             'email' => 'test@example.tld',
             'customer_group_id' => 1,
+            'send_invite' => 1,
             'newsletter' => false,
             'status' => false,
         ])

@@ -52,11 +52,11 @@ class TokenEventSubscriber
             return false;
         }
 
-        if ($group == 'admin' && !$token->isForAdmin()) {
-            return false;
-        }
-
-        return !($group == 'customer' && $token->isForAdmin());
+        return match ($group) {
+            'admin' => $token->isForAdmin(),
+            'customer' => $token->isForCustomer(),
+            default => false,
+        };
     }
 
     protected function getAllowedGroup(Route $route)

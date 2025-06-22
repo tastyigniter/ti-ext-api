@@ -26,16 +26,11 @@ php artisan igniter:up
 
 ## Getting started
 
-If you are using an Apache server, you need to modify your .htaccess file to ensure tokens are passed correctly. Add the following lines to your .htaccess file:
+The API extension provides a RESTful API for TastyIgniter, allowing you to interact with the system programmatically. It uses Laravel Sanctum for authentication and authorization.
 
-```apache
-RewriteCond %{HTTP:Authorization} ^(.*)
-RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
-```
+From your TastyIgniter Admin, navigate to _Tools > APIs_ to configure the API endpoints.
 
-These lines instruct Apache to capture the `Authorization` HTTP header and pass it as an environment variable `HTTP_AUTHORIZATION`, allowing Laravel Sanctum to access the token and authenticate the request.
-
-## Usage
+### Consuming the API
 
 The API extension provides endpoints for all core TastyIgniter resources. You can interact with these endpoints using standard HTTP methods (GET, POST, PUT, DELETE).
 
@@ -87,6 +82,19 @@ Tokens should be passed in the `Authorization` header with every request to a re
 ```bash
 curl -i -X GET -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer your-api-token" https://your-tastyigniter-site.com/api/orders
 ```
+
+If you are using an Apache server, you need to modify your .htaccess file to ensure tokens are passed correctly. Add the following lines to your .htaccess file:
+
+```apache
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+```
+
+These lines instruct Apache to capture the `Authorization` HTTP header and pass it as an environment variable `HTTP_AUTHORIZATION`, allowing Laravel Sanctum to access the token and authenticate the request.
+
+## Usage
+
+This section covers how to integrate the API extension into your own extension if you're building an extension that provides API resources. The API extension provides a simple API for defining and managing resources, allowing you to create, read, update, and delete data in TastyIgniter.
 
 ### Defining resource controllers
 
@@ -197,7 +205,7 @@ class MenuRequest extends FormRequest
 }
 ```
 
-For more information on using Form Requests, see the [Form Requests](https://tastyigniter.com/docs/advanced/validation) documentation.
+For more information on using Form Requests, see the [Form Requests](https://tastyigniter.com/docs/extend/validation) documentation.
 
 ### Register API resources
 
@@ -211,6 +219,7 @@ public function registerApiResources(): array
             'name' => 'Menus',
             'description' => 'Description of this API resource',
             'controller' => \Author\Extension\ApiResources\Menus::class,
+            'actions' => ['destroy:admin']
         ],
     ];
 }
@@ -243,7 +252,7 @@ The API extension registers the following permission:
 
 - `Igniter.Api.Manage`: Control who can access the API in the admin area.
 
-For more on restricting access to the admin area, see the [TastyIgniter Permissions](https://tastyigniter.com/docs/extend/permissions) documentation.
+For more on restricting access to the admin area, see the [TastyIgniter Permissions](https://tastyigniter.com/docs/customize/permissions) documentation.
 
 ```php
 use Igniter\User\Facades\AdminAuth;
