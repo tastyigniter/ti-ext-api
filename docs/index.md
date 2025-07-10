@@ -26,7 +26,7 @@ php artisan igniter:up
 
 ## Getting started
 
-The API extension provides a RESTful API for TastyIgniter, allowing you to interact with the system programmatically. It uses Laravel Sanctum for authentication and authorization.
+The API extension provides a REST API for TastyIgniter, allowing you to interact with the system programmatically. It uses Laravel Sanctum for authentication and authorization.
 
 From your TastyIgniter Admin, navigate to _Tools > APIs_ to configure the API endpoints.
 
@@ -105,7 +105,7 @@ You can extend the API by adding new endpoints in your own extensions. Each reso
 - **repository** - handles the data retrieval and manipulation
 - **request** - validates the request data
 
-A resource controller class is typically stored in the `src/ApiResources` directory of an extension. The resource controller class should extends the `Igniter\Api\Classes\ApiController` class, implements the `Igniter\Api\Http\Actions\RestController` class and define the `$restConfig` property with the configuration for the resource.
+A resource controller class is typically stored in the `src/ApiResources` directory of an extension. The resource controller class should extend the `Igniter\Api\Classes\ApiController` class, implements the `Igniter\Api\Http\Actions\RestController` class and define the `$restConfig` property with the configuration for the resource.
 
 Here's an example of a custom API resource controller:
 
@@ -141,7 +141,7 @@ class Menus extends ApiController
 }
 ```
 
-> The `$implement` property should contain the `RestController` class to enable the RESTful controller actions.
+> The `$implement` property should contain the `RestController` class to enable the REST controller actions.
 
 ### Defining resource transformers
 
@@ -225,7 +225,7 @@ public function registerApiResources(): array
 }
 ```
 
-This are the available options for the resource configuration:
+These are the available options for the resource configuration:
 
 - **name** - The name of the resource
 - **description** - A brief description of the resource
