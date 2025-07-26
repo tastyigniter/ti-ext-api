@@ -8,21 +8,22 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 #### Attributes
 
-| Key                        | Type      | Description                                                                    |
-| -------------------------- | --------- | ------------------------------------------------------------------------------ |
-| `menu_option_id`           | `integer` | ID of the menu item option |
-| `menu_id`                  | `integer` | **Required** ID of the menu |
-| `option_id`                | `integer` | **Required** ID of the menu_option |
-| `priority`                 | `integer` | Placement in the storefront |
-| `required`                 | `boolean` | Menu Item Option is required to be selected |
-| `min_selected`             | `integer` | Minimum selected of the menu_option, must be smaller than max_selected |
-| `max_selected`             | `integer` | Maximum selected of the menu_option, must be larger than min_selected |
-| `option_name`              | `string`  | Menu item option name, read only see (see [MenuOptions](options.md)) |
-| `display_type`             | `srting`  | Menu item option display type, read only (see [MenuOptions](options.md)) |
-| `created_at`               | `date`    | Date ISO 8601 format of when the menu item option was created |
-| `updated_at`               | `date`    | Date ISO 8601 format of when the menu item option was updated |
-| `menu_option_values.*`     | `array`   | Json array with the menu_option_values (see [MenuOptionvalues](menu_item_option_values.md)) |
-| `option`                   | `object`  | Json Object of menu_option (see [MenuOptions](menu_options.md)) |
+| Key                    | Type      | Description                                                                                 |
+|------------------------|-----------|---------------------------------------------------------------------------------------------|
+| `menu_option_id`       | `integer` | ID of the menu item option                                                                  |
+| `menu_id`              | `integer` | **Required** ID of the menu                                                                 |
+| `option_id`            | `integer` | **Required** ID of the menu_option                                                          |
+| `priority`             | `integer` | Placement in the storefront                                                                 |
+| `required`             | `boolean` | Menu Item Option is required to be selected                                                 |
+| `min_selected`         | `integer` | Minimum selected of the menu_option, must be smaller than max_selected                      |
+| `max_selected`         | `integer` | Maximum selected of the menu_option, must be larger than min_selected                       |
+| `option_name`          | `string`  | Menu item option name, read only see (see [MenuOptions](menu_options.md))                   |
+| `display_type`         | `srting`  | Menu item option display type, read only (see [MenuOptions](menu_options.md))               |
+| `created_at`           | `date`    | Date ISO 8601 format of when the menu item option was created                               |
+| `updated_at`           | `date`    | Date ISO 8601 format of when the menu item option was updated                               |
+| `menu_option_values.*` | `array`   | Json array with the menu_option_values (see [MenuOptionValues](menu_item_option_values.md)) |
+| `option`               | `object`  | Json Object of menu_option (see [MenuOptions](menu_options.md))                             |
+
 #### Option object example
 
 ```json
@@ -62,10 +63,10 @@ GET /api/menu_item_options
 
 #### Parameters
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `page`               | `integer` | The page number.                                             |
-| `pageLimit`          | `integer` | The number of items per page.                                |
+| Key         | Type      | Description                   |
+|-------------|-----------|-------------------------------|
+| `page`      | `integer` | The page number.              |
+| `pageLimit` | `integer` | The number of items per page. |
 
 #### Response
 
@@ -103,9 +104,7 @@ Status: 200 OK
             },
             "relationships": {
                 "menu_option_values": {
-                    "data": [
-                        ...
-                    ]
+                    "data": []
                 }
             }
         },
@@ -136,16 +135,12 @@ Status: 200 OK
             },
             "relationships": {
                 "menu_option_values": {
-                    "data": [
-                        ...
-                    ]
+                    "data": []
                 }
             }
         }
     ],
-    "included": [
-        ...
-    ],
+    "included": [],
     "meta": {
         "pagination": {
             "total": 10,
@@ -176,15 +171,15 @@ POST /api/menu_item_options
 
 #### Parameters
 
-| Key                        | Type      | Description                                                                              |
-| -------------------------- | --------- | ---------------------------------------------------------------------------------------- |
-| `menu_id`                  | `integer` | **Required** ID of the menu |
-| `option_id`                | `integer` | **Required** ID of the menu_option |
-| `priority`                 | `integer` | Placement in the storefront |
-| `required`                 | `boolean` | Menu Item Option is required to be selected |
-| `min_selected`             | `integer` | Minimum selected of the menu_option, must be smaller than max_selected |
-| `max_selected`             | `integer` | Maximum selected of the menu_option, must be larger than min_selected |
-| `menu_option_values`       | `array`   | **Optional**. The menu item option\`s option_value\`s if any (see [MenuItemOptionValues](menu_item_option_values.md)) **Repsone id are not set. to retreive the id(s) perform a get Request |
+| Key                  | Type      | Description                                                                                                                                                                                  |
+|----------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `menu_id`            | `integer` | **Required** ID of the menu                                                                                                                                                                  |
+| `option_id`          | `integer` | **Required** ID of the menu_option                                                                                                                                                           |
+| `priority`           | `integer` | Placement in the storefront                                                                                                                                                                  |
+| `required`           | `boolean` | Menu Item Option is required to be selected                                                                                                                                                  |
+| `min_selected`       | `integer` | Minimum selected of the menu_option, must be smaller than max_selected                                                                                                                       |
+| `max_selected`       | `integer` | Maximum selected of the menu_option, must be larger than min_selected                                                                                                                        |
+| `menu_option_values` | `array`   | **Optional**. The menu item option\`s option_value\`s if any (see [MenuItemOptionValues](menu_item_option_values.md)) **Response id are not set. to retrieve the id(s) perform a get Request |
 
 
 #### Payload example
@@ -295,15 +290,11 @@ Status: 200 OK
         },
         "relationships": {
             "option_values": {
-                "data": [
-                   ...
-                ]
+                "data": []
             }
         }
     },
-    "included": [
-        ...
-    ]
+    "included": []
 }
 ```
 
@@ -319,15 +310,15 @@ PATCH /api/menu_item_options/:menu_item_option_id
 
 #### Parameters
 
-| Key                        | Type      | Description                                                                              |
-| -------------------------- | --------- | ---------------------------------------------------------------------------------------- |
-| `menu_id`                  | `integer` | **Required** ID of the menu |
-| `option_id`                | `integer` | **Required** ID of the menu_option |
-| `priority`                 | `integer` | Placement in the storefront |
-| `required`                 | `boolean` | Menu Item Option is required to be selected |
-| `min_selected`             | `integer` | Minimum selected of the menu_option, must be smaller than max_selected |
-| `max_selected`             | `integer` | Maximum selected of the menu_option, must be larger than min_selected |
-| `menu_option_values`       | `array`   | **Optional**. The menu item option\`s option_value\`s if any (see [MenuItemOptionValues](menu_item_option_values.md)) **Repsone id are not set. to retreive the id(s) perform a get Request |
+| Key                  | Type      | Description                                                                                                                                                                                  |
+|----------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `menu_id`            | `integer` | **Required** ID of the menu                                                                                                                                                                  |
+| `option_id`          | `integer` | **Required** ID of the menu_option                                                                                                                                                           |
+| `priority`           | `integer` | Placement in the storefront                                                                                                                                                                  |
+| `required`           | `boolean` | Menu Item Option is required to be selected                                                                                                                                                  |
+| `min_selected`       | `integer` | Minimum selected of the menu_option, must be smaller than max_selected                                                                                                                       |
+| `max_selected`       | `integer` | Maximum selected of the menu_option, must be larger than min_selected                                                                                                                        |
+| `menu_option_values` | `array`   | **Optional**. The menu item option\`s option_value\`s if any (see [MenuItemOptionValues](menu_item_option_values.md)) **Response id are not set. to retrieve the id(s) perform a get Request |
 
 
 #### Payload example
@@ -408,9 +399,7 @@ Status: 200 OK
         },
         "relationships": {
             "menu_option_values": {
-                "data": [
-                    ...
-                ]
+                "data": []
             }
         }
     },
@@ -439,8 +428,7 @@ Status: 200 OK
                 },
                 "currency": "GBP"
             }
-        },
-        ...
+        }
     ]
 }
 ```

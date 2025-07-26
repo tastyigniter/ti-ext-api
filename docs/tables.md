@@ -8,11 +8,11 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 #### Attributes
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `table_name`           | `string`  | **Required**. The table name         |
-| `min_capacity`           | `integer`  | The minimum capacity of the table | 
-| `max_capacity`           | `integer`  | The maximum capacity of the table | 
+| Key            | Type      | Description                       |
+|----------------|-----------|-----------------------------------|
+| `table_name`   | `string`  | **Required**. The table name      |
+| `min_capacity` | `integer` | The minimum capacity of the table | 
+| `max_capacity` | `integer` | The maximum capacity of the table | 
 
 | `priority`           | `integer`  | The table's priority.         |
 | `table_status`           | `boolean`  | Has the value `true` if the table is enabled or the value `false` if the table is disabled.         |
@@ -23,13 +23,13 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 ```json
 {
-   "table_name": "Table 1",
-   "min_capacity": 3,
-   "max_capacity": 12,
-   "table_status": true,
-   "extra_capacity": 0,
-   "is_joinable": false,
-   "priority": 0
+    "table_name": "Table 1",
+    "min_capacity": 3,
+    "max_capacity": 12,
+    "table_status": true,
+    "extra_capacity": 0,
+    "is_joinable": false,
+    "priority": 0
 }
 ```
 
@@ -45,10 +45,10 @@ GET /api/tables
 
 #### Parameters
 
-| Key                  | Type      | Description          |
-| -------------------- | --------- | ------------------------- |
-| `page`           | `integer`  | The page number.         |
-| `pageLimit`           | `integer`  | The number of items per page.         |
+| Key         | Type      | Description                   |
+|-------------|-----------|-------------------------------|
+| `page`      | `integer` | The page number.              |
+| `pageLimit` | `integer` | The number of items per page. |
 
 #### Response
 
@@ -58,38 +58,36 @@ Status: 201 Created
 
 ```json
 {
-  "data": [
-    {
-      "type": "menus",
-      "id": "1",
-      "attributes": {
-        "table_name": "Table 1",
-        "min_capacity": 3,
-        "max_capacity": 12,
-        "table_status": true,
-        "extra_capacity": 0,
-        "is_joinable": false,
-        "priority": 0
-      }
+    "data": [
+        {
+            "type": "menus",
+            "id": "1",
+            "attributes": {
+                "table_name": "Table 1",
+                "min_capacity": 3,
+                "max_capacity": 12,
+                "table_status": true,
+                "extra_capacity": 0,
+                "is_joinable": false,
+                "priority": 0
+            }
+        }
+    ],
+    "included": [],
+    "meta": {
+        "pagination": {
+            "total": 1,
+            "count": 1,
+            "per_page": 20,
+            "current_page": 1,
+            "total_pages": 1
+        }
+    },
+    "links": {
+        "self": "https://your.url/api/tables?page=1",
+        "first": "https://your.url/api/tables?page=1",
+        "last": "https://your.url/api/tables?page=1"
     }
-  ],
-  "included": [
-    ...
-  ],
-  "meta": {
-    "pagination": {
-      "total": 1,
-      "count": 1,
-      "per_page": 20,
-      "current_page": 1,
-      "total_pages": 1
-    }
-  },
-  "links": {
-    "self": "https://your.url/api/tables?page=1",
-    "first": "https://your.url/api/tables?page=1",
-    "last": "https://your.url/api/tables?page=1"
-  }
 }
 ```
 
@@ -105,11 +103,11 @@ POST /api/tables
 
 #### Parameters
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `table_name`           | `string`  | **Required**. The table name         |
-| `min_capacity`           | `integer`  | The minimum capacity of the table | 
-| `max_capacity`           | `integer`  | The maximum capacity of the table | 
+| Key            | Type      | Description                       |
+|----------------|-----------|-----------------------------------|
+| `table_name`   | `string`  | **Required**. The table name      |
+| `min_capacity` | `integer` | The minimum capacity of the table | 
+| `max_capacity` | `integer` | The maximum capacity of the table | 
 
 | `priority`           | `integer`  | The table's priority.         |
 | `table_status`           | `boolean`  | Has the value `true` if the table is enabled or the value `false` if the table is disabled.         |
@@ -120,8 +118,8 @@ POST /api/tables
 
 ```json
 {
-  "table_name": "New table",
-  "table_status": true
+    "table_name": "New table",
+    "table_status": true
 }
 ```
 
@@ -133,21 +131,21 @@ Status: 201 Created
 
 ```json
 {
-  "data": [
-    {
-      "type": "tables",
-      "id": "2",
-      "attributes": {
-        "table_name": "New table",
-        "min_capacity": 0,
-        "max_capacity": 12,
-        "table_status": true,
-        "extra_capacity": 0,
-        "is_joinable": false,
-        "priority": 0
-      }
-    }
-  ]
+    "data": [
+        {
+            "type": "tables",
+            "id": "2",
+            "attributes": {
+                "table_name": "New table",
+                "min_capacity": 0,
+                "max_capacity": 12,
+                "table_status": true,
+                "extra_capacity": 0,
+                "is_joinable": false,
+                "priority": 0
+            }
+        }
+    ]
 }
 ```
 
@@ -173,21 +171,21 @@ Status: 200 OK
 
 ```json
 {
-  "data": [
-    {
-      "type": "menus",
-      "id": "1",
-      "attributes": {
-        "table_name": "Table 1",
-        "min_capacity": 3,
-        "max_capacity": 12,
-        "table_status": true,
-        "extra_capacity": 0,
-        "is_joinable": false,
-        "priority": 0
-      }
-    }
-  ]
+    "data": [
+        {
+            "type": "menus",
+            "id": "1",
+            "attributes": {
+                "table_name": "Table 1",
+                "min_capacity": 3,
+                "max_capacity": 12,
+                "table_status": true,
+                "extra_capacity": 0,
+                "is_joinable": false,
+                "priority": 0
+            }
+        }
+    ]
 }
 ```
 
@@ -203,11 +201,11 @@ PATCH /api/tables/:table_id
 
 #### Parameters
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `table_name`           | `string`  | **Required**. The table name         |
-| `min_capacity`           | `integer`  | The minimum capacity of the table | 
-| `max_capacity`           | `integer`  | The maximum capacity of the table | 
+| Key            | Type      | Description                       |
+|----------------|-----------|-----------------------------------|
+| `table_name`   | `string`  | **Required**. The table name      |
+| `min_capacity` | `integer` | The minimum capacity of the table | 
+| `max_capacity` | `integer` | The maximum capacity of the table | 
 
 | `priority`           | `integer`  | The table's priority.         |
 | `table_status`           | `boolean`  | Has the value `true` if the table is enabled or the value `false` if the table is disabled.         |
@@ -218,7 +216,7 @@ PATCH /api/tables/:table_id
 
 ```json
 {
-  "table_name": "Table 2",
+    "table_name": "Table 2"
 }
 ```
 

@@ -6,13 +6,13 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 #### Attributes
 
-| Key                        | Type      | Description                                                                    |
-| -------------------------- | --------- | ------------------------------------------------------------------------------ |
-| `option_value_id`          | `integer` | The option_value primary ID                                                    |
-| `option_id`                | `integer` | The option primary ID                                                          |
-| `value`                    | `string`  | The option_value's name (between 2 and 255 characters in length)               |
-| `price`                    | `double`  | The price of the option_value default 0                                        |
-| `currency`                 | `String`  | The currency off the price as code **SET Automaticaly**                        |
+| Key               | Type      | Description                                                      |
+|-------------------|-----------|------------------------------------------------------------------|
+| `option_value_id` | `integer` | The option_value primary ID                                      |
+| `option_id`       | `integer` | The option primary ID                                            |
+| `value`           | `string`  | The option_value's name (between 2 and 255 characters in length) |
+| `price`           | `double`  | The price of the option_value default 0                          |
+| `currency`        | `String`  | The currency off the price as code **SET Automatically**         |
 
 
 #### Option_value object example
@@ -31,15 +31,15 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 }
 ```
 
-### Create/Update a option
+### Create/Update an option
 
 Creates a new option.
 
 Required abilities: `options:write`
   
-Relations and ID's are automaticaly set.
+Relations and IDs are automatically set.
 
-** option_value items are not appended. the state in the json array will be the state on the website. previous option_value(s) will be deleted. to add a option to an existing one `option_value_id` && `option_id` are mandatory. 
+** option_value items are not appended. the state in the json array will be the state on the website. previous option_value(s) will be deleted. to add an option to an existing one `option_value_id` && `option_id` are mandatory. 
 
 #### Payload example
 
@@ -51,8 +51,8 @@ Relations and ID's are automaticaly set.
     "update_related_menu_item": 0,
     "option_values": [
         {
-            "option_value_id":2,
-            "option_id":1,
+            "option_value_id": 2,
+            "option_id": 1,
             "value": "Peperoni",
             "price": 1.99,
             "priority": 2
@@ -106,7 +106,7 @@ Status: 201 Created
                 "value": "Peperoni",
                 "price": 1.99,
                 "priority": 2,
-                "currrency": "GBP"
+                "currency": "GBP"
             }
         }
     ]
