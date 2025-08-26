@@ -3,7 +3,11 @@ name: API CI Pipeline
 on: [ push, workflow_dispatch ]
 
 jobs:
+  php-code-check:
+    uses: tastyigniter/workflows/.github/workflows/php-code-check.yml@main
   php-tests:
+    needs: php-code-check
+    if: ${{ always () && needs.build-assets.result == 'success' }}
     strategy:
       matrix:
         php: [ '8.3', '8.4' ]
