@@ -43,7 +43,7 @@ it('returns controller attribute correctly', function(): void {
 });
 
 it('syncs all resources correctly', function(): void {
-    app()->instance(ExtensionManager::class, mock(ExtensionManager::class, function($mock) {
+    app()->instance(ExtensionManager::class, mock(ExtensionManager::class, function($mock): void {
         $mock->shouldReceive('getRegistrationMethodValues')
             ->with('registerApiResources')
             ->andReturn([
