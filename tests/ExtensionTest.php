@@ -14,7 +14,7 @@ use League\Fractal\Serializer\JsonApiSerializer;
 use Mockery;
 
 it('loads registered api resources', function(): void {
-    $resources = Resource::listRegisteredResources();
+    $resources = (new Resource)->listRegisteredResources();
 
     expect($resources)
         ->toHaveKey('categories')
