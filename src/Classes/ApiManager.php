@@ -53,7 +53,7 @@ class ApiManager
     {
         Resource::syncAll();
 
-        $resources = Resource::all()->mapWithKeys(function(Resource $resource) {
+        $resources = Resource::all()->mapWithKeys(function(Resource $resource): array {
             $resourceObj = (object)[
                 'endpoint' => $resource->endpoint,
                 'controller' => $resource->controller,
