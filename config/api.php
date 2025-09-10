@@ -7,7 +7,7 @@ use League\Fractal\Serializer\JsonApiSerializer;
 
 return [
 
-    'debug' => env('API_DEBUG', true),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------

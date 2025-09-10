@@ -23,7 +23,7 @@ class CreateToken extends Controller
             'password' => 'required',
             'is_admin' => 'boolean',
             'device_name' => ['required', 'string', 'max:255'],
-            'abilities.*' => 'regex:/^[a-zA-Z-_\*]+$/',
+            'abilities.*' => 'regex:/^[a-zA-Z-_\*\.]+$/',
         ]);
 
         $forAdmin = $request->get('is_admin', false);
