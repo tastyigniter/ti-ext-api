@@ -49,12 +49,13 @@ class TokenEventSubscriber
     protected function checkGroup(mixed $group, mixed $token): bool
     {
         if ($group == 'guest') {
-            return false;
+            return true;
         }
 
         return match ($group) {
             'admin' => $token->isForAdmin(),
             'customer' => $token->isForCustomer(),
+            'users' => $token->isForAdmin() || $token->isForCustomer(),
             default => false,
         };
     }
