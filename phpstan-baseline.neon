@@ -145,24 +145,6 @@ parameters:
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Foundation\\Auth\\User\:\:\$locations\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Classes/AbstractRepository.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Foundation\\Auth\\User\:\:currentAccessToken\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/ApiController.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Foundation\\Auth\\User\:\:tokenCan\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Classes/ApiController.php
-
-		-
 			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Igniter\\Api\\Models\\Resource\>\:\:mapWithKeys\(\) contains unresolvable type\.$#'
 			identifier: argument.unresolvableType
 			count: 1
