@@ -49,19 +49,20 @@ class TokenEventSubscriber
     protected function checkGroup(mixed $group, mixed $token): bool
     {
         if ($group == 'guest') {
-            return false;
+            return true;
         }
 
         return match ($group) {
             'admin' => $token->isForAdmin(),
             'customer' => $token->isForCustomer(),
+            'users' => $token->isForAdmin() || $token->isForCustomer(),
             default => false,
         };
     }
 
     protected function getAllowedGroup(Route $route)
     {
-        $resourceOptions = optional(resolve(ApiManager::class)->getCurrentResource())->options ?? [];
+        $resourceOptions = resolve(ApiManager::class)->getCurrentResource()->options ?? [];
 
         $authActions = array_get($resourceOptions, 'authorization', []);
 
