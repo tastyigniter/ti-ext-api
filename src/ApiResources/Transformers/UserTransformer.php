@@ -6,9 +6,9 @@ namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\User\Models\User;
-use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
 {
@@ -46,7 +46,7 @@ class UserTransformer extends TransformerAbstract
 
     public function includeRole(User $user): ?Item
     {
-        return $this->item( 
+        return $this->item(
             $user->role,
             new UserRoleTransformer,
             'role'

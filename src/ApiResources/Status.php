@@ -1,11 +1,17 @@
-<?php 
+<?php
+
+declare(strict_types=1);
 
 namespace Igniter\Api\ApiResources;
 
+use Igniter\Admin\Http\Requests\StatusRequest;
+use Igniter\Api\ApiResources\Repositories\StatusRepository;
+use Igniter\Api\ApiResources\Transformers\StatusTransformer;
 use Igniter\Api\Classes\ApiController;
 use Igniter\Api\Http\Actions\RestController;
 
-class Status extends ApiController {
+class Status extends ApiController
+{
     public array $implement = [RestController::class];
 
     public $restConfig = [
@@ -18,9 +24,9 @@ class Status extends ApiController {
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Admin\Requests\Status::class,
-        'repository' => Repositories\StatusRepository::class,
-        'transformer' => Transformers\StatusTransformer::class,
+        'request' => StatusRequest::class,
+        'repository' => StatusRepository::class,
+        'transformer' => StatusTransformer::class,
     ];
 
     protected string|array $requiredAbilities = ['status:*'];

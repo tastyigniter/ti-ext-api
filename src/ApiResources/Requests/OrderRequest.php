@@ -31,7 +31,7 @@ class OrderRequest extends FormRequest
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         $rules = [
             'first_name' => ['between:1,48'],
