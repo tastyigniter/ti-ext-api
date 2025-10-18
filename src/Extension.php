@@ -15,6 +15,8 @@ use Igniter\Api\ApiResources\Menus;
 use Igniter\Api\ApiResources\Orders;
 use Igniter\Api\ApiResources\Reservations;
 use Igniter\Api\ApiResources\Reviews;
+use Igniter\Api\ApiResources\Status;
+use Igniter\Api\ApiResources\Users;
 use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Console\IssueApiToken;
 use Igniter\Api\Exceptions\ErrorHandler;
@@ -205,6 +207,26 @@ class Extension extends BaseExtension
                 'controller' => DiningTables::class,
                 'name' => 'Tables',
                 'description' => 'An API resource for dining tables',
+                'actions' => [
+                    'index:admin', 'show:admin',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
+            ],
+            'status' => [
+                'controller' => Status::class,
+                'name' => 'Status',
+                'description' => 'An API resource for status',
+                'actions' => [
+                    'index:admin', 'show:admin',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
+            ],
+            'users' => [
+                'controller' => Users::class,
+                'name' => 'Staff',
+                'description' => 'An API resource for staff',
                 'actions' => [
                     'index:admin', 'show:admin',
                     'store:admin', 'update:admin',
