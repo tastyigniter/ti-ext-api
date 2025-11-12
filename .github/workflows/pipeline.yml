@@ -10,3 +10,9 @@ jobs:
     uses: tastyigniter/workflows/.github/workflows/php-tests.yml@main
     with:
       php-version: ${{ matrix.php }}
+
+  auto-merge-release:
+    needs: [ php-tests ]
+    uses: tastyigniter/workflows/.github/workflows/auto-merge-release.yml@main
+    with:
+      release-branch: master
