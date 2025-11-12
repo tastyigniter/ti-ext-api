@@ -19,7 +19,7 @@ beforeEach(function(): void {
 });
 
 it('handles request with default guard', function(): void {
-    config()->set('igniter.api.guard', null);
+    config()->set('igniter.api.guard');
     $this->middleware->shouldReceive('authenticate')->with($this->request, [])->andReturn(true);
 
     $response = $this->middleware->handle($this->request, $this->next);

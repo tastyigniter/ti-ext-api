@@ -8,7 +8,7 @@ use Igniter\Api\Exceptions\ResourceException;
 use Illuminate\Support\MessageBag;
 
 it('creates ResourceException with default message bag when errors are null', function(): void {
-    $exception = new ResourceException('Error message', null);
+    $exception = new ResourceException('Error message');
 
     expect($exception->getErrors())->toBeInstanceOf(MessageBag::class)
         ->and($exception->getErrors()->isEmpty())->toBeTrue();
