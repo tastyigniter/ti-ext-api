@@ -19,7 +19,7 @@ beforeEach(function(): void {
 });
 
 it('handles request with default guard', function(): void {
-    config()->set('igniter.api.guard', null);
+    config()->set('igniter-api.guard');
     $this->middleware->shouldReceive('authenticate')->with($this->request, [])->andReturn(true);
 
     $response = $this->middleware->handle($this->request, $this->next);
@@ -28,7 +28,7 @@ it('handles request with default guard', function(): void {
 });
 
 it('handles request with custom guard', function(): void {
-    config()->set('igniter.api.guard', 'api');
+    config()->set('igniter-api.guard', 'api');
     $this->middleware->shouldReceive('authenticate')->with($this->request, ['api'])->andReturn(true);
 
     $response = $this->middleware->handle($this->request, $this->next);
@@ -37,7 +37,7 @@ it('handles request with custom guard', function(): void {
 });
 
 it('throws custom authentication exception on failure', function(): void {
-    config()->set('igniter.api.guard', 'api');
+    config()->set('igniter-api.guard', 'api');
     $this->middleware->shouldReceive('authenticate')
         ->with($this->request, ['api'])
         ->andThrow(new IlluminateAuthenticationException('Unauthenticated.', ['api']));

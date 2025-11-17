@@ -26,7 +26,7 @@ class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
     public function handle($request, Closure $next, ...$guards)
     {
         try {
-            $guard = config('igniter.api.guard');
+            $guard = config('igniter-api.guard');
 
             if (!empty($guard)) {
                 $guards[] = $guard;

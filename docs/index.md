@@ -53,7 +53,7 @@ php artisan igniter:api-token --name=my_device --email=my_email
 Or, by sending a POST request to: `https://your-tastyigniter-site.com/api/token`
 
 ```bash
-curl -X POST --data "username=my_user&password=my_password&device_name=my_device" https://your-tastyigniter-site.com/api/token
+curl -X POST --data "email=my_email&password=my_password&device_name=my_device" https://your-tastyigniter-site.com/api/token
 ```
 
 The post data should contain the following fields:

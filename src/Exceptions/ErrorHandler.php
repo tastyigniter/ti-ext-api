@@ -96,7 +96,7 @@ class ErrorHandler
         }
 
         // Be extra defensive
-        if ($statusCode < 100 || $statusCode > 599) {
+        if (!is_numeric($statusCode) || $statusCode < 100 || $statusCode > 599) {
             $statusCode = 500;
         }
 

@@ -31,12 +31,6 @@ parameters:
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: '#^Access to an undefined property Igniter\\Local\\Models\\Location\:\:\$reviews\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/LocationTransformer.php
-
-		-
 			message: '#^Access to an undefined property Igniter\\Local\\Models\\Location\:\:\$working_hours\.$#'
 			identifier: property.notFound
 			count: 1
