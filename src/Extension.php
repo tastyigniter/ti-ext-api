@@ -43,7 +43,7 @@ class Extension extends BaseExtension
     #[Override]
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/api.php', 'igniter.api');
+        $this->mergeConfigFrom(__DIR__.'/../config/api.php', 'igniter-api');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([__DIR__.'/../config/api.php' => config_path('igniter-api.php')], 'igniter-config');
@@ -54,7 +54,7 @@ class Extension extends BaseExtension
         $this->app->register(FractalServiceProvider::class);
         $this->app->register(SanctumServiceProvider::class);
 
-        $this->app['config']->set('fractal.default_serializer', $this->app['config']->get('igniter.api.serializer'));
+        $this->app['config']->set('fractal.default_serializer', $this->app['config']->get('igniter-api.serializer'));
 
         $this->app->singleton(ApiManager::class);
 
@@ -239,7 +239,7 @@ class Extension extends BaseExtension
     protected function registerErrorHandler()
     {
         $this->callAfterResolving(ExceptionHandler::class, function($handler): void {
-            new ErrorHandler($handler, config('igniter.api.errorFormat', []), config('igniter.api.debug', []));
+            new ErrorHandler($handler, config('igniter-api.errorFormat', []), config('igniter-api.debug', []));
         });
     }
 

@@ -74,9 +74,9 @@ class ApiManager
             return;
         }
 
-        Route::middleware(config('igniter.api.middleware'))
+        Route::middleware(config('igniter-api.middleware'))
             ->as('igniter.api.')
-            ->prefix(config('igniter.api.prefix'))
+            ->prefix(config('igniter-api.prefix'))
             ->group(function(Router $router): void {
                 foreach (resolve(static::class)->getResources() as $endpoint => $resourceObj) {
                     if (!class_exists((string)$resourceObj->controller)) {

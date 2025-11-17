@@ -79,7 +79,7 @@ class Resource extends Model
 
     public function getBaseEndpointAttribute($value): string
     {
-        return sprintf('/%s/%s', config('igniter.api.prefix'), $this->endpoint);
+        return sprintf('/%s/%s', config('igniter-api.prefix'), $this->endpoint);
     }
 
     public function getControllerAttribute()
