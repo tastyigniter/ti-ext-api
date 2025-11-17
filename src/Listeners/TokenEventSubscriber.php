@@ -66,6 +66,6 @@ class TokenEventSubscriber
 
         $authActions = array_get($resourceOptions, 'authorization', []);
 
-        return array_get($authActions, $route->getActionMethod(), 'admin');
+        return array_get($authActions, $route->getActionMethod(), 'all');
     }
 }
