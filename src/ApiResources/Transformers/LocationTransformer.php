@@ -24,7 +24,8 @@ class LocationTransformer extends TransformerAbstract
 
     public function transform(Location $location): array
     {
-        return $this->mergesIdAttribute($location);
+        return $this->mergesIdAttribute($location, ['settings' => $location->settings]);        
+        // return $this->mergesIdAttribute($location);        
     }
 
     public function includeMedia(Location $location): ?Item

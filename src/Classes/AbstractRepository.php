@@ -9,6 +9,7 @@ use Igniter\Api\Traits\HasGlobalScopes;
 use Igniter\Flame\Database\Model;
 use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
+use Igniter\Local\Models\Concerns\Locationable;
 use Igniter\User\Models\Customer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as IlluminateModel;
@@ -233,6 +234,7 @@ class AbstractRepository
         $this->modelsToSave[] = $model;
 
         $singularTypes = ['belongsTo', 'hasOne', 'morphOne'];
+        $pluralTypes = ['hasMany', 'morphMany'];
         foreach ($saveData as $attribute => $value) {
             if ($attribute === $model->getKeyName() || !$model->isFillable($attribute)) {
                 continue;
@@ -242,14 +244,74 @@ class AbstractRepository
                 continue;
             }
 
-            $isNested = ($attribute == 'pivot' || (
+            $isSingularNested = ($attribute == 'pivot' || (
                 $model->hasRelation($attribute) &&
                 in_array($model->getRelationType($attribute), $singularTypes)
             ));
 
-            if ($isNested && is_array($value) && $model->{$attribute}) {
+            // Handle singular nested relations (belongsTo, hasOne, morphOne)
+            if ($isSingularNested && is_array($value) && $model->{$attribute}) {
                 $this->setModelAttributes($model->{$attribute}, $value);
-            } elseif (!starts_with($attribute, '_')) {
+                continue;
+            }
+
+            // Handle plural nested relations (hasMany, morphMany)
+            if ($model->hasRelation($attribute) && in_array($model->getRelationType($attribute), $pluralTypes) && is_array($value)) {
+                try {
+                    $relation = $model->{$attribute}();
+                    $relatedModel = method_exists($relation, 'getModel') ? $relation->getModel() : (method_exists($relation, 'getRelated') ? $relation->getRelated() : null);
+                    if ($relatedModel === null) {
+                        continue;
+                    }
+
+                    $relatedKey = $relatedModel->getKeyName();
+                    $fkName = $model->getForeignKey();
+
+                    $existing = $relation->get()->keyBy($relatedKey)->all();
+
+                    foreach ($value as $attrs) {
+                        if (!is_array($attrs)) {
+                            continue;
+                        }
+
+                        if (!empty($attrs[$relatedKey]) && isset($existing[$attrs[$relatedKey]])) {
+                            $rel = $existing[$attrs[$relatedKey]];
+                            $rel->fill($attrs);
+                        } else {
+                            $rel = new ($relatedModel::class)($attrs);
+                        }
+
+                        // Queue wrapper that will set parent's FK and save related model after parent saved
+                        $this->modelsToSave[] = new class($rel, $model, $fkName) {
+                            protected $rel;
+                            protected $parent;
+                            protected $fk;
+
+                            public function __construct($rel, $parent, $fk)
+                            {
+                                $this->rel = $rel;
+                                $this->parent = $parent;
+                                $this->fk = $fk;
+                            }
+
+                            public function save()
+                            {
+                                if (empty($this->rel->{$this->fk}) && $this->parent->getKey()) {
+                                    $this->rel->{$this->fk} = $this->parent->getKey();
+                                }
+
+                                $this->rel->save();
+                            }
+                        };
+                    }
+                } catch (\Throwable $ex) {
+                    // If relation introspection fails, skip gracefully
+                }
+
+                continue;
+            }
+
+            if (!starts_with($attribute, '_')) {
                 $model->{$attribute} = $value;
             }
         }
@@ -261,11 +323,11 @@ class AbstractRepository
             return;
         }
 
-        if (!in_array(\Igniter\Local\Models\Concerns\Locationable::class, class_uses($query->getModel()))) {
+        if (!in_array(Locationable::class, class_uses($query->getModel()))) {
             return;
         }
 
-        $ids = request()->user()?->locations->where('location_status', true)->pluck('location_id')->all();
+        $ids = request()->user()?->locations?->where('location_status', true)->pluck('location_id')->all();
         if (empty($ids)) {
             return;
         }
