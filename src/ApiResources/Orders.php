@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Igniter\Api\ApiResources;
 
+use Igniter\Api\ApiResources\Repositories\OrderRepository;
+use Igniter\Api\ApiResources\Requests\OrderRequest;
+use Igniter\Api\ApiResources\Transformers\OrderTransformer;
 use Igniter\Api\Classes\ApiController;
+use Igniter\Api\Http\Actions\RestController;
 
 /**
  * Orders API Controller
  */
 class Orders extends ApiController
 {
-    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [RestController::class];
 
     public $restConfig = [
         'actions' => [
@@ -23,9 +27,9 @@ class Orders extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Requests\OrderRequest::class,
-        'repository' => Repositories\OrderRepository::class,
-        'transformer' => Transformers\OrderTransformer::class,
+        'request' => OrderRequest::class,
+        'repository' => OrderRepository::class,
+        'transformer' => OrderTransformer::class,
     ];
 
     protected string|array $requiredAbilities = ['orders:*'];

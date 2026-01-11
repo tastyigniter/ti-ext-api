@@ -9,5 +9,4 @@ jobs:
         php: [ '8.3', '8.4' ]
     uses: tastyigniter/workflows/.github/workflows/php-tests.yml@main
     with:
-      php-version: ${{ matrix.target }}
-      composer: update --no-interaction --no-progress
+      php-version: ${{ matrix.php }}

@@ -25,7 +25,7 @@ beforeEach(function(): void {
 });
 
 it('renders generic response for non-API route', function(): void {
-    $this->request->shouldReceive('routeIs')->with('igniter.api.*')->andReturn(false);
+    $this->request->shouldReceive('routeIs')->with('igniter.api.*.*')->andReturn(false);
     $exception = new Exception('Test Exception');
 
     $response = $this->errorHandler->render($this->request, $exception);
@@ -34,7 +34,7 @@ it('renders generic response for non-API route', function(): void {
 });
 
 it('renders 404 response for ModelNotFoundException', function(): void {
-    $this->request->shouldReceive('routeIs')->with('igniter.api.*')->andReturn(true);
+    $this->request->shouldReceive('routeIs')->with('igniter.api.*.*')->andReturn(true);
     $exception = new ModelNotFoundException;
 
     $response = $this->errorHandler->render($this->request, $exception);
@@ -43,7 +43,7 @@ it('renders 404 response for ModelNotFoundException', function(): void {
 });
 
 it('renders 422 response for ValidationException', function(): void {
-    $this->request->shouldReceive('routeIs')->with('igniter.api.*')->andReturn(true);
+    $this->request->shouldReceive('routeIs')->with('igniter.api.*.*')->andReturn(true);
     $exception = Mockery::mock(ValidationException::class);
     $exception->shouldReceive('errors')->andReturn(['field' => ['error']]);
     $exception->shouldReceive('status')->andReturn(422);
@@ -55,7 +55,7 @@ it('renders 422 response for ValidationException', function(): void {
 });
 
 it('returns 500 status code for invalid status code above 599', function(): void {
-    $this->request->shouldReceive('routeIs')->with('igniter.api.*')->andReturn(true);
+    $this->request->shouldReceive('routeIs')->with('igniter.api.*.*')->andReturn(true);
     $exception = new Exception('Test Exception', 600);
 
     $response = $this->errorHandler->render($this->request, $exception);
@@ -64,7 +64,7 @@ it('returns 500 status code for invalid status code above 599', function(): void
 });
 
 it('renders 500 response for generic exception', function(): void {
-    $this->request->shouldReceive('routeIs')->with('igniter.api.*')->andReturn(true);
+    $this->request->shouldReceive('routeIs')->with('igniter.api.*.*')->andReturn(true);
     $exception = new Exception('Test Exception');
 
     $response = $this->errorHandler->render($this->request, $exception);
@@ -74,7 +74,7 @@ it('renders 500 response for generic exception', function(): void {
 });
 
 it('renders debug information when in debug mode', function(): void {
-    $this->request->shouldReceive('routeIs')->with('igniter.api.*')->andReturn(true);
+    $this->request->shouldReceive('routeIs')->with('igniter.api.*.*')->andReturn(true);
     $exception = new Exception('Test Exception');
 
     $errorHandler = new ErrorHandler($this->handler, [

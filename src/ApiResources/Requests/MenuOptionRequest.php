@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
+use Override;
 
 class MenuOptionRequest extends FormRequest
 {
-    #[\Override]
-    public function attributes()
+    #[Override]
+    public function attributes(): array
     {
         return [
             'option_name' => lang('admin::lang.menu_options.label_option_group_name'),

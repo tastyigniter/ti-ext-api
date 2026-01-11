@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
+use Override;
 
 class ReservationRequest extends FormRequest
 {
-    #[\Override]
-    public function attributes()
+    #[Override]
+    public function attributes(): array
     {
         return [
             'table_id' => lang('igniter.reservation::default.column_table'),

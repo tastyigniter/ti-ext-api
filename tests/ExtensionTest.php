@@ -14,7 +14,7 @@ use League\Fractal\Serializer\JsonApiSerializer;
 use Mockery;
 
 it('loads registered api resources', function(): void {
-    $resources = Resource::listRegisteredResources();
+    $resources = (new Resource)->listRegisteredResources();
 
     expect($resources)
         ->toHaveKey('categories')
@@ -82,7 +82,7 @@ it('creates access token using console command', function($email, $isAdmin, $dev
         ? User::factory()->create($attributes)
         : Customer::factory()->create($attributes);
 
-    $this->artisan('api:token', [
+    $this->artisan('igniter:api-token', [
         '--name' => $deviceName,
         '--email' => $email,
         '--admin' => $isAdmin,

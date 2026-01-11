@@ -9,12 +9,12 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 #### Attributes
 
 | Key                        | Type      | Description                                                                    |
-| -------------------------- | --------- | ------------------------------------------------------------------------------ |
+|----------------------------|-----------|--------------------------------------------------------------------------------|
 | `option_name`              | `string`  | **Required**. The option's name (between 2 and 255 characters in length)       |
 | `display_type`             | `enum`    | **Required**. available options (`checkbox`, `radio`, `select`, `quantity`)    |
 | `priority`                 | `integer` | The option's position in the storefront                                        |
 | `update_related_menu_item` | `boolean` | Update option values of associated menu items                                  |
-| `option_values`            | `array`   | The option's option_value's if any (see [OptionValues](menu_option_values.md))       |
+| `option_values`            | `array`   | The option's option_value's if any (see [OptionValues](menu_option_values.md)) |
 
 
 #### Option object example
@@ -39,10 +39,10 @@ GET /api/menu_options
 
 #### Parameters
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `page`               | `integer` | The page number.                                             |
-| `pageLimit`          | `integer` | The number of items per page.                                |
+| Key         | Type      | Description                   |
+|-------------|-----------|-------------------------------|
+| `page`      | `integer` | The page number.              |
+| `pageLimit` | `integer` | The number of items per page. |
 
 #### Response
 
@@ -52,67 +52,61 @@ Status: 200 OK
 
 ```json
 {
-  "data": [
-    {
-      "type": "menuoptions",
-      "id": "1",
-      "attributes": {
-        "option_name": "Toppings",
-        "display_type": "checkbox",
-        "priority": 0,
-        "update_related_menu_item": 0,
-        "created_at": "2021-09-21T08:11:55.000000Z",
-        "updated_at": "2021-09-21T08:11:55.000000Z"
-      },
-      "relationships": {
-        "option_values": {
-          "data": [
-            ...
-          ]
+    "data": [
+        {
+            "type": "menuoptions",
+            "id": "1",
+            "attributes": {
+                "option_name": "Toppings",
+                "display_type": "checkbox",
+                "priority": 0,
+                "update_related_menu_item": 0,
+                "created_at": "2021-09-21T08:11:55.000000Z",
+                "updated_at": "2021-09-21T08:11:55.000000Z"
+            },
+            "relationships": {
+                "option_values": {
+                    "data": []
+                }
+            }
+        },
+        {
+            "type": "options",
+            "id": "2",
+            "attributes": {
+                "option_name": "Sides",
+                "display_type": "checkbox",
+                "priority": 0,
+                "update_related_menu_item": 0,
+                "created_at": "2021-09-21T08:11:55.000000Z",
+                "updated_at": "2021-09-21T08:11:55.000000Z"
+            },
+            "relationships": {
+                "option_values": {
+                    "data": []
+                }
+            }
         }
-      }
+    ],
+    "included": [],
+    "meta": {
+        "pagination": {
+            "total": 2,
+            "count": 2,
+            "per_page": 20,
+            "current_page": 1,
+            "total_pages": 1
+        }
     },
-    {
-      "type": "options",
-      "id": "2",
-      "attributes": {
-        "option_name": "Sides",
-        "display_type": "checkbox",
-        "priority": 0,
-        "update_related_menu_item": 0,
-        "created_at": "2021-09-21T08:11:55.000000Z",
-        "updated_at": "2021-09-21T08:11:55.000000Z"
-      },
-      "relationships": {
-        "option_values": {
-          "data": [
-            ...
-          ]
-        }
-      }
+    "links": {
+        "self": "https://your.url/api/options?page=1",
+        "first": "https://your.url/api/options?page=1",
+        "last": "https://your.url/api/options?page=1"
     }
-  ],
-  "included": [
-    ...
-  ],
-  "meta": {
-    "pagination": {
-      "total": 2,
-      "count": 2,
-      "per_page": 20,
-      "current_page": 1,
-      "total_pages": 1
-    }
-  },
-  "links": {
-    "self": "https://your.url/api/options?page=1",
-    "first": "https://your.url/api/options?page=1",
-    "last": "https://your.url/api/options?page=1"
-  }
 }
 ```
 
-### Create a option
+### Create an option
 
 Creates a new option.
 
@@ -124,13 +118,13 @@ POST /api/menu_options
 
 #### Parameters
 
-| Key                        | Type      | Description                                                                              |
-| -------------------------- | --------- | ---------------------------------------------------------------------------------------- |
-| `option_name`              | `string`  | **Required**. The option's name (between 2 and 255 characters in length)                 |
-| `display_type`             | `enum`    | **Required**. available options (`checkbox`, `radio`, `select`, `quantity`)              |
-| `priority`                 | `integer` | The option's position in the storefront                                                  |
-| `update_related_menu_item` | `boolean` | Update option values of associated menu items                                            |
-| `option_values`            | `array`   | **Optional**. The option's option_value's if any (see [OptionValues](optionvalues.md)) **Repsone id are not set. to retreive the id(s) perform a get Request |
+| Key                        | Type      | Description                                                                                                                                                         |
+|----------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `option_name`              | `string`  | **Required**. The option's name (between 2 and 255 characters in length)                                                                                            |
+| `display_type`             | `enum`    | **Required**. available options (`checkbox`, `radio`, `select`, `quantity`)                                                                                         |
+| `priority`                 | `integer` | The option's position in the storefront                                                                                                                             |
+| `update_related_menu_item` | `boolean` | Update option values of associated menu items                                                                                                                       |
+| `option_values`            | `array`   | **Optional**. The option's option_value's if any (see [OptionValues](menu_option_values.md)) **Response id are not set. to retrieve the id(s) perform a get Request |
 
 
 #### Payload example
@@ -184,16 +178,16 @@ Status: 201 Created
                 "value": "Peperoni",
                 "price": 1.99,
                 "priority": 2,
-                "currrency": "GBP"
+                "currency": "GBP"
             }
         }
     ]
 }
 ```
 
-### Retrieve a option
+### Retrieve an option
 
-Retrieves a option.
+Retrieves an option.
 
 Required abilities: `menuoptions:read`
 
@@ -222,21 +216,17 @@ Status: 200 OK
         },
         "relationships": {
             "option_values": {
-                "data": [
-                   ...
-                ]
+                "data": []
             }
         }
     },
-    "included": [
-        ...
-    ]
+    "included": []
 }
 ```
 
-### Update a option
+### Update an option
 
-Updates a option.
+Updates an option.
 
 Required abilities: `menuoptions:write`
 
@@ -246,21 +236,21 @@ PATCH /api/menu_options/:option_id
 
 #### Parameters
 
-| Key                        | Type      | Description                                                                    |
-| -------------------------- | --------- | ------------------------------------------------------------------------------ |
-| `option_name`              | `string`  | **Required**. The option's name (between 2 and 255 characters in length)       |
-| `display_type`             | `enum`    | **Required**. available options (`checkbox`, `radio`, `select`, `quantity`)    |
-| `priority`                 | `integer` | The option's position in the storefront                                        |
-| `update_related_menu_item` | `boolean` | Update option values of associated menu items                                  |
-| `option_values`            | `array`   | The option's option_value's if any (see [OptionValues](optionvalues.md)) **new values id(s) are not set in response |
+| Key                        | Type      | Description                                                                                                               |
+|----------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------|
+| `option_name`              | `string`  | **Required**. The option's name (between 2 and 255 characters in length)                                                  |
+| `display_type`             | `enum`    | **Required**. available options (`checkbox`, `radio`, `select`, `quantity`)                                               |
+| `priority`                 | `integer` | The option's position in the storefront                                                                                   |
+| `update_related_menu_item` | `boolean` | Update option values of associated menu items                                                                             |
+| `option_values`            | `array`   | The option's option_value's if any (see [OptionValues](menu_option_values.md)) **new values id(s) are not set in response |
 
 
 #### Payload example
 
 ```json
 {
-  "option_name": "Chin-Chin",
-  "display_type": "radio"
+    "option_name": "Chin-Chin",
+    "display_type": "radio"
 }
 ```
 
@@ -312,7 +302,7 @@ Status: 200 OK
 
 ### Delete a option
 
-Permanently deletes a option. It cannot be undone.
+Permanently deletes an option. It cannot be undone.
 
 Required abilities: `menuoptions:write`
 

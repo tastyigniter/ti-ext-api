@@ -28,8 +28,8 @@ it('shows a menu option', function(): void {
         ->get(route('igniter.api.menu_options.show', [$menuOption->getKey()]))
         ->assertOk()
         ->assertJsonPath('data.id', (string)$menuOption->getKey())
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('option_name', $menuOption->option_name)
                 ->where('display_type', $menuOption->display_type)
                 ->etc(),
@@ -62,8 +62,8 @@ it('creates a menu option', function(): void {
             'display_type' => 'radio',
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
                 ->etc(),
@@ -80,8 +80,8 @@ it('updates a menu option', function(): void {
             'display_type' => 'radio',
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('option_name', 'Test menu option')
                 ->where('display_type', 'radio')
                 ->etc(),

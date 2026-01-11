@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\Listeners;
 
+use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Listeners\TokenEventSubscriber;
 use Igniter\Api\Models\Token;
 use Igniter\User\Models\User;
 use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Route as RouteFacade;
 use Laravel\Sanctum\Events\TokenAuthenticated;
 use Mockery;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -16,15 +16,28 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 beforeEach(function(): void {
     $this->subscriber = new TokenEventSubscriber;
-    $this->token = Token::factory()->create();
+    $this->token = Token::factory()->create([
+        'tokenable_type' => 'users',
+        'tokenable_id' => User::factory()->create()->getKey(),
+    ]);
     $this->event = new TokenAuthenticated($this->token);
     $this->route = Mockery::mock(Route::class);
     request()->setRouteResolver(fn() => $this->route);
 });
 
+function mockCurrentResource(array $authorization = []): void
+{
+    app()->instance(ApiManager::class, mock(ApiManager::class, function($mock) use ($authorization): void {
+        $mock->shouldReceive('getCurrentResource')->andReturn((object)[
+            'endpoint' => 'categories',
+            'controller' => 'TestController',
+            'options' => ['authorization' => $authorization],
+        ]);
+    }));
+}
+
 it('returns access token for allowed group all', function(): void {
-    RouteFacade::shouldReceive('currentRouteName')->andReturn('api.categories.index');
-    $this->route->shouldReceive('currentRouteName')->andReturn('api.categories.index');
+    mockCurrentResource(['index' => 'all']);
     $this->route->shouldReceive('getActionMethod')->andReturn('index');
 
     $result = $this->subscriber->handleTokenAuthenticated($this->event);
@@ -33,8 +46,7 @@ it('returns access token for allowed group all', function(): void {
 });
 
 it('throws unauthorized exception for missing access token', function(): void {
-    RouteFacade::shouldReceive('currentRouteName')->andReturn('api.categories.store');
-    $this->route->shouldReceive('currentRouteName')->andReturn('api.categories.store');
+    mockCurrentResource(['store' => 'admin']);
     $this->route->shouldReceive('getActionMethod')->andReturn('store');
 
     $this->event->token = null;
@@ -46,8 +58,7 @@ it('throws unauthorized exception for missing access token', function(): void {
 });
 
 it('throws access denied exception for restricted group', function(): void {
-    RouteFacade::shouldReceive('currentRouteName')->andReturn('api.categories.store');
-    $this->route->shouldReceive('currentRouteName')->andReturn('api.categories.store');
+    mockCurrentResource(['store' => 'admin']);
     $this->route->shouldReceive('getActionMethod')->andReturn('store');
 
     $this->event->token->tokenable_type = 'customers';
@@ -58,34 +69,33 @@ it('throws access denied exception for restricted group', function(): void {
     $this->subscriber->handleTokenAuthenticated($this->event);
 });
 
-it('throws access denied exception for guest group', function(): void {
-    $subscriber = Mockery::mock(TokenEventSubscriber::class)->makePartial()->shouldAllowMockingProtectedMethods();
-    $subscriber->shouldReceive('getAllowedGroup')->andReturn('guest');
+it('returns tokenable for guest authorization', function(): void {
+    mockCurrentResource(['store' => 'guest']);
+    $this->route->shouldReceive('getActionMethod')->andReturn('store');
 
-    $this->expectException(AccessDeniedHttpException::class);
-    $this->expectExceptionMessage(lang('igniter.api::default.alert_auth_restricted'));
-
-    $subscriber->handleTokenAuthenticated($this->event);
+    expect($this->subscriber->handleTokenAuthenticated($this->event))->toBeInstanceOf(User::class);
 });
 
 it('throws access denied exception for customer group', function(): void {
-    $subscriber = Mockery::mock(TokenEventSubscriber::class)->makePartial()->shouldAllowMockingProtectedMethods();
-    $subscriber->shouldReceive('getAllowedGroup')->andReturn('customer');
-    $this->event->token->tokenable_type = 'users';
+    mockCurrentResource(['store' => 'customer']);
+    $this->route->shouldReceive('getActionMethod')->andReturn('store');
 
     $this->expectException(AccessDeniedHttpException::class);
     $this->expectExceptionMessage(lang('igniter.api::default.alert_auth_restricted'));
 
-    $subscriber->handleTokenAuthenticated($this->event);
+    $this->subscriber->handleTokenAuthenticated($this->event);
+});
+
+it('returns tokenable for customer or admin (users) authorization', function(): void {
+    mockCurrentResource(['store' => 'users']);
+    $this->route->shouldReceive('getActionMethod')->andReturn('store');
+
+    expect($this->subscriber->handleTokenAuthenticated($this->event))->toBeInstanceOf(User::class);
 });
 
 it('returns tokenable for valid access token', function(): void {
-    RouteFacade::shouldReceive('currentRouteName')->andReturn('api.categories.store');
-    $this->route->shouldReceive('currentRouteName')->andReturn('api.categories.store');
+    mockCurrentResource(['store' => 'admin']);
     $this->route->shouldReceive('getActionMethod')->andReturn('store');
-
-    $this->event->token = $this->token;
-    $this->event->token->tokenable = User::factory()->create();
 
     $tokenable = $this->subscriber->handleTokenAuthenticated($this->event);
 

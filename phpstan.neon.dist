@@ -9,5 +9,6 @@ parameters:
         - config/
         - database/
         - resources/
+    treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - "#Called 'env' outside of the config directory which returns null when the config is cached, use 'config'#"

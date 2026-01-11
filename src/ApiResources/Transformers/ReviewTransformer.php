@@ -6,6 +6,7 @@ namespace Igniter\Api\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Local\Models\Review;
+use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
 
 class ReviewTransformer extends TransformerAbstract
@@ -22,12 +23,12 @@ class ReviewTransformer extends TransformerAbstract
         return $this->mergesIdAttribute($review);
     }
 
-    public function includeCustomer(Review $review): \League\Fractal\Resource\Item
+    public function includeCustomer(Review $review): Item
     {
         return $this->item($review->customer, new CustomerTransformer, 'customers');
     }
 
-    public function includeLocation(Review $review): \League\Fractal\Resource\Item
+    public function includeLocation(Review $review): Item
     {
         return $this->item($review->location, new LocationTransformer, 'locations');
     }

@@ -22,6 +22,7 @@ return [
     'column_description' => 'Description',
 
     'column_issued_to' => 'Issued to',
+    'column_abilities' => 'Abilities',
     'column_token_type' => 'Type',
     'column_device_name' => 'Device name',
     'column_created' => 'Created on',

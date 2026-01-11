@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Igniter\Api\Http\Requests;
 
 use Igniter\System\Classes\FormRequest;
+use Override;
 
 class ResourceRequest extends FormRequest
 {
-    #[\Override]
+    #[Override]
     public function attributes(): array
     {
         return [

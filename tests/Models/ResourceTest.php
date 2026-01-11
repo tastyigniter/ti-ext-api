@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\Models;
 
+use Igniter\Api\ApiResources\Categories;
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Database\Traits\HasPermalink;
+use Igniter\System\Classes\ExtensionManager;
 use Mockery;
 
 it('returns default action definition when no meta options are set', function(): void {
@@ -41,6 +43,22 @@ it('returns controller attribute correctly', function(): void {
 });
 
 it('syncs all resources correctly', function(): void {
+    app()->instance(ExtensionManager::class, mock(ExtensionManager::class, function($mock): void {
+        $mock->shouldReceive('getRegistrationMethodValues')
+            ->with('registerApiResources')
+            ->andReturn([
+                'igniter.custom' => [
+                    'custom' => [
+                        'controller' => Categories::class,
+                        'name' => 'Custom',
+                        'description' => 'An API resource for categories',
+                        'actions' => [
+                            'index', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
+                        ],
+                    ],
+                ],
+            ]);
+    }));
     Resource::factory()->create(['endpoint' => 'endpoint1', 'is_custom' => true]);
     Resource::factory()->create(['endpoint' => 'endpoint2']);
     Resource::clearInternalCache();

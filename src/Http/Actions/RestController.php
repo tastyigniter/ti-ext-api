@@ -135,7 +135,7 @@ class RestController extends ControllerAction
 
     public function getActionOptions(): array
     {
-        return array_get($this->getConfig('actions'), $this->controller->action, []);
+        return array_get($this->getConfig('actions'), $this->controller->getAction(), []);
     }
 
     //

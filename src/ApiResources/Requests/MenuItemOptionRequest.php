@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Requests;
 
 use Igniter\System\Classes\FormRequest;
+use Override;
 
 class MenuItemOptionRequest extends FormRequest
 {
-    #[\Override]
-    public function attributes()
+    #[Override]
+    public function attributes(): array
     {
         return [
             'menu_id' => lang('igniter.cart::default.menus.label_menu_id'),

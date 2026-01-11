@@ -28,8 +28,8 @@ it('shows a menu item', function(): void {
         ->get(route('igniter.api.menus.show', [$menu->getKey()]))
         ->assertOk()
         ->assertJsonPath('data.id', (string)$menu->getKey())
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('menu_name', $menu->menu_name)
                 ->where('menu_price', $menu->menu_price)
                 ->etc(),
@@ -131,8 +131,8 @@ it('creates a menu item', function(): void {
             'menu_price' => 99.999,
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('menu_name', 'Test menu item')
                 ->where('menu_price', 99.999)
                 ->etc(),
@@ -149,8 +149,8 @@ it('updates a menu item', function(): void {
             'menu_price' => 99.999,
         ])
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
-            ->has('data.attributes', fn(AssertableJson $json): \Illuminate\Testing\Fluent\AssertableJson => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('menu_name', 'Test menu item')
                 ->where('menu_price', 99.999)
                 ->etc(),

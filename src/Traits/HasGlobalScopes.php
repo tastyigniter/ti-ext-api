@@ -12,7 +12,7 @@ trait HasGlobalScopes
 {
     protected $scopes = [];
 
-    public function addGlobalScope($scope, ?Closure $implementation = null): \Closure|Scope
+    public function addGlobalScope($scope, ?Closure $implementation = null): Closure|Scope
     {
         if (is_string($scope) && !is_null($implementation)) {
             return $this->scopes[static::class][$scope] = $implementation;

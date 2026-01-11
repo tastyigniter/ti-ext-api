@@ -32,7 +32,7 @@ If you encounter a bug in this extension, please report it using the [Issue Trac
 
 ## Contributing
 
-Contributions are welcome! Please read [TastyIgniter's contributing guide](https://tastyigniter.com/docs/contribution-guide).
+Contributions are welcome! Please read [TastyIgniter's contributing guide](https://tastyigniter.com/docs/resources/contribution-guide).
 
 ## Security vulnerabilities
 

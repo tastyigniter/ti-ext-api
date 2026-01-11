@@ -6,15 +6,15 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 #### Attributes
 
-| Key                        | Type      | Description                                                                    |
-| -------------------------- | --------- | ------------------------------------------------------------------------------ |
-| `menu_option_value_id`     | `integer` | The primary key ID off Menu Item Option Value |
-| `menu_option_id`           | `integer` | The Menu Item Option ID |
-| `option_value_id`          | `integer` | The option_value primary ID |
-| `new_price`                | `float`   | The price that differce from the original option_value price |
-| `priority`                 | `integer` | The currency off the price as code **SET Automaticaly** |
-| `is_default`               | `boolean` | The default selected Option |
-| `stocks`                  | `array`  | The stocks, if any        |
+| Key                    | Type      | Description                                                    |
+|------------------------|-----------|----------------------------------------------------------------|
+| `menu_option_value_id` | `integer` | The primary key ID off Menu Item Option Value                  |
+| `menu_option_id`       | `integer` | The Menu Item Option ID                                        |
+| `option_value_id`      | `integer` | The option_value primary ID                                    |
+| `new_price`            | `float`   | The price that difference from the original option_value price |
+| `priority`             | `integer` | The currency off the price as code **SET Automatically**       |
+| `is_default`           | `boolean` | The default selected Option                                    |
+| `stocks`               | `array`   | The stocks, if any                                             |
 
 #### Option_value object example
 
@@ -30,15 +30,15 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 }
 ```
 
-### Create/Update a option
+### Create/Update an option
 
 Creates a new option.
 
 Required abilities: `menu_item_options:write`
   
-Relations and ID's are automaticaly set.
+Relations and IDs are automatically set.
 
-** menu_item_options_values are not appended. the state in the json array will be the state on the website. previous menu_item_options_value(s) will be deleted. to add a item to an existing one `option_value_id` && `menu_option_value_id` are mandatory. 
+** menu_item_options_values are not appended. the state in the json array will be the state on the website. previous menu_item_options_value(s) will be deleted. to add an item to an existing one `option_value_id` && `menu_option_value_id` are mandatory. 
 
 #### Payload example
 
@@ -100,9 +100,7 @@ Status: 201 Created
         },
         "relationships": {
             "menu_option_values": {
-                "data": [
-                    ...
-                ]
+                "data": []
             }
         }
     },

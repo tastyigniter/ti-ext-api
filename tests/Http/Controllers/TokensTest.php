@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\Http\Controllers;
 
+use Igniter\Api\Models\Token;
+
 it('loads tokens page', function(): void {
     actingAsSuperUser()
         ->get(route('igniter.api.tokens'))
@@ -11,7 +13,7 @@ it('loads tokens page', function(): void {
 });
 
 it('deletes token on tokens page', function(): void {
-    $token = \Igniter\Api\Models\Token::factory()->create();
+    $token = Token::factory()->create();
 
     actingAsSuperUser()
         ->post(route('igniter.api.tokens'), [

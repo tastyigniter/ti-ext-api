@@ -8,29 +8,29 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 
 #### Attributes
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `name`           | `string`  | **Required**. The category's name         |
-| `permalink_slug`           | `string`  | The category's permalink slug.         |
-| `parent_id`           | `integer`  | The Unique identifier of the parent category, if any.         |
-| `locations`           | `array`  | The category's locations, if any.         |
-| `priority`           | `integer`  | The category's priority.         |
-| `status`           | `boolean`  | Has the value `true` if the category is enabled or the value `false` if the category is disabled.         |
-| `description`           | `string`  | An arbitrary string attached to the category.         |
-| `thumb`           | `string`  | The URL where the category's thumbnail can be accessed.         |
+| Key              | Type      | Description                                                                                       |
+|------------------|-----------|---------------------------------------------------------------------------------------------------|
+| `name`           | `string`  | **Required**. The category's name                                                                 |
+| `permalink_slug` | `string`  | The category's permalink slug.                                                                    |
+| `parent_id`      | `integer` | The Unique identifier of the parent category, if any.                                             |
+| `locations`      | `array`   | The category's locations, if any.                                                                 |
+| `priority`       | `integer` | The category's priority.                                                                          |
+| `status`         | `boolean` | Has the value `true` if the category is enabled or the value `false` if the category is disabled. |
+| `description`    | `string`  | An arbitrary string attached to the category.                                                     |
+| `thumb`          | `string`  | The URL where the category's thumbnail can be accessed.                                           |
 
 #### Category object example
 
 ```json
 {
-  "name": "Appetizer",
-  "permalink_slug": "appetizer",
-  "parent_id": null,
-  "locations": [],
-  "priority": null,
-  "status": true,
-  "description": "Sed consequat, sapien in scelerisque egestas",
-  "thumb": null
+    "name": "Appetizer",
+    "permalink_slug": "appetizer",
+    "parent_id": null,
+    "locations": [],
+    "priority": null,
+    "status": true,
+    "description": "Sed consequat, sapien in scelerisque egestas",
+    "thumb": null
 }
 ```
 
@@ -46,11 +46,11 @@ GET /api/categories
 
 #### Parameters
 
-| Key                  | Type      | Description          |
-| -------------------- | --------- | ------------------------- |
-| `page`           | `integer`  | The page number.         |
-| `pageLimit`           | `integer`  | The number of items per page.         |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
+| Key         | Type      | Description                                                                                                                                             |
+|-------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `page`      | `integer` | The page number.                                                                                                                                        |
+| `pageLimit` | `integer` | The number of items per page.                                                                                                                           |
+| `include`   | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
 
 #### Response
 
@@ -60,49 +60,47 @@ Status: 200 OK
 
 ```json
 {
-  "data": [
-    {
-      "type": "categories",
-      "id": "1",
-      "attributes": {
-        "name": "Appetizer",
-        "permalink_slug": "appetizer",
-        "parent_id": null,
-        "priority": null,
-        "status": true,
-        "description": "Sed consequat, sapien in scelerisque egestas",
-        "thumb": null,
-        "media": [...],
-        "menus": [...],
-        "locations": [...]
-      },
-      "relationships": {
-        "menus": {
-          "data": [...]
-        },
-        "locations": {
-          "data": [...]
+    "data": [
+        {
+            "type": "categories",
+            "id": "1",
+            "attributes": {
+                "name": "Appetizer",
+                "permalink_slug": "appetizer",
+                "parent_id": null,
+                "priority": null,
+                "status": true,
+                "description": "Sed consequat, sapien in scelerisque egestas",
+                "thumb": null,
+                "media": [],
+                "menus": [],
+                "locations": []
+            },
+            "relationships": {
+                "menus": {
+                    "data": []
+                },
+                "locations": {
+                    "data": []
+                }
+            }
         }
-      }
+    ],
+    "included": [],
+    "meta": {
+        "pagination": {
+            "total": 1,
+            "count": 1,
+            "per_page": 20,
+            "current_page": 1,
+            "total_pages": 1
+        }
+    },
+    "links": {
+        "self": "https://your.url/api/categories?page=1",
+        "first": "https://your.url/api/categories?page=1",
+        "last": "https://your.url/api/categories?page=1"
     }
-  ],
-  "included": [
-    ...
-  ],
-  "meta": {
-    "pagination": {
-      "total": 1,
-      "count": 1,
-      "per_page": 20,
-      "current_page": 1,
-      "total_pages": 1
-    }
-  },
-  "links": {
-    "self": "https://your.url/api/categories?page=1",
-    "first": "https://your.url/api/categories?page=1",
-    "last": "https://your.url/api/categories?page=1"
-  }
 }
 ```
 
@@ -118,23 +116,23 @@ POST /api/categories
 
 #### Parameters
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `name`           | `string`  | **Required**. The category's name         |
-| `permalink_slug`           | `string`  | The category's permalink slug.         |
-| `parent_id`           | `integer`  | The Unique identifier of the parent category, if any.         |
-| `locations`           | `array`  | The category's locations, if any.         |
-| `priority`           | `integer`  | The category's priority.         |
-| `status`           | `boolean`  | Has the value `true` if the category is enabled or the value `false` if the category is disabled.         |
-| `description`           | `string`  | An arbitrary string attached to the category.         |
-| `thumb`           | `string`  | The URL where the category's thumbnail can be accessed.         |
+| Key              | Type      | Description                                                                                       |
+|------------------|-----------|---------------------------------------------------------------------------------------------------|
+| `name`           | `string`  | **Required**. The category's name                                                                 |
+| `permalink_slug` | `string`  | The category's permalink slug.                                                                    |
+| `parent_id`      | `integer` | The Unique identifier of the parent category, if any.                                             |
+| `locations`      | `array`   | The category's locations, if any.                                                                 |
+| `priority`       | `integer` | The category's priority.                                                                          |
+| `status`         | `boolean` | Has the value `true` if the category is enabled or the value `false` if the category is disabled. |
+| `description`    | `string`  | An arbitrary string attached to the category.                                                     |
+| `thumb`          | `string`  | The URL where the category's thumbnail can be accessed.                                           |
 
 #### Payload example
 
 ```json
 {
-  "name": "Appetizer",
-  "status": true
+    "name": "Appetizer",
+    "status": true
 }
 ```
 
@@ -146,21 +144,21 @@ Status: 201 Created
 
 ```json
 {
-  "data": [
-    {
-      "type": "categories",
-      "id": "1",
-      "attributes": {
-        "name": "Appetizer",
-        "permalink_slug": "appetizer",
-        "parent_id": null,
-        "priority": null,
-        "status": true,
-        "description": "Sed consequat, sapien in scelerisque egestas",
-        "thumb": null,
-      }
-    }
-  ]
+    "data": [
+        {
+            "type": "categories",
+            "id": "1",
+            "attributes": {
+                "name": "Appetizer",
+                "permalink_slug": "appetizer",
+                "parent_id": null,
+                "priority": null,
+                "status": true,
+                "description": "Sed consequat, sapien in scelerisque egestas",
+                "thumb": null
+            }
+        }
+    ]
 }
 ```
 
@@ -176,9 +174,9 @@ GET /api/categories/:category_id
 
 #### Parameters
 
-| Key                  | Type      | Description          |
-| -------------------- | --------- | ------------------------- |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
+| Key       | Type     | Description                                                                                                                                             |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `include` | `string` | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
 
 #### Response
 
@@ -188,35 +186,33 @@ Status: 200 OK
 
 ```json
 {
-  "data": [
-    {
-      "type": "categories",
-      "id": "1",
-      "attributes": {
-        "name": "Appetizer",
-        "permalink_slug": "appetizer",
-        "parent_id": null,
-        "priority": null,
-        "status": true,
-        "description": "Sed consequat, sapien in scelerisque egestas",
-        "thumb": null,
-        "media": [...],
-        "menus": [...],
-        "locations": [...]
-      },
-      "relationships": {
-        "menus": {
-          "data": [...]
-        },
-        "locations": {
-          "data": [...]
+    "data": [
+        {
+            "type": "categories",
+            "id": "1",
+            "attributes": {
+                "name": "Appetizer",
+                "permalink_slug": "appetizer",
+                "parent_id": null,
+                "priority": null,
+                "status": true,
+                "description": "Sed consequat, sapien in scelerisque egestas",
+                "thumb": null,
+                "media": [],
+                "menus": [],
+                "locations": []
+            },
+            "relationships": {
+                "menus": {
+                    "data": []
+                },
+                "locations": {
+                    "data": []
+                }
+            }
         }
-      }
-    }
-  ],
-  "included": [
-	...
-  ]
+    ],
+    "included": []
 }
 ```
 
@@ -232,23 +228,23 @@ PATCH /api/categories/:category_id
 
 #### Parameters
 
-| Key                  | Type      | Description                                                  |
-| -------------------- | --------- | ------------------------------------------------------------ |
-| `name`           | `string`  | **Required**. The category's name         |
-| `permalink_slug`           | `string`  | The category's permalink slug.         |
-| `parent_id`           | `integer`  | The Unique identifier of the parent category, if any.         |
-| `locations`           | `array`  | The category's locations, if any.         |
-| `priority`           | `integer`  | The category's priority.         |
-| `status`           | `boolean`  | Has the value `true` if the category is enabled or the value `false` if the category is disabled.         |
-| `description`           | `string`  | An arbitrary string attached to the category.         |
-| `thumb`           | `string`  | The URL where the category's thumbnail can be accessed.         |
+| Key              | Type      | Description                                                                                       |
+|------------------|-----------|---------------------------------------------------------------------------------------------------|
+| `name`           | `string`  | **Required**. The category's name                                                                 |
+| `permalink_slug` | `string`  | The category's permalink slug.                                                                    |
+| `parent_id`      | `integer` | The Unique identifier of the parent category, if any.                                             |
+| `locations`      | `array`   | The category's locations, if any.                                                                 |
+| `priority`       | `integer` | The category's priority.                                                                          |
+| `status`         | `boolean` | Has the value `true` if the category is enabled or the value `false` if the category is disabled. |
+| `description`    | `string`  | An arbitrary string attached to the category.                                                     |
+| `thumb`          | `string`  | The URL where the category's thumbnail can be accessed.                                           |
 
 #### Payload example
 
 ```json
 {
-  "description": "Vivamus interdum erat ac aliquam porttitor. ",
-  "parent_id": 2
+    "description": "Vivamus interdum erat ac aliquam porttitor. ",
+    "parent_id": 2
 }
 ```
 
@@ -260,21 +256,21 @@ Status: 200 OK
 
 ```json
 {
-  "data": [
-    {
-      "type": "categories",
-      "id": "1",
-      "attributes": {
-        "name": "Appetizer",
-        "permalink_slug": "appetizer",
-        "parent_id": null,
-        "priority": null,
-        "status": true,
-        "description": "Sed consequat, sapien in scelerisque egestas",
-        "thumb": null,
-      }
-    }
-  ]
+    "data": [
+        {
+            "type": "categories",
+            "id": "1",
+            "attributes": {
+                "name": "Appetizer",
+                "permalink_slug": "appetizer",
+                "parent_id": null,
+                "priority": null,
+                "status": true,
+                "description": "Sed consequat, sapien in scelerisque egestas",
+                "thumb": null
+            }
+        }
+    ]
 }
 ```
 
@@ -302,8 +298,8 @@ Status: 200 OK
 
 ```json
 {
-  "id": 1,
-  "object": "category",
-  "deleted": true
+    "id": 1,
+    "object": "category",
+    "deleted": true
 }
 ```

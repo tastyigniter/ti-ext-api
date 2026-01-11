@@ -7,20 +7,22 @@ namespace Igniter\Api\Http\Middleware;
 use Closure;
 use Igniter\Api\Exceptions;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
+use Override;
 
 class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
 {
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure(\Illuminate\Http\Request):mixed $next
+     * @param Request $request
+     * @param Closure(Request):mixed $next
      * @param string ...$guards
      * @return mixed
      *
      * @throws \Igniter\Api\Exceptions\AuthenticationException
      */
-    #[\Override]
+    #[Override]
     public function handle($request, Closure $next, ...$guards)
     {
         try {

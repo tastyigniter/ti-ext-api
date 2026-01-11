@@ -40,7 +40,7 @@ it('returns error when user does not exist', function(): void {
     $command->shouldReceive('option')->with('abilities')->andReturn(['*']);
     $command->shouldReceive('option')->with('admin')->andReturn(true);
 
-    $command->shouldReceive('error')->with('User does not exist!')->once();
+    $command->shouldReceive('error')->with('Admin user does not exist! Remove --admin option to issue token for customer.')->once();
 
     $command->handle();
 });

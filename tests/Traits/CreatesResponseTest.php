@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Api\Tests\Traits;
 
 use Igniter\Api\Traits\CreatesResponse;
+use LogicException;
 use Spatie\Fractal\Fractal;
 
 it('throws LogicException when response method is called', function(): void {
@@ -15,7 +16,7 @@ it('throws LogicException when response method is called', function(): void {
 
     expect(function() use ($traitObject): void {
         $traitObject->response();
-    })->toThrow(\LogicException::class, 'Deprecated, use Fractal::create() or response()->json() instead');
+    })->toThrow(LogicException::class, 'Deprecated, use Fractal::create() or response()->json() instead');
 });
 
 it('returns a Fractal instance from fractal method', function(): void {

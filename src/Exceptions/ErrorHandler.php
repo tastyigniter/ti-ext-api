@@ -6,6 +6,7 @@ namespace Igniter\Api\Exceptions;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -39,11 +40,11 @@ class ErrorHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      */
     public function render($request, Throwable $e): ?Response
     {
-        if (!$request->routeIs('igniter.api.*')) {
+        if (!$request->routeIs('igniter.api.*.*')) {
             return null;
         }
 

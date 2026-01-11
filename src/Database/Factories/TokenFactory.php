@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Database\Factories;
 
+use Igniter\Api\Models\Token;
 use Igniter\Flame\Database\Factories\Factory;
 
 class TokenFactory extends Factory
 {
-    protected $model = \Igniter\Api\Models\Token::class;
+    protected $model = Token::class;
 
     public function definition(): array
     {

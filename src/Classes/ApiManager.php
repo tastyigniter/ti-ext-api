@@ -10,6 +10,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\Contracts\HasAbilities;
 
 class ApiManager
 {
@@ -18,7 +19,7 @@ class ApiManager
     /**
      * The access token the user is using for the current request.
      *
-     * @var \Laravel\Sanctum\Contracts\HasAbilities
+     * @var HasAbilities
      */
     protected $accessToken;
 
@@ -52,7 +53,7 @@ class ApiManager
     {
         Resource::syncAll();
 
-        $resources = Resource::all()->mapWithKeys(function(Resource $resource) {
+        $resources = Resource::all()->mapWithKeys(function(Resource $resource): array {
             $resourceObj = (object)[
                 'endpoint' => $resource->endpoint,
                 'controller' => $resource->controller,
@@ -78,7 +79,7 @@ class ApiManager
             ->prefix(config('igniter.api.prefix'))
             ->group(function(Router $router): void {
                 foreach (resolve(static::class)->getResources() as $endpoint => $resourceObj) {
-                    if (!class_exists($resourceObj->controller)) {
+                    if (!class_exists((string)$resourceObj->controller)) {
                         continue;
                     }
 

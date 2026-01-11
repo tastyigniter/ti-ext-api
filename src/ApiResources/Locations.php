@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Igniter\Api\ApiResources;
 
+use Igniter\Api\ApiResources\Repositories\LocationRepository;
+use Igniter\Api\ApiResources\Transformers\LocationTransformer;
 use Igniter\Api\Classes\ApiController;
+use Igniter\Api\Http\Actions\RestController;
+use Igniter\Local\Http\Requests\LocationRequest;
 
 /**
  * Locations API Controller
  */
 class Locations extends ApiController
 {
-    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [RestController::class];
 
     public $restConfig = [
         'actions' => [
@@ -23,9 +27,9 @@ class Locations extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => \Igniter\Local\Http\Requests\LocationRequest::class,
-        'repository' => Repositories\LocationRepository::class,
-        'transformer' => Transformers\LocationTransformer::class,
+        'request' => LocationRequest::class,
+        'repository' => LocationRepository::class,
+        'transformer' => LocationTransformer::class,
     ];
 
     protected string|array $requiredAbilities = ['locations:*'];

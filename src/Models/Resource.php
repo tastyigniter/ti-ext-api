@@ -89,7 +89,7 @@ class Resource extends Model
 
     public function getAvailableActions(): array
     {
-        $registeredResource = array_get(static::listRegisteredResources(), $this->endpoint, []);
+        $registeredResource = array_get((new static)->listRegisteredResources(), $this->endpoint, []);
         $registeredActions = array_get($registeredResource, 'options.actions', []);
         $dbActions = (array)array_get($this->meta, 'actions', []);
 
@@ -157,7 +157,7 @@ class Resource extends Model
      */
     public static function listResources()
     {
-        $registeredResources = static::listRegisteredResources();
+        $registeredResources = (new static)->listRegisteredResources();
         $dbResources = static::all()->keyBy('endpoint')->all();
         $resources = $registeredResources + $dbResources;
         ksort($resources);
@@ -195,7 +195,7 @@ class Resource extends Model
      * Returns a list of the registered resources.
      * @return array
      */
-    public static function listRegisteredResources()
+    public function listRegisteredResources()
     {
         if (static::$registeredResources === null) {
             (new static)->loadRegisteredResources();

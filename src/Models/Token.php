@@ -7,6 +7,9 @@ namespace Igniter\Api\Models;
 use Igniter\Flame\Database\Factories\HasFactory;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -20,11 +23,11 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property string $name
  * @property string $token
  * @property array|null $abilities
- * @property \Illuminate\Support\Carbon|null $last_used_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Igniter\Flame\Database\Model $tokenable
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Token query()
+ * @property Carbon|null $last_used_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|\Igniter\Flame\Database\Model $tokenable
+ * @method static Builder<static>|Token query()
  * @mixin \Igniter\Flame\Database\Model
  */
 class Token extends PersonalAccessToken

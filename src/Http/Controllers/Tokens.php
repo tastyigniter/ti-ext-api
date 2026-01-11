@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Http\Controllers;
 
+use Igniter\Admin\Classes\AdminController;
 use Igniter\Admin\Facades\AdminMenu;
+use Igniter\Admin\Http\Actions\ListController;
+use Igniter\Api\Models\Token;
 
 /**
  * API Tokens Admin Controller
  */
-class Tokens extends \Igniter\Admin\Classes\AdminController
+class Tokens extends AdminController
 {
     public array $implement = [
-        \Igniter\Admin\Http\Actions\ListController::class,
+        ListController::class,
     ];
 
     public array $listConfig = [
         'list' => [
-            'model' => \Igniter\Api\Models\Token::class,
+            'model' => Token::class,
             'title' => 'igniter.api::default.text_tokens_title',
             'emptyMessage' => 'lang:admin::lang.list.text_empty',
             'defaultSort' => ['id', 'DESC'],
