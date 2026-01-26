@@ -58,7 +58,7 @@ class AbstractRepository
     {
         $model = $this->createModel();
 
-        if (method_exists($model, 'scopeListFrontEnd')) {
+        if (method_exists($model, 'scopeListFrontEnd') && array_key_exists('pageLimit', $options)) {
             $query = $this->prepareQuery($model);
             $result = $query->listFrontEnd($options);
         } else {

@@ -18,7 +18,7 @@ beforeEach(function(): void {
 });
 
 it('returns resources when they are loaded', function(): void {
-    expect($this->apiManager->getResources())->toHaveCount(14);
+    expect($this->apiManager->getResources())->toHaveCount(15);
 });
 
 it('returns empty array when resource is not found', function(): void {
