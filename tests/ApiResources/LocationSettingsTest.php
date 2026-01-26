@@ -24,8 +24,8 @@ it('returns all location settings', function(): void {
     // Check that all our 3 created settings are present in the response
     $data = $response->json('data');
     $ourSettingIds = [$setting1->getKey(), $setting2->getKey(), $setting3->getKey()];
-    $returnedIds = collect($data)->pluck('id')->map(fn($id) => (int)$id)->toArray();
-    
+    $returnedIds = collect($data)->pluck('id')->map(fn($id): int => (int)$id)->toArray();
+
     expect(array_intersect($ourSettingIds, $returnedIds))->toHaveCount(3);
 });
 
@@ -198,11 +198,11 @@ it('filters location settings by location_id', function(): void {
     // Check that our location1 settings are in the response
     $data = $response->json('data');
     $ourSettingIds = [$setting1->getKey(), $setting2->getKey()];
-    $returnedIds = collect($data)->pluck('id')->map(fn($id) => (int)$id)->toArray();
-    
+    $returnedIds = collect($data)->pluck('id')->map(fn($id): int => (int)$id)->toArray();
+
     // Verify at least our 2 location1 settings are present
     expect(array_intersect($ourSettingIds, $returnedIds))->toHaveCount(2);
-    
+
     // Note: Filtering by location_id query parameter may not be implemented in the repository
     // If filtering is implemented, location2's setting should not be in the results
     // If not implemented, this test still verifies that our created settings are returned

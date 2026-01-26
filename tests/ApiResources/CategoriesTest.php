@@ -73,8 +73,8 @@ it('shows a category with locations relationship', function(): void {
         ]))
         ->assertOk()
         ->assertJsonPath('data.relationships.locations.data.0.type', 'locations');
-//        ->assertJsonPath('included.0.id', (string)$categoryLocation->getKey())
-//        ->assertJsonPath('included.0.attributes.location_name', 'Test Location');
+    //        ->assertJsonPath('included.0.id', (string)$categoryLocation->getKey())
+    //        ->assertJsonPath('included.0.attributes.location_name', 'Test Location');
 })->note('Skipping assertion on included data due to polymorphic relationship issues.');
 
 it('creates a category', function(): void {
