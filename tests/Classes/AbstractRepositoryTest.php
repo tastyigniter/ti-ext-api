@@ -66,20 +66,20 @@ it('finds a record by attribute', function(): void {
 it('returns paginated results when model does not have scopeListFrontEnd', function(): void {
     $noScopeListFrontEndModel = Mockery::mock(\Illuminate\Database\Eloquent\Model::class)->makePartial();
     $this->repository->shouldReceive('createModel')->andReturn($noScopeListFrontEndModel);
-    $this->repository->shouldReceive('paginate')->with(15, null)->andReturn('paginated_result');
+    $this->repository->shouldReceive('paginate')->with(5, null)->andReturn('paginated_result');
 
-    $result = $this->repository->findAll(['pageLimit' => 15]);
+    $result = $this->repository->findAll();
 
     expect($result)->toBe('paginated_result');
 });
 
 it('returns frontend list results when model has scopeListFrontEnd', function(): void {
     $builder = Mockery::mock(Builder::class);
-    $builder->shouldReceive('listFrontEnd')->with(['option' => 'value'])->andReturn('frontend_list_result');
+    $builder->shouldReceive('listFrontEnd')->with(['option' => 'value', 'pageLimit' => 10])->andReturn('frontend_list_result');
     $this->repository->shouldReceive('createModel')->andReturn($this->model);
     $this->repository->shouldReceive('prepareQuery')->andReturn($builder);
 
-    $result = $this->repository->findAll(['option' => 'value']);
+    $result = $this->repository->findAll(['option' => 'value', 'pageLimit' => 10]);
 
     expect($result)->toBe('frontend_list_result');
 });

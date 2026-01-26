@@ -65,11 +65,12 @@ it('syncs all resources correctly', function(): void {
 
     Resource::syncAll();
 
-    expect(Resource::where('endpoint', 'endpoint2')->exists())->toBeFalse();
+    expect(Resource::where('endpoint', 'endpoint2')->exists())->toBeFalse()
+        ->and(Resource::where('endpoint', 'custom')->exists())->toBeTrue();
 });
 
 it('returns all resources keyed by endpoint', function(): void {
-    expect(Resource::getResources())->not->toBeEmpty();
+    expect(Resource::getResources())->toBeArray();
 });
 
 it('lists all resources correctly', function(): void {

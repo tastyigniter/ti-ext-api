@@ -21,8 +21,8 @@ class LocationSettingsRequest extends FormRequest
     {
         return [
             'location_id' => ['required', 'integer'],
-            'item' => ['required', 'string' ],
-            'data' => ['required', 'array' ],
+            'item' => ['required', 'string'],
+            'data' => ['required', 'array'],
         ];
     }
 }

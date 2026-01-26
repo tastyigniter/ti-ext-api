@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources;
 
 use Igniter\Api\ApiResources\Repositories\LocationSettingsRepository;
+use Igniter\Api\ApiResources\Requests\LocationSettingsRequest;
 use Igniter\Api\ApiResources\Transformers\LocationSettingsTransformer;
 use Igniter\Api\Classes\ApiController;
 use Igniter\Api\Http\Actions\RestController;
-use Igniter\Api\ApiResources\Requests\LocationSettingsRequest;
 
 /**
  * LocationSettings API Controller
