@@ -9,6 +9,7 @@ use Igniter\Api\ApiResources\Currencies;
 use Igniter\Api\ApiResources\Customers;
 use Igniter\Api\ApiResources\DiningTables;
 use Igniter\Api\ApiResources\Locations;
+use Igniter\Api\ApiResources\LocationSettings;
 use Igniter\Api\ApiResources\MenuItemOptions;
 use Igniter\Api\ApiResources\MenuOptions;
 use Igniter\Api\ApiResources\Menus;
@@ -139,6 +140,16 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for locations',
                 'actions' => [
                     'index:all', 'show:admin',
+                    'store:admin', 'update:admin',
+                    'destroy:admin',
+                ],
+            ],
+            'location_settings' => [
+                'controller' => LocationSettings::class,
+                'name' => 'LocationSettings',
+                'description' => 'An API resource for location settings',
+                'actions' => [
+                    'index:admin', 'show:admin',
                     'store:admin', 'update:admin',
                     'destroy:admin',
                 ],

@@ -274,6 +274,8 @@ The API extension provides endpoints for all core TastyIgniter resources. Here i
   `customers` - List, create, retrieve, update and delete customers
 - [Locations](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/locations.md)
   `locations` - List, create, retrieve, update and delete locations
+- [Location Settings](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/location_settings.md)
+  `location_settings` - List, create, retrieve, update and delete location settings
 - [Menus](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/menus.md)
   `menus` - List, create, retrieve, update and delete menus
 - [Orders](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/orders.md)

@@ -13,6 +13,7 @@ use Igniter\Flame\Database\Model;
 use Igniter\System\Classes\ControllerAction;
 use Illuminate\Database\Eloquent\Model as IlluminateModel;
 use Illuminate\Validation\ValidationException;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\TransformerAbstract;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,13 +53,13 @@ class RestController extends ControllerAction
 
         $records = $this->makeRepository('query')->findAll($options);
 
-        $response = $this->controller->fractal()
+        $fractal = $this->controller->fractal()
             ->collection($records)
             ->transformWith($this->createTransformer())
-            ->withResourceName($this->getResourceKey())
-            ->toArray();
+            ->paginateWith(new IlluminatePaginatorAdapter($records))
+            ->withResourceName($this->getResourceKey());
 
-        return response()->json($response);
+        return response()->json($fractal->toArray());
     }
 
     /**
