@@ -7,6 +7,7 @@ namespace Igniter\Api\Tests\ApiResources;
 use Igniter\Admin\Models\Status;
 use Igniter\Local\Models\Location;
 use Igniter\Reservation\Models\Reservation;
+use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Igniter\User\Models\UserGroup;
 use Laravel\Sanctum\Sanctum;
@@ -157,6 +158,59 @@ it('updates a reservation', function(): void {
         ])
         ->assertOk()
         ->assertJsonPath('data.attributes.reserve_time', '23:00');
+});
+
+it('updates reservation status', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+    $newStatus = Status::isForReservation()->first();
+
+    $this
+        ->patch(route('igniter.api.reservations.update_status', [$reservation->getKey()]), [
+            'status_id' => $newStatus->getKey(),
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.id', (string)$reservation->getKey())
+        ->assertJsonPath('data.attributes.status_id', $newStatus->getKey());
+});
+
+it('updates reservation status with comment and notify', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+    $newStatus = Status::isForReservation()->first();
+
+    $this
+        ->patch(route('igniter.api.reservations.update_status', [$reservation->getKey()]), [
+            'status_id' => $newStatus->getKey(),
+            'comment' => 'Table confirmed',
+            'notify' => true,
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.attributes.status_id', $newStatus->getKey());
+});
+
+it('fails to update reservation status when status_id is missing', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    $reservation = Reservation::factory()->create();
+
+    $this
+        ->patch(route('igniter.api.reservations.update_status', [$reservation->getKey()]), [
+            'comment' => 'Comment only',
+        ])
+        ->assertStatus(422);
+});
+
+it('can not update reservation status as customer', function(): void {
+    $customer = Sanctum::actingAs(Customer::factory()->create(), ['reservations:*']);
+    $customer->currentAccessToken()->shouldReceive('isForCustomer')->andReturnTrue();
+    $reservation = Reservation::factory()->create();
+    $newStatus = Status::isForReservation()->first();
+
+    $this
+        ->patch(route('igniter.api.reservations.update_status', [$reservation->getKey()]), [
+            'status_id' => $newStatus->getKey(),
+        ])
+        ->assertStatus(403);
 });
 
 it('deletes a reservation', function(): void {

@@ -6,9 +6,12 @@ namespace Igniter\Api\ApiResources;
 
 use Igniter\Api\ApiResources\Repositories\OrderRepository;
 use Igniter\Api\ApiResources\Requests\OrderRequest;
+use Igniter\Api\ApiResources\Requests\StatusRequest;
 use Igniter\Api\ApiResources\Transformers\OrderTransformer;
 use Igniter\Api\Classes\ApiController;
 use Igniter\Api\Http\Actions\RestController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Orders API Controller
@@ -26,6 +29,7 @@ class Orders extends ApiController
             'show' => [],
             'update' => [],
             'destroy' => [],
+            'updateStatus' => [],
         ],
         'request' => OrderRequest::class,
         'repository' => OrderRepository::class,
@@ -33,6 +37,30 @@ class Orders extends ApiController
     ];
 
     protected string|array $requiredAbilities = ['orders:*'];
+
+    public function updateStatus(StatusRequest $request, int $orderId): Response
+    {
+        throw_if(
+            ($token = $this->getToken()) && $token->isForCustomer(),
+            new AccessDeniedHttpException('Customers are not allowed to update order status.')
+        );
+
+        $data = $request->validated();
+
+        $order = app(OrderRepository::class)->find($orderId);
+
+        $data['staff_id'] = $this->user()->getKey();
+
+        $order->updateOrderStatus((int) $data['status_id'], array_only($data, ['comment', 'notify', 'staff_id']));
+
+        $response = $this->fractal()
+            ->item($order->refresh())
+            ->transformWith(new OrderTransformer)
+            ->withResourceName('orders')
+            ->toArray();
+
+        return response()->json($response);
+    }
 
     public function restAfterSave($model): void
     {
