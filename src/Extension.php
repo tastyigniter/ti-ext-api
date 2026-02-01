@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api;
 
+use Igniter\Api\ApiResources\Addresses;
 use Igniter\Api\ApiResources\Categories;
 use Igniter\Api\ApiResources\Currencies;
 use Igniter\Api\ApiResources\Customers;
@@ -122,6 +123,16 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for currencies',
                 'actions' => [
                     'index',
+                ],
+            ],
+            'addresses' => [
+                'controller' => Addresses::class,
+                'name' => 'Addresses',
+                'description' => 'An API resource for customer addresses',
+                'actions' => [
+                    'index:users', 'show:users',
+                    'store:users', 'update:users',
+                    'destroy:users',
                 ],
             ],
             'customers' => [

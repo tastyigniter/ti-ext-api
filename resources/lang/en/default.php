@@ -57,4 +57,8 @@ return [
     'orders' => [
         'label_customer_id' => 'Customer ID',
     ],
+
+    'addresses' => [
+        'label_customer_id' => 'Customer ID',
+    ],
 ];
