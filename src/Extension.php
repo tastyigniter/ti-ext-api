@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api;
 
+use Igniter\Api\ApiResources\Addresses;
 use Igniter\Api\ApiResources\Categories;
 use Igniter\Api\ApiResources\Currencies;
 use Igniter\Api\ApiResources\Customers;
@@ -30,6 +31,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\SanctumServiceProvider;
@@ -68,6 +70,8 @@ class Extension extends BaseExtension
     public function boot(): void
     {
         $this->configureRateLimiting();
+
+        $this->registerStatusUpdateRoute();
 
         // Register all the available API routes
         ApiManager::registerRoutes();
@@ -122,6 +126,16 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for currencies',
                 'actions' => [
                     'index',
+                ],
+            ],
+            'addresses' => [
+                'controller' => Addresses::class,
+                'name' => 'Addresses',
+                'description' => 'An API resource for customer addresses',
+                'actions' => [
+                    'index:users', 'show:users',
+                    'store:users', 'update:users',
+                    'destroy:users',
                 ],
             ],
             'customers' => [
@@ -274,5 +288,17 @@ class Extension extends BaseExtension
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', fn(Request $request) => Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip()));
+    }
+
+    protected function registerStatusUpdateRoute(): void
+    {
+        Route::middleware(config('igniter-api.middleware'))
+            ->prefix(config('igniter-api.prefix'))
+            ->group(function(): void {
+                Route::patch('orders/{orderId}/status', [Orders::class, 'updateStatus'])
+                    ->name('igniter.api.orders.update_status');
+                Route::patch('reservations/{reservationId}/status', [Reservations::class, 'updateStatus'])
+                    ->name('igniter.api.reservations.update_status');
+            });
     }
 }

@@ -501,6 +501,41 @@ Status: 200 OK
 }
 ```
 
+### Update order status
+
+Updates only the order status. Use this when you only need to change the status (e.g. from pending to completed) without sending other order fields.
+
+Required abilities: `orders:write`
+
+```
+PATCH /api/orders/:order_id/status
+```
+
+#### Parameters
+
+| Key               | Type     | Description                                                                 |
+|-------------------|----------|-----------------------------------------------------------------------------|
+| `status_id`       | `integer`| **Required**. The Unique Identifier of the status to assign to the order.  |
+| `comment`  | `string` | Optional comment to attach to the status change (max 500 characters).     |
+| `notify`         | `boolean`| Optional. Whether to notify the customer of the status change (default: false). |
+
+#### Payload example
+
+```json
+{
+    "status_id": 4,
+    "status_comment": "Order ready for collection"
+}
+```
+
+#### Response
+
+```html
+Status: 200 OK
+```
+
+Returns the updated order object in the same shape as the retrieve/update response (including the new `status_id` and `status_updated_at`).
+
 ### Delete an order
 
 Permanently deletes an order. It cannot be undone.

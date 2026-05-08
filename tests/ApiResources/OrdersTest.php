@@ -213,6 +213,58 @@ it('updates an order', function(): void {
         ->assertJsonPath('data.attributes.order_type', Location::COLLECTION);
 });
 
+it('updates order status', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $newStatus = Status::isForOrder()->first();
+
+    $this
+        ->patch(route('igniter.api.orders.update_status', [$order->getKey()]), [
+            'status_id' => $newStatus->getKey(),
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.id', (string)$order->getKey())
+        ->assertJsonPath('data.attributes.status_id', $newStatus->getKey());
+});
+
+it('updates order status with comment', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $newStatus = Status::isForOrder()->first();
+
+    $this
+        ->patch(route('igniter.api.orders.update_status', [$order->getKey()]), [
+            'status_id' => $newStatus->getKey(),
+            'status_comment' => 'Ready for collection',
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.attributes.status_id', $newStatus->getKey());
+});
+
+it('fails to update order status when status_id is missing', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+
+    $this
+        ->patch(route('igniter.api.orders.update_status', [$order->getKey()]), [
+            'status_comment' => 'Comment only',
+        ])
+        ->assertStatus(422);
+});
+
+it('can not update order status as customer', function(): void {
+    $customer = Sanctum::actingAs(Customer::factory()->create(), ['orders:*']);
+    $customer->currentAccessToken()->shouldReceive('isForCustomer')->andReturnTrue();
+    $order = Order::factory()->create();
+    $newStatus = Status::isForOrder()->first();
+
+    $this
+        ->patch(route('igniter.api.orders.update_status', [$order->getKey()]), [
+            'status_id' => $newStatus->getKey(),
+        ])
+        ->assertStatus(403);
+});
+
 it('deletes an order', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create();

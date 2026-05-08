@@ -364,7 +364,6 @@ PATCH /api/reservations/:reservation_id
 | `email`                | `string`  | The reservation's email address                                                                         |
 | `telephone`            | `string`  | The reservation's telephone number                                                                      |
 | `newsletter`           | `boolean` | Whether the reservation opts into newsletter marketing                                                  |
-| `reservation_group_id` | `integer` | The group the reservation belongs to, if any.                                                           |
 | `status`               | `boolean` | Has the value `true` if the reservation is enabled or the value `false` if the reservation is disabled. |
 | `addresses`            | `array`   | The reservation's addresses, if any                                                                     |
 
@@ -417,6 +416,42 @@ Status: 200 OK
     ]
 }
 ```
+
+### Update reservation status
+
+Updates only the reservation status. Use this when you only need to change the status (e.g. from pending to confirmed) without sending other reservation fields. Only staff tokens may update reservation status; customer tokens receive 403.
+
+Required abilities: `reservations:write`
+
+```
+PATCH /api/reservations/:reservation_id/status
+```
+
+#### Parameters
+
+| Key          | Type     | Description                                                                 |
+|--------------|----------|-----------------------------------------------------------------------------|
+| `status_id`  | `integer`| **Required**. The Unique Identifier of the status to assign (must exist in `statuses`). |
+| `comment`    | `string` | Optional comment to attach to the status change (max 500 characters).     |
+| `notify`     | `boolean`| Whether to notify the customer of the status change.                        |
+
+#### Payload example
+
+```json
+{
+    "status_id": 8,
+    "comment": "Table confirmed",
+    "notify": true
+}
+```
+
+#### Response
+
+```html
+Status: 200 OK
+```
+
+Returns the updated reservation object in the same shape as the retrieve/update response (including the new `status_id` and `status_updated_at`).
 
 ### Delete a reservation
 

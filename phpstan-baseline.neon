@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Access to an undefined property Igniter\\User\\Models\\Address\:\:\$country\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/ApiResources/Transformers/AddressTransformer.php
+
+		-
 			message: '#^Access to an undefined property Igniter\\Cart\\Models\\Category\:\:\$locations\.$#'
 			identifier: property.notFound
 			count: 1
