@@ -145,6 +145,12 @@ parameters:
 			path: src/Classes/ApiManager.php
 
 		-
+			message: '#^Method Igniter\\Api\\Console\\IssueApiToken\:\:getOptions\(\) should return array\<array\{0\: non\-empty\-string, 1\?\: non\-empty\-array\<string\>\|string, 2\?\: int\<0, 31\>, 3\?\: string, 4\?\: mixed, 5\?\: \(Closure\(Symfony\\Component\\Console\\Completion\\CompletionInput, Symfony\\Component\\Console\\Completion\\CompletionSuggestions\)\: list\<string\|Symfony\\Component\\Console\\Completion\\Suggestion\>\)\|list\<string\|Symfony\\Component\\Console\\Completion\\Suggestion\>\}\|Symfony\\Component\\Console\\Input\\InputOption\> but returns array\{array\{''name'', null, 2, ''The name to…''\}, array\{''email'', null, 2, ''The email of the…''\}, array\{''admin'', null, 1, ''Specify to issue…''\}, array\{''abilities'', null, 12, ''The abilities of…''\}\}\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Console/IssueApiToken.php
+
+		-
 			message: '#^Access to an undefined property Igniter\\Api\\Classes\\ApiController\:\:\$restConfig\.$#'
 			identifier: property.notFound
 			count: 1

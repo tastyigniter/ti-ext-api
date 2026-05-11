@@ -8,6 +8,7 @@ use Igniter\Api\Models\Token;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Illuminate\Console\Command;
+use Override;
 use Symfony\Component\Console\Input\InputOption;
 
 class IssueApiToken extends Command
@@ -55,6 +56,7 @@ class IssueApiToken extends Command
     /**
      * Get the console command options.
      */
+    #[Override]
     protected function getOptions(): array
     {
         return [
