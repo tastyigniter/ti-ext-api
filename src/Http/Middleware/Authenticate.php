@@ -20,7 +20,7 @@ class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
      * @param string ...$guards
      * @return mixed
      *
-     * @throws \Igniter\Api\Exceptions\AuthenticationException
+     * @throws Exceptions\AuthenticationException
      */
     #[Override]
     public function handle($request, Closure $next, ...$guards)
