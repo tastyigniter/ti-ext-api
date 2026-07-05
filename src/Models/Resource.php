@@ -155,7 +155,7 @@ class Resource extends Model
      * Returns a list of all api resources.
      * @return array Array keys are endpoints.
      */
-    public static function listResources()
+    public static function listResources(): array|float|int
     {
         $registeredResources = (new static)->listRegisteredResources();
         $dbResources = static::all()->keyBy('endpoint')->all();
