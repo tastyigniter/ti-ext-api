@@ -86,7 +86,7 @@ class ErrorHandler
      *
      * @return int
      */
-    protected function getStatusCode(Throwable $exception)
+    protected function getStatusCode(Throwable $exception): float|string|int
     {
         // By default throw 500
         $statusCode = $exception->getCode() ?: 500;

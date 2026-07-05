@@ -7,6 +7,7 @@ namespace Igniter\Api\Tests\ApiResources;
 use Igniter\Admin\Models\Status;
 use Igniter\Cart\Models\Order;
 use Igniter\Local\Models\Location;
+use Igniter\PayRegister\Models\Payment;
 use Igniter\User\Models\Address;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
@@ -82,6 +83,8 @@ it('shows an order with address relationship', function(): void {
 });
 
 it('shows an order with payment_method relationship', function(): void {
+    Payment::syncAll();
+
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $order = Order::factory()->create([
         'payment' => 'cod',
