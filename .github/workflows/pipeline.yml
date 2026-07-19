@@ -1,6 +1,10 @@
 name: CI Pipeline
 
-on: [ push, workflow_dispatch ]
+on:
+  push:
+    branches:
+      - 4.x
+  workflow_dispatch:
 
 jobs:
   php-tests:
