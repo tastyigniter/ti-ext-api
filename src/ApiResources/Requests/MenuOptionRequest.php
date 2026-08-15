@@ -36,7 +36,7 @@ class MenuOptionRequest extends FormRequest
             'option_values.*.option_value_id' => ['integer'],
             'option_values.*.option_id' => ['integer'],
             'option_values.*.value' => ['min:2', 'max:128'],
-            'option_values.*.price' => ['numeric', 'min:0'],
+            'option_values.*.price' => ['currency', 'min:0'],
             'option_values.*.priority' => ['integer'],
             'option_values.*.allergens.*' => ['integer'],
         ];

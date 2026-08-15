@@ -45,7 +45,7 @@ it('returns correct validation rules', function(): void {
         ->and($rules['option_values.*.option_value_id'])->toContain('integer')
         ->and($rules['option_values.*.option_id'])->toContain('integer')
         ->and($rules['option_values.*.value'])->toContain('min:2', 'max:128')
-        ->and($rules['option_values.*.price'])->toContain('numeric', 'min:0')
+        ->and($rules['option_values.*.price'])->toContain('currency', 'min:0')
         ->and($rules['option_values.*.priority'])->toContain('integer')
         ->and($rules['option_values.*.allergens.*'])->toContain('integer');
 });
