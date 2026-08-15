@@ -63,6 +63,7 @@ class AbstractRepository
 
             return $query->listFrontEnd($options);
         }
+
         $page = array_get($options, 'page');
         $pageSize = array_get($options, 'pageLimit', 5);
 

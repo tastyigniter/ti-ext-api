@@ -17,9 +17,11 @@ trait HasGlobalScopes
         if (is_string($scope) && !is_null($implementation)) {
             return $this->scopes[static::class][$scope] = $implementation;
         }
+
         if ($scope instanceof Closure) {
             return $this->scopes[static::class][spl_object_hash($scope)] = $scope;
         }
+
         if ($scope instanceof Scope) {
             return $this->scopes[static::class][$scope::class] = $scope;
         }
