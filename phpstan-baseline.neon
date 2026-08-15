@@ -37,22 +37,10 @@ parameters:
 			path: src/ApiResources/Transformers/LocationTransformer.php
 
 		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\MenuItemOption\:\:\$option\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/MenuItemOptionTransformer.php
-
-		-
 			message: '#^Access to an undefined property Igniter\\Flame\\Currency\\Contracts\\CurrencyInterface\:\:\$currency_code\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/ApiResources/Transformers/MenuItemOptionValueTransformer.php
-
-		-
-			message: '#^Access to an undefined property Igniter\\Cart\\Models\\MenuOption\:\:\$option_values\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/ApiResources/Transformers/MenuOptionTransformer.php
 
 		-
 			message: '#^Access to an undefined property Igniter\\Flame\\Currency\\Contracts\\CurrencyInterface\:\:\$currency_code\.$#'

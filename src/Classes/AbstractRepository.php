@@ -60,14 +60,14 @@ class AbstractRepository
 
         if (method_exists($model, 'scopeListFrontEnd') && array_key_exists('pageLimit', $options)) {
             $query = $this->prepareQuery($model);
-            $result = $query->listFrontEnd($options);
-        } else {
-            $page = array_get($options, 'page');
-            $pageSize = array_get($options, 'pageLimit', 5);
-            $result = $this->paginate($pageSize, $page);
+
+            return $query->listFrontEnd($options);
         }
 
-        return $result;
+        $page = array_get($options, 'page');
+        $pageSize = array_get($options, 'pageLimit', 5);
+
+        return $this->paginate($pageSize, $page);
     }
 
     public function paginate($perPage = null, $page = null, $pageName = 'page', $columns = ['*'])
