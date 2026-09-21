@@ -6,10 +6,12 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Admin\Traits\ControllerUtils;
 use Igniter\Admin\Traits\ValidatesForm;
+use Igniter\Api\Models\Token;
 use Igniter\Api\Traits\AuthorizesRequest;
 use Igniter\Api\Traits\CreatesResponse;
 use Igniter\Flame\Traits\EventEmitter;
 use Igniter\Flame\Traits\ExtendableTrait;
+use Igniter\User\Models\Customer;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Routing\Controller;
 use Override;
@@ -89,11 +91,17 @@ class ApiController extends Controller
             return;
         }
 
-        if (is_array($ability)) {
-            $ability = implode(',', $ability);
+        $abilities = is_array($ability) ? $ability : explode(',', $ability);
+
+        if ($this->user() instanceof Customer) {
+            foreach ($abilities as $requiredAbility) {
+                if (!Token::isCustomerAbility($requiredAbility)) {
+                    throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
+                }
+            }
         }
 
-        if (!$this->tokenCan($ability)) {
+        if (!$this->tokenCan(implode(',', $abilities))) {
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
         }
     }

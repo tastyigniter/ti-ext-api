@@ -10,6 +10,7 @@ use Igniter\User\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -34,10 +35,63 @@ class Token extends PersonalAccessToken
 {
     use HasFactory;
 
+    protected const array DEFAULT_CUSTOMER_ABILITIES = [
+        'addresses:*',
+        'customers:*',
+        'orders:*',
+        'reservations:*',
+        'reviews:*',
+    ];
+
     /**
      * @var string The database table used by the model.
      */
     public $table = 'igniter_api_access_tokens';
+
+    public static function customerAbilities(): array
+    {
+        $abilities = static::DEFAULT_CUSTOMER_ABILITIES;
+
+        $results = Event::dispatch('api.token.extendCustomerAbilities', [&$abilities]);
+        if (is_array($results)) {
+            foreach ($results as $result) {
+                if (is_array($result)) {
+                    $abilities = array_merge($abilities, array_values(array_filter($result, fn($item): bool => is_string($item) && $item !== '' && $item !== '*')));
+                }
+            }
+        }
+
+        return array_unique(array_values($abilities));
+    }
+
+    public static function isCustomerAbility(string $ability): bool
+    {
+        if ($ability === '*') {
+            return false;
+        }
+
+        $prefix = strtolower(Str::before($ability, ':'));
+        foreach (static::customerAbilities() as $allowed) {
+            if ($ability === $allowed || $prefix === strtolower(Str::before($allowed, ':'))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static function sanitizeAbilities($tokenable, array $abilities): array
+    {
+        if (!$tokenable instanceof Customer) {
+            return $abilities === [] ? ['*'] : array_values($abilities);
+        }
+
+        if ($abilities === [] || in_array('*', $abilities, true)) {
+            return static::customerAbilities();
+        }
+
+        return array_values(array_filter($abilities, static::isCustomerAbility(...)));
+    }
 
     /**
      * Create a new personal access token for the user.
@@ -49,7 +103,7 @@ class Token extends PersonalAccessToken
         $token = $tokenable->tokens()->create([
             'name' => $name,
             'token' => hash('sha256', $plainTextToken = Str::random(80)),
-            'abilities' => $abilities,
+            'abilities' => static::sanitizeAbilities($tokenable, $abilities),
         ]);
 
         return new NewAccessToken($token, $token->id.'|'.$plainTextToken);

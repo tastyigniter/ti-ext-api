@@ -7,6 +7,7 @@ namespace Igniter\Api\Tests\Listeners;
 use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Listeners\TokenEventSubscriber;
 use Igniter\Api\Models\Token;
+use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Illuminate\Routing\Route;
 use Laravel\Sanctum\Events\TokenAuthenticated;
@@ -18,7 +19,7 @@ beforeEach(function(): void {
     $this->subscriber = new TokenEventSubscriber;
     $this->token = Token::factory()->create([
         'tokenable_type' => 'users',
-        'tokenable_id' => User::factory()->create()->getKey(),
+        'tokenable_id' => User::factory()->create(['status' => true])->getKey(),
     ]);
     $this->event = new TokenAuthenticated($this->token);
     $this->route = Mockery::mock(Route::class);
@@ -100,4 +101,63 @@ it('returns tokenable for valid access token', function(): void {
     $tokenable = $this->subscriber->handleTokenAuthenticated($this->event);
 
     expect($tokenable)->toBeInstanceOf(User::class);
+});
+
+it('rejects already invalid access tokens', function(): void {
+    expect($this->subscriber->accessTokenIsValid($this->token, false))->toBeFalse();
+});
+
+it('rejects access tokens for disabled customers', function(): void {
+    $customer = Customer::factory()->create(['status' => false]);
+    $token = Token::factory()->create([
+        'tokenable_type' => $customer->getMorphClass(),
+        'tokenable_id' => $customer->getKey(),
+    ]);
+
+    expect($this->subscriber->accessTokenIsValid($token, true))->toBeFalse();
+});
+
+it('rejects access tokens for disabled staff', function(): void {
+    $user = User::factory()->create(['status' => false]);
+    $token = Token::factory()->create([
+        'tokenable_type' => $user->getMorphClass(),
+        'tokenable_id' => $user->getKey(),
+    ]);
+
+    expect($this->subscriber->accessTokenIsValid($token, true))->toBeFalse();
+});
+
+it('accepts access tokens for enabled customers', function(): void {
+    $customer = Customer::factory()->create(['status' => true]);
+    $token = Token::factory()->create([
+        'tokenable_type' => $customer->getMorphClass(),
+        'tokenable_id' => $customer->getKey(),
+    ]);
+
+    expect($this->subscriber->accessTokenIsValid($token, true))->toBeTrue();
+});
+
+it('accepts access tokens when tokenable is missing', function(): void {
+    $token = Token::factory()->create([
+        'tokenable_type' => 'customers',
+        'tokenable_id' => 999999,
+    ]);
+
+    expect($this->subscriber->accessTokenIsValid($token, true))->toBeTrue();
+});
+
+it('throws unauthorized exception for disabled tokenable', function(): void {
+    mockCurrentResource(['index' => 'all']);
+    $this->route->shouldReceive('getActionMethod')->andReturn('index');
+
+    $customer = Customer::factory()->create(['status' => false]);
+    $this->event->token = Token::factory()->create([
+        'tokenable_type' => $customer->getMorphClass(),
+        'tokenable_id' => $customer->getKey(),
+    ]);
+
+    $this->expectException(UnauthorizedHttpException::class);
+    $this->expectExceptionMessage(lang('igniter.api::default.alert_auth_failed'));
+
+    $this->subscriber->handleTokenAuthenticated($this->event);
 });
