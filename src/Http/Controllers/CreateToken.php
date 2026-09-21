@@ -50,7 +50,23 @@ class CreateToken extends Controller
             ]);
         }
 
-        $token = Token::createToken($user, $request->device_name, $request->abilities ?? ['*']);
+        $requestedAbilities = $request->input('abilities', ['*']);
+        if ($user instanceof Customer && !in_array('*', $requestedAbilities, true)) {
+            $deniedAbilities = array_values(array_filter(
+                $requestedAbilities,
+                fn(string $ability): bool => !Token::isCustomerAbility($ability),
+            ));
+
+            if ($deniedAbilities !== []) {
+                throw ValidationException::withMessages([
+                    'abilities' => [sprintf('The following abilities are not allowed for customers: %s',
+                        implode(', ', $deniedAbilities),
+                    )],
+                ]);
+            }
+        }
+
+        $token = Token::createToken($user, $request->device_name, $requestedAbilities);
 
         return response()->json([
             'status_code' => 201,

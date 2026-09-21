@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Local\Models\Location;
+use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Igniter\User\Models\UserGroup;
 use Igniter\User\Models\UserRole;
@@ -182,5 +183,43 @@ it('deletes a user', function(): void {
     $this
         ->delete(route('igniter.api.users.destroy', [$user->getKey()]))
         ->assertStatus(204);
+});
+
+it('cannot mass assign super user via the api', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    $role = UserRole::factory()->create();
+
+    $this
+        ->post(route('igniter.api.users.store'), [
+            'name' => 'Pwned User',
+            'email' => 'attacker@example.tld',
+            'username' => 'pwned',
+            'password' => 'Attack3r!Pass',
+            'password_confirm' => 'Attack3r!Pass',
+            'user_role_id' => $role->getKey(),
+            'status' => true,
+            'send_invite' => false,
+            'super_user' => true,
+        ])
+        ->assertCreated();
+
+    expect(User::where('email', 'attacker@example.tld')->first()->isSuperUser())->toBeFalse();
+});
+
+it('denies customers with staff abilities from accessing staff endpoints', function(): void {
+    Sanctum::actingAs(Customer::factory()->create(), ['staff:*']);
+
+    $this
+        ->post(route('igniter.api.users.store'), [
+            'name' => 'Pwned User',
+            'email' => 'attacker@example.tld',
+            'username' => 'pwned',
+            'password' => 'Attack3r!Pass',
+            'password_confirm' => 'Attack3r!Pass',
+            'status' => true,
+            'send_invite' => false,
+            'super_user' => true,
+        ])
+        ->assertForbidden();
 });
 

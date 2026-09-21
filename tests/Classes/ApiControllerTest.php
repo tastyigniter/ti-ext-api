@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Api\Tests\Classes;
 
 use Igniter\Api\Classes\ApiController;
+use Igniter\User\Models\Customer;
 use Illuminate\Contracts\Support\Responsable;
 use Mockery;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -53,6 +54,18 @@ it('calls action throws exception when authorization fails', function(): void {
     $controller->shouldReceive('tokenCan')->andReturnFalse()->once();
     $controller->shouldReceive('testAction')->andReturn(['key' => 'value']);
     $controller->shouldReceive('isResponsable')->andReturnFalse();
+
+    expect(fn() => $controller->callAction('testAction'))->toThrow(AccessDeniedHttpException::class);
+});
+
+it('calls action throws exception when customer requests admin abilities', function(): void {
+    $controller = Mockery::mock(ApiController::class)->makePartial()->shouldAllowMockingProtectedMethods();
+    $controller->allowedActions = ['testAction' => true];
+    $controller->shouldReceive('checkAction')->andReturnTrue();
+    $controller->shouldReceive('token')->andReturnTrue();
+    $controller->shouldReceive('getAbilities')->andReturn(['staff:*']);
+    $controller->shouldReceive('user')->andReturn(Mockery::mock(Customer::class));
+    $controller->shouldReceive('tokenCan')->never();
 
     expect(fn() => $controller->callAction('testAction'))->toThrow(AccessDeniedHttpException::class);
 });

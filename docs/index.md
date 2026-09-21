@@ -232,6 +232,22 @@ These are the available options for the resource configuration:
 - **controller** - The controller class for the resource
 - **actions** - An array of actions to enable for the resource. You can predefine authorization context for each action by adding the context. For example to make the `delete` endpoint only accessible to admin users, `['destroy:admin']`
 
+### Extending customer token abilities
+
+Customer tokens can only be issued with customer-scoped abilities. The API extension allows `addresses:*`, `customers:*`, `orders:*`, `reservations:*` and `reviews:*` by default. Admin-scoped abilities such as `staff:*` cannot be assigned to a customer token.
+
+If your extension exposes customer-facing API resources, listen for the `api.token.extendCustomerAbilities` event:
+
+```php
+use Illuminate\Support\Facades\Event;
+
+Event::listen('api.token.extendCustomerAbilities', function(array &$abilities): void {
+    $abilities[] = 'loyalty:*';
+});
+```
+
+Listeners may mutate the `$abilities` array or return additional ability strings. Wildcard (`*`) and `staff:*` abilities are always stripped from customer tokens.
+
 ### Overriding API actions
 
 You can override the default behavior of API actions (verbs) with your own logic by defining a method in the controller class with the action name. For example, to override the `index` action:

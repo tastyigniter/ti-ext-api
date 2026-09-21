@@ -9,6 +9,7 @@ use Igniter\Api\Models\Token;
 use Igniter\Flame\Database\Model;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
+use Illuminate\Support\Facades\Event;
 
 beforeEach(function(): void {
     $this->controller = new CreateToken;
@@ -72,3 +73,69 @@ it('throws validation exception for inactive user', function(bool $isAdmin, Mode
         'is_activated' => false,
     ])],
 ]);
+
+it('rejects staff abilities for customer tokens', function(): void {
+    $customer = Customer::factory()->create(['is_activated' => true]);
+
+    $this->post(route('igniter.api.token.create'), [
+        'email' => $customer->email,
+        'password' => 'password',
+        'is_admin' => false,
+        'device_name' => 'exploit',
+        'abilities' => ['staff:*'],
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('abilities');
+
+    expect(Token::where('tokenable_type', $customer->getMorphClass())
+        ->where('tokenable_id', $customer->getKey())
+        ->exists())->toBeFalse();
+});
+
+it('issues customer tokens without wildcard staff abilities', function(): void {
+    $customer = Customer::factory()->create(['is_activated' => true]);
+
+    $this->post(route('igniter.api.token.create'), [
+        'email' => $customer->email,
+        'password' => 'password',
+        'is_admin' => false,
+        'device_name' => 'device',
+        'abilities' => ['*'],
+    ])->assertCreated();
+
+    $token = Token::query()
+        ->where('tokenable_type', $customer->getMorphClass())
+        ->where('tokenable_id', $customer->getKey())
+        ->first();
+
+    expect($token->abilities)->not->toContain('*')
+        ->and($token->abilities)->not->toContain('staff:*')
+        ->and($token->abilities)->toBe(Token::customerAbilities());
+});
+
+it('issues customer tokens with abilities extended by an event', function(): void {
+    Event::listen('api.token.extendCustomerAbilities', function(array &$abilities): void {
+        $abilities[] = 'loyalty:*';
+    });
+
+    try {
+        $customer = Customer::factory()->create(['is_activated' => true]);
+
+        $this->post(route('igniter.api.token.create'), [
+            'email' => $customer->email,
+            'password' => 'password',
+            'is_admin' => false,
+            'device_name' => 'device',
+            'abilities' => ['loyalty:*'],
+        ])->assertCreated();
+
+        $token = Token::query()
+            ->where('tokenable_type', $customer->getMorphClass())
+            ->where('tokenable_id', $customer->getKey())
+            ->first();
+
+        expect($token->abilities)->toBe(['loyalty:*']);
+    } finally {
+        Event::forget('api.token.extendCustomerAbilities');
+    }
+});
