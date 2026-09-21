@@ -109,11 +109,6 @@ class Token extends PersonalAccessToken
         return new NewAccessToken($token, $token->id.'|'.$plainTextToken);
     }
 
-    protected static function abilityPrefix(string $ability): string
-    {
-        return strtolower((string)Str::before(str_replace('.', ':', $ability), ':'));
-    }
-
     /**
      * Determine if the token belongs to a admin
      */
