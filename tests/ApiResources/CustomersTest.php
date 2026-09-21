@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\ApiResources;
 
+use Igniter\Api\Models\Token;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
@@ -24,6 +25,48 @@ it('can not update customer aware column', function(): void {
         ->assertOk()
         ->assertJsonPath('data.attributes.full_name', 'Test Customer')
         ->assertJsonMissing(['customer_id' => 9999]);
+});
+
+it('cannot self assign customer group or re-enable status', function(): void {
+    $customer = Customer::factory()->create([
+        'customer_group_id' => 1,
+        'status' => true,
+    ]);
+    Sanctum::actingAs($customer, ['customers:*']);
+
+    $this
+        ->put(route('igniter.api.customers.update', [$customer->getKey()]), [
+            'first_name' => $customer->first_name,
+            'last_name' => $customer->last_name,
+            'email' => $customer->email,
+            'customer_group_id' => 99,
+            'newsletter' => false,
+            'status' => false,
+        ])
+        ->assertOk();
+
+    expect($customer->fresh())
+        ->customer_group_id->toBe(1)
+        ->status->toBeTrue();
+});
+
+it('rejects requests from disabled customers with an existing token', function(): void {
+    $customer = Customer::factory()->create(['status' => true]);
+    $plainTextToken = Token::createToken($customer, 'poc', ['customers:*'])->plainTextToken;
+
+    Customer::query()->whereKey($customer->getKey())->update(['status' => false]);
+
+    $this
+        ->withToken($plainTextToken)
+        ->put(route('igniter.api.customers.update', [$customer->getKey()]), [
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'email' => $customer->email,
+            'customer_group_id' => 1,
+            'newsletter' => false,
+            'status' => true,
+        ])
+        ->assertUnauthorized();
 });
 
 it('returns only authenticated customer', function(): void {

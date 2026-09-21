@@ -283,6 +283,10 @@ class Extension extends BaseExtension
     protected function sanctumConfigureAuth()
     {
         Event::subscribe(TokenEventSubscriber::class);
+
+        Sanctum::authenticateAccessTokensUsing(
+            (new TokenEventSubscriber)->accessTokenIsValid(...),
+        );
     }
 
     protected function configureRateLimiting()

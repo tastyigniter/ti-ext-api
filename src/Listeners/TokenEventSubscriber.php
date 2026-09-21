@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Igniter\Api\Listeners;
 
 use Igniter\Api\Classes\ApiManager;
+use Igniter\User\Models\Customer;
+use Igniter\User\Models\User;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Routing\Route;
 use Laravel\Sanctum\Events\TokenAuthenticated;
@@ -13,9 +15,27 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class TokenEventSubscriber
 {
+    public function accessTokenIsValid(mixed $accessToken, bool $isValid): bool
+    {
+        if (!$isValid) {
+            return false;
+        }
+
+        $tokenable = $accessToken->tokenable;
+        if ($tokenable instanceof Customer || $tokenable instanceof User) {
+            return $tokenable->isEnabled();
+        }
+
+        return true;
+    }
+
     public function handleTokenAuthenticated($event)
     {
         $accessToken = $event->token;
+
+        if ($accessToken && !$this->accessTokenIsValid($accessToken, true)) {
+            throw new UnauthorizedHttpException('Bearer', lang('igniter.api::default.alert_auth_failed'));
+        }
 
         $allowedGroup = $this->getAllowedGroup(request()->route());
         if ($allowedGroup === 'all') {
