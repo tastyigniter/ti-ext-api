@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\ApiResources;
 
+use Igniter\Api\ApiResources\Repositories\LocationSettingsRepository;
 use Igniter\Local\Models\Location;
 use Igniter\Local\Models\LocationSettings;
 use Igniter\User\Models\User;
@@ -205,7 +206,7 @@ it('merges partial data on update without clearing other values', function(): vo
 });
 
 it('returns null when updating without a model', function(): void {
-    $repository = new \Igniter\Api\ApiResources\Repositories\LocationSettingsRepository;
+    $repository = new LocationSettingsRepository;
 
     expect($repository->update(null, ['data' => ['enabled' => true]]))->toBeNull();
 });
@@ -220,11 +221,11 @@ it('prefers in-memory settings values when merging', function(): void {
     $model->setSettingsValue('from_memory', 1);
 
     $method = new ReflectionMethod(
-        \Igniter\Api\ApiResources\Repositories\LocationSettingsRepository::class,
+        LocationSettingsRepository::class,
         'existingSettingsData',
     );
 
-    expect($method->invoke(new \Igniter\Api\ApiResources\Repositories\LocationSettingsRepository, $model))
+    expect($method->invoke(new LocationSettingsRepository, $model))
         ->toBe(['from_memory' => 1]);
 });
 

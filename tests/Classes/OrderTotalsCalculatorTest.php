@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Igniter\Api\Tests\Classes;
 
 use Igniter\Api\Classes\OrderTotalsCalculator;
+use Igniter\Cart\Cart;
+use Igniter\Cart\CartItem;
+use Igniter\Cart\CartItemOptions;
 use Igniter\Cart\Classes\CartConditionManager;
 use Igniter\Cart\Models\CartSettings;
 use Igniter\Cart\Models\Menu;
@@ -91,13 +94,13 @@ it('uses zero unit prices when cart item quantity is zero', function(): void {
     $location = Location::factory()->create();
     $menu = Menu::factory()->create(['menu_price' => 10]);
 
-    $cartItem = mock(\Igniter\Cart\CartItem::class)->makePartial();
+    $cartItem = mock(CartItem::class)->makePartial();
     $cartItem->qty = 0;
     $cartItem->name = 'Zero';
-    $cartItem->options = new \Igniter\Cart\CartItemOptions([]);
+    $cartItem->options = new CartItemOptions([]);
     $cartItem->shouldReceive('hasConditions')->andReturn(0);
 
-    $cart = mock(\Igniter\Cart\Cart::class);
+    $cart = mock(Cart::class);
     $cart->shouldReceive('add')->once()->andReturn($cartItem);
 
     $result = (new ReflectionMethod(OrderTotalsCalculator::class, 'addMenuToCart'))

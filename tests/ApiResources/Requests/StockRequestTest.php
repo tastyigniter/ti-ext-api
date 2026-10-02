@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\ApiResources\Requests;
 
+use Closure;
 use Igniter\Api\ApiResources\Requests\StockRequest;
 use Igniter\Cart\Models\MenuItemOptionValue;
 use Igniter\Local\Models\Location;
@@ -44,7 +45,7 @@ it('treats unknown stockable types as invalid in the closure', function(): void 
         'stockable_id' => 1,
     ]);
     $rules = $request->rules();
-    $closure = collect($rules['stockable_id'])->first(fn($rule): bool => $rule instanceof \Closure);
+    $closure = collect($rules['stockable_id'])->first(fn($rule): bool => $rule instanceof Closure);
 
     $message = null;
     $closure('stockable_id', 1, function(string $fail) use (&$message): void {

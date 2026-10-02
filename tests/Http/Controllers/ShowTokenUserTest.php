@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\Http\Controllers;
 
+use Igniter\Api\Http\Controllers\ShowTokenUser;
 use Igniter\Local\Models\Location;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
@@ -48,7 +49,7 @@ it('returns null for unauthenticated user', function(): void {
 });
 
 it('returns json 401 when invoke receives no user', function(): void {
-    $response = (new \Igniter\Api\Http\Controllers\ShowTokenUser)(Request::create('/', 'GET'));
+    $response = (new ShowTokenUser)(Request::create('/', 'GET'));
 
     expect($response->getStatusCode())->toBe(401)
         ->and($response->getData(true))->toMatchArray([

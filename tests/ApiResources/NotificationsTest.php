@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\ApiResources;
 
+use Igniter\Api\ApiResources\Notifications;
 use Igniter\User\Classes\Notification;
 use Igniter\User\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 it('returns notifications for the signed in user', function(): void {
     $user = User::factory()->create();
@@ -98,7 +100,7 @@ it('does not show another users notification', function(): void {
 });
 
 it('returns an empty list when the authenticated user is not a model', function(): void {
-    $controller = new class extends \Igniter\Api\ApiResources\Notifications
+    $controller = new class extends Notifications
     {
         public function user(): mixed
         {
@@ -113,19 +115,19 @@ it('returns an empty list when the authenticated user is not a model', function(
 });
 
 it('cannot find a notification without an authenticated model user', function(): void {
-    $controller = new class extends \Igniter\Api\ApiResources\Notifications
+    $controller = new class extends Notifications
     {
         public function user(): mixed
         {
             return null;
         }
 
-        public function exposeFindOwn(string $id)
+        public function exposeFindOwn(string $id): \Igniter\User\Models\Notification
         {
             return $this->findOwn($id);
         }
     };
 
-    expect(fn() => $controller->exposeFindOwn((string)Str::uuid()))
-        ->toThrow(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
+    expect(fn(): \Igniter\User\Models\Notification => $controller->exposeFindOwn((string)Str::uuid()))
+        ->toThrow(NotFoundHttpException::class);
 });

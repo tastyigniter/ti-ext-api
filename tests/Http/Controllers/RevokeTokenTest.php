@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\Http\Controllers;
 
+use Igniter\Api\Http\Controllers\RevokeToken;
 use Igniter\Api\Models\Token;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
@@ -39,7 +40,7 @@ it('rejects unauthenticated revoke requests', function(): void {
 });
 
 it('returns json 401 when invoke receives no user', function(): void {
-    $response = (new \Igniter\Api\Http\Controllers\RevokeToken)(Request::create('/', 'DELETE'));
+    $response = (new RevokeToken)(Request::create('/', 'DELETE'));
 
     expect($response->getStatusCode())->toBe(401)
         ->and($response->getData(true))->toMatchArray([

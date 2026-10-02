@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\ApiResources;
 
+use Igniter\Api\ApiResources\Stocks;
 use Igniter\Cart\Models\Menu;
+use Igniter\Cart\Models\MenuItemOptionValue;
 use Igniter\Cart\Models\Stock;
 use Igniter\Local\Models\Location;
 use Igniter\User\Models\User;
@@ -181,14 +183,14 @@ it('clears an out of stock override', function(): void {
 });
 
 it('ignores restAfterSave for non-stock models', function(): void {
-    $controller = new \Igniter\Api\ApiResources\Stocks;
+    $controller = new Stocks;
 
-    expect(fn() => $controller->restAfterSave(new \Igniter\Cart\Models\Menu))->not->toThrow(Throwable::class);
+    expect(fn() => $controller->restAfterSave(new Menu))->not->toThrow(Throwable::class);
 });
 
 it('creates a stock for a menu option value', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
-    $optionValue = \Igniter\Cart\Models\MenuItemOptionValue::factory()->create();
+    $optionValue = MenuItemOptionValue::factory()->create();
     $location = Location::factory()->create();
 
     $this->post(route('igniter.api.stocks.store'), [
