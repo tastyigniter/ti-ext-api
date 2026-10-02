@@ -24,10 +24,10 @@ it('filters menu options by search', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $match = MenuOption::factory()->create(['option_name' => 'Extra Toppings']);
     MenuOption::factory()->create(['option_name' => 'Drink Size']);
-    $match->option_values()->create(['name' => 'Jalapenos', 'price' => 0.5]);
+    $match->option_values()->create(['name' => 'Value 1', 'price' => 0.5]);
 
     $this->get(route('igniter.api.menu_options.index', [
-        'search' => 'Jalapenos',
+        'search' => 'Value 1',
     ]))
         ->assertOk()
         ->assertJsonCount(1, 'data')
