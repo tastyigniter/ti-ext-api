@@ -162,3 +162,54 @@ it('applies an indefinite out of stock override', function(): void {
         ->assertOk()
         ->assertJsonPath('data.attributes.out_of_stock_type', Stock::OOS_INDEFINITELY);
 });
+
+it('clears an out of stock override', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    $menu = Menu::factory()->create();
+    $stock = Stock::factory()->create([
+        'stockable_id' => $menu->getKey(),
+        'stockable_type' => $menu->getMorphClass(),
+        'is_tracked' => true,
+    ]);
+    $stock->applyOutOfStockOverride(Stock::OOS_INDEFINITELY);
+
+    $this->put(route('igniter.api.stocks.update', [$stock->getKey()]), [
+        'out_of_stock_type' => null,
+    ])->assertOk();
+
+    expect($stock->refresh()->out_of_stock_type)->toBeNull();
+});
+
+it('ignores restAfterSave for non-stock models', function(): void {
+    $controller = new \Igniter\Api\ApiResources\Stocks;
+
+    expect(fn() => $controller->restAfterSave(new \Igniter\Cart\Models\Menu))->not->toThrow(Throwable::class);
+});
+
+it('creates a stock for a menu option value', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    $optionValue = \Igniter\Cart\Models\MenuItemOptionValue::factory()->create();
+    $location = Location::factory()->create();
+
+    $this->post(route('igniter.api.stocks.store'), [
+        'location_id' => $location->getKey(),
+        'stockable_id' => $optionValue->getKey(),
+        'stockable_type' => 'menu_option_values',
+        'is_tracked' => true,
+        'quantity' => 3,
+    ])
+        ->assertCreated()
+        ->assertJsonPath('data.attributes.stockable_type', 'menu_option_values');
+});
+
+it('rejects an invalid stockable for menu option values', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    $location = Location::factory()->create();
+
+    $this->post(route('igniter.api.stocks.store'), [
+        'location_id' => $location->getKey(),
+        'stockable_id' => 999999,
+        'stockable_type' => 'menu_option_values',
+        'is_tracked' => true,
+    ])->assertUnprocessable();
+});

@@ -51,6 +51,23 @@ it('marks a notification read', function(): void {
     expect($notification->refresh()->read_at)->not->toBeNull();
 });
 
+it('marks a notification unread', function(): void {
+    $user = User::factory()->create();
+    Sanctum::actingAs($user, ['notifications:*']);
+    $notification = $user->notifications()->create([
+        'id' => (string)Str::uuid(),
+        'type' => Notification::class,
+        'data' => ['title' => 'New order', 'message' => 'Waiting'],
+        'read_at' => now(),
+    ]);
+
+    $this->put(route('igniter.api.notifications.update', [$notification->getKey()]), [
+        'read' => false,
+    ])->assertOk();
+
+    expect($notification->refresh()->read_at)->toBeNull();
+});
+
 it('deletes a notification', function(): void {
     $user = User::factory()->create();
     Sanctum::actingAs($user, ['notifications:*']);
@@ -78,4 +95,37 @@ it('does not show another users notification', function(): void {
 
     $this->get(route('igniter.api.notifications.show', [$notification->getKey()]))
         ->assertNotFound();
+});
+
+it('returns an empty list when the authenticated user is not a model', function(): void {
+    $controller = new class extends \Igniter\Api\ApiResources\Notifications
+    {
+        public function user(): mixed
+        {
+            return null;
+        }
+    };
+
+    $response = $controller->index();
+
+    expect($response->getStatusCode())->toBe(200)
+        ->and($response->getData(true)['data'])->toBe([]);
+});
+
+it('cannot find a notification without an authenticated model user', function(): void {
+    $controller = new class extends \Igniter\Api\ApiResources\Notifications
+    {
+        public function user(): mixed
+        {
+            return null;
+        }
+
+        public function exposeFindOwn(string $id)
+        {
+            return $this->findOwn($id);
+        }
+    };
+
+    expect(fn() => $controller->exposeFindOwn((string)Str::uuid()))
+        ->toThrow(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
 });

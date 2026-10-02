@@ -347,6 +347,90 @@ it('denies accept when status workflow is disabled', function(): void {
         ->assertStatus(403);
 });
 
+it('returns 404 when accepting a missing order', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    setting()->set([
+        'enable_status_workflow' => true,
+        'limit_users' => [],
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.accept', [999999]))
+        ->assertStatus(404);
+});
+
+it('returns 422 when accept fails validation', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    setting()->set([
+        'enable_status_workflow' => true,
+        'accepted_order_status' => null,
+        'limit_users' => [],
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.accept', [$order->getKey()]))
+        ->assertStatus(422);
+});
+
+it('denies reject when status workflow is disabled', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    setting()->set([
+        'enable_status_workflow' => false,
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.reject', [$order->getKey()]), [
+            'reason_code' => 'out_of_stock',
+        ])
+        ->assertStatus(403);
+});
+
+it('returns 404 when rejecting a missing order', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    setting()->set([
+        'enable_status_workflow' => true,
+        'limit_users' => [],
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.reject', [999999]), [
+            'reason_code' => 'out_of_stock',
+        ])
+        ->assertStatus(404);
+});
+
+it('returns 422 when reject fails validation', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    setting()->set([
+        'enable_status_workflow' => true,
+        'rejected_reasons' => [],
+        'limit_users' => [],
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.reject', [$order->getKey()]), [
+            'reason_code' => 'unknown',
+        ])
+        ->assertStatus(422);
+});
+
+it('returns 422 when order totals calculation fails', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+
+    $this
+        ->post(route('igniter.api.orders.totals'), [
+            'location_id' => 999999,
+            'order_type' => Location::COLLECTION,
+            'order_menus' => [
+                ['id' => 1, 'qty' => 1],
+            ],
+        ])
+        ->assertStatus(422);
+});
+
 it('calculates order totals with tax', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['orders:*']);
     $location = Location::factory()->create();

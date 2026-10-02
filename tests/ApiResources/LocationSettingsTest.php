@@ -9,6 +9,7 @@ use Igniter\Local\Models\LocationSettings;
 use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
+use ReflectionMethod;
 
 it('returns all location settings', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
@@ -201,6 +202,30 @@ it('merges partial data on update without clearing other values', function(): vo
         'minimum_order' => 10,
         'delivery_fee' => 2.5,
     ]);
+});
+
+it('returns null when updating without a model', function(): void {
+    $repository = new \Igniter\Api\ApiResources\Repositories\LocationSettingsRepository;
+
+    expect($repository->update(null, ['data' => ['enabled' => true]]))->toBeNull();
+});
+
+it('prefers in-memory settings values when merging', function(): void {
+    $location = Location::factory()->create();
+    $model = LocationSettings::create([
+        'location_id' => $location->getKey(),
+        'item' => 'delivery',
+        'data' => ['from_column' => true],
+    ]);
+    $model->setSettingsValue('from_memory', 1);
+
+    $method = new ReflectionMethod(
+        \Igniter\Api\ApiResources\Repositories\LocationSettingsRepository::class,
+        'existingSettingsData',
+    );
+
+    expect($method->invoke(new \Igniter\Api\ApiResources\Repositories\LocationSettingsRepository, $model))
+        ->toBe(['from_memory' => 1]);
 });
 
 it('deletes a location setting', function(): void {

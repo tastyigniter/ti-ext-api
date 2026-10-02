@@ -9,6 +9,7 @@ use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Igniter\User\Models\UserGroup;
 use Igniter\User\Models\UserRole;
+use Illuminate\Http\Request;
 use Laravel\Sanctum\Sanctum;
 
 it('show authenticated user', function(): void {
@@ -44,4 +45,14 @@ it('show authenticated customer', function(): void {
 it('returns null for unauthenticated user', function(): void {
     $this->get(route('igniter.api.token.user'))
         ->assertUnauthorized();
+});
+
+it('returns json 401 when invoke receives no user', function(): void {
+    $response = (new \Igniter\Api\Http\Controllers\ShowTokenUser)(Request::create('/', 'GET'));
+
+    expect($response->getStatusCode())->toBe(401)
+        ->and($response->getData(true))->toMatchArray([
+            'status_code' => 401,
+            'user' => null,
+        ]);
 });
