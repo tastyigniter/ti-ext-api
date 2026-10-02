@@ -75,6 +75,53 @@ If token generation is successful, you will receive a JSON payload in the format
 }
 ```
 
+### Current authenticated user
+
+`GET /api/token/user` returns the staff or customer bound to the bearer token.
+
+For admin (staff) tokens the `user` object includes role, groups, assigned locations, and sale permission:
+
+```json
+{
+  "status_code": 200,
+  "user": {
+    "id": 1,
+    "user_id": 1,
+    "name": "Jane Admin",
+    "email": "jane@example.com",
+    "username": "jane",
+    "super_user": false,
+    "sale_permission": 1,
+    "role": {
+      "id": 2,
+      "name": "Manager"
+    },
+    "groups": [
+      {
+        "id": 3,
+        "name": "Front of house"
+      }
+    ],
+    "assigned_locations": [
+      {
+        "id": 4,
+        "name": "Downtown"
+      }
+    ]
+  }
+}
+```
+
+`sale_permission` values: `1` global access, `2` groups, `3` restricted access.
+
+### Revoking the current token
+
+`DELETE /api/token` deletes the bearer token that authenticated the request (204 No Content). Clients should call this on sign-out so stolen PATs do not survive after logout.
+
+```bash
+curl -X DELETE -H "Authorization: Bearer your-api-token" https://your-tastyigniter-site.com/api/token
+```
+
 ### Using access tokens
 
 Tokens should be passed in the `Authorization` header with every request to a restricted endpoint. For example:

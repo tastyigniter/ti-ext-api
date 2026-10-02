@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Tests\ApiResources;
 
+use Igniter\Api\ApiResources\Repositories\LocationSettingsRepository;
 use Igniter\Local\Models\Location;
 use Igniter\Local\Models\LocationSettings;
 use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
+use ReflectionMethod;
 
 it('returns all location settings', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
@@ -163,6 +165,68 @@ it('updates a location setting', function(): void {
                 ->whereType('data.delivery_fee', 'integer|double')
                 ->etc(),
             ));
+});
+
+it('merges partial data on update without clearing other values', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    $location = Location::factory()->create();
+    $locationSetting = LocationSettings::create([
+        'location_id' => $location->getKey(),
+        'item' => 'delivery',
+        'data' => [
+            'is_enabled' => true,
+            'minimum_order' => 10,
+            'delivery_fee' => 2.5,
+        ],
+    ]);
+
+    $this
+        ->put(route('igniter.api.location_settings.update', [$locationSetting->getKey()]), [
+            'data' => [
+                'is_enabled' => false,
+            ],
+        ])
+        ->assertOk()
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
+                ->where('location_id', $location->getKey())
+                ->where('item', 'delivery')
+                ->where('data.is_enabled', false)
+                ->where('data.minimum_order', 10)
+                ->whereType('data.delivery_fee', 'integer|double')
+                ->etc(),
+            ));
+
+    $locationSetting->refresh();
+    expect($locationSetting->data)->toMatchArray([
+        'is_enabled' => false,
+        'minimum_order' => 10,
+        'delivery_fee' => 2.5,
+    ]);
+});
+
+it('returns null when updating without a model', function(): void {
+    $repository = new LocationSettingsRepository;
+
+    expect($repository->update(null, ['data' => ['enabled' => true]]))->toBeNull();
+});
+
+it('prefers in-memory settings values when merging', function(): void {
+    $location = Location::factory()->create();
+    $model = LocationSettings::create([
+        'location_id' => $location->getKey(),
+        'item' => 'delivery',
+        'data' => ['from_column' => true],
+    ]);
+    $model->setSettingsValue('from_memory', 1);
+
+    $method = new ReflectionMethod(
+        LocationSettingsRepository::class,
+        'existingSettingsData',
+    );
+
+    expect($method->invoke(new LocationSettingsRepository, $model))
+        ->toBe(['from_memory' => 1]);
 });
 
 it('deletes a location setting', function(): void {

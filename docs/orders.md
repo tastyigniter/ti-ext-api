@@ -93,8 +93,13 @@ GET /api/orders
 | `page`      | `integer`  | The page number.                                                                                                                                                                                                                               |
 | `pageLimit` | `integer`  | The number of items per page.                                                                                                                                                                                                                  |
 | `customer`  | `integer`  | The customer id to return orders for                                                                                                                                                                                                           |
-| `location`  | `integer ` | The location id to return orders for                                                                                                                                                                                                           |
-| `sort`      | `string`   | The order to return results in. Possible values are `order_id asc`, `order_id desc`, `created_at asc`, `created_at desc`                                                                                                                       |
+| `location`  | `integer`  | The location id to return orders for                                                                                                                                                                                                           |
+| `status`    | `integer`\|`string` | Limit to one status id, or several ids as a comma-separated list.                                                                                                                            |
+| `orderType` | `string`   | Limit to an order type (`delivery`, `collection`, or `dinein`).                                                                                                                                   |
+| `search`    | `string`   | Phrase matched against order id, customer first/last name, email, and telephone.                                                                                                                                                               |
+| `dateTimeFilter[startAt]` | `dateTime` | Start of the fulfilment date/time range (`Y-m-d H:i:s`).                                                                                                                                 |
+| `dateTimeFilter[endAt]` | `dateTime` | End of the fulfilment date/time range (`Y-m-d H:i:s`).                                                                                                                                     |
+| `sort`      | `string`   | The order to return results in. Possible values are `order_id asc`, `order_id desc`, `created_at asc`, `created_at desc`, `order_date asc`, `order_date desc`, `order_time asc`, `order_time desc` |
 | `include`   | `string`   | What relations to include in the response. Options are `customer`, `location`, `address`, `payment_method`, `status`, `assignee`, `assignee_group`, `status_history`. To include multiple separate by comma (e.g. ?include= customer,location) |
 
 
@@ -535,6 +540,137 @@ Status: 200 OK
 ```
 
 Returns the updated order object in the same shape as the retrieve/update response (including the new `status_id` and `status_updated_at`).
+
+### Calculate order totals
+
+Computes cart line totals (`order_menus`) and order-level totals (`order_totals` / `order_total`) from cart conditions (tax, delivery, tip, etc.) using catalog menu prices. Does not create an order.
+
+Required abilities: `orders:*`
+
+```
+POST /api/orders/totals
+```
+
+#### Parameters
+
+| Key            | Type      | Description |
+|----------------|-----------|-------------|
+| `location_id`  | `integer` | **Required**. Location for the order. |
+| `order_type`   | `string`  | **Required**. `delivery`, `collection`, or `dinein`. |
+| `order_menus`  | `array`   | **Required**. Menu lines (`id`, `qty`, optional `line_id`, optional `comment`, optional `options`). |
+
+#### Payload example
+
+```json
+{
+    "location_id": 1,
+    "order_type": "dinein",
+    "order_menus": [
+        {
+            "line_id": "line-1",
+            "id": 1,
+            "qty": 2,
+            "comment": "",
+            "options": []
+        }
+    ]
+}
+```
+
+#### Response
+
+```html
+Status: 200 OK
+```
+
+```json
+{
+    "data": {
+        "type": "order_totals",
+        "id": "totals",
+        "attributes": {
+            "order_total": 21.98,
+            "order_menus": [
+                {
+                    "line_id": "line-1",
+                    "id": 1,
+                    "name": "Burger",
+                    "qty": 2,
+                    "price": 9.99,
+                    "subtotalWithoutConditions": 19.98,
+                    "subtotal": 19.98,
+                    "hasConditions": false,
+                    "comment": "",
+                    "options": []
+                }
+            ],
+            "order_totals": [
+                {
+                    "code": "subtotal",
+                    "title": "Subtotal",
+                    "value": 19.98,
+                    "priority": 0,
+                    "is_summable": false
+                },
+                {
+                    "code": "tax",
+                    "title": "VAT 10%",
+                    "value": 2.00,
+                    "priority": 300,
+                    "is_summable": true
+                },
+                {
+                    "code": "total",
+                    "title": "Order Total",
+                    "value": 21.98,
+                    "priority": 999,
+                    "is_summable": false
+                }
+            ]
+        }
+    }
+}
+```
+
+### Accept an order
+
+Marks an order as accepted using the configured accepted order status. Optional `minutes` delays the order by a configured delay time.
+
+Required abilities: `orders:*`. Status workflow must be enabled for the authenticated user.
+
+```
+POST /api/orders/:order_id/accept
+```
+
+#### Parameters
+
+| Key       | Type      | Description |
+|-----------|-----------|-------------|
+| `minutes` | `integer` | Optional delay in minutes. Must match a configured delay time. |
+
+#### Response
+
+Returns the updated order (same shape as retrieve), including status.
+
+### Reject an order
+
+Rejects an order using a configured rejection reason code.
+
+Required abilities: `orders:*`. Status workflow must be enabled for the authenticated user.
+
+```
+POST /api/orders/:order_id/reject
+```
+
+#### Parameters
+
+| Key           | Type     | Description |
+|---------------|----------|-------------|
+| `reason_code` | `string` | **Required**. Code of a configured rejected order reason. |
+
+#### Response
+
+Returns the updated order (same shape as retrieve), including status.
 
 ### Delete an order
 

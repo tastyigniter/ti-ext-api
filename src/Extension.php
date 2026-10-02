@@ -14,10 +14,12 @@ use Igniter\Api\ApiResources\LocationSettings;
 use Igniter\Api\ApiResources\MenuItemOptions;
 use Igniter\Api\ApiResources\MenuOptions;
 use Igniter\Api\ApiResources\Menus;
+use Igniter\Api\ApiResources\Notifications;
 use Igniter\Api\ApiResources\Orders;
 use Igniter\Api\ApiResources\Reservations;
 use Igniter\Api\ApiResources\Reviews;
 use Igniter\Api\ApiResources\Status;
+use Igniter\Api\ApiResources\Stocks;
 use Igniter\Api\ApiResources\Users;
 use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Console\IssueApiToken;
@@ -31,7 +33,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\SanctumServiceProvider;
@@ -70,8 +71,6 @@ class Extension extends BaseExtension
     public function boot(): void
     {
         $this->configureRateLimiting();
-
-        $this->registerStatusUpdateRoute();
 
         // Register all the available API routes
         ApiManager::registerRoutes();
@@ -176,6 +175,24 @@ class Extension extends BaseExtension
                     'index:all', 'show:all',
                     'store:admin', 'update:admin',
                     'destroy:admin',
+                ],
+            ],
+            'stocks' => [
+                'controller' => Stocks::class,
+                'name' => 'Stocks',
+                'description' => 'An API resource for stock levels',
+                'actions' => [
+                    'index:admin', 'show:admin',
+                    'store:admin', 'update:admin',
+                ],
+            ],
+            'notifications' => [
+                'controller' => Notifications::class,
+                'name' => 'Notifications',
+                'description' => 'An API resource for staff notifications',
+                'actions' => [
+                    'index:admin', 'show:admin',
+                    'update:admin', 'destroy:admin',
                 ],
             ],
             'menu_options' => [
@@ -292,17 +309,5 @@ class Extension extends BaseExtension
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', fn(Request $request) => Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip()));
-    }
-
-    protected function registerStatusUpdateRoute(): void
-    {
-        Route::middleware(config('igniter-api.middleware'))
-            ->prefix(config('igniter-api.prefix'))
-            ->group(function(): void {
-                Route::patch('orders/{orderId}/status', [Orders::class, 'updateStatus'])
-                    ->name('igniter.api.orders.update_status');
-                Route::patch('reservations/{reservationId}/status', [Reservations::class, 'updateStatus'])
-                    ->name('igniter.api.reservations.update_status');
-            });
     }
 }

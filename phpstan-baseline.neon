@@ -1,6 +1,18 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Access to an undefined property Igniter\\Local\\Models\\LocationSettings\:\:\$data\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/ApiResources/Repositories/LocationSettingsRepository.php
+
+		-
+			message: '#^Relation ''stockable'' is not found in Igniter\\Cart\\Models\\Stock model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: src/ApiResources/Stocks.php
+
+		-
 			message: '#^Access to an undefined property Igniter\\User\\Models\\Address\:\:\$country\.$#'
 			identifier: property.notFound
 			count: 1
@@ -133,6 +145,12 @@ parameters:
 			path: src/Classes/ApiManager.php
 
 		-
+			message: '#^Parameter \#1 \$code of static method Igniter\\Local\\Facades\\Location\:\:updateOrderType\(\) expects void\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Classes/OrderTotalsCalculator.php
+
+		-
 			message: '#^Access to an undefined property Igniter\\Api\\Classes\\ApiController\:\:\$restConfig\.$#'
 			identifier: property.notFound
 			count: 1
@@ -191,6 +209,18 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: src/Http/Actions/RestController.php
+
+		-
+			message: '#^Relation ''locations'' is not found in Igniter\\User\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: src/Http/Controllers/ShowTokenUser.php
+
+		-
+			message: '#^Relation ''role'' is not found in Igniter\\User\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: src/Http/Controllers/ShowTokenUser.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
