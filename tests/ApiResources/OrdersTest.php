@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Admin\Models\Status;
+use Igniter\Cart\Models\Menu;
 use Igniter\Cart\Models\Order;
 use Igniter\Local\Models\Location;
 use Igniter\PayRegister\Models\Payment;
@@ -266,6 +267,128 @@ it('can not update order status as customer', function(): void {
             'status_id' => $newStatus->getKey(),
         ])
         ->assertStatus(403);
+});
+
+it('accepts an order', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $status = Status::factory()->create();
+    setting()->set([
+        'enable_status_workflow' => true,
+        'accepted_order_status' => $status->getKey(),
+        'limit_users' => [],
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.accept', [$order->getKey()]))
+        ->assertOk()
+        ->assertJsonPath('data.id', (string)$order->getKey())
+        ->assertJsonPath('data.attributes.status_id', $status->getKey());
+});
+
+it('accepts an order with delay', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create([
+        'order_time' => '12:00:00',
+    ]);
+    $status = Status::factory()->create();
+    setting()->set([
+        'enable_status_workflow' => true,
+        'accepted_order_status' => $status->getKey(),
+        'delay_times' => [
+            ['time' => 15, 'comment' => 'Delayed by 15 minutes'],
+        ],
+        'limit_users' => [],
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.accept', [$order->getKey()]), [
+            'minutes' => 15,
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.attributes.status_id', $status->getKey());
+
+    expect($order->fresh())
+        ->order_time->toBe('12:15:00')
+        ->status_history->last()->comment->toBe('Delayed by 15 minutes');
+});
+
+it('rejects an order', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    $status = Status::factory()->create();
+    setting()->set([
+        'enable_status_workflow' => true,
+        'rejected_reasons' => [
+            ['code' => 'out_of_stock', 'comment' => 'Out of stock', 'status_id' => $status->getKey()],
+        ],
+        'limit_users' => [],
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.reject', [$order->getKey()]), [
+            'reason_code' => 'out_of_stock',
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.attributes.status_id', $status->getKey());
+
+    expect($order->fresh()->status_history->last()->comment)->toBe('Out of stock');
+});
+
+it('denies accept when status workflow is disabled', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $order = Order::factory()->create();
+    setting()->set([
+        'enable_status_workflow' => false,
+    ]);
+
+    $this
+        ->post(route('igniter.api.orders.accept', [$order->getKey()]))
+        ->assertStatus(403);
+});
+
+it('calculates order totals with tax', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    $location = Location::factory()->create();
+    $menu = Menu::factory()->create(['menu_price' => 10]);
+
+    setting()->set([
+        'tax_mode' => 1,
+        'tax_menu_price' => 1,
+        'tax_percentage' => 10,
+    ]);
+
+    $response = $this
+        ->post(route('igniter.api.orders.totals'), [
+            'location_id' => $location->getKey(),
+            'order_type' => Location::COLLECTION,
+            'order_menus' => [
+                [
+                    'line_id' => 'line-1',
+                    'id' => $menu->getKey(),
+                    'qty' => 2,
+                    'comment' => '',
+                    'options' => [],
+                ],
+            ],
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.type', 'order_totals')
+        ->json('data.attributes');
+
+    $byCode = collect($response['order_totals'])->keyBy('code');
+    expect($response['order_total'])->toEqual(22)
+        ->and($response['order_menus'])->toHaveCount(1)
+        ->and($response['order_menus'][0]['line_id'])->toBe('line-1')
+        ->and((float)$response['order_menus'][0]['price'])->toBe(10.0)
+        ->and((float)$response['order_menus'][0]['subtotalWithoutConditions'])->toBe(20.0)
+        ->and((float)$response['order_menus'][0]['subtotal'])->toBe(20.0)
+        ->and($response['order_menus'][0]['hasConditions'])->toBeFalse()
+        ->and($byCode)->toHaveKeys(['subtotal', 'tax', 'total'])
+        ->and((float)$byCode['subtotal']['value'])->toBe(20.0)
+        ->and((float)$byCode['tax']['value'])->toBe(2.0)
+        ->and((float)$byCode['total']['value'])->toBe(22.0)
+        ->and($byCode['tax']['is_summable'])->toBeTrue();
 });
 
 it('deletes an order', function(): void {

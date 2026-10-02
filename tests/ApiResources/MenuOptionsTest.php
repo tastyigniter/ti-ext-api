@@ -20,6 +20,20 @@ it('returns all menu options', function(): void {
         ->assertJsonPath('data.0.attributes.option_name', $menuOption->option_name);
 });
 
+it('filters menu options by search', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    $match = MenuOption::factory()->create(['option_name' => 'Extra Toppings']);
+    MenuOption::factory()->create(['option_name' => 'Drink Size']);
+    $match->option_values()->create(['name' => 'Jalapenos', 'price' => 0.5]);
+
+    $this->get(route('igniter.api.menu_options.index', [
+        'search' => 'Jalapenos',
+    ]))
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.id', (string)$match->getKey());
+});
+
 it('shows a menu option', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();

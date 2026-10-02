@@ -38,9 +38,11 @@ class ReservationTransformer extends TransformerAbstract
         return $this->collection($reservation->tables, new DiningTableTransformer, 'tables');
     }
 
-    public function includeStatus(Reservation $reservation): Item
+    public function includeStatus(Reservation $reservation): ?Item
     {
-        return $this->item($reservation->status, new StatusTransformer, 'statuses');
+        return $reservation->status
+            ? $this->item($reservation->status, new StatusTransformer, 'statuses')
+            : null;
     }
 
     public function includeStatusHistory(Reservation $reservation): Collection

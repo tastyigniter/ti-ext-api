@@ -55,9 +55,11 @@ class OrderTransformer extends TransformerAbstract
         return $order->payment_method ? $this->item($order->payment_method, new PaymentMethodTransformer, 'payment_methods') : null;
     }
 
-    public function includeStatus(Order $order): Item
+    public function includeStatus(Order $order): ?Item
     {
-        return $this->item($order->status, new StatusTransformer, 'statuses');
+        return $order->status
+            ? $this->item($order->status, new StatusTransformer, 'statuses')
+            : null;
     }
 
     public function includeStatusHistory(Order $order): Collection

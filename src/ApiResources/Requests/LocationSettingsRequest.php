@@ -19,9 +19,11 @@ class LocationSettingsRequest extends FormRequest
 
     public function rules(): array
     {
+        $updating = $this->isMethod('PUT') || $this->isMethod('PATCH');
+
         return [
-            'location_id' => ['required', 'integer'],
-            'item' => ['required', 'string'],
+            'location_id' => [$updating ? 'sometimes' : 'required', 'integer'],
+            'item' => [$updating ? 'sometimes' : 'required', 'string'],
             'data' => ['required', 'array'],
         ];
     }

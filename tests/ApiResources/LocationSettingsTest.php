@@ -165,6 +165,44 @@ it('updates a location setting', function(): void {
             ));
 });
 
+it('merges partial data on update without clearing other values', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    $location = Location::factory()->create();
+    $locationSetting = LocationSettings::create([
+        'location_id' => $location->getKey(),
+        'item' => 'delivery',
+        'data' => [
+            'is_enabled' => true,
+            'minimum_order' => 10,
+            'delivery_fee' => 2.5,
+        ],
+    ]);
+
+    $this
+        ->put(route('igniter.api.location_settings.update', [$locationSetting->getKey()]), [
+            'data' => [
+                'is_enabled' => false,
+            ],
+        ])
+        ->assertOk()
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
+                ->where('location_id', $location->getKey())
+                ->where('item', 'delivery')
+                ->where('data.is_enabled', false)
+                ->where('data.minimum_order', 10)
+                ->whereType('data.delivery_fee', 'integer|double')
+                ->etc(),
+            ));
+
+    $locationSetting->refresh();
+    expect($locationSetting->data)->toMatchArray([
+        'is_enabled' => false,
+        'minimum_order' => 10,
+        'delivery_fee' => 2.5,
+    ]);
+});
+
 it('deletes a location setting', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
     $location = Location::factory()->create();

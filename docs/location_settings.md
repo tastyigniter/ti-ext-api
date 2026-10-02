@@ -210,6 +210,7 @@ Updates a location setting.
 Required abilities: `location_settings:write`
 
 ```
+PUT /api/location_settings/:id
 PATCH /api/location_settings/:id
 ```
 
@@ -217,21 +218,16 @@ PATCH /api/location_settings/:id
 
 | Key          | Type     | Description                                                                 |
 |--------------|----------|-----------------------------------------------------------------------------|
-| `location_id` | `integer` | **Required**. The ID of the location this setting belongs to              |
-| `item`       | `string`  | **Required**. The setting item/key identifier                               |
-| `data`       | `array`   | **Required**. The setting data/value as an array                            |
+| `location_id` | `integer` | Optional on update. The ID of the location this setting belongs to         |
+| `item`       | `string`  | Optional on update. The setting item/key identifier                         |
+| `data`       | `array`   | **Required**. Setting values to update. Keys are merged into existing data; omitted keys are preserved. |
 
 #### Payload example
 
 ```json
 {
-    "location_id": 1,
-    "item": "delivery_settings",
     "data": {
-        "enabled": true,
-        "minimum_order": 15.00,
-        "delivery_fee": 3.00,
-        "free_delivery_threshold": 30.00
+        "is_enabled": false
     }
 }
 ```
@@ -250,12 +246,11 @@ Status: 200 OK
             "id": "1",
             "attributes": {
                 "location_id": 1,
-                "item": "delivery_settings",
+                "item": "delivery",
                 "data": {
-                    "enabled": true,
-                    "minimum_order": 15.00,
-                    "delivery_fee": 3.00,
-                    "free_delivery_threshold": 30.00
+                    "is_enabled": false,
+                    "minimum_order": 10.00,
+                    "delivery_fee": 2.50
                 }
             }
         }

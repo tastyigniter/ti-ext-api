@@ -27,6 +27,17 @@ it('returns correct validation rules', function(): void {
         ->and($rules['data'])->toContain('required', 'array');
 });
 
+it('allows partial updates without location_id and item', function(): void {
+    $request = new LocationSettingsRequest;
+    $request->setMethod('PUT');
+
+    $rules = $request->rules();
+
+    expect($rules['location_id'])->toContain('sometimes', 'integer')
+        ->and($rules['item'])->toContain('sometimes', 'string')
+        ->and($rules['data'])->toContain('required', 'array');
+});
+
 it('validates location_id is required', function(): void {
     $request = new LocationSettingsRequest;
     $request->setMethod('POST');

@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Igniter\Api\ApiResources\Repositories;
 
 use Igniter\Api\Classes\AbstractRepository;
+use Igniter\Api\Traits\AppliesAssigneeScope;
 use Igniter\Cart\Models\Order;
 
 class OrderRepository extends AbstractRepository
 {
+    use AppliesAssigneeScope;
+
     protected ?string $modelClass = Order::class;
 
     protected static $locationAwareConfig = [];
