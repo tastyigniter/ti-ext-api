@@ -211,6 +211,12 @@ parameters:
 			path: src/Http/Actions/RestController.php
 
 		-
+			message: '#^Parameter \#1 \$user of method Igniter\\Api\\Http\\Controllers\\ShowTokenUser\:\:serializeUser\(\) expects Igniter\\User\\Models\\Customer\|Igniter\\User\\Models\\User, Illuminate\\Foundation\\Auth\\User given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Http/Controllers/ShowTokenUser.php
+
+		-
 			message: '#^Relation ''locations'' is not found in Igniter\\User\\Models\\User model\.$#'
 			identifier: larastan.relationExistence
 			count: 1

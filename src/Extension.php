@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Igniter\Api;
 
+use Igniter\Admin\Widgets\Form;
 use Igniter\Api\ApiResources\Addresses;
+use Igniter\Api\ApiResources\AppSettings;
 use Igniter\Api\ApiResources\Categories;
 use Igniter\Api\ApiResources\Currencies;
 use Igniter\Api\ApiResources\Customers;
@@ -22,17 +24,24 @@ use Igniter\Api\ApiResources\Status;
 use Igniter\Api\ApiResources\Stocks;
 use Igniter\Api\ApiResources\Users;
 use Igniter\Api\Classes\ApiManager;
+use Igniter\Api\Classes\LoginCodeManager;
 use Igniter\Api\Console\IssueApiToken;
 use Igniter\Api\Exceptions\ErrorHandler;
 use Igniter\Api\Listeners\TokenEventSubscriber;
 use Igniter\Api\Models\Token;
 use Igniter\System\Classes\BaseExtension;
+use Igniter\User\Facades\AdminAuth;
+use Igniter\User\Http\Controllers\Users as UsersController;
+use Igniter\User\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\SanctumServiceProvider;
@@ -44,6 +53,10 @@ use Spatie\Fractal\FractalServiceProvider;
  */
 class Extension extends BaseExtension
 {
+    public array $singletons = [
+        LoginCodeManager::class,
+    ];
+
     #[Override]
     public function register(): void
     {
@@ -77,6 +90,7 @@ class Extension extends BaseExtension
 
         $this->sanctumConfigureAuth();
         $this->sanctumConfigureMiddleware();
+        $this->registerAccountQrLogin();
     }
 
     #[Override]
@@ -275,6 +289,14 @@ class Extension extends BaseExtension
                     'destroy:admin',
                 ],
             ],
+            'app_settings' => [
+                'controller' => AppSettings::class,
+                'name' => 'App Settings',
+                'description' => 'App settings for the OrderPoint app',
+                'actions' => [
+                    'index:admin',
+                ],
+            ],
         ];
     }
 
@@ -309,5 +331,50 @@ class Extension extends BaseExtension
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', fn(Request $request) => Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip()));
+    }
+
+    protected function registerAccountQrLogin(): void
+    {
+        UsersController::extendFormFields(function(Form $form, mixed $model, ?string $context): void {
+            if ($context !== 'account' || !$model instanceof User) {
+                return;
+            }
+
+            $loginCodes = resolve(LoginCodeManager::class);
+            $plainCode = Session::get($loginCodes->sessionKey($model));
+
+            $form->vars['orderPointLoginCode'] = $plainCode;
+            $form->vars['orderPointLoginQrData'] = is_string($plainCode) && $plainCode !== ''
+                ? $loginCodes->qrPayload($plainCode)
+                : null;
+
+            $form->addFields([
+                'orderpoint_qr_login' => [
+                    'label' => 'lang:igniter.api::default.qr_login.label',
+                    'type' => 'partial',
+                    'path' => 'igniter.api::account.qr_login',
+                    'commentAbove' => 'lang:igniter.api::default.qr_login.help',
+                ],
+            ]);
+        });
+
+        UsersController::extend(function(UsersController $controller): void {
+            $controller->addDynamicMethod('account_onRegenerateLoginCode', function(): RedirectResponse {
+                /** @var User|null $user */
+                $user = AdminAuth::user();
+                if (!$user instanceof User) {
+                    flash()->error(lang('igniter.api::default.qr_login.alert_failed'))->now();
+
+                    return Redirect::back();
+                }
+
+                $loginCodes = resolve(LoginCodeManager::class);
+                $plainCode = $loginCodes->generate($user);
+                Session::flash($loginCodes->sessionKey($user), $plainCode);
+                flash()->success(lang('igniter.api::default.qr_login.alert_generated'))->now();
+
+                return Redirect::back();
+            });
+        });
     }
 }

@@ -27,7 +27,8 @@ it('loads registered api resources', function(): void {
         ->toHaveKey('orders')
         ->toHaveKey('reservations')
         ->toHaveKey('reviews')
-        ->toHaveKey('tables');
+        ->toHaveKey('tables')
+        ->toHaveKey('app_settings');
 });
 
 it('returns an array with the correct permission structure', function(): void {
