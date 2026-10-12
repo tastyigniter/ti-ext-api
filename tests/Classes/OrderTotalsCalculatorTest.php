@@ -115,8 +115,7 @@ it('uses zero unit prices when cart item quantity is zero', function(): void {
 });
 
 it('applies a coupon and a custom tip to calculated totals', function(): void {
-    CartSettings::set('enable_tipping', true);
-    CartSettings::set('tip_value_type', 'F');
+    CartSettings::set(['enable_tipping' => true, 'tip_value_type' => 'F']);
     $location = Location::factory()->create();
     $menu = Menu::factory()->create(['menu_price' => 20]);
     Coupon::factory()->create([
@@ -166,11 +165,11 @@ it('creates a missing cart condition from the registry', function(): void {
     $manager->shouldReceive('listRegisteredConditions')->once()->andReturn([
         'Ignored\\Class' => ['label' => 'missing name'],
         'Other\\Class' => ['name' => 'tax'],
-        'Igniter\\Coupons\\CartConditions\\Coupon' => ['name' => 'coupon', 'label' => 'Coupon'],
+        \Igniter\Coupons\CartConditions\Coupon::class => ['name' => 'coupon', 'label' => 'Coupon'],
     ]);
     $manager->shouldReceive('makeCondition')
         ->once()
-        ->with('Igniter\\Coupons\\CartConditions\\Coupon', ['name' => 'coupon', 'label' => 'Coupon'])
+        ->with(\Igniter\Coupons\CartConditions\Coupon::class, ['name' => 'coupon', 'label' => 'Coupon'])
         ->andReturn($condition);
     app()->instance(CartConditionManager::class, $manager);
 
@@ -187,7 +186,7 @@ it('rejects a coupon when the coupons extension is unavailable', function(): voi
         }
     };
 
-    expect(fn() => callProtectedMethod($calculator, 'applyCoupon', [
+    expect(fn(): mixed => callProtectedMethod($calculator, 'applyCoupon', [
         mock(Cart::class),
         'SAVE2',
         Location::COLLECTION,
