@@ -90,6 +90,7 @@ GET /api/customers
 |-------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `page`      | `integer` | The page number.                                                                                                                                                     |
 | `pageLimit` | `integer` | The number of items per page.                                                                                                                                        |
+| `search`    | `string`  | Phrase matched against first name, last name, email, and telephone.                                                                                                  |
 | `include`   | `string`  | What relations to include in the response. Options are `addresses`, `orders`, `reservations`. To include multiple separate by comma (e.g. ?include=addresses,orders) |
 
 #### Response

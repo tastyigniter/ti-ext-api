@@ -219,3 +219,25 @@ it('deletes a customer', function(): void {
         ->delete(route('igniter.api.customers.destroy', [$customer->getKey()]))
         ->assertStatus(204);
 });
+
+it('searches customers by name, email, and telephone', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    $match = Customer::factory()->create([
+        'first_name' => 'Ada',
+        'last_name' => 'Lovelace',
+        'email' => 'ada.pos@example.com',
+        'telephone' => '07000900000',
+    ]);
+    Customer::factory()->create([
+        'first_name' => 'Grace',
+        'last_name' => 'Hopper',
+        'email' => 'grace.pos@example.com',
+        'telephone' => '07000900001',
+    ]);
+
+    $this
+        ->get(route('igniter.api.customers.index', ['search' => 'ada.pos@example.com', 'pageLimit' => 20]))
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.id', (string)$match->getKey());
+});

@@ -53,3 +53,19 @@ Each status object is `{ id, name, color }`. Each group is a list of those objec
 | Attribute | Source |
 |-----------|--------|
 | `installed` | True when the `igniterlabs.docketprint` extension is installed and enabled. |
+
+### `order_types`
+
+Pass `location_id` to list order types that location currently offers. Each item is `{ code, name }`. Types come from extensions registered with the cart (delivery, collection, dine-in, and any other enabled type) and are omitted when that location disables them.
+
+### `tipping`
+
+| Attribute | Source |
+|-----------|--------|
+| `enabled` | Cart setting `enable_tipping`. |
+| `value_type` | Cart setting `tip_value_type` (`F` fixed or `P` percent). |
+| `amounts` | Cart setting `tip_amounts`, in priority order. Each item is `{ value, priority }`. With `value_type` `P`, `value` is a percent. With `F`, it is a fixed amount. |
+
+### `customer_group_id`
+
+The default customer group id, used when the POS creates a customer. `null` when no group exists.

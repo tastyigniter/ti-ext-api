@@ -6,7 +6,10 @@ namespace Igniter\Api\Tests\ApiResources;
 
 use Igniter\Admin\Models\Status;
 use Igniter\Api\ApiResources\AppSettings;
+use Igniter\Cart\Models\CartSettings;
+use Igniter\Local\Models\Location;
 use Igniter\System\Classes\ExtensionManager;
+use Igniter\User\Models\CustomerGroup;
 use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Mockery;
@@ -142,4 +145,34 @@ it('checks whether an extension is installed and enabled', function(): void {
     app()->instance(ExtensionManager::class, $disabled);
 
     expect(callProtectedMethod($settings, 'extensionInstalled', ['igniterlabs.dinein']))->toBeFalse();
+});
+
+it('returns active order types, tipping, and the default customer group for a location', function(): void {
+    $user = User::factory()->create();
+    $location = Location::factory()->create();
+    CartSettings::set('enable_tipping', true);
+    CartSettings::set('tip_value_type', 'F');
+    CartSettings::set('tip_amounts', [
+        ['priority' => 2, 'value' => 15],
+        ['priority' => 1, 'value' => 10],
+    ]);
+    Sanctum::actingAs($user, ['app_settings:*']);
+
+    $response = $this->get(route('igniter.api.app_settings.index', [
+        'location_id' => $location->getKey(),
+    ]));
+
+    $response->assertOk()
+        ->assertJsonPath('data.attributes.tipping.enabled', true)
+        ->assertJsonPath('data.attributes.tipping.value_type', 'F')
+        ->assertJsonPath('data.attributes.tipping.amounts.0.value', 10)
+        ->assertJsonPath('data.attributes.tipping.amounts.1.value', 15)
+        ->assertJsonPath('data.attributes.customer_group_id', CustomerGroup::getDefaultKey());
+
+    $codes = collect($response->json('data.attributes.order_types'))->pluck('code');
+    expect($codes->all())->toContain('delivery', 'collection');
+});
+
+it('returns no order types when the location does not exist', function(): void {
+    expect(callProtectedMethod(new AppSettings, 'orderTypes', [999999]))->toBe([]);
 });

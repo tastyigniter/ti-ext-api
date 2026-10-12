@@ -6,12 +6,15 @@ namespace Igniter\Api\Tests\Classes;
 
 use Igniter\Api\Classes\OrderTotalsCalculator;
 use Igniter\Cart\Cart;
+use Igniter\Cart\CartCondition;
 use Igniter\Cart\CartItem;
 use Igniter\Cart\CartItemOptions;
 use Igniter\Cart\Classes\CartConditionManager;
 use Igniter\Cart\Models\CartSettings;
 use Igniter\Cart\Models\Menu;
 use Igniter\Cart\Models\MenuOption;
+use Igniter\Coupons\Models\Coupon;
+use Igniter\Flame\Exception\ApplicationException;
 use Igniter\Local\Models\Location;
 use ReflectionMethod;
 
@@ -109,4 +112,139 @@ it('uses zero unit prices when cart item quantity is zero', function(): void {
     expect($result['price'])->toBe(0.0)
         ->and($result['subtotal'])->toBe(0.0)
         ->and($result['subtotalWithoutConditions'])->toBe(0.0);
+});
+
+it('applies a coupon and a custom tip to calculated totals', function(): void {
+    CartSettings::set('enable_tipping', true);
+    CartSettings::set('tip_value_type', 'F');
+    $location = Location::factory()->create();
+    $menu = Menu::factory()->create(['menu_price' => 20]);
+    Coupon::factory()->create([
+        'code' => 'SAVE2',
+        'type' => 'F',
+        'discount' => 2,
+        'min_total' => 0,
+        'status' => 1,
+        'validity' => 'forever',
+    ]);
+
+    $result = resolve(OrderTotalsCalculator::class)->calculate(
+        (int)$location->getKey(),
+        Location::COLLECTION,
+        [['id' => $menu->getKey(), 'qty' => 1]],
+        'SAVE2',
+        1.5,
+        true,
+    );
+
+    $totals = collect($result['order_totals'])->keyBy('code');
+    expect($totals->has('coupon'))->toBeTrue()
+        ->and($totals->has('tip'))->toBeTrue()
+        ->and((float)$totals->get('tip')['value'])->toBe(1.5)
+        ->and($result['order_total'])->toBeLessThan(20.0);
+});
+
+it('rejects an unknown coupon', function(): void {
+    $location = Location::factory()->create();
+    $menu = Menu::factory()->create(['menu_price' => 10]);
+
+    expect(fn() => resolve(OrderTotalsCalculator::class)->calculate(
+        (int)$location->getKey(),
+        Location::COLLECTION,
+        [['id' => $menu->getKey(), 'qty' => 1]],
+        'NOT-A-COUPON',
+    ))->toThrow(ApplicationException::class);
+});
+
+it('creates a missing cart condition from the registry', function(): void {
+    $condition = mock(CartCondition::class);
+    $cart = mock(Cart::class);
+    $cart->shouldReceive('getCondition')->once()->with('coupon')->andReturn(null);
+    $cart->shouldReceive('loadCondition')->once()->with($condition);
+
+    $manager = mock(CartConditionManager::class);
+    $manager->shouldReceive('listRegisteredConditions')->once()->andReturn([
+        'Ignored\\Class' => ['label' => 'missing name'],
+        'Other\\Class' => ['name' => 'tax'],
+        'Igniter\\Coupons\\CartConditions\\Coupon' => ['name' => 'coupon', 'label' => 'Coupon'],
+    ]);
+    $manager->shouldReceive('makeCondition')
+        ->once()
+        ->with('Igniter\\Coupons\\CartConditions\\Coupon', ['name' => 'coupon', 'label' => 'Coupon'])
+        ->andReturn($condition);
+    app()->instance(CartConditionManager::class, $manager);
+
+    expect(callProtectedMethod(new OrderTotalsCalculator, 'cartCondition', [$cart, 'coupon']))
+        ->toBe($condition);
+});
+
+it('rejects a coupon when the coupons extension is unavailable', function(): void {
+    $calculator = new class extends OrderTotalsCalculator
+    {
+        protected function couponClassExists(): bool
+        {
+            return false;
+        }
+    };
+
+    expect(fn() => callProtectedMethod($calculator, 'applyCoupon', [
+        mock(Cart::class),
+        'SAVE2',
+        Location::COLLECTION,
+        Location::factory()->create(),
+    ]))->toThrow(ApplicationException::class);
+
+    expect(callProtectedMethod(new OrderTotalsCalculator, 'couponClassExists'))->toBeTrue();
+});
+
+it('rejects a coupon when no coupon condition is registered', function(): void {
+    $location = Location::factory()->create();
+    $menu = Menu::factory()->create(['menu_price' => 10]);
+    Coupon::factory()->create([
+        'code' => 'ORPHAN',
+        'type' => 'F',
+        'discount' => 1,
+        'min_total' => 0,
+        'status' => 1,
+        'validity' => 'forever',
+    ]);
+
+    $realManager = resolve(CartConditionManager::class);
+    $registered = collect($realManager->listRegisteredConditions() ?? [])
+        ->reject(fn(array $definition): bool => ($definition['name'] ?? '') === 'coupon')
+        ->all();
+
+    $manager = mock(CartConditionManager::class);
+    $manager->shouldReceive('listRegisteredConditions')->andReturn($registered);
+    $manager->shouldReceive('makeCondition')->andReturnUsing(
+        fn(...$args) => $realManager->makeCondition(...$args),
+    );
+    app()->instance(CartConditionManager::class, $manager);
+    CartSettings::clearInternalCache();
+
+    expect(fn() => resolve(OrderTotalsCalculator::class)->calculate(
+        (int)$location->getKey(),
+        Location::COLLECTION,
+        [['id' => $menu->getKey(), 'qty' => 1]],
+        'ORPHAN',
+    ))->toThrow(ApplicationException::class);
+});
+
+it('ignores a tip when the tip condition cannot be resolved', function(): void {
+    CartSettings::set('enable_tipping', true);
+
+    $cart = mock(Cart::class);
+    $cart->shouldReceive('getCondition')->with('tip')->andReturn(null);
+    $cart->shouldNotReceive('loadCondition');
+
+    $manager = mock(CartConditionManager::class);
+    $manager->shouldReceive('listRegisteredConditions')->andReturn(null, [
+        'Ignored\\Class' => ['label' => 'missing name'],
+        'Other\\Class' => ['name' => 'tax'],
+    ]);
+    app()->instance(CartConditionManager::class, $manager);
+
+    $calculator = new OrderTotalsCalculator;
+    callProtectedMethod($calculator, 'applyTip', [$cart, 3.0, true]);
+    callProtectedMethod($calculator, 'applyTip', [$cart, 3.0, false]);
 });

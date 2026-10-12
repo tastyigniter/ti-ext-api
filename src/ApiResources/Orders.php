@@ -132,6 +132,9 @@ class Orders extends ApiController
                 (int)$data['location_id'],
                 (string)$data['order_type'],
                 (array)$data['order_menus'],
+                isset($data['coupon']) ? (string)$data['coupon'] : null,
+                isset($data['tip']) ? (float)$data['tip'] : null,
+                (bool)($data['tip_custom'] ?? false),
             );
         } catch (ApplicationException $ex) {
             return response()->json(['message' => $ex->getMessage()], 422);

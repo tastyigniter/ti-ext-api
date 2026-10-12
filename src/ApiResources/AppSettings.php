@@ -6,7 +6,11 @@ namespace Igniter\Api\ApiResources;
 
 use Igniter\Admin\Models\Status;
 use Igniter\Api\Classes\ApiController;
+use Igniter\Cart\Models\CartSettings;
+use Igniter\Local\Facades\Location;
+use Igniter\Local\Models\Location as LocationModel;
 use Igniter\System\Classes\ExtensionManager;
+use Igniter\User\Models\CustomerGroup;
 
 class AppSettings extends ApiController
 {
@@ -59,7 +63,54 @@ class AppSettings extends ApiController
             'docketprint' => [
                 'installed' => $this->extensionInstalled('igniterlabs.docketprint'),
             ],
+            'order_types' => $this->orderTypes((int)request()->input('location_id', 0)),
+            'tipping' => [
+                'enabled' => (bool)CartSettings::get('enable_tipping'),
+                'value_type' => (string)(CartSettings::get('tip_value_type') ?: 'F'),
+                'amounts' => $this->tipAmounts(),
+            ],
+            'customer_group_id' => CustomerGroup::getDefaultKey(),
         ];
+    }
+
+    /**
+     * @return list<array{code: string, name: string}>
+     */
+    protected function orderTypes(int $locationId): array
+    {
+        if ($locationId < 1) {
+            return [];
+        }
+
+        $location = LocationModel::query()->find($locationId);
+        if (!$location instanceof LocationModel) {
+            return [];
+        }
+
+        Location::setCurrent($location);
+
+        return collect(Location::getActiveOrderTypes() ?? [])
+            ->map(fn(mixed $orderType): array => [
+                'code' => (string)$orderType->getCode(),
+                'name' => (string)$orderType->getLabel(),
+            ])
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @return list<array{value: float, priority: int}>
+     */
+    protected function tipAmounts(): array
+    {
+        return collect(CartSettings::tippingAmounts())
+            ->map(fn(object $amount): array => [
+                'value' => (float)$amount->value,
+                'priority' => (int)($amount->priority ?? 0),
+            ])
+            ->filter(fn(array $amount): bool => $amount['value'] > 0)
+            ->values()
+            ->all();
     }
 
     protected function extensionInstalled(string $code): bool
