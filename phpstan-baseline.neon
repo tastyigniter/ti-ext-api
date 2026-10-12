@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Result of static method Igniter\\Local\\Facades\\Location\:\:getActiveOrderTypes\(\) \(void\) is used\.$#'
+			identifier: staticMethod.void
+			count: 1
+			path: src/ApiResources/AppSettings.php
+
+		-
 			message: '#^Access to an undefined property Igniter\\Local\\Models\\LocationSettings\:\:\$data\.$#'
 			identifier: property.notFound
 			count: 1

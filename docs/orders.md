@@ -558,6 +558,9 @@ POST /api/orders/totals
 | `location_id`  | `integer` | **Required**. Location for the order. |
 | `order_type`   | `string`  | **Required**. `delivery`, `collection`, or `dinein`. |
 | `order_menus`  | `array`   | **Required**. Menu lines (`id`, `qty`, optional `line_id`, optional `comment`, optional `options`). |
+| `coupon`       | `string`  | Optional coupon code. Invalid codes return 422. |
+| `tip`          | `number`  | Optional tip amount. A configured amount follows `tip_value_type` (fixed or percent). Applied when cart tipping is enabled. |
+| `tip_custom`   | `boolean` | When true, `tip` is a fixed custom amount even if the configured tip value type is percent. |
 
 #### Payload example
 

@@ -61,4 +61,23 @@ return [
     'addresses' => [
         'label_customer_id' => 'Customer ID',
     ],
+
+    'qr_login' => [
+        'label' => 'OrderPoint login',
+        'help' => 'Generate a one-time QR code for TastyIgniter OrderPoint. Scan it on the sign-in screen to sign in without typing your restaurant URL, email, or password.',
+        'help_scan' => 'Open TastyIgniter OrderPoint and tap Scan QR to sign in.',
+        'button_generate' => 'Generate login QR',
+        'button_regenerate' => 'Regenerate login QR',
+        'button_copy' => 'Copy code',
+        'button_copy_copied' => 'Copied',
+        'alert_generated' => 'Login QR code generated. Scan it with TastyIgniter OrderPoint before regenerating.',
+        'alert_failed' => 'Unable to generate a login QR code.',
+        'alert_copied' => 'Login code copied.',
+        'alert_copy_failed' => 'Unable to copy the login code.',
+        'label_qr' => 'OrderPoint login QR code',
+        'alert_invalid' => 'Invalid login code. Generate a new login QR from My Account.',
+        'alert_used' => 'This login code has already been used. Generate a new login QR from My Account.',
+        'alert_user_missing' => 'The staff account for this login code could not be found.',
+        'alert_user_inactive' => 'This staff account is not activated.',
+    ],
 ];

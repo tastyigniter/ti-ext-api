@@ -12,6 +12,7 @@ use Igniter\Cart\Models\CartSettings;
 use Igniter\Cart\Models\Menu;
 use Igniter\Cart\Models\MenuItemOption;
 use Igniter\Cart\Models\MenuItemOptionValue;
+use Igniter\Coupons\Models\Coupon;
 use Igniter\Flame\Exception\ApplicationException;
 use Igniter\Local\Facades\Location;
 use Igniter\Local\Models\Location as LocationModel;
@@ -27,8 +28,14 @@ class OrderTotalsCalculator
      *     order_totals: list<array{code: string, title: string, value: float, priority: int, is_summable: bool}>
      * }
      */
-    public function calculate(int $locationId, string $orderType, array $orderMenus): array
-    {
+    public function calculate(
+        int $locationId,
+        string $orderType,
+        array $orderMenus,
+        ?string $coupon = null,
+        ?float $tip = null,
+        bool $tipCustom = false,
+    ): array {
         $location = LocationModel::query()->find($locationId);
         throw_unless($location instanceof LocationModel, new ApplicationException('Location not found.'));
 
@@ -48,6 +55,10 @@ class OrderTotalsCalculator
             foreach ($orderMenus as $orderMenu) {
                 $menuTotals[] = $this->addMenuToCart($cart, $orderMenu, $location);
             }
+
+            $this->applyCoupon($cart, $coupon, $orderType, $location);
+            $this->applyTip($cart, $tip, $tipCustom);
+            $cart->total();
 
             $totals = $this->buildOrderTotals($cart);
 
@@ -193,6 +204,84 @@ class OrderTotalsCalculator
         }
 
         return $result;
+    }
+
+    protected function applyCoupon(Cart $cart, ?string $coupon, string $orderType, LocationModel $location): void
+    {
+        $code = trim((string)$coupon);
+        if ($code === '') {
+            return;
+        }
+
+        if (!$this->couponClassExists()) {
+            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
+        }
+
+        $couponModel = Coupon::getByCodeAndLocation($code, $location->getKey());
+        if (!$couponModel instanceof Coupon) {
+            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
+        }
+
+        $couponModel->validateCoupon(
+            $orderType,
+            Location::orderDateTime(),
+            $cart->content(),
+            null,
+            (int)$location->getKey(),
+        );
+
+        $condition = $this->cartCondition($cart, 'coupon');
+        if (!$condition instanceof CartCondition) {
+            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
+        }
+
+        $condition->setMetaData(['code' => $code]);
+        $cart->loadCondition($condition);
+    }
+
+    protected function couponClassExists(): bool
+    {
+        return class_exists(Coupon::class);
+    }
+
+    protected function applyTip(Cart $cart, ?float $tip, bool $tipCustom): void
+    {
+        if ($tip === null || $tip <= 0 || !CartSettings::get('enable_tipping')) {
+            return;
+        }
+
+        $condition = $this->cartCondition($cart, 'tip');
+        if (!$condition instanceof CartCondition) {
+            return;
+        }
+
+        $condition->setMetaData([
+            'amount' => number_format($tip, 2, '.', ''),
+            'isCustom' => $tipCustom,
+        ]);
+        $cart->loadCondition($condition);
+    }
+
+    protected function cartCondition(Cart $cart, string $name): ?CartCondition
+    {
+        $existing = $cart->getCondition($name);
+        if ($existing instanceof CartCondition) {
+            return $existing;
+        }
+
+        $manager = resolve(CartConditionManager::class);
+        foreach ($manager->listRegisteredConditions() ?? [] as $className => $definition) {
+            if (($definition['name'] ?? '') !== $name) {
+                continue;
+            }
+
+            $condition = $manager->makeCondition((string)$className, $definition);
+            $cart->loadCondition($condition);
+
+            return $condition;
+        }
+
+        return null;
     }
 
     /**

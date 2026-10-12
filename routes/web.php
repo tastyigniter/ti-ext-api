@@ -3,6 +3,7 @@
 use Igniter\Api\ApiResources\Orders;
 use Igniter\Api\ApiResources\Reservations;
 use Igniter\Api\Http\Controllers\CreateToken;
+use Igniter\Api\Http\Controllers\DeviceLogin;
 use Igniter\Api\Http\Controllers\RevokeToken;
 use Igniter\Api\Http\Controllers\ShowTokenUser;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,13 @@ Route::middleware('api')
     ->prefix(config('igniter-api.prefix'))
     ->group(function($router) {
         $router->post('/token', CreateToken::class);
+    });
+
+Route::middleware('api')
+    ->prefix(config('igniter-api.prefix'))
+    ->group(function($router) {
+        $router->post('/orderpoint/login', DeviceLogin::class)
+            ->name('igniter.api.orderpoint.login');
     });
 
 Route::middleware(config('igniter-api.middleware'))

@@ -33,6 +33,9 @@ class OrderTotalsRequest extends FormRequest
             'order_menus.*.options.*.values' => ['required', 'array'],
             'order_menus.*.options.*.values.*.id' => ['required', 'integer'],
             'order_menus.*.options.*.values.*.qty' => ['sometimes', 'integer', 'min:1'],
+            'coupon' => ['sometimes', 'nullable', 'string', 'max:48'],
+            'tip' => ['sometimes', 'nullable', 'numeric', 'min:0'],
+            'tip_custom' => ['sometimes', 'boolean'],
         ];
     }
 }

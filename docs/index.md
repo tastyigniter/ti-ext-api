@@ -329,6 +329,8 @@ if (AdminAuth::getUser()->hasPermission('Igniter.Api.Manage')) {
 
 The API extension provides endpoints for all core TastyIgniter resources. Here is a list of available resources:
 
+- [App Settings](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/app_settings.md)
+  `app_settings` - Retrieve order and reservation status settings for the staff app
 - [Categories](https://github.com/tastyigniter/ti-ext-api/blob/master/docs/categories.md)
   `categories` - List, create, retrieve, update and delete categories
 - [Coupons](https://github.com/tastyigniter/ti-ext-coupons/blob/master/docs/coupons.md)
