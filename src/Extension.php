@@ -104,7 +104,7 @@ class Extension extends BaseExtension
                         'class' => 'api-resources',
                         'href' => admin_url('igniter/api/resources'),
                         'title' => 'APIs',
-                        'permission' => 'Igniter.Api',
+                        'permission' => 'Igniter.Api.*',
                     ],
                 ],
             ],
