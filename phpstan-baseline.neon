@@ -229,36 +229,6 @@ parameters:
 			path: src/Http/Controllers/ShowTokenUser.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$endpoint\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_custom\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Models/Resource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Models/Resource.php
-
-		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
 			identifier: new.static
 			count: 5

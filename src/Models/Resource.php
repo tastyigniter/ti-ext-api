@@ -136,7 +136,7 @@ class Resource extends Model
 
         // Create new resources
         foreach ($newResources as $definition) {
-            $model = static::make();
+            $model = new self;
             $model->endpoint = array_get($definition, 'endpoint');
             $model->name = array_get($definition, 'name');
             $model->description = array_get($definition, 'description');
