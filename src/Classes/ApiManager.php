@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Contracts\HasAbilities;
+use ReflectionClass;
 
 class ApiManager
 {
@@ -47,6 +48,44 @@ class ApiManager
     public function getCurrentAction()
     {
         return Str::afterLast(Route::currentRouteAction(), '@');
+    }
+
+    /**
+     * Abilities a staff token can be given: one per resource action that is enabled and
+     * open to staff, such as `categories:index`, keyed by ability and labelled for display.
+     *
+     * @return array<string, string>
+     */
+    public function listTokenAbilities(): array
+    {
+        $abilities = [];
+        foreach (Resource::all()->sortBy('name') as $resource) {
+            $resourceName = (string)($resource->name ?: $resource->endpoint);
+            $controller = (string)$resource->controller;
+            if (!class_exists($controller)) {
+                continue;
+            }
+
+            $prefixes = array_unique(array_map(
+                fn(string $ability): string => Str::before($ability, ':'),
+                array_filter((array)((new ReflectionClass($controller))->getDefaultProperties()['requiredAbilities'] ?? []),
+                    fn($ability): bool => is_string($ability) && $ability !== '' && $ability !== '*'),
+            ));
+
+            $authorization = (array)array_get((array)$resource->meta, 'authorization', []);
+            foreach ($resource->getAvailableActions() as $action) {
+                // Customer-only actions can't be used with staff tokens.
+                if (array_get($authorization, $action, 'all') === 'customer') {
+                    continue;
+                }
+
+                foreach ($prefixes as $prefix) {
+                    $abilities[$prefix.':'.$action] = sprintf('%s: %s', $resourceName, Resource::actionLabel($action));
+                }
+            }
+        }
+
+        return $abilities;
     }
 
     protected function loadResources()

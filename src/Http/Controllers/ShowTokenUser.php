@@ -13,6 +13,7 @@ class ShowTokenUser
 {
     public function __invoke(Request $request): Response
     {
+        /** @var User|Customer|null $user */
         $user = $request->user();
         if (!$user) {
             return response()->json([

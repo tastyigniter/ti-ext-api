@@ -60,10 +60,7 @@ class TokenEventSubscriber
      */
     public function subscribe($events): void
     {
-        $events->listen(
-            TokenAuthenticated::class,
-            $this->handleTokenAuthenticated(...),
-        );
+        $events->listen(TokenAuthenticated::class, $this->handleTokenAuthenticated(...));
     }
 
     protected function checkGroup(mixed $group, mixed $token): bool

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Traits;
 
+use Igniter\User\Auth\Models\User as AuthUser;
+
 trait AuthorizesRequest
 {
     /**
@@ -13,7 +15,10 @@ trait AuthorizesRequest
      */
     protected function token()
     {
-        return request()->user()->currentAccessToken();
+        /** @var AuthUser $user */
+        $user = request()->user();
+
+        return $user->currentAccessToken();
     }
 
     /**
@@ -38,6 +43,9 @@ trait AuthorizesRequest
 
     protected function tokenCan($ability = '*')
     {
-        return request()->user()->tokenCan($ability);
+        /** @var AuthUser $user */
+        $user = request()->user();
+
+        return $user->tokenCan($ability);
     }
 }
