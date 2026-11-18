@@ -43,6 +43,14 @@ it('leaves out customer-only actions', function(): void {
         ->toHaveKey('categories:index');
 });
 
+it('leaves out resources whose controller class does not exist', function(): void {
+    Resource::create(['name' => 'Unregistered', 'endpoint' => 'unregistered']);
+
+    expect(array_keys(resolve(ApiManager::class)->listTokenAbilities()))
+        ->not->toContain('unregistered:index')
+        ->toContain('categories:index');
+});
+
 it('groups abilities by resource on the token form', function(): void {
     $groups = (new AccountSubscriber)->groupAbilities([
         'categories:index' => 'Categories: List all resources (GET)',
@@ -53,6 +61,17 @@ it('groups abilities by resource on the token form', function(): void {
     expect($groups)->toBe([
         'Categories' => ['categories:index' => 'List all resources (GET)', 'categories:store' => 'Create a resource (POST)'],
         'Orders' => ['orders:index' => 'List all resources (GET)'],
+    ]);
+});
+
+it('groups abilities by the ability prefix when the label has no resource name', function(): void {
+    $groups = (new AccountSubscriber)->groupAbilities([
+        'menus:index' => 'List all resources (GET)',
+        'menus:show' => 'Retrieve a resource (GET)',
+    ]);
+
+    expect($groups)->toBe([
+        'menus' => ['menus:index' => 'List all resources (GET)', 'menus:show' => 'Retrieve a resource (GET)'],
     ]);
 });
 

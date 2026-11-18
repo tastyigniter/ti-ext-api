@@ -11,6 +11,7 @@ use Igniter\Flame\Exception\SystemException;
 use Igniter\Flame\Traits\EventEmitter;
 use Igniter\Local\Models\Concerns\Locationable;
 use Igniter\User\Models\Customer;
+use Igniter\User\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as IlluminateModel;
 use Illuminate\Support\Facades\DB;
@@ -266,7 +267,9 @@ class AbstractRepository
             return;
         }
 
-        $ids = request()->user()?->locations?->where('location_status', true)->pluck('location_id')->all();
+        /** @var User|null $user Staff users carry locations; others resolve to null */
+        $user = request()->user();
+        $ids = $user?->locations?->where('location_status', true)->pluck('location_id')->all();
         if (empty($ids)) {
             return;
         }
