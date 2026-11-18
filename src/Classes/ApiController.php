@@ -62,6 +62,9 @@ class ApiController extends Controller
             $this->authorizeToken();
         }
 
+        // Runs once the request is authenticated and before the action validates or reads anything.
+        $this->fireSystemEvent('api.controller.beforeAction', [$method, $parameters]);
+
         // Execute the action
         $response = call_user_func_array([$this, $method], array_values($parameters));
 

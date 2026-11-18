@@ -7,6 +7,7 @@ namespace Igniter\Api\Tests\Classes;
 use Igniter\Api\Classes\ApiController;
 use Igniter\User\Models\Customer;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Support\Facades\Event;
 use Mockery;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -34,6 +35,30 @@ it('calls action and returns Responsable response', function(): void {
     $controller->shouldReceive('isResponsable')->andReturnTrue();
 
     expect($controller->callAction('testAction'))->toBe($responseMock);
+});
+
+it('fires beforeAction after authorizing the token and before running the action', function(): void {
+    $calls = [];
+    Event::listen('api.controller.beforeAction', function($controller, $method, $parameters) use (&$calls): void {
+        $calls[] = ['beforeAction', $method, $parameters];
+    });
+
+    $controller = Mockery::mock(ApiController::class)->makePartial()->shouldAllowMockingProtectedMethods();
+    $controller->allowedActions = ['testAction' => true];
+    $controller->shouldReceive('checkAction')->andReturnTrue();
+    $controller->shouldReceive('token')->andReturnTrue();
+    $controller->shouldReceive('authorizeToken')->once()->andReturnUsing(function() use (&$calls): void {
+        $calls[] = ['authorizeToken'];
+    });
+    $controller->shouldReceive('testAction')->andReturnUsing(function() use (&$calls): array {
+        $calls[] = ['testAction'];
+
+        return [];
+    });
+
+    $controller->callAction('testAction', ['id' => 1]);
+
+    expect($calls)->toBe([['authorizeToken'], ['beforeAction', 'testAction', ['id' => 1]], ['testAction']]);
 });
 
 it('calls action returns 404 response when checkAction fails', function(): void {
