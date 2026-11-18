@@ -10,6 +10,7 @@ use Igniter\Flame\Database\Traits\HasPermalink;
 use Igniter\Flame\Mail\Markdown;
 use Igniter\Flame\Support\Facades\File;
 use Igniter\System\Classes\ExtensionManager;
+use Illuminate\Support\Str;
 
 /**
  * Resource Model
@@ -53,6 +54,16 @@ class Resource extends Model
      * @var string The database table used by the model.
      */
     public $table = 'igniter_api_resources';
+
+    /**
+     * The display label of a resource action, or the action name for custom actions.
+     */
+    public static function actionLabel(string $action): string
+    {
+        $label = static::$defaultActionDefinition[$action] ?? null;
+
+        return $label ? lang(Str::after($label, 'lang:')) : $action;
+    }
 
     /**
      * @var list<string> fillable fields

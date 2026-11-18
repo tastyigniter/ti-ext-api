@@ -14,6 +14,7 @@ use Igniter\Flame\Traits\ExtendableTrait;
 use Igniter\User\Models\Customer;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
 use Override;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,7 +102,10 @@ class ApiController extends Controller
             }
         }
 
-        if (!$this->tokenCan(implode(',', $abilities))) {
+        // A token passes with the resource ability (`orders:*`) or the ability for this action (`orders:index`).
+        $actionAbilities = array_map(fn(string $ability): string => Str::before($ability, ':').':'.$this->action, $abilities);
+
+        if (!$this->tokenCan(implode(',', $abilities)) && !$this->tokenCan(implode(',', $actionAbilities))) {
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
         }
     }
