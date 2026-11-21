@@ -151,3 +151,32 @@ it('does not save the allowed authorization list when syncing', function(): void
 
     expect(Resource::query()->where('endpoint', 'restricted')->first()->meta)->not->toHaveKey('allowed');
 });
+
+it('resolves action permissions from a single permissions key', function(): void {
+    Resource::clearInternalCache();
+    (new Resource)->registerCallback(function(Resource $manager): void {
+        $manager->registerResources([
+            'permissioned' => [
+                'name' => 'Permissioned',
+                'controller' => Categories::class,
+                'permissions' => ['Admin.Menus', 'Admin.Categories', 'destroy' => 'Admin.DeleteMenus', 'update' => ['Admin.Menus', 'Admin.Inventory']],
+                'actions' => ['index', 'update', 'destroy'],
+            ],
+            'unpermissioned' => [
+                'name' => 'Unpermissioned',
+                'controller' => Categories::class,
+                'permissions' => ['destroy' => 'Admin.DeleteMenus'],
+                'actions' => ['index', 'destroy'],
+            ],
+        ]);
+    });
+
+    $resource = new Resource(['endpoint' => 'permissioned']);
+    $unpermissioned = new Resource(['endpoint' => 'unpermissioned']);
+
+    expect($resource->getActionPermission('index'))->toBe('Admin.Menus,Admin.Categories')
+        ->and($resource->getActionPermission('destroy'))->toBe('Admin.DeleteMenus')
+        ->and($resource->getActionPermission('update'))->toBe('Admin.Menus,Admin.Inventory')
+        ->and($unpermissioned->getActionPermission('index'))->toBeNull()
+        ->and($unpermissioned->getActionPermission('destroy'))->toBe('Admin.DeleteMenus');
+});

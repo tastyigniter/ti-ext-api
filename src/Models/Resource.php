@@ -149,6 +149,22 @@ class Resource extends Model
         return $map;
     }
 
+    /**
+     * The staff permission an action needs, from the resource's registered `permissions`:
+     * unkeyed entries cover every action and an action-keyed entry overrides them, e.g.
+     * `['Admin.Menus', 'destroy' => 'Admin.DeleteMenus']`. Several permissions mean any of them.
+     */
+    public function getActionPermission(string $action): ?string
+    {
+        $permissions = (array)array_get((array)array_get($this->listRegisteredResources(), $this->endpoint, []), 'permissions', []);
+        $permission = array_key_exists($action, $permissions)
+            ? (array)$permissions[$action]
+            : array_filter($permissions, is_int(...), ARRAY_FILTER_USE_KEY);
+        $permission = implode(',', array_filter(array_map(strval(...), $permission)));
+
+        return $permission !== '' ? $permission : null;
+    }
+
     protected function getRegisteredOptions(): array
     {
         return (array)array_get((array)array_get($this->listRegisteredResources(), $this->endpoint, []), 'options', []);
@@ -300,6 +316,7 @@ class Resource extends Model
             'name' => null,
             'description' => null,
             'controller' => null,
+            'permissions' => [],
             'endpoint' => null,
             'owner' => null,
             'options' => [],

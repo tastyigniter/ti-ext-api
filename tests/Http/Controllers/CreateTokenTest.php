@@ -9,6 +9,7 @@ use Igniter\Api\Models\Token;
 use Igniter\Flame\Database\Model;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
+use Igniter\User\Models\UserRole;
 use Illuminate\Support\Facades\Event;
 
 beforeEach(function(): void {
@@ -138,4 +139,46 @@ it('issues customer tokens with abilities extended by an event', function(): voi
     } finally {
         Event::forget('api.token.extendCustomerAbilities');
     }
+});
+
+function staffForTokenRequest(array $permissions): User
+{
+    $role = UserRole::factory()->create(['permissions' => array_fill_keys($permissions, 1)]);
+
+    return User::factory()->for($role, 'role')->create([
+        'super_user' => false,
+        'is_activated' => true,
+        'status' => true,
+        'password' => 'password',
+    ]);
+}
+
+it('limits staff token abilities to the staff permissions', function(): void {
+    $user = staffForTokenRequest(['Admin.Categories']);
+
+    $this->postJson(route('igniter.api.token.create'), [
+        'email' => $user->email,
+        'password' => 'password',
+        'is_admin' => true,
+        'device_name' => 'Till',
+        'abilities' => ['*', 'orders:index'],
+    ])->assertCreated();
+
+    expect(Token::query()->where('tokenable_id', $user->getKey())->sole()->abilities)
+        ->toEqualCanonicalizing(['categories:index', 'categories:show', 'categories:store', 'categories:update', 'categories:destroy']);
+});
+
+it('rejects a staff token request when no requested ability is permitted', function(): void {
+    $user = staffForTokenRequest(['Admin.Categories']);
+
+    $this->postJson(route('igniter.api.token.create'), [
+        'email' => $user->email,
+        'password' => 'password',
+        'is_admin' => true,
+        'device_name' => 'Till',
+        'abilities' => ['orders:*'],
+    ])->assertUnprocessable()
+        ->assertJsonValidationErrors(['abilities' => lang('igniter.api::default.alert_token_abilities_not_permitted')]);
+
+    expect(Token::query()->where('tokenable_id', $user->getKey())->exists())->toBeFalse();
 });

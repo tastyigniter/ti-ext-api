@@ -6,6 +6,7 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Support\Facades\Igniter;
+use Igniter\User\Models\User;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -53,10 +54,12 @@ class ApiManager
     /**
      * Abilities a staff token can be given: one per resource action that is enabled and
      * open to staff, such as `categories:index`, keyed by ability and labelled for display.
+     * Given a user, only actions whose registered permission the user has are listed;
+     * actions without a registered permission are left out.
      *
      * @return array<string, string>
      */
-    public function listTokenAbilities(): array
+    public function listTokenAbilities(?User $user = null): array
     {
         $abilities = [];
         foreach (Resource::all()->sortBy('name') as $resource) {
@@ -78,6 +81,10 @@ class ApiManager
                     continue;
                 }
 
+                if ($user instanceof User && !$this->userCanUseAction($user, $resource, $action)) {
+                    continue;
+                }
+
                 foreach ($prefixes as $prefix) {
                     $abilities[$prefix.':'.$action] = sprintf('%s: %s', $resourceName, Resource::actionLabel($action));
                 }
@@ -85,6 +92,40 @@ class ApiManager
         }
 
         return $abilities;
+    }
+
+    /**
+     * Narrows requested abilities to those the staff user's permissions allow. A wildcard such
+     * as `*` or `orders:*` expands to the permitted abilities it covers. Super users keep
+     * what they request.
+     *
+     * @param list<string> $abilities
+     * @return list<string>
+     */
+    public function limitTokenAbilities(User $user, array $abilities): array
+    {
+        if ($user->isSuperUser()) {
+            return array_values($abilities);
+        }
+
+        $permitted = array_keys($this->listTokenAbilities($user));
+        $limited = [];
+        foreach ($abilities as $ability) {
+            $limited = array_merge($limited, match (true) {
+                $ability === '*' => $permitted,
+                str_ends_with($ability, ':*') => array_filter($permitted, fn(string $permittedAbility): bool => Str::before($permittedAbility, ':') === Str::before($ability, ':')),
+                default => in_array($ability, $permitted, true) ? [$ability] : [],
+            });
+        }
+
+        return array_values(array_unique($limited));
+    }
+
+    protected function userCanUseAction(User $user, Resource $resource, string $action): bool
+    {
+        $permission = $resource->getActionPermission($action);
+
+        return $permission !== null && $user->hasAnyPermission($permission);
     }
 
     protected function loadResources()

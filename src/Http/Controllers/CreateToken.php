@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Http\Controllers;
 
+use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Models\Token;
 use Igniter\User\Auth\CustomerGuard;
 use Igniter\User\Auth\UserGuard;
@@ -26,7 +27,7 @@ class CreateToken extends Controller
             'abilities.*' => 'regex:/^[a-zA-Z-_\*\.\:]+$/',
         ]);
 
-        $forAdmin = $request->get('is_admin', false);
+        $forAdmin = $request->input('is_admin', false);
 
         $credentials = [
             'email' => $request->email,
@@ -62,6 +63,16 @@ class CreateToken extends Controller
                     'abilities' => [sprintf('The following abilities are not allowed for customers: %s',
                         implode(', ', $deniedAbilities),
                     )],
+                ]);
+            }
+        }
+
+        // Staff tokens only get the requested abilities their permissions allow.
+        if ($user instanceof User) {
+            $requestedAbilities = resolve(ApiManager::class)->limitTokenAbilities($user, array_values($requestedAbilities));
+            if ($requestedAbilities === []) {
+                throw ValidationException::withMessages([
+                    'abilities' => [lang('igniter.api::default.alert_token_abilities_not_permitted')],
                 ]);
             }
         }

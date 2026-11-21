@@ -126,6 +126,7 @@ class Extension extends BaseExtension
         return [
             'categories' => [
                 'controller' => Categories::class,
+                'permissions' => ['Admin.Categories'],
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
                 'actions' => [
@@ -134,6 +135,7 @@ class Extension extends BaseExtension
             ],
             'currencies' => [
                 'controller' => Currencies::class,
+                'permissions' => ['Site.Currencies'],
                 'name' => 'Currencies',
                 'description' => 'An API resource for currencies',
                 'actions' => [
@@ -142,6 +144,7 @@ class Extension extends BaseExtension
             ],
             'addresses' => [
                 'controller' => Addresses::class,
+                'permissions' => ['Admin.Customers'],
                 'name' => 'Addresses',
                 'description' => 'An API resource for customer addresses',
                 'actions' => [
@@ -152,6 +155,7 @@ class Extension extends BaseExtension
             ],
             'customers' => [
                 'controller' => Customers::class,
+                'permissions' => ['Admin.Customers', 'destroy' => 'Admin.DeleteCustomers'],
                 'name' => 'Customers',
                 'description' => 'An API resource for customers',
                 'actions' => [
@@ -162,6 +166,7 @@ class Extension extends BaseExtension
             ],
             'locations' => [
                 'controller' => Locations::class,
+                'permissions' => ['Admin.Locations'],
                 'name' => 'Locations',
                 'description' => 'An API resource for locations',
                 'actions' => [
@@ -172,6 +177,7 @@ class Extension extends BaseExtension
             ],
             'location_settings' => [
                 'controller' => LocationSettings::class,
+                'permissions' => ['Admin.Locations'],
                 'name' => 'LocationSettings',
                 'description' => 'An API resource for location settings',
                 'actions' => [
@@ -182,6 +188,7 @@ class Extension extends BaseExtension
             ],
             'menus' => [
                 'controller' => Menus::class,
+                'permissions' => ['Admin.Menus'],
                 'name' => 'Menus',
                 'description' => 'An API resource for menus',
                 'actions' => [
@@ -192,6 +199,7 @@ class Extension extends BaseExtension
             ],
             'stocks' => [
                 'controller' => Stocks::class,
+                'permissions' => ['Admin.Inventory'],
                 'name' => 'Stocks',
                 'description' => 'An API resource for stock levels',
                 'actions' => [
@@ -201,6 +209,7 @@ class Extension extends BaseExtension
             ],
             'notifications' => [
                 'controller' => Notifications::class,
+                'permissions' => ['Admin.Notifications'],
                 'name' => 'Notifications',
                 'description' => 'An API resource for staff notifications',
                 'actions' => [
@@ -210,6 +219,7 @@ class Extension extends BaseExtension
             ],
             'menu_options' => [
                 'controller' => MenuOptions::class,
+                'permissions' => ['Admin.Menus'],
                 'name' => 'MenuOptions',
                 'description' => 'An API resource for Menu options',
                 'actions' => [
@@ -220,6 +230,7 @@ class Extension extends BaseExtension
             ],
             'menu_item_options' => [
                 'controller' => MenuItemOptions::class,
+                'permissions' => ['Admin.Menus'],
                 'name' => 'MenuItemOptions',
                 'description' => 'An API resource for Menu item options',
                 'actions' => [
@@ -230,6 +241,7 @@ class Extension extends BaseExtension
             ],
             'orders' => [
                 'controller' => Orders::class,
+                'permissions' => ['Admin.Orders', 'destroy' => 'Admin.DeleteOrders'],
                 'name' => 'Orders',
                 'description' => 'An API resource for orders',
                 'actions' => [
@@ -240,6 +252,7 @@ class Extension extends BaseExtension
             ],
             'reservations' => [
                 'controller' => Reservations::class,
+                'permissions' => ['Admin.Reservations', 'destroy' => 'Admin.DeleteReservations'],
                 'name' => 'Reservations',
                 'description' => 'An API resource for reservations',
                 'actions' => [
@@ -250,6 +263,7 @@ class Extension extends BaseExtension
             ],
             'reviews' => [
                 'controller' => Reviews::class,
+                'permissions' => ['Admin.Reviews'],
                 'name' => 'Reviews',
                 'description' => 'An API resource for reviews',
                 'actions' => [
@@ -260,6 +274,7 @@ class Extension extends BaseExtension
             ],
             'tables' => [
                 'controller' => DiningTables::class,
+                'permissions' => ['Admin.Tables'],
                 'name' => 'Tables',
                 'description' => 'An API resource for dining tables',
                 'actions' => [
@@ -270,6 +285,7 @@ class Extension extends BaseExtension
             ],
             'status' => [
                 'controller' => Status::class,
+                'permissions' => ['Admin.Statuses'],
                 'name' => 'Status',
                 'description' => 'An API resource for status',
                 'actions' => [
@@ -280,6 +296,7 @@ class Extension extends BaseExtension
             ],
             'users' => [
                 'controller' => Users::class,
+                'permissions' => ['Admin.Staffs', 'destroy' => 'Admin.DeleteStaffs'],
                 'name' => 'Staff',
                 'description' => 'An API resource for staff',
                 'actions' => [
@@ -290,6 +307,7 @@ class Extension extends BaseExtension
             ],
             'app_settings' => [
                 'controller' => AppSettings::class,
+                'permissions' => ['Admin.Orders', 'Admin.Reservations'],
                 'name' => 'App Settings',
                 'description' => 'App settings for the OrderPoint app',
                 'actions' => [

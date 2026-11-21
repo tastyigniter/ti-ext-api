@@ -103,8 +103,10 @@ class AccountSubscriber
             ->where('tokenable_id', $user->getKey())
             ->orderByDesc('id')
             ->get();
-        $form->vars['apiTokenAbilities'] = $abilities = resolve(ApiManager::class)->listTokenAbilities();
-        $form->vars['apiTokenAbilityGroups'] = $this->groupAbilities($abilities);
+        $apiManager = resolve(ApiManager::class);
+        $form->vars['apiTokenAbilities'] = $apiManager->listTokenAbilities();
+        $form->vars['apiTokenHasAllAbilities'] = $user->isSuperUser();
+        $form->vars['apiTokenAbilityGroups'] = $this->groupAbilities($apiManager->listTokenAbilities($user));
         $form->vars['apiNewToken'] = Session::get(self::NEW_TOKEN_SESSION_KEY);
 
         $form->addFields([
@@ -143,15 +145,13 @@ class AccountSubscriber
 
         $data = Validator::make((array)post(), [
             'api_token_name' => ['required', 'string', 'max:255'],
-            'api_token_scope' => ['required', 'in:all,selected'],
-            'api_token_abilities' => ['required_if:api_token_scope,selected', 'array'],
-            'api_token_abilities.*' => ['string', 'in:'.implode(',', array_keys(resolve(ApiManager::class)->listTokenAbilities()))],
         ], [], [
             'api_token_name' => lang('igniter.api::default.account_tokens.label_name'),
-            'api_token_abilities' => lang('igniter.api::default.account_tokens.label_abilities'),
         ])->validate();
 
-        $abilities = $data['api_token_scope'] === 'all' ? ['*'] : array_values($data['api_token_abilities']);
+        $abilities = $this->abilitiesFor($user);
+        throw_unless($abilities, new FlashException(lang('igniter.api::default.account_tokens.alert_no_abilities')));
+
         $token = Token::createToken($user, $data['api_token_name'], $abilities);
 
         Session::flash(self::NEW_TOKEN_SESSION_KEY, $token->plainTextToken);
@@ -175,6 +175,17 @@ class AccountSubscriber
             : flash()->error(lang('igniter.api::default.account_tokens.alert_not_found'));
 
         return Redirect::back();
+    }
+
+    /**
+     * Abilities a new token gets: everything for a super user, otherwise the actions the
+     * user's permissions allow, as registered on each API resource.
+     *
+     * @return list<string>
+     */
+    protected function abilitiesFor(User $user): array
+    {
+        return $user->isSuperUser() ? ['*'] : array_keys(resolve(ApiManager::class)->listTokenAbilities($user));
     }
 
     /**
