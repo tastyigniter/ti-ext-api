@@ -176,3 +176,17 @@ it('returns active order types, tipping, and the default customer group for a lo
 it('returns no order types when the location does not exist', function(): void {
     expect(callProtectedMethod(new AppSettings, 'orderTypes', [999999]))->toBe([]);
 });
+
+it('returns the site timezone, falling back to UTC for unknown values', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['app_settings:*']);
+
+    setting()->set('timezone', 'Europe/London');
+    $this->get(route('igniter.api.app_settings.index'))
+        ->assertOk()
+        ->assertJsonPath('data.attributes.timezone', 'Europe/London');
+
+    setting()->set('timezone', 'Not/AZone');
+    $this->get(route('igniter.api.app_settings.index'))
+        ->assertOk()
+        ->assertJsonPath('data.attributes.timezone', 'UTC');
+});
