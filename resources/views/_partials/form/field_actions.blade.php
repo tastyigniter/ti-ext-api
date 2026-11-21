@@ -10,6 +10,7 @@
         <tbody>
         @php
             $fieldValue = !is_array($field->value) ? [$field->value] : $field->value;
+            $resource = $formModel instanceof \Igniter\Api\Models\Resource ? $formModel : null;
         @endphp
         @foreach ($field->options() as $action => $name)
             <tr>
@@ -19,10 +20,14 @@
                         name="{{ $field->getName() }}[authorization][{{ $action }}]"
                         class="form-select"
                     >
-                        @foreach ($field->getConfig('authOptions') as $key => $label)
+                        @php
+                            $allowedAuth = $resource?->getAllowedAuthorization($action);
+                            $selectedAuth = $resource ? $resource->getActionAuthorization($action) : array_get($fieldValue, 'authorization.'.$action);
+                        @endphp
+                        @foreach (array_filter($field->getConfig('authOptions'), fn($key) => !$allowedAuth || in_array($key, $allowedAuth, true), ARRAY_FILTER_USE_KEY) as $key => $label)
                             <option
                                 value="{{ $key }}"
-                                {!! $key == array_get($fieldValue, 'authorization.'.$action) ? 'selected="selected"' : '' !!}
+                                {!! $key == $selectedAuth ? 'selected="selected"' : '' !!}
                             >@lang($label)</option>
                         @endforeach
                     </select>

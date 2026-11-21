@@ -9,11 +9,12 @@ return [
     'text_token_type_staff' => 'User',
     'text_token_type_customer' => 'Customer',
     'text_guest' => 'Guests',
-    'text_admin' => 'User',
+    'text_admin' => 'Staff',
     'text_customer' => 'Customers',
-    'text_admin_customer' => 'User or Customers',
+    'text_admin_customer' => 'Staff or Customers',
     'text_all' => 'All',
     'text_allow_only' => 'Allow Only',
+    'alert_authorization_not_allowed' => 'The selected authorization is not allowed for this action.',
 
     'button_tokens' => '<i class="fa fa-key"></i>&nbsp;&nbsp;Access tokens',
 

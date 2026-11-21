@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Api\Tests\Classes;
 
 use Igniter\Api\Classes\ApiManager;
+use Igniter\Api\Models\Resource;
 use Igniter\Api\Tests\Fixtures\TestResource;
 use Igniter\Flame\Support\Facades\Igniter;
 use Illuminate\Routing\Router;
@@ -105,4 +106,14 @@ it('skips invalid controllers when registering routes', function(): void {
     $router->shouldReceive('resource')->never();
 
     ApiManager::registerRoutes();
+});
+
+it('clamps a saved authorization outside the allowed list to the default', function(): void {
+    $resource = Resource::query()->where('endpoint', 'users')->firstOrFail();
+    $meta = $resource->meta;
+    $meta['authorization']['index'] = 'all';
+    $resource->meta = $meta;
+    $resource->save();
+
+    expect((new ApiManager)->getResource('users')->options['authorization']['index'])->toBe('admin');
 });

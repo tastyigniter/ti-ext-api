@@ -33,14 +33,25 @@ it('lists an ability for each enabled staff action of each resource', function()
 });
 
 it('leaves out customer-only actions', function(): void {
+    // `customers:show` is registered as `show:admin:admin,customer`, so it may be set to customer-only.
+    $resource = Resource::query()->where('endpoint', 'customers')->first();
+    $meta = $resource->meta;
+    $meta['authorization']['show'] = 'customer';
+    $resource->meta = $meta;
+    $resource->save();
+
+    expect(resolve(ApiManager::class)->listTokenAbilities())->not->toHaveKey('customers:show')
+        ->toHaveKey('customers:index');
+});
+
+it('keeps an action whose saved customer-only value is not allowed', function(): void {
     $resource = Resource::query()->where('endpoint', 'categories')->first();
     $meta = $resource->meta;
     $meta['authorization']['destroy'] = 'customer';
     $resource->meta = $meta;
     $resource->save();
 
-    expect(resolve(ApiManager::class)->listTokenAbilities())->not->toHaveKey('categories:destroy')
-        ->toHaveKey('categories:index');
+    expect(resolve(ApiManager::class)->listTokenAbilities())->toHaveKey('categories:destroy');
 });
 
 it('leaves out resources whose controller class does not exist', function(): void {

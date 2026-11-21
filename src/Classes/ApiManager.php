@@ -72,10 +72,9 @@ class ApiManager
                     fn($ability): bool => is_string($ability) && $ability !== '' && $ability !== '*'),
             ));
 
-            $authorization = (array)array_get((array)$resource->meta, 'authorization', []);
             foreach ($resource->getAvailableActions() as $action) {
                 // Customer-only actions can't be used with staff tokens.
-                if (array_get($authorization, $action, 'all') === 'customer') {
+                if ($resource->getActionAuthorization($action) === 'customer') {
                     continue;
                 }
 
@@ -96,8 +95,9 @@ class ApiManager
             $resourceObj = (object)[
                 'endpoint' => $resource->endpoint,
                 'controller' => $resource->controller,
-                'options' => array_merge($resource->meta, [
+                'options' => array_merge((array)$resource->meta, [
                     'only' => $resource->getAvailableActions(),
+                    'authorization' => $resource->getAuthorizationMap(),
                 ]),
             ];
 

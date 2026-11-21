@@ -145,12 +145,6 @@ parameters:
 			path: src/ApiResources/Transformers/ReviewTransformer.php
 
 		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Igniter\\Api\\Models\\Resource\>\:\:mapWithKeys\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: src/Classes/ApiManager.php
-
-		-
 			message: '#^Parameter \#1 \$code of static method Igniter\\Local\\Facades\\Location\:\:updateOrderType\(\) expects void\|null, string given\.$#'
 			identifier: argument.type
 			count: 1

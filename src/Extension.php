@@ -129,7 +129,7 @@ class Extension extends BaseExtension
                 'name' => 'Categories',
                 'description' => 'An API resource for categories',
                 'actions' => [
-                    'index', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
+                    'index', 'show:all', 'store:admin:admin', 'update:admin:admin', 'destroy:admin:admin',
                 ],
             ],
             'currencies' => [
@@ -145,9 +145,9 @@ class Extension extends BaseExtension
                 'name' => 'Addresses',
                 'description' => 'An API resource for customer addresses',
                 'actions' => [
-                    'index:users', 'show:users',
-                    'store:users', 'update:users',
-                    'destroy:users',
+                    'index:users:users', 'show:users:users',
+                    'store:users:users', 'update:users:users',
+                    'destroy:users:users',
                 ],
             ],
             'customers' => [
@@ -155,9 +155,9 @@ class Extension extends BaseExtension
                 'name' => 'Customers',
                 'description' => 'An API resource for customers',
                 'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:users',
-                    'destroy:admin',
+                    'index:admin:admin', 'show:admin:admin,customer',
+                    'store:admin:admin', 'update:users:users',
+                    'destroy:admin:admin',
                 ],
             ],
             'locations' => [
@@ -166,8 +166,8 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for locations',
                 'actions' => [
                     'index:all', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                    'store:admin:admin', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'location_settings' => [
@@ -175,9 +175,9 @@ class Extension extends BaseExtension
                 'name' => 'LocationSettings',
                 'description' => 'An API resource for location settings',
                 'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                    'index:admin:admin', 'show:admin:admin',
+                    'store:admin:admin', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'menus' => [
@@ -186,8 +186,8 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for menus',
                 'actions' => [
                     'index:all', 'show:all',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                    'store:admin:admin', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'stocks' => [
@@ -195,8 +195,8 @@ class Extension extends BaseExtension
                 'name' => 'Stocks',
                 'description' => 'An API resource for stock levels',
                 'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
+                    'index:admin:admin', 'show:admin:admin',
+                    'store:admin:admin', 'update:admin:admin',
                 ],
             ],
             'notifications' => [
@@ -204,8 +204,8 @@ class Extension extends BaseExtension
                 'name' => 'Notifications',
                 'description' => 'An API resource for staff notifications',
                 'actions' => [
-                    'index:admin', 'show:admin',
-                    'update:admin', 'destroy:admin',
+                    'index:admin:admin', 'show:admin:admin',
+                    'update:admin:admin', 'destroy:admin:admin',
                 ],
             ],
             'menu_options' => [
@@ -213,9 +213,9 @@ class Extension extends BaseExtension
                 'name' => 'MenuOptions',
                 'description' => 'An API resource for Menu options',
                 'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                    'index:all', 'show:all',
+                    'store:admin:admin', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'menu_item_options' => [
@@ -223,9 +223,9 @@ class Extension extends BaseExtension
                 'name' => 'MenuItemOptions',
                 'description' => 'An API resource for Menu item options',
                 'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                    'index:all', 'show:all',
+                    'store:admin:admin', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'orders' => [
@@ -233,9 +233,9 @@ class Extension extends BaseExtension
                 'name' => 'Orders',
                 'description' => 'An API resource for orders',
                 'actions' => [
-                    'index:users', 'show:users',
-                    'store:users', 'update:admin',
-                    'destroy:admin',
+                    'index:users:users', 'show:users:users',
+                    'store:users:users', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'reservations' => [
@@ -243,9 +243,9 @@ class Extension extends BaseExtension
                 'name' => 'Reservations',
                 'description' => 'An API resource for reservations',
                 'actions' => [
-                    'index:users', 'show:users',
-                    'store:users', 'update:admin',
-                    'destroy:admin',
+                    'index:users:users', 'show:users:users',
+                    'store:users:users', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'reviews' => [
@@ -254,8 +254,8 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for reviews',
                 'actions' => [
                     'index:users', 'show:users',
-                    'store:users', 'update:admin',
-                    'destroy:admin',
+                    'store:users:users', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'tables' => [
@@ -264,8 +264,8 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for dining tables',
                 'actions' => [
                     'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                    'store:admin:admin', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'status' => [
@@ -274,8 +274,8 @@ class Extension extends BaseExtension
                 'description' => 'An API resource for status',
                 'actions' => [
                     'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                    'store:admin:admin', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'users' => [
@@ -283,9 +283,9 @@ class Extension extends BaseExtension
                 'name' => 'Staff',
                 'description' => 'An API resource for staff',
                 'actions' => [
-                    'index:admin', 'show:admin',
-                    'store:admin', 'update:admin',
-                    'destroy:admin',
+                    'index:admin:admin', 'show:admin:admin',
+                    'store:admin:admin', 'update:admin:admin',
+                    'destroy:admin:admin',
                 ],
             ],
             'app_settings' => [
@@ -293,7 +293,7 @@ class Extension extends BaseExtension
                 'name' => 'App Settings',
                 'description' => 'App settings for the OrderPoint app',
                 'actions' => [
-                    'index:admin',
+                    'index:admin:admin',
                 ],
             ],
         ];

@@ -277,7 +277,11 @@ These are the available options for the resource configuration:
 - **name** - The name of the resource
 - **description** - A brief description of the resource
 - **controller** - The controller class for the resource
-- **actions** - An array of actions to enable for the resource. You can predefine authorization context for each action by adding the context. For example to make the `delete` endpoint only accessible to admin users, `['destroy:admin']`
+- **actions** - An array of actions to enable for the resource. You can predefine authorization context for each action by adding the context. For example to make the `delete` endpoint only accessible to staff, `['destroy:admin']`
+
+Each action is written as `action:default:allowed`. The optional third part is a comma-separated list of the authorization contexts an administrator may choose for that action under **Allow Only**. For example, `'index:admin:admin,customer'` defaults the `index` endpoint to staff and only lets it be changed to customers. Leave it out to allow every context.
+
+The available contexts are `admin` (staff), `customer`, `users` (staff or customers), `guest` and `all`. If a saved value falls outside the allowed list, the action uses its default instead.
 
 ### Extending customer token abilities
 

@@ -99,3 +99,55 @@ it('configures resource model correctly', function(): void {
             ],
         ]);
 });
+
+afterEach(function(): void {
+    Resource::clearInternalCache();
+});
+
+function registerAllowedListResource(): Resource
+{
+    Resource::clearInternalCache();
+    (new Resource)->registerCallback(function(Resource $manager): void {
+        $manager->registerResources([
+            'restricted' => [
+                'name' => 'Restricted',
+                'controller' => Categories::class,
+                'actions' => ['index:admin:admin,customer', 'show:all:admin', 'store', 'update:customer'],
+            ],
+        ]);
+    });
+
+    return new Resource(['endpoint' => 'restricted']);
+}
+
+it('parses the allowed authorization list from action definitions', function(): void {
+    $resource = registerAllowedListResource();
+    $options = $resource->listRegisteredResources()['restricted']['options'];
+
+    expect($options['authorization'])->toBe(['index' => 'admin', 'show' => 'admin', 'store' => 'all', 'update' => 'customer'])
+        ->and($options['allowed'])->toBe(['index' => ['admin', 'customer'], 'show' => ['admin'], 'store' => [], 'update' => []])
+        ->and($resource->getAllowedAuthorization('index'))->toBe(['admin', 'customer'])
+        ->and($resource->getAllowedAuthorization('store'))->toBe(Resource::AUTHORIZATION_GROUPS);
+});
+
+it('falls back to the default when the saved authorization is not allowed', function(): void {
+    $resource = registerAllowedListResource();
+    $resource->meta = [
+        'actions' => ['index', 'show', 'store', 'update'],
+        'authorization' => ['index' => 'customer', 'show' => 'all', 'store' => 'guest'],
+    ];
+
+    expect($resource->getActionAuthorization('index'))->toBe('customer')
+        ->and($resource->getActionAuthorization('show'))->toBe('admin')
+        ->and($resource->getActionAuthorization('store'))->toBe('guest')
+        ->and($resource->getActionAuthorization('update'))->toBe('customer')
+        ->and($resource->getAuthorizationMap())->toBe(['index' => 'customer', 'show' => 'admin', 'store' => 'guest', 'update' => 'customer']);
+});
+
+it('does not save the allowed authorization list when syncing', function(): void {
+    registerAllowedListResource();
+
+    Resource::syncAll();
+
+    expect(Resource::query()->where('endpoint', 'restricted')->first()->meta)->not->toHaveKey('allowed');
+});

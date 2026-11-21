@@ -9,6 +9,7 @@ use Igniter\Api\Http\Middleware\Authenticate;
 use Illuminate\Auth\AuthenticationException as IlluminateAuthenticationException;
 use Illuminate\Http\Request;
 use Mockery;
+use RuntimeException;
 
 beforeEach(function(): void {
     $this->middleware = Mockery::mock(Authenticate::class)
@@ -46,4 +47,14 @@ it('throws custom authentication exception on failure', function(): void {
     $this->expectExceptionMessage('Unauthenticated.');
 
     $this->middleware->handle($this->request, $this->next);
+});
+
+it('ignores the app-wide guest redirect for api requests', function(): void {
+    Authenticate::redirectUsing(fn(): string => throw new RuntimeException('Guest redirect should not be resolved.'));
+
+    try {
+        expect(callProtectedMethod(new Authenticate(app('auth')), 'redirectTo', [Request::create('/api/token')]))->toBeNull();
+    } finally {
+        Authenticate::redirectUsing(fn(): null => null);
+    }
 });
