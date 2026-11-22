@@ -121,6 +121,31 @@ class ApiManager
         return array_values(array_unique($limited));
     }
 
+    /**
+     * Whether the staff user may perform the action on the resource handling the
+     * current request. Public actions (`guest` or `all`) are open to anyone, so
+     * staff are not limited by permissions there. Other actions without a
+     * registered permission are refused, as they are when token abilities are issued.
+     */
+    public function userCanUseCurrentAction(User $user, string $action): bool
+    {
+        $currentResource = $this->getCurrentResource();
+        $endpoint = $currentResource->endpoint ?? null;
+        if (!is_string($endpoint) || $endpoint === '') {
+            return false;
+        }
+
+        $authorization = array_get((array)($currentResource->options['authorization'] ?? []), $action, 'all');
+        if (in_array($authorization, ['guest', 'all'], true)) {
+            return true;
+        }
+
+        $resource = new Resource;
+        $resource->endpoint = $endpoint;
+
+        return $this->userCanUseAction($user, $resource, $action);
+    }
+
     protected function userCanUseAction(User $user, Resource $resource, string $action): bool
     {
         $permission = $resource->getActionPermission($action);

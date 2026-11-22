@@ -8,6 +8,8 @@ use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Listeners\AccountSubscriber;
 use Igniter\Api\Models\Resource;
 use Igniter\Api\Models\Token;
+use Igniter\Cart\Models\Category;
+use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Igniter\User\Models\UserRole;
 
@@ -140,7 +142,7 @@ it('disables token creation when no permission gives api access', function(): vo
 });
 
 it('lets a token with an action ability use only that action', function(): void {
-    $user = staffWithApiPermission();
+    $user = staffWithApiPermission(permissions: ['Admin.Categories']);
     $user->forceFill(['status' => true, 'is_activated' => true])->save();
     $token = Token::createToken($user, 'Reader', ['categories:index'])->plainTextToken;
 
@@ -242,4 +244,47 @@ it('only revokes your own tokens', function(): void {
 
     expect(Token::query()->whereKey($other->getKey())->exists())->toBeTrue()
         ->and(Token::query()->whereKey($own->getKey())->exists())->toBeFalse();
+});
+
+it('stops a staff token working once the role loses the permission', function(): void {
+    $user = staffWithApiPermission(permissions: ['Admin.Categories']);
+    $user->forceFill(['status' => true, 'is_activated' => true])->save();
+    $token = Token::createToken($user, 'Old token', ['*'])->plainTextToken;
+
+    $this->withToken($token)->getJson(route('igniter.api.categories.index'))->assertOk();
+
+    $user->role->permissions = ['Igniter.Api.Manage' => 1, 'Admin.Orders' => 1];
+    $user->role->save();
+    app('auth')->forgetGuards();
+
+    $this->withToken($token)->getJson(route('igniter.api.categories.index'))->assertOk();
+    $this->withToken($token)->postJson(route('igniter.api.categories.store'), ['name' => 'Injected'])->assertForbidden();
+});
+
+it('applies an action-specific permission to staff tokens on each request', function(): void {
+    $user = staffWithApiPermission(permissions: ['Admin.Customers']);
+    $user->forceFill(['status' => true, 'is_activated' => true])->save();
+    $customer = Customer::factory()->create();
+    $token = Token::createToken($user, 'Old token', ['*'])->plainTextToken;
+
+    $this->withToken($token)->deleteJson(route('igniter.api.customers.destroy', [$customer->getKey()]))->assertForbidden();
+});
+
+it('does not apply staff permissions to public actions', function(): void {
+    // `categories:index` (no group) and `show:all` are public; `store:admin:admin` is staff-only.
+    $user = staffWithApiPermission();
+    $user->forceFill(['status' => true, 'is_activated' => true])->save();
+    $category = Category::factory()->create();
+    $token = Token::createToken($user, 'Old token', ['*'])->plainTextToken;
+
+    $this->withToken($token)->getJson(route('igniter.api.categories.show', [$category->getKey()]))->assertOk();
+    $this->withToken($token)->getJson(route('igniter.api.categories.index'))->assertOk();
+    $this->withToken($token)->postJson(route('igniter.api.categories.store'), ['name' => 'New'])->assertForbidden();
+});
+
+it('does not limit super user tokens by role permissions', function(): void {
+    $user = User::factory()->superUser()->create(['status' => true, 'is_activated' => true]);
+    $token = Token::createToken($user, 'Admin token', ['*'])->plainTextToken;
+
+    $this->withToken($token)->getJson(route('igniter.api.categories.index'))->assertOk();
 });

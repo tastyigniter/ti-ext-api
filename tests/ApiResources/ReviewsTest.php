@@ -12,7 +12,7 @@ use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all reviews', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reviews:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reviews:*']);
     Review::factory()->count(3)->create();
     $review = Review::first();
 
@@ -24,7 +24,7 @@ it('returns all reviews', function(): void {
 });
 
 it('shows a review', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reviews:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reviews:*']);
     $review = Review::factory()->create();
 
     $this
@@ -35,7 +35,7 @@ it('shows a review', function(): void {
 });
 
 it('shows a review with location relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reviews:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reviews:*']);
     $review = Review::factory()->create();
     $review->location()->associate($reviewLocation = Location::factory()->create())->save();
 
@@ -49,7 +49,7 @@ it('shows a review with location relationship', function(): void {
 });
 
 it('shows a review with customer relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reviews:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reviews:*']);
     $review = Review::factory()->create();
     $review->customer()->associate($reviewCustomer = Customer::factory()->create())->save();
 
@@ -63,7 +63,7 @@ it('shows a review with customer relationship', function(): void {
 });
 
 it('creates a review', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reviews:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reviews:*']);
 
     $order = Order::factory()->create();
 
@@ -85,7 +85,7 @@ it('creates a review', function(): void {
 });
 
 it('updates a review', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reviews:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reviews:*']);
 
     $order = Order::factory()->create();
     $review = Review::factory()->create([
@@ -111,7 +111,7 @@ it('updates a review', function(): void {
 });
 
 it('deletes a review', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reviews:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reviews:*']);
     $review = Review::factory()->create();
 
     $this

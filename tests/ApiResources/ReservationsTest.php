@@ -13,7 +13,7 @@ use Igniter\User\Models\UserGroup;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all reservations', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     Reservation::factory()->count(3)->create();
     $reservation = Reservation::first();
 
@@ -25,7 +25,7 @@ it('returns all reservations', function(): void {
 });
 
 it('shows a reservation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
 
     $this
@@ -36,7 +36,7 @@ it('shows a reservation', function(): void {
 });
 
 it('shows a reservation with location relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservation->location()->associate($reservationLocation = Location::factory()->create())->save();
 
@@ -50,7 +50,7 @@ it('shows a reservation with location relationship', function(): void {
 });
 
 it('shows a reservation with tables relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservationTable = $reservation->tables()->create(['name' => 'Table 1']);
     $reservation->refresh();
@@ -65,7 +65,7 @@ it('shows a reservation with tables relationship', function(): void {
 });
 
 it('shows a reservation with status relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservation->status()->associate($reservationStatus = Status::factory()->create())->save();
 
@@ -79,7 +79,7 @@ it('shows a reservation with status relationship', function(): void {
 });
 
 it('shows a reservation with status_history relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservationStatusHistory = $reservation->status_history()->create(['status_id' => 1]);
 
@@ -93,7 +93,7 @@ it('shows a reservation with status_history relationship', function(): void {
 });
 
 it('shows a reservation with assignee relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservation->assignee()->associate($reservationAssignee = User::factory()->create())->save();
 
@@ -107,7 +107,7 @@ it('shows a reservation with assignee relationship', function(): void {
 });
 
 it('shows a reservation with assignee_group relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $reservation->assignee_group()->associate($reservationAssigneeGroup = UserGroup::factory()->create())->save();
 
@@ -121,7 +121,7 @@ it('shows a reservation with assignee_group relationship', function(): void {
 });
 
 it('creates a reservation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
 
     $this
         ->post(route('igniter.api.reservations.store'), [
@@ -141,7 +141,7 @@ it('creates a reservation', function(): void {
 });
 
 it('updates a reservation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
 
     $this
@@ -161,7 +161,7 @@ it('updates a reservation', function(): void {
 });
 
 it('updates reservation status', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $newStatus = Status::isForReservation()->first();
 
@@ -175,7 +175,7 @@ it('updates reservation status', function(): void {
 });
 
 it('updates reservation status with comment and notify', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
     $newStatus = Status::isForReservation()->first();
 
@@ -190,7 +190,7 @@ it('updates reservation status with comment and notify', function(): void {
 });
 
 it('fails to update reservation status when status_id is missing', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
 
     $this
@@ -214,7 +214,7 @@ it('can not update reservation status as customer', function(): void {
 });
 
 it('deletes a reservation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['reservations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['reservations:*']);
     $reservation = Reservation::factory()->create();
 
     $this

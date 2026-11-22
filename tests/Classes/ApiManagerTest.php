@@ -8,6 +8,7 @@ use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Models\Resource;
 use Igniter\Api\Tests\Fixtures\TestResource;
 use Igniter\Flame\Support\Facades\Igniter;
+use Igniter\User\Models\User;
 use Illuminate\Routing\Router;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
@@ -116,4 +117,10 @@ it('clamps a saved authorization outside the allowed list to the default', funct
     $resource->save();
 
     expect((new ApiManager)->getResource('users')->options['authorization']['index'])->toBe('admin');
+});
+
+it('refuses staff an action when no resource handles the request', function(): void {
+    Route::shouldReceive('currentRouteName')->andReturn('api.non-existent.index');
+
+    expect($this->apiManager->userCanUseCurrentAction(new User, 'index'))->toBeFalse();
 });

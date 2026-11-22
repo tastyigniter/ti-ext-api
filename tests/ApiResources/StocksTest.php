@@ -13,7 +13,7 @@ use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all stocks', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $menu = Menu::factory()->create();
     $stock = Stock::factory()->create([
         'stockable_id' => $menu->getKey(),
@@ -29,7 +29,7 @@ it('returns all stocks', function(): void {
 });
 
 it('filters stocks by location_id', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $menu = Menu::factory()->create();
     $locationA = Location::factory()->create();
     $locationB = Location::factory()->create();
@@ -53,7 +53,7 @@ it('filters stocks by location_id', function(): void {
 });
 
 it('filters stocks by search against the menu name', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $match = Menu::factory()->create(['menu_name' => 'Spicy Wings']);
     $other = Menu::factory()->create(['menu_name' => 'Plain Rice']);
     $matchStock = Stock::factory()->create([
@@ -74,7 +74,7 @@ it('filters stocks by search against the menu name', function(): void {
 });
 
 it('shows a stock', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $menu = Menu::factory()->create();
     $stock = Stock::factory()->create([
         'stockable_id' => $menu->getKey(),
@@ -88,7 +88,7 @@ it('shows a stock', function(): void {
 });
 
 it('creates a stock and sets the starting quantity', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $menu = Menu::factory()->create();
     $location = Location::factory()->create();
 
@@ -109,7 +109,7 @@ it('creates a stock and sets the starting quantity', function(): void {
 });
 
 it('rejects a duplicate stock row', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $menu = Menu::factory()->create();
     $stock = Stock::factory()->create([
         'stockable_id' => $menu->getKey(),
@@ -125,7 +125,7 @@ it('rejects a duplicate stock row', function(): void {
 });
 
 it('updates a stock quantity through a stock action', function(): void {
-    Sanctum::actingAs($user = User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs($user = User::factory()->superUser()->create(), ['stocks:*']);
     $menu = Menu::factory()->create();
     $stock = Stock::factory()->create([
         'stockable_id' => $menu->getKey(),
@@ -150,7 +150,7 @@ it('updates a stock quantity through a stock action', function(): void {
 });
 
 it('applies an indefinite out of stock override', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $menu = Menu::factory()->create();
     $stock = Stock::factory()->create([
         'stockable_id' => $menu->getKey(),
@@ -166,7 +166,7 @@ it('applies an indefinite out of stock override', function(): void {
 });
 
 it('clears an out of stock override', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $menu = Menu::factory()->create();
     $stock = Stock::factory()->create([
         'stockable_id' => $menu->getKey(),
@@ -189,7 +189,7 @@ it('ignores restAfterSave for non-stock models', function(): void {
 });
 
 it('creates a stock for a menu option value', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $optionValue = MenuItemOptionValue::factory()->create();
     $location = Location::factory()->create();
 
@@ -205,7 +205,7 @@ it('creates a stock for a menu option value', function(): void {
 });
 
 it('rejects an invalid stockable for menu option values', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['stocks:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['stocks:*']);
     $location = Location::factory()->create();
 
     $this->post(route('igniter.api.stocks.store'), [

@@ -12,6 +12,7 @@ use Igniter\Api\Traits\CreatesResponse;
 use Igniter\Flame\Traits\EventEmitter;
 use Igniter\Flame\Traits\ExtendableTrait;
 use Igniter\User\Models\Customer;
+use Igniter\User\Models\User;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
@@ -62,6 +63,8 @@ class ApiController extends Controller
             $this->authorizeToken();
         }
 
+        $this->authorizeStaffPermission();
+
         // Runs once the request is authenticated and before the action validates or reads anything.
         $this->fireSystemEvent('api.controller.beforeAction', [$method, $parameters]);
 
@@ -109,6 +112,24 @@ class ApiController extends Controller
         $actionAbilities = array_map(fn(string $ability): string => Str::before($ability, ':').':'.$this->action, $abilities);
 
         if (!$this->tokenCan(implode(',', $abilities)) && !$this->tokenCan(implode(',', $actionAbilities))) {
+            throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
+        }
+    }
+
+    /**
+     * Token abilities are fixed when a token is issued, but a staff member's
+     * permissions can be reduced later. Check the permission the resource action
+     * needs on every request, so a token stops working for actions its owner
+     * may no longer perform. Super users are not limited.
+     */
+    protected function authorizeStaffPermission(): void
+    {
+        $user = $this->user();
+        if (!$user instanceof User || $user->isSuperUser()) {
+            return;
+        }
+
+        if (!resolve(ApiManager::class)->userCanUseCurrentAction($user, $this->action)) {
             throw new AccessDeniedHttpException(lang('igniter.api::default.alert_token_restricted'));
         }
     }

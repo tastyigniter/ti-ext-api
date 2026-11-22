@@ -7,12 +7,13 @@ namespace Igniter\Api\Tests\ApiResources;
 use Igniter\Api\ApiResources\Notifications;
 use Igniter\User\Classes\Notification;
 use Igniter\User\Models\User;
+use Igniter\User\Models\UserRole;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 it('returns notifications for the signed in user', function(): void {
-    $user = User::factory()->create();
+    $user = User::factory()->for(UserRole::factory()->create(['permissions' => ['Admin.Notifications' => 1]]), 'role')->create();
     $other = User::factory()->create();
     Sanctum::actingAs($user, ['notifications:*']);
 
@@ -36,7 +37,7 @@ it('returns notifications for the signed in user', function(): void {
 });
 
 it('marks a notification read', function(): void {
-    $user = User::factory()->create();
+    $user = User::factory()->for(UserRole::factory()->create(['permissions' => ['Admin.Notifications' => 1]]), 'role')->create();
     Sanctum::actingAs($user, ['notifications:*']);
     $notification = $user->notifications()->create([
         'id' => (string)Str::uuid(),
@@ -54,7 +55,7 @@ it('marks a notification read', function(): void {
 });
 
 it('marks a notification unread', function(): void {
-    $user = User::factory()->create();
+    $user = User::factory()->for(UserRole::factory()->create(['permissions' => ['Admin.Notifications' => 1]]), 'role')->create();
     Sanctum::actingAs($user, ['notifications:*']);
     $notification = $user->notifications()->create([
         'id' => (string)Str::uuid(),
@@ -71,7 +72,7 @@ it('marks a notification unread', function(): void {
 });
 
 it('deletes a notification', function(): void {
-    $user = User::factory()->create();
+    $user = User::factory()->for(UserRole::factory()->create(['permissions' => ['Admin.Notifications' => 1]]), 'role')->create();
     Sanctum::actingAs($user, ['notifications:*']);
     $notification = $user->notifications()->create([
         'id' => (string)Str::uuid(),
@@ -86,7 +87,7 @@ it('deletes a notification', function(): void {
 });
 
 it('does not show another users notification', function(): void {
-    $user = User::factory()->create();
+    $user = User::factory()->for(UserRole::factory()->create(['permissions' => ['Admin.Notifications' => 1]]), 'role')->create();
     $other = User::factory()->create();
     Sanctum::actingAs($user, ['notifications:*']);
     $notification = $other->notifications()->create([

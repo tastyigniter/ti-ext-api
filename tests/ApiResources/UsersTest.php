@@ -12,7 +12,7 @@ use Igniter\User\Models\UserRole;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all users', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $user = User::first();
 
     $this
@@ -23,7 +23,7 @@ it('returns all users', function(): void {
 });
 
 it('shows a user', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $user = User::factory()->create();
 
     $this
@@ -35,7 +35,7 @@ it('shows a user', function(): void {
 });
 
 it('shows a user with groups relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $user = User::factory()->create();
     $userGroup = UserGroup::factory()->create(['user_group_name' => 'Test Group']);
     $user->groups()->attach($userGroup);
@@ -51,7 +51,7 @@ it('shows a user with groups relationship', function(): void {
 });
 
 it('shows a user with locations relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $user = User::factory()->create();
     $location = Location::factory()->create(['location_name' => 'Test Location']);
     $user->locations()->attach($location);
@@ -67,7 +67,7 @@ it('shows a user with locations relationship', function(): void {
 });
 
 it('shows a user with role relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $role = UserRole::factory()->create(['name' => 'Test Role']);
     $user = User::factory()->create(['user_role_id' => $role->getKey()]);
 
@@ -82,7 +82,7 @@ it('shows a user with role relationship', function(): void {
 });
 
 it('creates a user', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $role = UserRole::factory()->create();
 
     $this
@@ -102,7 +102,7 @@ it('creates a user', function(): void {
 });
 
 it('creates a user fails on validation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
 
     $this
         ->post(route('igniter.api.users.store'), [
@@ -113,7 +113,7 @@ it('creates a user fails on validation', function(): void {
 });
 
 it('creates a user fails on missing required fields', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
 
     $this
         ->post(route('igniter.api.users.store'))
@@ -121,7 +121,7 @@ it('creates a user fails on missing required fields', function(): void {
 });
 
 it('creates a user fails on password mismatch', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $role = UserRole::factory()->create();
 
     $this
@@ -139,7 +139,7 @@ it('creates a user fails on password mismatch', function(): void {
 });
 
 it('updates a user', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $user = User::factory()->create();
     $role = UserRole::factory()->create();
 
@@ -157,7 +157,7 @@ it('updates a user', function(): void {
 });
 
 it('updates a user password', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $user = User::factory()->create();
     $role = UserRole::factory()->create();
 
@@ -177,7 +177,7 @@ it('updates a user password', function(): void {
 });
 
 it('deletes a user', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $user = User::factory()->create();
 
     $this
@@ -186,7 +186,7 @@ it('deletes a user', function(): void {
 });
 
 it('cannot mass assign super user via the api', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['staff:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['staff:*']);
     $role = UserRole::factory()->create();
 
     $this

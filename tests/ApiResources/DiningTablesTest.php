@@ -10,7 +10,7 @@ use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all dining tables', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['tables:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['tables:*']);
 
     $diningTable = DiningTable::first();
     $this
@@ -21,7 +21,7 @@ it('returns all dining tables', function(): void {
 });
 
 it('shows a dining table', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['tables:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['tables:*']);
     $diningTable = DiningTable::first();
 
     $this
@@ -32,7 +32,7 @@ it('shows a dining table', function(): void {
 });
 
 it('creates a dining table', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['tables:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['tables:*']);
 
     $this
         ->post(route('igniter.api.tables.store'), [
@@ -48,7 +48,7 @@ it('creates a dining table', function(): void {
 });
 
 it('updates a dining table', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['tables:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['tables:*']);
     $diningTable = DiningTable::first();
 
     $this
@@ -64,7 +64,7 @@ it('updates a dining table', function(): void {
 });
 
 it('deletes a dining table', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['tables:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['tables:*']);
     $diningTable = DiningTable::first();
 
     $this

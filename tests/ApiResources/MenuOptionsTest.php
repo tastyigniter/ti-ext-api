@@ -10,7 +10,7 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all menu options', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
     $this
@@ -21,7 +21,7 @@ it('returns all menu options', function(): void {
 });
 
 it('filters menu options by search', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_options:*']);
     $match = MenuOption::factory()->create(['option_name' => 'Extra Toppings']);
     MenuOption::factory()->create(['option_name' => 'Drink Size']);
     $match->option_values()->create(['name' => 'Value 1', 'price' => 0.5]);
@@ -35,7 +35,7 @@ it('filters menu options by search', function(): void {
 });
 
 it('shows a menu option', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
     $this
@@ -52,7 +52,7 @@ it('shows a menu option', function(): void {
 });
 
 it('shows a menu option with option_values relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
     $menuOptionValue = $menuOption->option_values()->create(['name' => 'Test Value']);
 
@@ -67,7 +67,7 @@ it('shows a menu option with option_values relationship', function(): void {
 });
 
 it('creates a menu option', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
     $this
@@ -85,7 +85,7 @@ it('creates a menu option', function(): void {
 });
 
 it('updates a menu option', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
     $this
@@ -103,7 +103,7 @@ it('updates a menu option', function(): void {
 });
 
 it('deletes a menu option', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_options:*']);
     $menuOption = MenuOption::first();
 
     $this

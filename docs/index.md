@@ -287,7 +287,18 @@ The available contexts are `admin` (staff), `customer`, `users` (staff or custom
 
 ### Staff tokens from My account
 
-Staff with the `Igniter.Api.Manage` permission can create tokens on their **My account** page. A token gets the abilities for every action whose registered permissions the staff member has when the token is created. Actions on resources that register no `permissions` are left out. Super users get every ability (`*`). Tokens issued through the OrderPoint QR login, staff tokens requested from `POST /api/token` with `is_admin`, and staff tokens issued with the `igniter:api-token --admin` command are limited the same way: the caller asks for abilities, and the token keeps only those the staff member is permitted, with wildcards such as `orders:*` expanded to the permitted actions. Changing a staff member's role does not change their existing tokens, so revoke and recreate a token to pick up new permissions.
+Staff with the `Igniter.Api.Manage` permission can create tokens on their **My account** page.
+
+**How abilities are assigned.** When a token is created, it gets an ability for every action whose registered permissions the staff member holds. Actions on resources that register no `permissions` are left out. Super users get every ability (`*`).
+
+The same rules apply to tokens issued through the OrderPoint QR login, staff tokens requested from `POST /api/token` with `is_admin`, and staff tokens issued with the `igniter:api-token --admin` command: the caller asks for abilities, and the token keeps only those the staff member is permitted, with wildcards such as `orders:*` expanded to the permitted actions.
+
+**How permissions are enforced at request time.** Each request made with a staff token is also checked against the staff member's current permissions:
+
+- If their role loses a permission, their existing tokens stop working for the actions it covered.
+- If their role gains a permission, revoke and recreate the token to get the new abilities.
+
+This check is skipped for public actions (authorization `guest` or `all`, which is the default for an action registered without a group). Actions on resources that register no `permissions` are refused for staff who aren't super users.
 
 #### OrderPoint requirements
 

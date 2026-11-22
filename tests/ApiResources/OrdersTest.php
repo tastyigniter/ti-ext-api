@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all orders', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     Order::factory()->count(3)->create();
     $order = Order::first();
 
@@ -29,7 +29,7 @@ it('returns all orders', function(): void {
 });
 
 it('shows an order', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
 
     $this
@@ -40,7 +40,7 @@ it('shows an order', function(): void {
 });
 
 it('shows an order with customer relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->customer()->associate($orderCustomer = Customer::factory()->create(['first_name' => 'Test', 'last_name' => 'User']))->save();
 
@@ -54,7 +54,7 @@ it('shows an order with customer relationship', function(): void {
 });
 
 it('shows an order with location relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->location()->associate($orderLocation = Location::factory()->create())->save();
 
@@ -68,7 +68,7 @@ it('shows an order with location relationship', function(): void {
 });
 
 it('shows an order with address relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->address()->associate(
         $orderAddress = Address::factory()->create(['address_1' => '123 Test St', 'country_id' => 123]),
@@ -86,7 +86,7 @@ it('shows an order with address relationship', function(): void {
 it('shows an order with payment_method relationship', function(): void {
     Payment::syncAll();
 
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create([
         'payment' => 'cod',
     ]);
@@ -100,7 +100,7 @@ it('shows an order with payment_method relationship', function(): void {
 });
 
 it('shows an order with status relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->status()->associate($orderStatus = Status::isForOrder()->first())->save();
 
@@ -114,7 +114,7 @@ it('shows an order with status relationship', function(): void {
 });
 
 it('shows an order with status_history relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $orderStatusHistory = $order->status_history()->create(['status_id' => Status::isForOrder()->first()->getKey()]);
 
@@ -128,7 +128,7 @@ it('shows an order with status_history relationship', function(): void {
 });
 
 it('shows an order with assignee relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $assignee = User::factory()->create();
     $order->assignee()->associate($assignee)->save();
@@ -143,7 +143,7 @@ it('shows an order with assignee relationship', function(): void {
 });
 
 it('shows an order with assignee_group relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $order->assignee_group()->associate(
         $orderAssigneeGroup = UserGroup::factory()->create(['user_group_name' => 'Test Group']),
@@ -161,7 +161,7 @@ it('shows an order with assignee_group relationship', function(): void {
 it('creates an order', function(): void {
     Mail::fake();
 
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
 
     $this
         ->post(route('igniter.api.orders.store'), [
@@ -204,7 +204,7 @@ it('creates an order', function(): void {
 it('updates an order', function(): void {
     Mail::fake();
 
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
 
     expect($order->order_type)->toBe(Location::DELIVERY);
@@ -218,7 +218,7 @@ it('updates an order', function(): void {
 });
 
 it('updates order status', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $newStatus = Status::isForOrder()->first();
 
@@ -232,7 +232,7 @@ it('updates order status', function(): void {
 });
 
 it('updates order status with comment', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $newStatus = Status::isForOrder()->first();
 
@@ -246,7 +246,7 @@ it('updates order status with comment', function(): void {
 });
 
 it('fails to update order status when status_id is missing', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
 
     $this
@@ -270,7 +270,7 @@ it('can not update order status as customer', function(): void {
 });
 
 it('accepts an order', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $status = Status::factory()->create();
     setting()->set([
@@ -287,7 +287,7 @@ it('accepts an order', function(): void {
 });
 
 it('accepts an order with delay', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create([
         'order_time' => '12:00:00',
     ]);
@@ -314,7 +314,7 @@ it('accepts an order with delay', function(): void {
 });
 
 it('rejects an order', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     $status = Status::factory()->create();
     setting()->set([
@@ -336,7 +336,7 @@ it('rejects an order', function(): void {
 });
 
 it('denies accept when status workflow is disabled', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     setting()->set([
         'enable_status_workflow' => false,
@@ -348,7 +348,7 @@ it('denies accept when status workflow is disabled', function(): void {
 });
 
 it('returns 404 when accepting a missing order', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     setting()->set([
         'enable_status_workflow' => true,
         'limit_users' => [],
@@ -360,7 +360,7 @@ it('returns 404 when accepting a missing order', function(): void {
 });
 
 it('returns 422 when accept fails validation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     setting()->set([
         'enable_status_workflow' => true,
@@ -374,7 +374,7 @@ it('returns 422 when accept fails validation', function(): void {
 });
 
 it('denies reject when status workflow is disabled', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     setting()->set([
         'enable_status_workflow' => false,
@@ -388,7 +388,7 @@ it('denies reject when status workflow is disabled', function(): void {
 });
 
 it('returns 404 when rejecting a missing order', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     setting()->set([
         'enable_status_workflow' => true,
         'limit_users' => [],
@@ -402,7 +402,7 @@ it('returns 404 when rejecting a missing order', function(): void {
 });
 
 it('returns 422 when reject fails validation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
     setting()->set([
         'enable_status_workflow' => true,
@@ -418,7 +418,7 @@ it('returns 422 when reject fails validation', function(): void {
 });
 
 it('returns 422 when order totals calculation fails', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
 
     $this
         ->post(route('igniter.api.orders.totals'), [
@@ -432,7 +432,7 @@ it('returns 422 when order totals calculation fails', function(): void {
 });
 
 it('calculates order totals with tax', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $location = Location::factory()->create();
     $menu = Menu::factory()->create(['menu_price' => 10]);
 
@@ -476,7 +476,7 @@ it('calculates order totals with tax', function(): void {
 });
 
 it('deletes an order', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['orders:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['orders:*']);
     $order = Order::factory()->create();
 
     $this

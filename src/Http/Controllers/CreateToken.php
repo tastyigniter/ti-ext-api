@@ -12,6 +12,7 @@ use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -50,6 +51,11 @@ class CreateToken extends Controller
                 'email' => ['Inactive user account'],
             ]);
         }
+
+        // Lets extensions add sign-in checks the password alone does not cover,
+        // such as two-factor authentication. Listeners refuse by throwing a
+        // ValidationException.
+        Event::dispatch('igniter.api.beforeCreateToken', [$user, $request]);
 
         $requestedAbilities = $request->input('abilities', ['*']);
         if ($user instanceof Customer && !in_array('*', $requestedAbilities, true)) {

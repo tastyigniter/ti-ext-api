@@ -11,6 +11,7 @@ use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Igniter\User\Models\UserRole;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Validation\ValidationException;
 
 beforeEach(function(): void {
     $this->controller = new CreateToken;
@@ -181,4 +182,27 @@ it('rejects a staff token request when no requested ability is permitted', funct
         ->assertJsonValidationErrors(['abilities' => lang('igniter.api::default.alert_token_abilities_not_permitted')]);
 
     expect(Token::query()->where('tokenable_id', $user->getKey())->exists())->toBeFalse();
+});
+
+it('lets a beforeCreateToken listener refuse the token', function(): void {
+    $user = User::factory()->superUser()->create();
+    Event::listen('igniter.api.beforeCreateToken', function($tokenUser, $request) use ($user): void {
+        expect($tokenUser->getKey())->toBe($user->getKey())
+            ->and($request->input('two_factor_code'))->toBe('123456');
+
+        throw ValidationException::withMessages(['two_factor_code' => 'Two factor code required.']);
+    });
+
+    $this->post(route('igniter.api.token.create'), [
+        'email' => $user->email,
+        'password' => 'password',
+        'is_admin' => true,
+        'device_name' => 'device',
+        'two_factor_code' => '123456',
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors('two_factor_code');
+
+    expect(Token::where('tokenable_id', $user->getKey())->where('tokenable_type', $user->getMorphClass())->exists())
+        ->toBeFalse();
 });
