@@ -9,11 +9,13 @@ return [
     'text_token_type_staff' => 'User',
     'text_token_type_customer' => 'Customer',
     'text_guest' => 'Guests',
-    'text_admin' => 'User',
+    'text_admin' => 'Staff',
     'text_customer' => 'Customers',
-    'text_admin_customer' => 'User or Customers',
+    'text_admin_customer' => 'Staff or Customers',
     'text_all' => 'All',
     'text_allow_only' => 'Allow Only',
+    'alert_token_abilities_not_permitted' => 'None of the requested abilities are allowed by your permissions.',
+    'alert_authorization_not_allowed' => 'The selected authorization is not allowed for this action.',
 
     'button_tokens' => '<i class="fa fa-key"></i>&nbsp;&nbsp;Access tokens',
 
@@ -35,10 +37,7 @@ return [
     'label_description_comment' => 'Describe your API resource',
     'label_base_endpoint_comment' => 'https://example.com/api/<b>endpoint</b>',
 
-    'label_controller' => 'Controller',
     'label_actions' => 'Actions',
-    'help_actions' => 'Leave blank to deactivate the endpoint.',
-    'label_require_authorization' => 'Require authorization',
     'label_setup' => 'Reference Docs',
 
     'actions' => [
@@ -52,7 +51,6 @@ return [
     'alert_auth_failed' => 'No valid API token provided.',
     'alert_auth_restricted' => 'The API token doesn\'t have permissions to perform the request.',
     'alert_token_restricted' => 'The API token doesn\'t have the right abilities to perform this action',
-    'alert_validation_failed' => 'Failed to validate request parameters',
 
     'orders' => [
         'label_customer_id' => 'Customer ID',
@@ -79,14 +77,15 @@ return [
         'alert_used' => 'This login code has already been used. Generate a new login QR from My Account.',
         'alert_user_missing' => 'The staff account for this login code could not be found.',
         'alert_user_inactive' => 'This staff account is not activated.',
+        'alert_no_abilities' => 'Your permissions don\'t give access to what this app needs. Ask an administrator to update your role.',
     ],
     'account_tokens' => [
         'label' => 'API tokens',
         'help' => 'Create access tokens to connect your own apps or POS to the API. Each token acts as you, with your permissions.',
         'label_name' => 'Token name',
-        'label_abilities' => 'Resources',
         'text_all_abilities' => 'All resources',
-        'text_selected_abilities' => 'Only these resources',
+        'text_permitted_abilities' => 'The token can use these resources, based on your permissions:',
+        'text_super_user_abilities' => 'As a super user, the token can use all resources.',
         'text_no_tokens' => 'You have no API tokens.',
         'text_token_count' => 'You have one API token.|You have :count API tokens.',
         'text_create_title' => 'Create API token',
@@ -105,5 +104,6 @@ return [
         'alert_revoked' => 'API token revoked.',
         'alert_not_found' => 'API token not found.',
         'alert_not_allowed' => 'You are not allowed to manage API tokens.',
+        'alert_no_abilities' => 'Your permissions don\'t give access to any API resource, so a token can\'t be created.',
     ],
 ];

@@ -11,7 +11,7 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all menu item options', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
 
     $this
@@ -22,7 +22,7 @@ it('returns all menu item options', function(): void {
 });
 
 it('shows a menu item option', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
 
     $this
@@ -39,7 +39,7 @@ it('shows a menu item option', function(): void {
 });
 
 it('shows a menu item option with menu_option_values relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
     $menuItemOption->menu_option_values()->create(['option_value_id' => 1]);
 
@@ -52,7 +52,7 @@ it('shows a menu item option with menu_option_values relationship', function(): 
 });
 
 it('creates a menu item option', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_item_options:*']);
     $menuOption = MenuOption::first();
 
     $this
@@ -72,7 +72,7 @@ it('creates a menu item option', function(): void {
 });
 
 it('updates a menu item option', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
 
     $this
@@ -88,7 +88,7 @@ it('updates a menu item option', function(): void {
 });
 
 it('deletes a menu item option', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menu_item_options:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menu_item_options:*']);
     $menuItemOption = MenuItemOption::first();
 
     $this

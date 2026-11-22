@@ -76,3 +76,50 @@ it('deletes resource', function(): void {
 
     expect(Resource::find($resource->getKey()))->toBeNull();
 });
+
+it('only offers staff authorization on the staff resource', function(): void {
+    $resource = Resource::query()->where('endpoint', 'users')->firstOrFail();
+
+    actingAsSuperUser()
+        ->get(route('igniter.api.resources', ['slug' => 'edit/'.$resource->getKey()]))
+        ->assertOk()
+        ->assertSee('value="admin"', false)
+        ->assertDontSee('value="customer"', false)
+        ->assertDontSee('value="guest"', false);
+});
+
+it('rejects an authorization outside the allowed list', function(): void {
+    $resource = Resource::query()->where('endpoint', 'users')->firstOrFail();
+
+    actingAsSuperUser()
+        ->post(route('igniter.api.resources', ['slug' => 'edit/'.$resource->getKey()]), [
+            'Resource' => [
+                'name' => 'Staff',
+                'description' => 'An API resource for staff',
+                'meta' => ['actions' => ['index'], 'authorization' => ['index' => 'all']],
+            ],
+        ], [
+            'X-Requested-With' => 'XMLHttpRequest',
+            'X-IGNITER-REQUEST-HANDLER' => 'onSave',
+        ]);
+
+    expect(Resource::find($resource->getKey())->meta['authorization']['index'])->toBe('admin');
+});
+
+it('saves an authorization inside the allowed list', function(): void {
+    $resource = Resource::query()->where('endpoint', 'categories')->firstOrFail();
+
+    actingAsSuperUser()
+        ->post(route('igniter.api.resources', ['slug' => 'edit/'.$resource->getKey()]), [
+            'Resource' => [
+                'name' => 'Categories',
+                'description' => 'An API resource for categories',
+                'meta' => ['actions' => ['index'], 'authorization' => ['index' => 'customer']],
+            ],
+        ], [
+            'X-Requested-With' => 'XMLHttpRequest',
+            'X-IGNITER-REQUEST-HANDLER' => 'onSave',
+        ]);
+
+    expect(Resource::find($resource->getKey())->meta['authorization']['index'])->toBe('customer');
+});

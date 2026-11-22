@@ -69,3 +69,7 @@ Pass `location_id` to list order types that location currently offers. Each item
 ### `customer_group_id`
 
 The default customer group id, used when the POS creates a customer. `null` when no group exists.
+
+### `timezone`
+
+The site timezone from **Settings > General** (an IANA name such as `Europe/London`), or `app.timezone` when unset. Unknown values fall back to `UTC`. The app uses it so a device in another timezone still uses the restaurant's local date and time.

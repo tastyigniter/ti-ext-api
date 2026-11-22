@@ -42,6 +42,11 @@ class Resource extends Model
 
     protected static $registeredResources;
 
+    /**
+     * Groups an action's authorization can be set to, from most to least restrictive.
+     */
+    public const array AUTHORIZATION_GROUPS = ['admin', 'customer', 'users', 'guest', 'all'];
+
     protected static $defaultActionDefinition = [
         'index' => 'lang:igniter.api::default.actions.text_index',
         'show' => 'lang:igniter.api::default.actions.text_show',
@@ -107,6 +112,64 @@ class Resource extends Model
         return array_intersect($dbActions, $registeredActions);
     }
 
+    /**
+     * Groups this action's authorization may be set to. An extension restricts them when
+     * registering the action as `action:default:allowed,groups`, e.g. `index:admin:admin,customer`.
+     *
+     * @return list<string>
+     */
+    public function getAllowedAuthorization(string $action): array
+    {
+        // An action registered without an allowed list stores [], which means every group is allowed.
+        return array_get(array_get($this->getRegisteredOptions(), 'allowed', []), $action) ?: self::AUTHORIZATION_GROUPS;
+    }
+
+    /**
+     * The group allowed to call this action. A saved value outside the allowed groups falls
+     * back to the registered default, so an extension's restriction always holds.
+     */
+    public function getActionAuthorization(string $action): string
+    {
+        $default = array_get(array_get($this->getRegisteredOptions(), 'authorization', []), $action, 'all');
+        $value = array_get(array_get((array)$this->meta, 'authorization', []), $action, $default);
+
+        return in_array($value, $this->getAllowedAuthorization($action), true) ? $value : $default;
+    }
+
+    /**
+     * @return array<string, string> Authorization group keyed by each available action.
+     */
+    public function getAuthorizationMap(): array
+    {
+        $map = [];
+        foreach ($this->getAvailableActions() as $action) {
+            $map[$action] = $this->getActionAuthorization($action);
+        }
+
+        return $map;
+    }
+
+    /**
+     * The staff permission an action needs, from the resource's registered `permissions`:
+     * unkeyed entries cover every action and an action-keyed entry overrides them, e.g.
+     * `['Admin.Menus', 'destroy' => 'Admin.DeleteMenus']`. Several permissions mean any of them.
+     */
+    public function getActionPermission(string $action): ?string
+    {
+        $permissions = (array)array_get((array)array_get($this->listRegisteredResources(), $this->endpoint, []), 'permissions', []);
+        $permission = array_key_exists($action, $permissions)
+            ? (array)$permissions[$action]
+            : array_filter($permissions, is_int(...), ARRAY_FILTER_USE_KEY);
+        $permission = implode(',', array_filter(array_map(strval(...), $permission)));
+
+        return $permission !== '' ? $permission : null;
+    }
+
+    protected function getRegisteredOptions(): array
+    {
+        return (array)array_get((array)array_get($this->listRegisteredResources(), $this->endpoint, []), 'options', []);
+    }
+
     public function renderSetupPartial()
     {
         $registeredResources = (new static)->listRegisteredResources();
@@ -151,7 +214,7 @@ class Resource extends Model
             $model->endpoint = array_get($definition, 'endpoint');
             $model->name = array_get($definition, 'name');
             $model->description = array_get($definition, 'description');
-            $model->meta = array_except(array_get($definition, 'options'), 'names');
+            $model->meta = array_except(array_get($definition, 'options'), ['names', 'allowed']);
             $model->is_custom = false;
             $model->save();
         }
@@ -180,21 +243,31 @@ class Resource extends Model
     {
         $actions = array_get($definition, 'actions', []);
         $result = [];
+        $allowed = [];
         $names = [];
         foreach ($actions as $action => $name) {
             if (!is_string($action)) {
                 $action = $name;
             }
 
-            $action = explode(':', (string)$action, 2);
-            $result[$action[0]] = $action[1] ?? 'all';
-            $names[$action[0]] = array_get(static::$defaultActionDefinition, $action[0], $name);
+            // Format: action[:default[:allowed,groups]], e.g. `index:admin:admin,customer`
+            [$actionName, $default, $allowedGroups] = array_pad(explode(':', (string)$action, 3), 3, '');
+            $allowedGroups = array_values(array_intersect(
+                array_map(trim(...), explode(',', $allowedGroups)),
+                self::AUTHORIZATION_GROUPS,
+            ));
+            $default = $default !== '' ? $default : 'all';
+
+            $result[$actionName] = ($allowedGroups && !in_array($default, $allowedGroups, true)) ? $allowedGroups[0] : $default;
+            $allowed[$actionName] = $allowedGroups;
+            $names[$actionName] = array_get(static::$defaultActionDefinition, $actionName, $name);
         }
 
         return [
             'names' => $names,
             'actions' => array_keys($result),
             'authorization' => $result,
+            'allowed' => $allowed,
         ];
     }
 
@@ -243,6 +316,7 @@ class Resource extends Model
             'name' => null,
             'description' => null,
             'controller' => null,
+            'permissions' => [],
             'endpoint' => null,
             'owner' => null,
             'options' => [],

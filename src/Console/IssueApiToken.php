@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Api\Console;
 
+use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Models\Token;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
@@ -49,8 +50,25 @@ class IssueApiToken extends Command
             return;
         }
 
-        $accessToken = Token::createToken($user, $name, $abilities ?: ['*']);
+        $requestedAbilities = array_values((array)($abilities ?: ['*']));
+        $abilities = $requestedAbilities;
+
+        // Staff tokens only get the requested abilities their permissions allow.
+        if ($user instanceof User) {
+            $abilities = resolve(ApiManager::class)->limitTokenAbilities($user, $requestedAbilities);
+            if ($abilities === []) {
+                $this->error(lang('igniter.api::default.alert_token_abilities_not_permitted'));
+
+                return;
+            }
+        }
+
+        $accessToken = Token::createToken($user, $name, $abilities);
         $this->info(sprintf('Access Token: %s', $accessToken->plainTextToken));
+
+        if ($abilities !== $requestedAbilities) {
+            $this->line(sprintf('Abilities allowed by the staff permissions: %s', implode(', ', $abilities)));
+        }
     }
 
     /**

@@ -11,11 +11,12 @@ use Igniter\Local\Models\Location;
 use Igniter\System\Classes\ExtensionManager;
 use Igniter\User\Models\CustomerGroup;
 use Igniter\User\Models\User;
+use Igniter\User\Models\UserRole;
 use Laravel\Sanctum\Sanctum;
 use Mockery;
 
 it('returns app settings for the signed in staff user', function(): void {
-    $user = User::factory()->create();
+    $user = User::factory()->for(UserRole::factory()->create(['permissions' => ['Admin.Orders' => 1]]), 'role')->create();
     $received = Status::factory()->create([
         'status_for' => 'order',
         'status_name' => 'Received',
@@ -148,7 +149,7 @@ it('checks whether an extension is installed and enabled', function(): void {
 });
 
 it('returns active order types, tipping, and the default customer group for a location', function(): void {
-    $user = User::factory()->create();
+    $user = User::factory()->for(UserRole::factory()->create(['permissions' => ['Admin.Orders' => 1]]), 'role')->create();
     $location = Location::factory()->create();
     CartSettings::set('enable_tipping', true);
     CartSettings::set('tip_value_type', 'F');
@@ -175,4 +176,18 @@ it('returns active order types, tipping, and the default customer group for a lo
 
 it('returns no order types when the location does not exist', function(): void {
     expect(callProtectedMethod(new AppSettings, 'orderTypes', [999999]))->toBe([]);
+});
+
+it('returns the site timezone, falling back to UTC for unknown values', function(): void {
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['app_settings:*']);
+
+    setting()->set('timezone', 'Europe/London');
+    $this->get(route('igniter.api.app_settings.index'))
+        ->assertOk()
+        ->assertJsonPath('data.attributes.timezone', 'Europe/London');
+
+    setting()->set('timezone', 'Not/AZone');
+    $this->get(route('igniter.api.app_settings.index'))
+        ->assertOk()
+        ->assertJsonPath('data.attributes.timezone', 'UTC');
 });

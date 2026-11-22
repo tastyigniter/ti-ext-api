@@ -9,7 +9,7 @@ use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all statuses', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['status:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['status:*']);
     $status = Status::first();
 
     $this
@@ -20,7 +20,7 @@ it('returns all statuses', function(): void {
 });
 
 it('shows a status', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['status:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['status:*']);
     $status = Status::factory()->create();
 
     $this
@@ -32,7 +32,7 @@ it('shows a status', function(): void {
 });
 
 it('creates a status', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['status:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['status:*']);
 
     $this
         ->post(route('igniter.api.status.store'), [
@@ -48,7 +48,7 @@ it('creates a status', function(): void {
 });
 
 it('creates a status fails on validation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['status:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['status:*']);
 
     $this
         ->post(route('igniter.api.status.store'), [
@@ -58,7 +58,7 @@ it('creates a status fails on validation', function(): void {
 });
 
 it('creates a status fails on invalid status_for', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['status:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['status:*']);
 
     $this
         ->post(route('igniter.api.status.store'), [
@@ -70,7 +70,7 @@ it('creates a status fails on invalid status_for', function(): void {
 });
 
 it('updates a status', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['status:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['status:*']);
     $status = Status::factory()->create();
 
     $this
@@ -87,7 +87,7 @@ it('updates a status', function(): void {
 });
 
 it('deletes a status', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['status:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['status:*']);
     $status = Status::factory()->create();
 
     $this

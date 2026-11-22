@@ -53,8 +53,9 @@ it('creates access token using http', function($email, $isAdmin, $deviceName, $a
         'is_activated' => 1,
     ];
 
+    // Staff tokens are limited to the user's permissions, so use a super user to get `*`.
     $isAdmin
-        ? User::factory()->create($attributes)
+        ? User::factory()->superUser()->create($attributes)
         : Customer::factory()->create($attributes);
 
     $response = $this->postJson('/api/token', [
@@ -79,8 +80,9 @@ it('creates access token using console command', function($email, $isAdmin, $dev
         'is_activated' => 1,
     ];
 
+    // Staff tokens are limited to the user's permissions, so use a super user to get `*`.
     $isAdmin
-        ? User::factory()->create($attributes)
+        ? User::factory()->superUser()->create($attributes)
         : Customer::factory()->create($attributes);
 
     $this->artisan('igniter:api-token', [

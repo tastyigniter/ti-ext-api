@@ -13,7 +13,7 @@ use Laravel\Sanctum\Sanctum;
 use ReflectionMethod;
 
 it('returns all location settings', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location = Location::factory()->create();
     $setting1 = LocationSettings::create(['location_id' => $location->getKey(), 'item' => 'setting1', 'data' => []]);
     $setting2 = LocationSettings::create(['location_id' => $location->getKey(), 'item' => 'setting2', 'data' => []]);
@@ -32,7 +32,7 @@ it('returns all location settings', function(): void {
 });
 
 it('shows a location setting', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location = Location::factory()->create();
     $locationSetting = LocationSettings::create([
         'location_id' => $location->getKey(),
@@ -54,7 +54,7 @@ it('shows a location setting', function(): void {
 });
 
 it('creates a location setting', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location = Location::factory()->create();
 
     $this
@@ -80,7 +80,7 @@ it('creates a location setting', function(): void {
 });
 
 it('creates a location setting fails on validation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
 
     $this
         ->post(route('igniter.api.location_settings.store'), [
@@ -90,7 +90,7 @@ it('creates a location setting fails on validation', function(): void {
 });
 
 it('creates a location setting fails on missing location_id', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
 
     $this
         ->post(route('igniter.api.location_settings.store'), [
@@ -101,7 +101,7 @@ it('creates a location setting fails on missing location_id', function(): void {
 });
 
 it('creates a location setting fails on missing item', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location = Location::factory()->create();
 
     $this
@@ -113,7 +113,7 @@ it('creates a location setting fails on missing item', function(): void {
 });
 
 it('creates a location setting fails on missing data', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location = Location::factory()->create();
 
     $this
@@ -125,7 +125,7 @@ it('creates a location setting fails on missing data', function(): void {
 });
 
 it('creates a location setting fails on invalid location_id type', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
 
     $this
         ->post(route('igniter.api.location_settings.store'), [
@@ -137,7 +137,7 @@ it('creates a location setting fails on invalid location_id type', function(): v
 });
 
 it('updates a location setting', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location = Location::factory()->create();
     $locationSetting = LocationSettings::create([
         'location_id' => $location->getKey(),
@@ -168,7 +168,7 @@ it('updates a location setting', function(): void {
 });
 
 it('merges partial data on update without clearing other values', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location = Location::factory()->create();
     $locationSetting = LocationSettings::create([
         'location_id' => $location->getKey(),
@@ -230,7 +230,7 @@ it('prefers in-memory settings values when merging', function(): void {
 });
 
 it('deletes a location setting', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location = Location::factory()->create();
     $locationSetting = LocationSettings::create([
         'location_id' => $location->getKey(),
@@ -248,7 +248,7 @@ it('deletes a location setting', function(): void {
 });
 
 it('filters location settings by location_id', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['location_settings:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['location_settings:*']);
     $location1 = Location::factory()->create();
     $location2 = Location::factory()->create();
     $setting1 = LocationSettings::create(['location_id' => $location1->getKey(), 'item' => 'setting1', 'data' => []]);

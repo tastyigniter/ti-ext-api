@@ -97,34 +97,26 @@
                         <label class="form-label" for="api-token-name">@lang('igniter.api::default.account_tokens.label_name')</label>
                         <input type="text" class="form-control" id="api-token-name" name="api_token_name" maxlength="255">
                     </div>
-                    <div class="mb-2">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="api_token_scope" id="api-token-scope-all" value="all" checked
-                                   onchange="document.getElementById('api-token-abilities').classList.add('d-none')">
-                            <label class="form-check-label" for="api-token-scope-all">@lang('igniter.api::default.account_tokens.text_all_abilities')</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="api_token_scope" id="api-token-scope-selected" value="selected"
-                                   onchange="document.getElementById('api-token-abilities').classList.remove('d-none')">
-                            <label class="form-check-label" for="api-token-scope-selected">@lang('igniter.api::default.account_tokens.text_selected_abilities')</label>
-                        </div>
-                    </div>
-                    <div id="api-token-abilities" class="d-none">
-                        <div class="row">
-                            @foreach ($apiTokenAbilityGroups as $resourceName => $actions)
-                                <div class="col-sm-6 col-md-4 mb-2">
-                                    <div class="fw-bold mb-1">{{ $resourceName }}</div>
-                                    @foreach ($actions as $ability => $actionLabel)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="api_token_abilities[]" value="{{ $ability }}" id="api-token-ability-{{ $loop->parent->index }}-{{ $loop->index }}">
-                                            <label class="form-check-label" for="api-token-ability-{{ $loop->parent->index }}-{{ $loop->index }}">
-                                                {{ $actionLabel }} <code class="small">{{ $ability }}</code>
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endforeach
-                        </div>
+                    <div data-api-token-abilities>
+                        @if ($apiTokenHasAllAbilities)
+                            <p class="text-muted mb-0">@lang('igniter.api::default.account_tokens.text_super_user_abilities')</p>
+                        @elseif (empty($apiTokenAbilityGroups))
+                            <p class="text-muted mb-0">@lang('igniter.api::default.account_tokens.alert_no_abilities')</p>
+                        @else
+                            <p class="text-muted mb-2">@lang('igniter.api::default.account_tokens.text_permitted_abilities')</p>
+                            <div class="row">
+                                @foreach ($apiTokenAbilityGroups as $resourceName => $actions)
+                                    <div class="col-sm-6 col-md-4 mb-2">
+                                        <div class="fw-bold mb-1">{{ $resourceName }}</div>
+                                        <ul class="list-unstyled mb-0">
+                                            @foreach ($actions as $ability => $actionLabel)
+                                                <li>{{ $actionLabel }} <code class="small">{{ $ability }}</code></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -132,6 +124,7 @@
                     <button
                         type="button"
                         class="btn btn-primary"
+                        @if (!$apiTokenHasAllAbilities && empty($apiTokenAbilityGroups)) disabled @endif
                         data-request="onCreateApiToken"
                         data-progress-indicator="@lang('admin::lang.text_loading')"
                     >@lang('igniter.api::default.account_tokens.button_create')</button>

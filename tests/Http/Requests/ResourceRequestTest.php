@@ -34,5 +34,18 @@ it('returns correct validation rules', function(): void {
         ->and($rules['endpoint'])->toContain('max:255', 'regex:/^[a-z0-9\-_\/]+$/i', 'unique:igniter_api_resources,endpoint,')
         ->and($rules['meta'])->toContain('array')
         ->and($rules['meta.actions.*'])->toContain('alpha')
-        ->and($rules['meta.authorization.*'])->toContain('alpha');
+        ->and($rules['meta.authorization.*'])->toContain('string');
+});
+
+it('checks the allowed authorization against the submitted endpoint for a new resource', function(): void {
+    $request = ResourceRequest::create('/', 'POST', ['endpoint' => 'users']);
+    $failures = [];
+    $fail = function(string $message) use (&$failures): void {
+        $failures[] = $message;
+    };
+
+    callProtectedMethod($request, 'allowedAuthorizationRule', ['meta.authorization.index', 'admin', $fail]);
+    callProtectedMethod($request, 'allowedAuthorizationRule', ['meta.authorization.index', 'all', $fail]);
+
+    expect($failures)->toBe([lang('igniter.api::default.alert_authorization_not_allowed')]);
 });

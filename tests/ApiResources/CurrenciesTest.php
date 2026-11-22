@@ -9,7 +9,7 @@ use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all currencies', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['currencies:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['currencies:*']);
     $currency = Currency::listFrontEnd()->first();
 
     $this->get(route('igniter.api.currencies.index'))

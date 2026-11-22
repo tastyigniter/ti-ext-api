@@ -37,4 +37,14 @@ class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
             throw new Exceptions\AuthenticationException('Unauthenticated.', $e->guards());
         }
     }
+
+    /**
+     * API requests answer with a 401, never a redirect to a login page, so the app-wide
+     * guest redirect (set by the user extension) is not resolved here.
+     */
+    #[Override]
+    protected function redirectTo(Request $request): ?string
+    {
+        return null;
+    }
 }

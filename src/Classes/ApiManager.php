@@ -6,6 +6,7 @@ namespace Igniter\Api\Classes;
 
 use Igniter\Api\Models\Resource;
 use Igniter\Flame\Support\Facades\Igniter;
+use Igniter\User\Models\User;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -53,10 +54,12 @@ class ApiManager
     /**
      * Abilities a staff token can be given: one per resource action that is enabled and
      * open to staff, such as `categories:index`, keyed by ability and labelled for display.
+     * Given a user, only actions whose registered permission the user has are listed;
+     * actions without a registered permission are left out.
      *
      * @return array<string, string>
      */
-    public function listTokenAbilities(): array
+    public function listTokenAbilities(?User $user = null): array
     {
         $abilities = [];
         foreach (Resource::all()->sortBy('name') as $resource) {
@@ -72,10 +75,13 @@ class ApiManager
                     fn($ability): bool => is_string($ability) && $ability !== '' && $ability !== '*'),
             ));
 
-            $authorization = (array)array_get((array)$resource->meta, 'authorization', []);
             foreach ($resource->getAvailableActions() as $action) {
                 // Customer-only actions can't be used with staff tokens.
-                if (array_get($authorization, $action, 'all') === 'customer') {
+                if ($resource->getActionAuthorization($action) === 'customer') {
+                    continue;
+                }
+
+                if ($user instanceof User && !$this->userCanUseAction($user, $resource, $action)) {
                     continue;
                 }
 
@@ -88,6 +94,65 @@ class ApiManager
         return $abilities;
     }
 
+    /**
+     * Narrows requested abilities to those the staff user's permissions allow. A wildcard such
+     * as `*` or `orders:*` expands to the permitted abilities it covers. Super users keep
+     * what they request.
+     *
+     * @param list<string> $abilities
+     * @return list<string>
+     */
+    public function limitTokenAbilities(User $user, array $abilities): array
+    {
+        if ($user->isSuperUser()) {
+            return array_values($abilities);
+        }
+
+        $permitted = array_keys($this->listTokenAbilities($user));
+        $limited = [];
+        foreach ($abilities as $ability) {
+            $limited = array_merge($limited, match (true) {
+                $ability === '*' => $permitted,
+                str_ends_with($ability, ':*') => array_filter($permitted, fn(string $permittedAbility): bool => Str::before($permittedAbility, ':') === Str::before($ability, ':')),
+                default => in_array($ability, $permitted, true) ? [$ability] : [],
+            });
+        }
+
+        return array_values(array_unique($limited));
+    }
+
+    /**
+     * Whether the staff user may perform the action on the resource handling the
+     * current request. Public actions (`guest` or `all`) are open to anyone, so
+     * staff are not limited by permissions there. Other actions without a
+     * registered permission are refused, as they are when token abilities are issued.
+     */
+    public function userCanUseCurrentAction(User $user, string $action): bool
+    {
+        $currentResource = $this->getCurrentResource();
+        $endpoint = $currentResource->endpoint ?? null;
+        if (!is_string($endpoint) || $endpoint === '') {
+            return false;
+        }
+
+        $authorization = array_get((array)($currentResource->options['authorization'] ?? []), $action, 'all');
+        if (in_array($authorization, ['guest', 'all'], true)) {
+            return true;
+        }
+
+        $resource = new Resource;
+        $resource->endpoint = $endpoint;
+
+        return $this->userCanUseAction($user, $resource, $action);
+    }
+
+    protected function userCanUseAction(User $user, Resource $resource, string $action): bool
+    {
+        $permission = $resource->getActionPermission($action);
+
+        return $permission !== null && $user->hasAnyPermission($permission);
+    }
+
     protected function loadResources()
     {
         Resource::syncAll();
@@ -96,8 +161,9 @@ class ApiManager
             $resourceObj = (object)[
                 'endpoint' => $resource->endpoint,
                 'controller' => $resource->controller,
-                'options' => array_merge($resource->meta, [
+                'options' => array_merge((array)$resource->meta, [
                     'only' => $resource->getAvailableActions(),
+                    'authorization' => $resource->getAuthorizationMap(),
                 ]),
             ];
 

@@ -64,7 +64,7 @@ The post data should contain the following fields:
 | email       | The email of the customer, required when generating for customer          |
 | password    | The admin user's password                                                 |
 | device_name | A unique identifier for the device making the request                     |
-| abilities   | An optional array of abilities to restrict the token to (e.g. `orders.*`) |
+| abilities   | An optional array of abilities to restrict the token to (e.g. `orders:*`). For staff, only abilities their permissions allow are kept |
 
 If token generation is successful, you will receive a JSON payload in the format:
 
@@ -266,6 +266,7 @@ public function registerApiResources(): array
             'name' => 'Menus',
             'description' => 'Description of this API resource',
             'controller' => \Author\Extension\ApiResources\Menus::class,
+            'permissions' => ['Admin.Menus', 'destroy' => 'Author.Extension.DeleteMenus'],
             'actions' => ['destroy:admin']
         ],
     ];
@@ -277,7 +278,36 @@ These are the available options for the resource configuration:
 - **name** - The name of the resource
 - **description** - A brief description of the resource
 - **controller** - The controller class for the resource
-- **actions** - An array of actions to enable for the resource. You can predefine authorization context for each action by adding the context. For example to make the `delete` endpoint only accessible to admin users, `['destroy:admin']`
+- **permissions** - The staff permissions needed to use the resource with a token created from the staff **My account** page. Unkeyed entries apply to every action, and an entry keyed by an action overrides them for that action, e.g. `['Admin.Menus', 'destroy' => 'Admin.DeleteMenus']`. When several permissions apply, staff with any of them qualify.
+- **actions** - An array of actions to enable for the resource. You can predefine authorization context for each action by adding the context. For example to make the `delete` endpoint only accessible to staff, `['destroy:admin']`
+
+Each action is written as `action:default:allowed`. The optional third part is a comma-separated list of the authorization contexts an administrator may choose for that action under **Allow Only**. For example, `'index:admin:admin,customer'` defaults the `index` endpoint to staff and only lets it be changed to customers. Leave it out to allow every context.
+
+The available contexts are `admin` (staff), `customer`, `users` (staff or customers), `guest` and `all`. If a saved value falls outside the allowed list, the action uses its default instead.
+
+### Staff tokens from My account
+
+Staff with the `Igniter.Api.Manage` permission can create tokens on their **My account** page.
+
+**How abilities are assigned.** When a token is created, it gets an ability for every action whose registered permissions the staff member holds. Actions on resources that register no `permissions` are left out. Super users get every ability (`*`).
+
+The same rules apply to tokens issued through the OrderPoint QR login, staff tokens requested from `POST /api/token` with `is_admin`, and staff tokens issued with the `igniter:api-token --admin` command: the caller asks for abilities, and the token keeps only those the staff member is permitted, with wildcards such as `orders:*` expanded to the permitted actions.
+
+**How permissions are enforced at request time.** Each request made with a staff token is also checked against the staff member's current permissions:
+
+- If their role loses a permission, their existing tokens stop working for the actions it covered.
+- If their role gains a permission, revoke and recreate the token to get the new abilities.
+
+This check is skipped for public actions (authorization `guest` or `all`, which is the default for an action registered without a group). Actions on resources that register no `permissions` are refused for staff who aren't super users.
+
+#### OrderPoint requirements
+
+For a staff member who isn't a super user to sign in to OrderPoint and use all of it, their staff role needs these permissions:
+
+- `Admin.Orders` - orders, and the app settings OrderPoint loads on sign-in
+- `Admin.Menus` - menus
+
+Staff without `Admin.Menus` can still sign in, but their token has no menu access, so menu screens in OrderPoint return permission errors. Add `Admin.DeleteOrders` as well to let them delete orders.
 
 ### Extending customer token abilities
 

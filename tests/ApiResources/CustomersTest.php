@@ -90,7 +90,7 @@ it('can not show unauthenticated customer', function(): void {
 });
 
 it('returns all customers', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
     Customer::factory()->count(5)->create();
     $customer = Customer::first();
 
@@ -103,7 +103,7 @@ it('returns all customers', function(): void {
 });
 
 it('shows a customer', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 
     $this
@@ -114,7 +114,7 @@ it('shows a customer', function(): void {
 });
 
 it('shows a customer with addresses relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
     $customerAddress = $customer->addresses()->create(['address_1' => '123 Test Address', 'country_id' => 1]);
 
@@ -129,7 +129,7 @@ it('shows a customer with addresses relationship', function(): void {
 });
 
 it('shows a customer with orders relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
     $customerOrder = $customer->orders()->create(['order_type' => 'collection']);
 
@@ -144,7 +144,7 @@ it('shows a customer with orders relationship', function(): void {
 });
 
 it('shows a customer with reservations relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
     $customerReservation = $customer->reservations()->create(['email' => 'user-reservation@example.com']);
 
@@ -159,7 +159,7 @@ it('shows a customer with reservations relationship', function(): void {
 });
 
 it('creates a customer', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
 
     $this
         ->post(route('igniter.api.customers.store'), [
@@ -195,7 +195,7 @@ it('creates a customer as customer', function(): void {
 });
 
 it('updates a customer', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 
     $this
@@ -212,7 +212,7 @@ it('updates a customer', function(): void {
 });
 
 it('deletes a customer', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
     $customer = Customer::factory()->create();
 
     $this
@@ -221,7 +221,7 @@ it('deletes a customer', function(): void {
 });
 
 it('searches customers by name, email, and telephone', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['customers:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['customers:*']);
     $match = Customer::factory()->create([
         'first_name' => 'Ada',
         'last_name' => 'Lovelace',

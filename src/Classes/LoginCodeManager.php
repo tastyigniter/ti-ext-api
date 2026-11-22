@@ -59,6 +59,12 @@ class LoginCodeManager
             throw new ApplicationException(lang('igniter.api::default.qr_login.alert_user_inactive'));
         }
 
+        // The device asks for abilities; the token only gets those the staff member is permitted.
+        $abilities = resolve(ApiManager::class)->limitTokenAbilities($user, $abilities);
+        if (!$abilities) {
+            throw new ApplicationException(lang('igniter.api::default.qr_login.alert_no_abilities'));
+        }
+
         $loginCode->used_at = now();
         $loginCode->save();
 

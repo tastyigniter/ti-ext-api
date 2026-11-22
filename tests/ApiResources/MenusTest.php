@@ -10,7 +10,7 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all menu items', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
 
     $this
@@ -21,7 +21,7 @@ it('returns all menu items', function(): void {
 });
 
 it('shows a menu item', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
 
     $this
@@ -38,7 +38,7 @@ it('shows a menu item', function(): void {
 });
 
 it('shows a menu item with media relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuMedia = $menu->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
 
@@ -52,7 +52,7 @@ it('shows a menu item with media relationship', function(): void {
 });
 
 it('shows a menu item with categories relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuCategory = $menu->categories()->create(['name' => 'Test Category']);
 
@@ -66,7 +66,7 @@ it('shows a menu item with categories relationship', function(): void {
 });
 
 it('shows a menu item with menu_options relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuOption = $menu->menu_options()->create(['min_selected' => 2, 'max_selected' => 4, 'option_id' => 1]);
 
@@ -81,7 +81,7 @@ it('shows a menu item with menu_options relationship', function(): void {
 });
 
 it('shows a menu item with ingredients relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuIngredient = $menu->ingredients()->create(['name' => 'Test Ingredient']);
 
@@ -95,7 +95,7 @@ it('shows a menu item with ingredients relationship', function(): void {
 });
 
 it('shows a menu item with mealtimes relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
     $menuMealtime = $menu->mealtimes()->create(['start_time' => '09:00', 'end_time' => '17:00']);
 
@@ -110,7 +110,7 @@ it('shows a menu item with mealtimes relationship', function(): void {
 });
 
 it('shows a menu item with stocks relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
     $menu->stocks()->create(['quantity' => 10]);
 
@@ -122,7 +122,7 @@ it('shows a menu item with stocks relationship', function(): void {
 });
 
 it('creates a menu item', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
 
     $this
@@ -140,7 +140,7 @@ it('creates a menu item', function(): void {
 });
 
 it('updates a menu item', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
 
     $this
@@ -158,7 +158,7 @@ it('updates a menu item', function(): void {
 });
 
 it('deletes a menu item', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['menus:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['menus:*']);
     $menu = Menu::first();
 
     $this

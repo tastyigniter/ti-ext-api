@@ -99,3 +99,84 @@ it('configures resource model correctly', function(): void {
             ],
         ]);
 });
+
+afterEach(function(): void {
+    Resource::clearInternalCache();
+});
+
+function registerAllowedListResource(): Resource
+{
+    Resource::clearInternalCache();
+    (new Resource)->registerCallback(function(Resource $manager): void {
+        $manager->registerResources([
+            'restricted' => [
+                'name' => 'Restricted',
+                'controller' => Categories::class,
+                'actions' => ['index:admin:admin,customer', 'show:all:admin', 'store', 'update:customer'],
+            ],
+        ]);
+    });
+
+    return new Resource(['endpoint' => 'restricted']);
+}
+
+it('parses the allowed authorization list from action definitions', function(): void {
+    $resource = registerAllowedListResource();
+    $options = $resource->listRegisteredResources()['restricted']['options'];
+
+    expect($options['authorization'])->toBe(['index' => 'admin', 'show' => 'admin', 'store' => 'all', 'update' => 'customer'])
+        ->and($options['allowed'])->toBe(['index' => ['admin', 'customer'], 'show' => ['admin'], 'store' => [], 'update' => []])
+        ->and($resource->getAllowedAuthorization('index'))->toBe(['admin', 'customer'])
+        ->and($resource->getAllowedAuthorization('store'))->toBe(Resource::AUTHORIZATION_GROUPS);
+});
+
+it('falls back to the default when the saved authorization is not allowed', function(): void {
+    $resource = registerAllowedListResource();
+    $resource->meta = [
+        'actions' => ['index', 'show', 'store', 'update'],
+        'authorization' => ['index' => 'customer', 'show' => 'all', 'store' => 'guest'],
+    ];
+
+    expect($resource->getActionAuthorization('index'))->toBe('customer')
+        ->and($resource->getActionAuthorization('show'))->toBe('admin')
+        ->and($resource->getActionAuthorization('store'))->toBe('guest')
+        ->and($resource->getActionAuthorization('update'))->toBe('customer')
+        ->and($resource->getAuthorizationMap())->toBe(['index' => 'customer', 'show' => 'admin', 'store' => 'guest', 'update' => 'customer']);
+});
+
+it('does not save the allowed authorization list when syncing', function(): void {
+    registerAllowedListResource();
+
+    Resource::syncAll();
+
+    expect(Resource::query()->where('endpoint', 'restricted')->first()->meta)->not->toHaveKey('allowed');
+});
+
+it('resolves action permissions from a single permissions key', function(): void {
+    Resource::clearInternalCache();
+    (new Resource)->registerCallback(function(Resource $manager): void {
+        $manager->registerResources([
+            'permissioned' => [
+                'name' => 'Permissioned',
+                'controller' => Categories::class,
+                'permissions' => ['Admin.Menus', 'Admin.Categories', 'destroy' => 'Admin.DeleteMenus', 'update' => ['Admin.Menus', 'Admin.Inventory']],
+                'actions' => ['index', 'update', 'destroy'],
+            ],
+            'unpermissioned' => [
+                'name' => 'Unpermissioned',
+                'controller' => Categories::class,
+                'permissions' => ['destroy' => 'Admin.DeleteMenus'],
+                'actions' => ['index', 'destroy'],
+            ],
+        ]);
+    });
+
+    $resource = new Resource(['endpoint' => 'permissioned']);
+    $unpermissioned = new Resource(['endpoint' => 'unpermissioned']);
+
+    expect($resource->getActionPermission('index'))->toBe('Admin.Menus,Admin.Categories')
+        ->and($resource->getActionPermission('destroy'))->toBe('Admin.DeleteMenus')
+        ->and($resource->getActionPermission('update'))->toBe('Admin.Menus,Admin.Inventory')
+        ->and($unpermissioned->getActionPermission('index'))->toBeNull()
+        ->and($unpermissioned->getActionPermission('destroy'))->toBe('Admin.DeleteMenus');
+});

@@ -10,7 +10,7 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all locations', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
     Location::factory()->count(4)->create();
 
     $this
@@ -21,7 +21,7 @@ it('returns all locations', function(): void {
 });
 
 it('shows a location', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
     $location = Location::first();
 
     $this
@@ -37,7 +37,7 @@ it('shows a location', function(): void {
 });
 
 it('shows a location with media relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
     $location = Location::first();
     $locationMedia = $location->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
 
@@ -51,7 +51,7 @@ it('shows a location with media relationship', function(): void {
 });
 
 it('shows a location with working_hours relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
     $location = Location::first();
     $location->working_hours()->create(['weekday' => 1, 'opening_time' => '09:00', 'closing_time' => '17:00']);
 
@@ -66,7 +66,7 @@ it('shows a location with working_hours relationship', function(): void {
 });
 
 it('shows a location with delivery_areas relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
     $location = Location::first();
     $locationDeliveryArea = $location->delivery_areas()->create(['name' => 'Test Area']);
 
@@ -79,7 +79,7 @@ it('shows a location with delivery_areas relationship', function(): void {
 });
 
 it('shows a location with reviews relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
     $location = Location::first();
     $locationReview = $location->reviews()->create(['review_text' => 'Test Review']);
 
@@ -92,7 +92,7 @@ it('shows a location with reviews relationship', function(): void {
 });
 
 it('creates a location', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
 
     $this
         ->post(route('igniter.api.locations.store'), [
@@ -114,7 +114,7 @@ it('creates a location', function(): void {
 });
 
 it('updates a location', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
     $location = Location::factory()->create();
 
     $this
@@ -137,7 +137,7 @@ it('updates a location', function(): void {
 });
 
 it('deletes a location', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['locations:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['locations:*']);
     $location = Location::factory()->create();
 
     $this

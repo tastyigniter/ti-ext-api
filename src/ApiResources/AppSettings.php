@@ -70,7 +70,15 @@ class AppSettings extends ApiController
                 'amounts' => $this->tipAmounts(),
             ],
             'customer_group_id' => CustomerGroup::getDefaultKey(),
+            'timezone' => $this->timezone(),
         ];
+    }
+
+    protected function timezone(): string
+    {
+        $timezone = (string)(setting('timezone') ?: config('app.timezone', 'UTC'));
+
+        return in_array($timezone, timezone_identifiers_list(), true) ? $timezone : 'UTC';
     }
 
     /**

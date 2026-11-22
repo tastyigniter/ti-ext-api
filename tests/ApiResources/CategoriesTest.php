@@ -11,7 +11,7 @@ use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all categories', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
     $category = Category::first();
 
     $this
@@ -22,7 +22,7 @@ it('returns all categories', function(): void {
 });
 
 it('shows a category', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
     $category = Category::first();
 
     $this
@@ -33,7 +33,7 @@ it('shows a category', function(): void {
 });
 
 it('shows a category with media relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
     $category = Category::first();
     $categoryMedia = $category->media()->create(['file_name' => 'test.jpg', 'tag' => 'thumb']);
 
@@ -48,7 +48,7 @@ it('shows a category with media relationship', function(): void {
 });
 
 it('shows a category with menus relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
     $category = Category::first();
     $categoryMenu = $category->menus()->create(['menu_name' => 'Test Menu']);
 
@@ -63,7 +63,7 @@ it('shows a category with menus relationship', function(): void {
 });
 
 it('shows a category with locations relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
     $category = Category::first();
     $categoryLocation = $category->locations()->create(['location_name' => 'Test Location']);
 
@@ -78,7 +78,7 @@ it('shows a category with locations relationship', function(): void {
 })->note('Skipping assertion on included data due to polymorphic relationship issues.');
 
 it('creates a category', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
 
     $this
         ->post(route('igniter.api.categories.store'), [
@@ -89,7 +89,7 @@ it('creates a category', function(): void {
 });
 
 it('creates a category fails on validation', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
 
     $this
         ->post(route('igniter.api.categories.store'))
@@ -119,7 +119,7 @@ it('validates request data successfully', function(): void {
 });
 
 it('updates a category', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
     $category = Category::first();
 
     $this
@@ -131,7 +131,7 @@ it('updates a category', function(): void {
 });
 
 it('deletes a category', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['categories:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['categories:*']);
     $category = Category::first();
 
     $this

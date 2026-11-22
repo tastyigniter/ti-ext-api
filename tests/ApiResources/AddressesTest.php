@@ -11,7 +11,7 @@ use Igniter\User\Models\User;
 use Laravel\Sanctum\Sanctum;
 
 it('returns all addresses', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['addresses:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['addresses:*']);
     $customer = Customer::factory()->create();
     Address::factory()->count(3)->create(['customer_id' => $customer->getKey()]);
     $address = Address::first();
@@ -81,7 +81,7 @@ it('can not update customer aware column', function(): void {
 });
 
 it('shows an address', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['addresses:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['addresses:*']);
     $customer = Customer::factory()->create();
     $address = $customer->addresses()->create([
         'address_1' => '123 Test Address',
@@ -103,7 +103,7 @@ it('shows an address', function(): void {
 });
 
 it('shows an address with country relationship', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['addresses:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['addresses:*']);
     $customer = Customer::factory()->create();
     $country = Country::factory()->create(['country_name' => 'United Kingdom', 'iso_code_2' => 'GB']);
     $address = $customer->addresses()->create([
@@ -124,7 +124,7 @@ it('shows an address with country relationship', function(): void {
 });
 
 it('creates an address', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['addresses:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['addresses:*']);
     $customer = Customer::factory()->create();
 
     $this
@@ -158,7 +158,7 @@ it('creates an address as customer', function(): void {
 });
 
 it('updates an address', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['addresses:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['addresses:*']);
     $customer = Customer::factory()->create();
     $address = $customer->addresses()->create([
         'address_1' => '123 Old St',
@@ -177,7 +177,7 @@ it('updates an address', function(): void {
 });
 
 it('deletes an address', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['addresses:*']);
+    Sanctum::actingAs(User::factory()->superUser()->create(), ['addresses:*']);
     $customer = Customer::factory()->create();
     $address = $customer->addresses()->create([
         'address_1' => '123 To Delete',

@@ -8,6 +8,8 @@ use Igniter\Api\Classes\ApiManager;
 use Igniter\Api\Listeners\AccountSubscriber;
 use Igniter\Api\Models\Resource;
 use Igniter\Api\Models\Token;
+use Igniter\Cart\Models\Category;
+use Igniter\User\Models\Customer;
 use Igniter\User\Models\User;
 use Igniter\User\Models\UserRole;
 
@@ -16,9 +18,14 @@ function accountTokenRequest(string $handler): array
     return ['X-Requested-With' => 'XMLHttpRequest', 'X-IGNITER-REQUEST-HANDLER' => $handler];
 }
 
-function staffWithApiPermission(bool $allowed = true): User
+function staffWithApiPermission(bool $allowed = true, array $permissions = []): User
 {
-    $role = UserRole::factory()->create(['permissions' => $allowed ? ['Igniter.Api.Manage' => 1] : []]);
+    $permissions = array_fill_keys($permissions, 1);
+    if ($allowed) {
+        $permissions['Igniter.Api.Manage'] = 1;
+    }
+
+    $role = UserRole::factory()->create(['permissions' => $permissions]);
 
     return User::factory()->for($role, 'role')->create(['super_user' => false]);
 }
@@ -33,14 +40,25 @@ it('lists an ability for each enabled staff action of each resource', function()
 });
 
 it('leaves out customer-only actions', function(): void {
+    // `customers:show` is registered as `show:admin:admin,customer`, so it may be set to customer-only.
+    $resource = Resource::query()->where('endpoint', 'customers')->first();
+    $meta = $resource->meta;
+    $meta['authorization']['show'] = 'customer';
+    $resource->meta = $meta;
+    $resource->save();
+
+    expect(resolve(ApiManager::class)->listTokenAbilities())->not->toHaveKey('customers:show')
+        ->toHaveKey('customers:index');
+});
+
+it('keeps an action whose saved customer-only value is not allowed', function(): void {
     $resource = Resource::query()->where('endpoint', 'categories')->first();
     $meta = $resource->meta;
     $meta['authorization']['destroy'] = 'customer';
     $resource->meta = $meta;
     $resource->save();
 
-    expect(resolve(ApiManager::class)->listTokenAbilities())->not->toHaveKey('categories:destroy')
-        ->toHaveKey('categories:index');
+    expect(resolve(ApiManager::class)->listTokenAbilities())->toHaveKey('categories:destroy');
 });
 
 it('leaves out resources whose controller class does not exist', function(): void {
@@ -75,16 +93,56 @@ it('groups abilities by the ability prefix when the label has no resource name',
     ]);
 });
 
-it('shows the abilities grouped by resource', function(): void {
+it('lists only the abilities the user permissions allow', function(): void {
+    $user = staffWithApiPermission(permissions: ['Admin.Orders']);
+
+    $abilities = array_keys(resolve(ApiManager::class)->listTokenAbilities($user));
+
+    expect($abilities)->toEqualCanonicalizing(['app_settings:index', 'orders:index', 'orders:show', 'orders:store', 'orders:update']);
+});
+
+it('lists an action that needs its own permission only when the user has it', function(): void {
+    $user = staffWithApiPermission(permissions: ['Admin.Orders', 'Admin.DeleteOrders']);
+
+    expect(resolve(ApiManager::class)->listTokenAbilities($user))->toHaveKey('orders:destroy');
+});
+
+it('leaves out actions without a registered permission', function(): void {
+    $resource = new Resource(['endpoint' => 'unregistered']);
+
+    expect($resource->getActionPermission('index'))->toBeNull()
+        ->and(callProtectedMethod(resolve(ApiManager::class), 'userCanUseAction', [staffWithApiPermission(), $resource, 'index']))->toBeFalse();
+});
+
+it('shows the abilities the token will get, without a picker', function(): void {
+    $this->actingAs(staffWithApiPermission(permissions: ['Admin.Categories']), 'igniter-admin')
+        ->get(route('igniter.user.users', ['slug' => 'account']))
+        ->assertOk()
+        ->assertSee(lang('igniter.api::default.account_tokens.text_permitted_abilities'))
+        ->assertSee('<div class="fw-bold mb-1">Categories</div>', false)
+        ->assertSee('<code class="small">categories:index</code>', false)
+        ->assertDontSee('<code class="small">orders:index</code>', false)
+        ->assertDontSee('api_token_scope', false)
+        ->assertDontSee('api_token_abilities', false);
+});
+
+it('tells a super user the token gets every ability', function(): void {
+    actingAsSuperUser()
+        ->get(route('igniter.user.users', ['slug' => 'account']))
+        ->assertOk()
+        ->assertSee(lang('igniter.api::default.account_tokens.text_super_user_abilities'));
+});
+
+it('disables token creation when no permission gives api access', function(): void {
     $this->actingAs(staffWithApiPermission(), 'igniter-admin')
         ->get(route('igniter.user.users', ['slug' => 'account']))
         ->assertOk()
-        ->assertSee('<div class="fw-bold mb-1">Categories</div>', false)
-        ->assertSee('<code class="small">categories:index</code>', false);
+        ->assertSee(lang('igniter.api::default.account_tokens.alert_no_abilities'), false)
+        ->assertSee('disabled', false);
 });
 
 it('lets a token with an action ability use only that action', function(): void {
-    $user = staffWithApiPermission();
+    $user = staffWithApiPermission(permissions: ['Admin.Categories']);
     $user->forceFill(['status' => true, 'is_activated' => true])->save();
     $token = Token::createToken($user, 'Reader', ['categories:index'])->plainTextToken;
 
@@ -126,36 +184,39 @@ it('hides the api tokens section from staff without the api permission', functio
         ->assertDontSee('onCreateApiToken', false);
 });
 
-it('creates a token with all or selected abilities and shows it once', function(): void {
-    $user = staffWithApiPermission();
+it('creates a token limited to the user permissions and shows it once', function(): void {
+    $user = staffWithApiPermission(permissions: ['Admin.Categories']);
 
     $this->actingAs($user, 'igniter-admin')
         ->post(route('igniter.user.users', ['slug' => 'account']), [
             'api_token_name' => 'Till',
-            'api_token_scope' => 'selected',
-            'api_token_abilities' => ['orders:index', 'menus:show'],
+            'api_token_abilities' => ['secrets:*', 'orders:index'],
         ], accountTokenRequest('onCreateApiToken'))
         ->assertSessionHas(AccountSubscriber::NEW_TOKEN_SESSION_KEY);
 
-    $this->post(route('igniter.user.users', ['slug' => 'account']), [
-        'api_token_name' => 'Everything',
-        'api_token_scope' => 'all',
-    ], accountTokenRequest('onCreateApiToken'));
-
-    $tokens = Token::query()->where('tokenable_id', $user->getKey())->orderBy('id')->get();
-    expect($tokens)->toHaveCount(2)
-        ->and($tokens[0]->abilities)->toBe(['orders:index', 'menus:show'])
-        ->and($tokens[1]->abilities)->toBe(['*']);
+    $token = Token::query()->where('tokenable_id', $user->getKey())->sole();
+    expect($token->abilities)->toEqualCanonicalizing([
+        'categories:index', 'categories:show', 'categories:store', 'categories:update', 'categories:destroy',
+    ]);
 });
 
-it('rejects unknown abilities', function(): void {
+it('creates a token with every ability for a super user', function(): void {
+    $user = User::factory()->superUser()->create();
+
+    $this->actingAs($user, 'igniter-admin')
+        ->post(route('igniter.user.users', ['slug' => 'account']), [
+            'api_token_name' => 'Everything',
+        ], accountTokenRequest('onCreateApiToken'));
+
+    expect(Token::query()->where('tokenable_id', $user->getKey())->sole()->abilities)->toBe(['*']);
+});
+
+it('does not create a token when no permission gives api access', function(): void {
     $user = staffWithApiPermission();
 
     $this->actingAs($user, 'igniter-admin')
         ->post(route('igniter.user.users', ['slug' => 'account']), [
             'api_token_name' => 'Till',
-            'api_token_scope' => 'selected',
-            'api_token_abilities' => ['secrets:*'],
         ], accountTokenRequest('onCreateApiToken'));
 
     expect(Token::query()->where('tokenable_id', $user->getKey())->exists())->toBeFalse();
@@ -167,7 +228,6 @@ it('stops staff without the api permission creating tokens', function(): void {
     $this->actingAs($user, 'igniter-admin')
         ->post(route('igniter.user.users', ['slug' => 'account']), [
             'api_token_name' => 'Till',
-            'api_token_scope' => 'all',
         ], accountTokenRequest('onCreateApiToken'));
 
     expect(Token::query()->where('tokenable_id', $user->getKey())->exists())->toBeFalse();
@@ -184,4 +244,47 @@ it('only revokes your own tokens', function(): void {
 
     expect(Token::query()->whereKey($other->getKey())->exists())->toBeTrue()
         ->and(Token::query()->whereKey($own->getKey())->exists())->toBeFalse();
+});
+
+it('stops a staff token working once the role loses the permission', function(): void {
+    $user = staffWithApiPermission(permissions: ['Admin.Categories']);
+    $user->forceFill(['status' => true, 'is_activated' => true])->save();
+    $token = Token::createToken($user, 'Old token', ['*'])->plainTextToken;
+
+    $this->withToken($token)->getJson(route('igniter.api.categories.index'))->assertOk();
+
+    $user->role->permissions = ['Igniter.Api.Manage' => 1, 'Admin.Orders' => 1];
+    $user->role->save();
+    app('auth')->forgetGuards();
+
+    $this->withToken($token)->getJson(route('igniter.api.categories.index'))->assertOk();
+    $this->withToken($token)->postJson(route('igniter.api.categories.store'), ['name' => 'Injected'])->assertForbidden();
+});
+
+it('applies an action-specific permission to staff tokens on each request', function(): void {
+    $user = staffWithApiPermission(permissions: ['Admin.Customers']);
+    $user->forceFill(['status' => true, 'is_activated' => true])->save();
+    $customer = Customer::factory()->create();
+    $token = Token::createToken($user, 'Old token', ['*'])->plainTextToken;
+
+    $this->withToken($token)->deleteJson(route('igniter.api.customers.destroy', [$customer->getKey()]))->assertForbidden();
+});
+
+it('does not apply staff permissions to public actions', function(): void {
+    // `categories:index` (no group) and `show:all` are public; `store:admin:admin` is staff-only.
+    $user = staffWithApiPermission();
+    $user->forceFill(['status' => true, 'is_activated' => true])->save();
+    $category = Category::factory()->create();
+    $token = Token::createToken($user, 'Old token', ['*'])->plainTextToken;
+
+    $this->withToken($token)->getJson(route('igniter.api.categories.show', [$category->getKey()]))->assertOk();
+    $this->withToken($token)->getJson(route('igniter.api.categories.index'))->assertOk();
+    $this->withToken($token)->postJson(route('igniter.api.categories.store'), ['name' => 'New'])->assertForbidden();
+});
+
+it('does not limit super user tokens by role permissions', function(): void {
+    $user = User::factory()->superUser()->create(['status' => true, 'is_activated' => true]);
+    $token = Token::createToken($user, 'Admin token', ['*'])->plainTextToken;
+
+    $this->withToken($token)->getJson(route('igniter.api.categories.index'))->assertOk();
 });

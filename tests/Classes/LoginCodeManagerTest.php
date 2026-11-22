@@ -9,6 +9,7 @@ use Igniter\Api\Models\LoginCode;
 use Igniter\Api\Models\Token;
 use Igniter\Flame\Exception\ApplicationException;
 use Igniter\User\Models\User;
+use Igniter\User\Models\UserRole;
 
 it('generates a hashed single-use login code', function(): void {
     $user = User::factory()->superUser()->create();
@@ -136,4 +137,52 @@ it('returns the specific failure message for a used login code over http', funct
         'abilities' => ['orders:*'],
     ])->assertUnauthorized()
         ->assertJsonPath('message', lang('igniter.api::default.qr_login.alert_used'));
+});
+
+function staffWithPermissions(array $permissions): User
+{
+    $role = UserRole::factory()->create(['permissions' => array_fill_keys($permissions, 1)]);
+
+    return User::factory()->for($role, 'role')->create(['super_user' => false, 'is_activated' => true, 'status' => true]);
+}
+
+it('limits redeemed token abilities to the staff permissions', function(): void {
+    $user = staffWithPermissions(['Admin.Orders', 'Admin.Menus']);
+    $manager = resolve(LoginCodeManager::class);
+
+    $manager->redeem($manager->generate($user), 'tasty-mobile-ios', ['orders:*', 'menus:index', 'staff:*', 'categories:index']);
+
+    expect(Token::query()->where('tokenable_id', $user->getKey())->sole()->abilities)
+        ->toEqualCanonicalizing(['orders:index', 'orders:show', 'orders:store', 'orders:update', 'menus:index']);
+});
+
+it('expands a wildcard request to the permitted abilities', function(): void {
+    $user = staffWithPermissions(['Admin.Categories']);
+    $manager = resolve(LoginCodeManager::class);
+
+    $manager->redeem($manager->generate($user), 'tasty-mobile-ios', ['*']);
+
+    expect(Token::query()->where('tokenable_id', $user->getKey())->sole()->abilities)
+        ->toEqualCanonicalizing(['categories:index', 'categories:show', 'categories:store', 'categories:update', 'categories:destroy']);
+});
+
+it('keeps requested abilities for a super user', function(): void {
+    $user = User::factory()->superUser()->create(['is_activated' => true]);
+    $manager = resolve(LoginCodeManager::class);
+
+    $manager->redeem($manager->generate($user), 'tasty-mobile-ios', ['*']);
+
+    expect(Token::query()->where('tokenable_id', $user->getKey())->sole()->abilities)->toBe(['*']);
+});
+
+it('rejects a code without using it when no requested ability is permitted', function(): void {
+    $user = staffWithPermissions(['Admin.Categories']);
+    $manager = resolve(LoginCodeManager::class);
+    $plain = $manager->generate($user);
+
+    expect(fn() => $manager->redeem($plain, 'tasty-mobile-ios', ['orders:*']))
+        ->toThrow(ApplicationException::class, lang('igniter.api::default.qr_login.alert_no_abilities'));
+
+    expect(LoginCode::query()->where('code_hash', $manager->hash($plain))->first()->isUsed())->toBeFalse()
+        ->and(Token::query()->where('tokenable_id', $user->getKey())->exists())->toBeFalse();
 });
